@@ -58,6 +58,19 @@ td,th{text-align:center;vertical-align:middle}
 .htv {
     float:left;font-weight:bold;color:#966f2b;text-decoration: underline;
 }
+		.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 13px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
 </style>
 <script type="text/javascript">
 //拨交采伐证号
@@ -235,8 +248,8 @@ function inputNull(form){
         <table id="table1" class="table-style"></table>
     </div>
     </div>
-    <div class=" but_p" style="float:right;">
-    <button class="but_save" type="button" onclick="cutareaAllot()" value="伐区拨交">伐区拨交</button>
+    <div  style="text-align:center;">
+    <button class="btn" type="button" onclick="cutareaAllot()" value="伐区拨交">伐区拨交</button>
    </div>
 </main>
 </div>

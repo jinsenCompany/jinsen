@@ -80,6 +80,25 @@
 .but_p button{width: 180px}
 .table2{margin-left:auto; margin-right:auto;padding:10px;border-collapse:separate; border-spacing:2px 20px;CELLPADDING:5;CELLSPACING:5}
 .table2 td{font-size:20pt}
+/*定义类名为.thead-blue的样式*/
+.table .thead-blue th {
+color: #fff;
+background-color: #3195f1;
+border-color: #0d7adf;
+}
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 13px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
 </style> 
 <script type="text/javascript">
 function yardAdd(){
@@ -175,14 +194,13 @@ function inputNull(form){
       </ul>
      </li>
      <li><a href="workpageTreeBuyDirector.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTreeDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
+    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treeinDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
-    <li><a href="passworkpageDirector.jsp"><i class="icon icon-th-list"></i> <span>查询采伐工单信息</span></a></li>
     <li class="action"><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
   </ul>
@@ -197,7 +215,7 @@ function inputNull(form){
 <div class="table-con">
     <table id="table1" class="table-style"></table>
 </div>
-  <p style="font-size:28px;color:blue;border-bottom: 3px #42cdec solid;display: inline-block">新增货场信息：<a href = "JavaScript:void(0)" onclick = "openDialog()">请点这里</a></p> 
+  <p style="font-size:28px;color:blue;border-bottom: 3px #42cdec solid;display: inline-block">新增货场信息： <a href = "JavaScript:void(0)"><button class="btn btn-xs btn-primary" type="button" onclick = "openDialog()" value="新建货场">新建货场</button></a></p> 
 <div id="light" class="white_content">
    <a style="float:right" href = "javascript:void(0)" onclick = "closeDialog()">关闭</a>
 <form onSubmit="return inputNull(this)" action="workpageSevrlet?action=yardAdd" method="POST">

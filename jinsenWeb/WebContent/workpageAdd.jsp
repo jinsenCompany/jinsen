@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -59,9 +61,38 @@ function inputNull(form){
 	}
 	}
 </script>
-
+<script type="text/javascript">
+    function funworkid(){
+    	var _name=document.getElementById('cccutnum').value;
+    	 var workid = document.getElementById('wworkid');
+         var name=_name.substring(5,9);
+    	    var date = new Date();
+    	    var year = date.getFullYear();
+    	    var month = date.getMonth() + 1;
+    	    var strDate = date.getDate();
+            var day=date.getDate();
+            var hour=date.getHours();
+            var mini=date.getMinutes();
+            var second=date.getSeconds();
+    	    var seperator = "/";
+    	    if (month >= 1 && month <= 9) {
+    	        month = "0" + month;
+    	    }
+    	    if (strDate >= 0 && strDate <= 9) {
+    	        strDate = "0" + strDate;
+    	    }
+    	     var currentDate = name + month + strDate + hour + mini + second; //当前日期
+    	     workid.value = currentDate; //赋值给input.value
+    	     //workid.setAttribute('disabled', 'disabled'); //不可编辑
+    }
+    </script>
 </head>
 <body>
+<% Date d = new Date();
+
+SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+String now = df.format(d); %>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">产销部门平台</a></h1>
@@ -141,24 +172,24 @@ function inputNull(form){
                           <table class="table1"  border="1">
                            <caption class="book_h01">伐区生产工单</caption>
                            <tr>
-                           <th colspan="2">工单号</th>
                            <th colspan="2">采伐证号</th>
+                           <th colspan="2">工单号</th>
                           <th colspan="2">时间</th>
                            </tr>
                            <tr>
-                            <td colspan="2">
-                              <input style="width:80%;border:0px;" type="text" name="workid" id="wworkid" >
-                           </td>
                            <td colspan="2">
                              <input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" >
                            </td>
                            <td colspan="2">
-                              <input  type="date" name="cutdate" id="ccutdate" >
+                              <input style="width:80%;border:0px;" type="text" name="workid" id="wworkid" onclick="funworkid()" >
+                           </td>
+                           <td colspan="2">
+                              <input  type="text" name="cutdate" id="ccutdate" value="<%=now%>">
                            </td>
                            </tr>
                            <tr>
                             <th colspan="2">采伐地点</th>
-                            <th colspan="2">检验地点</th>
+                            <th colspan="2">货场地点</th>
                             <th colspan="2">车牌号</th>                          
                            </tr>
                            <tr>
@@ -276,7 +307,7 @@ function inputNull(form){
                         </div>
 
                 </div>
-             <div class="1" ; style="text-align:center">
+             <div class="1"  style="text-align:center">
 
 		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 

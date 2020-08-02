@@ -35,6 +35,19 @@
     background-image: url(../img/listicon.jpg);
     top: 1px;
 }
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 13px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
 </style>    
 <script type="text/javascript">
 function mypass(workid)
@@ -220,8 +233,8 @@ function alldo()
 		   <tr><td colspan="6" style="text-align: center;vertical-align:middle">
 		   <!--  <button class="add-but" data-toggle="modal" data-target="#myModal_all">全部申请</button>
 		   <button class="add-but" data-toggle="modal" data-target="#myModal_notshenhe">未审核</button>-->
-		   <button class="add-but" data-toggle="modal" id="myModal_pass" onclick="pass()">已通过</button> 
-		   <button class="add-but" data-toggle="modal" id="myModal_notpass" onclick="notpass()">未通过</button>
+		   <button class="btn" data-toggle="modal" id="myModal_pass" onclick="pass()">已通过</button> 
+		   <button class="btn" data-toggle="modal" id="myModal_notpass" onclick="notpass()">未通过</button>
 		   <!--<button class="add-but" data-toggle="modal" data-target="#myModal_buchong">审核补充材料申请</button>-->
 		   </td></tr>
       </table>

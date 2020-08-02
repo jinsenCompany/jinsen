@@ -17,7 +17,19 @@
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
         <style>
-
+		.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 13px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
     </style>  
     <style>
 /*定义类名为.thead-blue的样式*/
@@ -633,11 +645,11 @@ border-color: #0d7adf;
   <div class="find-top1" style="vertical-align:middle">
       <table style="border:0px;align:center;valign:middle" >
 		   <tr><td colspan="6" style="text-align: center;vertical-align:middle">
-		   <button class="add-but" data-toggle="modal" id="myModal_month_year" onclick="month()">全部申请</button>
-		   <button class="add-but" data-toggle="modal" id="myModal_statement" onclick="year()">未审核</button>
-		   <button class="add-but" data-toggle="modal" id="myModal_salary_tree" onclick="treePrice()">已通过</button> 
-		   <button class="add-but" data-toggle="modal" id="myModal_produce" onclick="produce()">未通过</button>
-		   <button class="add-but" data-toggle="modal" id="myModal_buchong" onclick="probuchong()">审核补充材料申请</button>
+		   <button class="btn" data-toggle="modal" id="myModal_month_year" onclick="month()">全部申请</button>
+		   <button class="btn" data-toggle="modal" id="myModal_statement" onclick="year()">未审核</button>
+		   <button class="btn" data-toggle="modal" id="myModal_salary_tree" onclick="treePrice()">已通过</button> 
+		   <button class="btn" data-toggle="modal" id="myModal_produce" onclick="produce()">未通过</button>
+		   <button class="btn" data-toggle="modal" id="myModal_buchong" onclick="probuchong()">审核补充材料申请</button>
 		   </td></tr>
       </table>
     </div>

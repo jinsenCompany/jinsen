@@ -26,6 +26,7 @@ import jinshen.bean.outyard;
 import jinshen.bean.surveyorFee;
 import jinshen.bean.tree;
 import jinshen.bean.volume;
+import jinshen.bean.workpage;
 import jinshen.bean.workpageStatus;
 import jinshen.bean.yardInventory;
 import jinshen.dao.treeDao;
@@ -1007,6 +1008,9 @@ public class treeServlet extends HttpServlet {
 			inyard inyard=trd.findInSingle(sql);
 			sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
 			List<tree> tree=trd.findTree(sql);
+			sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+       		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
 			request.getRequestDispatcher("treeinUpdateinfo.jsp").forward(request, response);
@@ -1021,6 +1025,9 @@ public class treeServlet extends HttpServlet {
 			inyard inyard=trd.findInSingle(sql);
 			sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
 			List<tree> tree=trd.findTree(sql);
+			sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+       		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
 			request.getRequestDispatcher("treeinUpdatePass.jsp").forward(request, response);
@@ -1153,6 +1160,9 @@ public class treeServlet extends HttpServlet {
 			List<tree> tree=trd.findTree(sql);
 			sql="SELECT reject_reason FROM workpage_status join workpage on workpage_status.workid=workpage.workid WHERE workpage_status.workid="+workid+"";
     		workpageStatus workpageStatus=wpd.findWapStatus(sql);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+       		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
 			request.setAttribute("workpageStatus", workpageStatus);
@@ -1171,6 +1181,9 @@ public class treeServlet extends HttpServlet {
 			List<tree> tree=trd.findTree(sql);
 			sql="SELECT reject_reason FROM workpage_status join workpage on workpage_status.workid=workpage.workid WHERE workpage_status.workid="+workid+"";
     		workpageStatus workpageStatus=wpd.findWapStatus(sql);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+       		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
 			request.setAttribute("workpageStatus", workpageStatus);

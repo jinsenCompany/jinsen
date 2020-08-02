@@ -60,7 +60,7 @@ border-color: #0d7adf;
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 3,
+            pageSize: 8,
             pageNumber: 1,
             search: true, //显示搜索框
             contentType: "application/x-www-form-urlencoded",
@@ -290,7 +290,7 @@ border-color: #0d7adf;
   <div id="content-header">
     <div id="breadcrumb"> <a href="superManage.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>返回超级管理员首页</a></div>
   </div>
-<main class="all">
+<main>
         <div class="find-top1">
            <div class="find-top">
            <p class="p-tail"><i class="i-tail"></i> 该页面是查询采伐证页面</p>

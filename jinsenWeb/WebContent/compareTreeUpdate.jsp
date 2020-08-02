@@ -106,7 +106,13 @@ function not(){
 }
 </script>
 <body>
-<% compareTree c=(compareTree)request.getAttribute("compareTree");%>
+<% inyard c=(inyard)request.getAttribute("inyard"); 
+List<tree> t=null;
+t=(List<tree>)request.getAttribute("tree");
+%>
+<% workpageStatus w=(workpageStatus)request.getAttribute("workpageStatus");%>
+<% workpage o=(workpage)request.getAttribute("workpage");%>
+<% compareTree p=(compareTree)request.getAttribute("compareTree");%>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -168,13 +174,89 @@ function not(){
         <p class="p-tail"><i
          class="i-tail"></i> 该页面主要是货场管理员上传装车情况</p>
     </div>
-    <div class="find-top1">
-  <form  id="myForm" action="pictureServlet?action=treecompare" method="post">
+    <div class="top">
+  <form>
+  <p class="table_p"><span>采伐工单信息</span></p>
+      
+                       <table class="table1">
+                         <tr>
+                         <td>工单号<span></span></td>
+                          <td>
+                          <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">
+                          </td>
+                          <td>采伐证号<span></span></td>
+                          <td>
+                          <input type="text" name="cutnum" id="ccutnum" value="<%=o.getCutNum() %>">
+                           </td>
+                           <td>采伐地点<span></span></td>
+                          <td>
+                          <input type="text" name="cutsite" id="ccutsite" value="<%=o.getCutSite() %>">
+                           </td>
+                           <td>货场地点<span></span></td>
+                              <td>
+                              <input type="text" name="yard" id="yyard" value="<%=o.getCheckSite() %>">
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>车牌号<span></span></td>
+                              <td>
+                              <input type="text" name="carnumber" id="ccarnumber" value="<%=o.getCarNumber() %>">
+                              </td>
+                              <td>采伐时间<span></span></td>
+                              <td>
+                              <input  name="cutdate" id="cutdate" value="<%=o.getCutdate() %>">
+                              </td>
+                              <td>进场时间<span></span></td>
+                              <td>
+                              <input  name="yarddate" id="yyarddate" value="<%=c.getYarddate() %>">
+                              </td>
+                              <td>伐区监管员<span></span></td>
+                              <td>
+                              <input type="text" name="forester" id="forester" value="<%=o.getForester() %>">
+                              </td>
+                           </tr>
+                        </table>
+                        <p class="table_p"><span>树材信息</span></p>
+                        <table class="table" id="table5" style="width:1500px;height:auto">
+                           <tbody id="ttt5">
+                                <% int i=1;%>
+                                <c:forEach items="${tree}" var="b">      
+                            <tr id="<%=i%>" display:block;><td style='font-size:20px;'>
+                           <input type="checkbox" style='width:20px;height:20px;' value="<%=i%>">树材种<span></span>
+                           <select style="width: 180px" name="treetype" id="sss<%=i%>">
+                           <option value='杉原木' <c:if test="${b.getTreetype()eq'杉原木'}">selected='selected'</c:if> >--杉原木--</option>
+                           <option value='杉小径' <c:if test="${b.getTreetype()eq'杉小径'}">selected='selected'</c:if> >--杉小径--</option>
+                           <option value='松原木' <c:if test="${b.getTreetype()eq'松原木'}">selected='selected'</c:if> >--松原木--</option>
+                           <option value='松小径' <c:if test="${b.getTreetype()eq'松小径'}">selected='selected'</c:if> >--松小径--</option>
+                           <option value='杂原木' <c:if test="${b.getTreetype()eq'杂原木'}">selected='selected'</c:if> >--杂原木--</option>
+                           <option value='杂小径' <c:if test="${b.getTreetype()eq'杂小径'}">selected='selected'</c:if> >--杂小径--</option>
+                            </select>                     
+                                                                                            检尺长(m)<input type='text' style='width: 180px' name='tdouble' id='td<%=i%>' value="${b.getTlong()}">
+                                                                                            检尺径<span></span><input type='text' style='width: 180px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}">
+                                                                                            根数<span></span><input type='text' style='width: 180px' name='num' id='n<%=i%>' value="${b.getNum()}">
+                                                                                            材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv<%=i%>' value="${b.getTvolume()}"></td></tr>
+                         <%i++; %>
+                         </c:forEach>
+                                </tbody>
+                            </table>   
+                            <table class="table1" >
+                                <tbody>
+                                <tr>
+                                    <td style="font-size:20px;width:auto">合计树材<span></span>
+                                        <input type="text" style="width:120px; font-size:20px" name="toltree" id="toltree" value="<%=c.getTolTree()%>" onclick="makecount()">根(块、件)<span></span></td>
+                                    <td style="font-size:20px">合计树材<span></span>
+                                        <input type="text" style="width:120px; font-size:20px" name="tolstere" id="tolstere" value="<%=c.getTolStere()%>">立方米(吨、根)<span></span></td>
+                                         <td style="font-size:20px">货场分区<span></span>
+                                       <input name="section" id="ssection" value="<%=c.getSection()%>"></td>
+                                     <td style="font-size:20px">检尺员<span></span>
+                                      <input type="text" name="surveyor" id="ssurveyor" value="<%=c.getSurveyor() %>"></td>
+                                </tr>
+                                </tbody>
+                            </table>
     <table class="top-table">
-        <tr><td class="top-table-label">输入采伐工单号：</td><td colspan="5"><input type="text" name="workid" id="workid" value="<%=c.getWorkid() %>"></td></tr>
-        <!--  <tr><td class="top-table-label">上传照片</td><td colspan="5"><input class="filepath" type="file" id="pic" name="pic" value="<%=c.getPic() %>>"></td><td><button type="button" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>-->
-        <tr><td class="top-table-label">上传照片</td><td colspan="5"><img class="filepath" width="300" height="120" id="pic" name="pic" src="<%=c.getPic() %>"></td><td><button type="button" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>
-        <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da" value="<%=c.getFile() %>>"></td></tr>
+        <%--  <tr><td class="top-table-label">上传照片</td><td colspan="5"><input class="filepath" type="file" id="pic" name="pic" value="<%=c.getPic() %>>"></td><td><button type="button" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>--%>
+        <tr><td class="top-table-label">上传照片</td><td colspan="5"><img class="filepath" width="300" height="120" id="pic" name="pic" src="<%=p.getPic() %>"></td><td><button type="button" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>
+        <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da" value="<%=p.getFile() %>>"></td></tr>
          <tr><td><input type="submit" name="submit" value="Submit"></td></tr>
     </table>
  </form>

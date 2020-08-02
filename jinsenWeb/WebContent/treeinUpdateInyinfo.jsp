@@ -290,7 +290,8 @@ function not(){
 List<tree> t=null;
 t=(List<tree>)request.getAttribute("tree");
 %>
-<% workpageStatus w=(workpageStatus)request.getAttribute("workpageStatus");%>>
+<% workpageStatus w=(workpageStatus)request.getAttribute("workpageStatus");%>
+<% workpage o=(workpage)request.getAttribute("workpage");%>
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
 </div>
@@ -326,26 +327,20 @@ t=(List<tree>)request.getAttribute("tree");
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li class="active"><a href="index.html"><i class="icon icon-home"></i> <span>信息通知</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="treein.jsp">录入进场木材数据</a></li>
-        <li><a href="treeout.jsp">录入出场木材数据</a></li>
-      </ul>
-     </li>
-    <li> <a href="widgets.html"><i class="icon icon-inbox"></i> <span>异常处理</span></a> </li>
+    <li><a href="workpageShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核进场工单</span></a> </li>
+    <li class="active"><a href="InyardShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核木材数据</span></a> </li>
+    <li><a href="compareTreeinfo.jsp"><i class="icon icon-home"></i><span>审核装车照片</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
 <!--main-container-part-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="Surveyor.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 检尺员首页</a></div>
+    <div id="breadcrumb"> <a href="infoCenter.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
- <main class="all">
-    <article class="artlce">
+ <main>
+    <article>
         <div class="book_con01">
-            <h1 class="book_h01">录入进场木材信息</h1>
             <div id="divprint">
                 <div class="top">
                 <table class="table2">
@@ -354,41 +349,46 @@ t=(List<tree>)request.getAttribute("tree");
                  <td style="font-size:20px">未通过审核原因:</td><td><input style="width:400px;font-size:20px" type="text" name="rejectreason" id="rejectreason" value="<%=w.getRejectreason() %>"></td>
                 </tr>
                   </table>
-                    <table class="table1">
+                   <p class="table_p"><span>采伐工单信息</span></p>
+                       <table class="table1">
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">
+                          <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
-                          <input type="text" name="cutnum" id="ccutnum" value="<%=c.getCutNum() %>">
+                          <input type="text" name="cutnum" id="ccutnum" value="<%=o.getCutNum() %>">
                            </td>
                            <td>采伐地点<span></span></td>
                           <td>
-                          <input type="text" name="cutsite" id="ccutsite" value="<%=c.getCutSite() %>">
+                          <input type="text" name="cutsite" id="ccutsite" value="<%=o.getCutSite() %>">
                            </td>
-                           <td>进场时间<span></span></td>
+                           <td>货场地点<span></span></td>
                               <td>
-                              <input type="date" name="yarddate" id="yyarddate" value="<%=c.getYarddate() %>">
+                              <input type="text" name="yard" id="yyard" value="<%=o.getCheckSite() %>">
                               </td>
                            </tr>
                            <tr>
-                              <td>货场地点<span></span></td>
-                              <td>
-                              <input type="text" name="yard" id="yyard" value="<%=c.getYard() %>">
-                              </td>
                               <td>车牌号<span></span></td>
                               <td>
-                              <input type="text" name="carnumber" id="ccarnumber" value="<%=c.getCarNumber() %>">
+                              <input type="text" name="carnumber" id="ccarnumber" value="<%=o.getCarNumber() %>">
                               </td>
-                              <td>货场分区<span></span></td>
-                              <td><input name="section" id="ssection" value="<%=c.getSection()%>"></td>
-                              <td>检尺员<span></span></td>
-                                <td><input type="text" name="surveyor" id="ssurveyor" value="<%=c.getSurveyor() %>"></td>
+                              <td>采伐时间<span></span></td>
+                              <td>
+                              <input  name="cutdate" id="cutdate" value="<%=o.getCutdate() %>">
+                              </td>
+                              <td>进场时间<span></span></td>
+                              <td>
+                              <input  name="yarddate" id="yyarddate" value="<%=c.getYarddate() %>">
+                              </td>
+                              <td>伐区监管员<span></span></td>
+                              <td>
+                              <input type="text" name="forester" id="forester" value="<%=o.getForester() %>">
+                              </td>
                            </tr>
                         </table>
-                        <p class="table_p"><span>树材信息录入</span></p>
+                        <p class="table_p"><span>树材信息</span></p>
                         <table class="table" id="table5" style="width:1500px;height:auto">
                            <tbody id="ttt5">
                                 <% int i=1;%>
@@ -410,16 +410,16 @@ t=(List<tree>)request.getAttribute("tree");
                          <%i++; %>
                          </c:forEach>
                                 </tbody>
-                            </table>
-                            <table>
+                            </table> 
+                             <table>
                             <tr>
                                 <div style="float:left;"><button class="btn btn-warning" type="button"  onclick="aaad()" value="添加">添加</button>
                                 <button class="btn btn-default" type="button"  onclick="dddelete()" value="删除">删除</button>
                                 <button class="btn btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button>
                            </div>
                            </tr>
-                            </table>     
-                            <table class="table" >
+                            </table>  
+                            <table class="table1" >
                                 <tbody>
                                 <p class="table_p" style="margin-top: 65px;"><span>合计信息</span></p>
                                 <tr>
@@ -427,6 +427,10 @@ t=(List<tree>)request.getAttribute("tree");
                                         <input type="text" style="width:120px; font-size:20px" name="toltree" id="toltree" value="<%=c.getTolTree()%>" onclick="makecount()">根(块、件)<span></span></td>
                                     <td style="font-size:20px">合计树材<span></span>
                                         <input type="text" style="width:120px; font-size:20px" name="tolstere" id="tolstere" value="<%=c.getTolStere()%>">立方米(吨、根)<span></span></td>
+                                         <td style="font-size:20px">货场分区<span></span>
+                                       <input name="section" id="ssection" value="<%=c.getSection()%>"></td>
+                                     <td style="font-size:20px">检尺员<span></span>
+                                      <input type="text" name="surveyor" id="ssurveyor" value="<%=c.getSurveyor() %>"></td>
                                 </tr>
                                 </tbody>
                             </table>

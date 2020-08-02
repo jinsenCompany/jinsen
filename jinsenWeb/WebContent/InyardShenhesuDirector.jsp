@@ -35,6 +35,19 @@
     background-image: url(../img/listicon.jpg);
     top: 1px;
 }
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 13px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
 </style>    
 <script type="text/javascript">
 function mypass(workid)
@@ -177,12 +190,11 @@ function alldo()
     <li><a href="compareTreeDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treeinDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
-     <li class="active"><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
-    <li><a href="passworkpageDirector.jsp"><i class="icon icon-th-list"></i> <span>查询采伐工单信息</span></a></li>
+     <li class="active"><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i><span>查看进场木材反馈</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
   </ul>
@@ -204,9 +216,9 @@ function alldo()
     <div class="find-top1" style="vertical-align:middle">
       <table style="border:0px;align:center;valign:middle" >
 		   <tr><td colspan="6" style="text-align: center;vertical-align:middle">
-		   <button class="add-but" data-toggle="modal" id="myModal_notshenhe" onclick="notshenhe()">未审核</button>
-		   <button class="add-but" data-toggle="modal" id="myModal_pass" onclick="pass()">已通过</button> 
-		   <button class="add-but" data-toggle="modal" id="myModal_notpass" onclick="notpass()">未通过</button>
+		   <button class="btn" data-toggle="modal" id="myModal_notshenhe" onclick="notshenhe()">未审核</button>
+		   <button class="btn" data-toggle="modal" id="myModal_pass" onclick="pass()">已通过</button> 
+		   <button class="btn" data-toggle="modal" id="myModal_notpass" onclick="notpass()">未通过</button>
 		   </td></tr>
       </table>
     </div>

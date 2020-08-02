@@ -84,6 +84,7 @@ public class workpageSevrlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         session.setAttribute("staff_id", "123");  //登录得员工id
         if("addWorkpage".equals(action)) {
+        	System.out.print(request.getParameter("workid"));
         	double workid=Double.parseDouble(request.getParameter("workid"));
         	String cutNum = request.getParameter("cutnum");
         	String cutdate=request.getParameter("cutdate");
@@ -94,15 +95,22 @@ public class workpageSevrlet extends HttpServlet {
         	String forester=request.getParameter("forester");
         	//String loadphoto=request.getParameter("loadphoto");
         	//double batchNum=Double.parseDouble(request.getParameter("batchNum"));
-        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date d = null;
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        	Date cuttime=null;
+        	try {
+				cuttime = new java.sql.Timestamp(format.parse(cutdate).getTime());
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			/*Date d = null;
 			try {
 				d = format.parse(cutdate);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
-			java.sql.Date cuttime = new java.sql.Date(d.getTime());
+			}
+			java.sql.Date cuttime = new java.sql.Date(d.getTime());*/
 			sql="SELECT SUM(inyard.tolstere) AS tolstere1 FROM inyard WHERE cutNum='"+cutNum+"'";//从inyard数据库中选取材积
 			compareVolume compareVolume=trd.findVolume(sql);//inyard输入的材积库存材积
 			double volumet=(float)compareVolume.getTolstere();//相同采伐证累加的材积
@@ -436,8 +444,14 @@ public class workpageSevrlet extends HttpServlet {
         	}
         	//通过信息中心第一次审核和第二次审核的工单
         	else if(mytype.equals("tongguo")) {
-        		sql="select w.workid,w.cutNum,w.cutdate,w.cutSite,w.forester from workpage as w JOIN workpage_status on w.workid=workpage_status.workid WHERE workpage_status.workid_status=1 OR workpage_status.workid_status>4";
-            	List<codejson> work=wpd.findcodeJson(sql);
+        		sql="select w.workid,w.cutNum,w.cutdate,w.cutSite,w.checkSite,w.carNumber,w.forester from workpage as w JOIN workpage_status on w.workid=workpage_status.workid WHERE workpage_status.workid_status=1 OR workpage_status.workid_status>4 and workpage_status.workid_status<8";
+            	List<workpage> work=wpd.findsinglework(sql);
+            	mapper.writeValue(response.getWriter(), work);
+        	}
+        	//通过信息中心第二次审核的工单
+        	else if(mytype.equals("tongtree")) {
+        		sql="select w.workid,w.cutNum,w.cutdate,w.cutSite,w.checkSite,w.carNumber,w.forester from workpage as w JOIN workpage_status on w.workid=workpage_status.workid WHERE workpage_status.workid_status=5";
+            	List<workpage> work=wpd.findsinglework(sql);
             	mapper.writeValue(response.getWriter(), work);
         	}
         	//删除
@@ -689,6 +703,15 @@ public class workpageSevrlet extends HttpServlet {
     		double workid=Double.parseDouble(str);
     		sql="select * from comparetree where workid="+workid+"";
     		compareTree compareTree=wpd.findcompares(sql);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+        	sql="select workid,cutNum,yarddate,cutSite,carNumber,yard,surveyor,toltree,tolstere,section from inyard where workid="+workid+"";
+			inyard inyard=trd.findInSingle(sql);
+			sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
+			List<tree> tree=trd.findTree(sql);
+    		request.setAttribute("workpage", workpage);
+			request.setAttribute("inyard", inyard);
+			request.setAttribute("tree", tree);
     		request.setAttribute("compareTree", compareTree);
 		    request.getRequestDispatcher("compareTreeUpdate.jsp").forward(request, response);
     	}
@@ -837,6 +860,58 @@ public class workpageSevrlet extends HttpServlet {
 			request.setAttribute("tree", tree);
 
         	request.getRequestDispatcher("workpageTreeBuyTable.jsp").forward(request, response);	
+        }
+        //先检尺元首页显示工单信息
+        else if(action.equals("finishworkP")) {
+        	String str=request.getParameter("workid");
+    		str=str.replace("'", "");
+    		double workid=Double.parseDouble(str);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+       		request.setAttribute("workpage", workpage);
+			request.getRequestDispatcher("treein.jsp").forward(request, response);
+        }
+      //先检尺元首页显示工单信息
+        else if(action.equals("finishworkPD")) {
+        	String str=request.getParameter("workid");
+    		str=str.replace("'", "");
+    		double workid=Double.parseDouble(str);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+       		request.setAttribute("workpage", workpage);
+			request.getRequestDispatcher("treeinDirector.jsp").forward(request, response);
+        }
+        //在compareTree.jsp页面显示工单和树材信息
+        else if(action.equals("finishWaTree")) {
+        	String str=request.getParameter("workid");
+    		str=str.replace("'", "");
+    		double workid=Double.parseDouble(str);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+        	sql="select workid,cutNum,yarddate,cutSite,carNumber,yard,surveyor,toltree,tolstere,section from inyard where workid="+workid+"";
+			inyard inyard=trd.findInSingle(sql);
+			sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
+			List<tree> tree=trd.findTree(sql);
+    		request.setAttribute("workpage", workpage);
+			request.setAttribute("inyard", inyard);
+			request.setAttribute("tree", tree);
+			request.getRequestDispatcher("compareTree.jsp").forward(request, response);
+        }
+      //在compareTreeDirector.jsp页面显示工单和树材信息
+        else if(action.equals("finishWaTreeD")) {
+        	String str=request.getParameter("workid");
+    		str=str.replace("'", "");
+    		double workid=Double.parseDouble(str);
+    		sql="select * from workpage where workid="+workid+"";
+       		workpage workpage=wpd.findCodeSingle(sql);
+        	sql="select workid,cutNum,yarddate,cutSite,carNumber,yard,surveyor,toltree,tolstere,section from inyard where workid="+workid+"";
+			inyard inyard=trd.findInSingle(sql);
+			sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
+			List<tree> tree=trd.findTree(sql);
+    		request.setAttribute("workpage", workpage);
+			request.setAttribute("inyard", inyard);
+			request.setAttribute("tree", tree);
+			request.getRequestDispatcher("compareTreeDirector.jsp").forward(request, response);
         }
         
 	}

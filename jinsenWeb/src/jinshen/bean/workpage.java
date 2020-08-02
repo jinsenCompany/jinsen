@@ -1,6 +1,8 @@
 package jinshen.bean;
 
-import java.sql.Date;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class workpage {
 	private double workid;
@@ -29,7 +31,7 @@ public class workpage {
     public void setCutNum(String cutNum) {
     	this.cutNum = cutNum;
     }
-    
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCutdate() {
     	return cutdate;
     }

@@ -270,6 +270,7 @@ function not(){
 List<tree> t=null;
 t=(List<tree>)request.getAttribute("tree");
 %>
+<% workpage w=(workpage)request.getAttribute("workpage");%>
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
 </div>
@@ -316,47 +317,52 @@ t=(List<tree>)request.getAttribute("tree");
   <div id="content-header">
     <div id="breadcrumb"> <a href="Surveyor.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 检尺员首页</a></div>
   </div>
-    <article class="artlce">
-        <div class="book_con01">
-            <h1 class="book_h01">录入进场木材信息</h1>
+    <article>
+        <div>
+            <h1 class="book_h01">进场木材信息</h1>
             <form  onSubmit="return inputNull(this)" action="treeServlet?action=updateTreein" method="POST" >
             <div id="divprint">
                 <div class="top">
+                       <p class="table_p"><span>采伐工单信息</span></p>
                        <table class="table1">
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">
+                          <input type="text" name="workid" id="wworkid" value="<%=w.getWorkid() %>">
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
-                          <input type="text" name="cutnum" id="ccutnum" value="<%=c.getCutNum() %>">
+                          <input type="text" name="cutnum" id="ccutnum" value="<%=w.getCutNum() %>">
                            </td>
                            <td>采伐地点<span></span></td>
                           <td>
-                          <input type="text" name="cutsite" id="ccutsite" value="<%=c.getCutSite() %>">
+                          <input type="text" name="cutsite" id="ccutsite" value="<%=w.getCutSite() %>">
                            </td>
-                           <td>进场时间<span></span></td>
+                           <td>货场地点<span></span></td>
                               <td>
-                              <input type="date" name="yarddate" id="yyarddate" value="<%=c.getYarddate() %>">
+                              <input type="text" name="yard" id="yyard" value="<%=w.getCheckSite() %>">
                               </td>
                            </tr>
                            <tr>
-                              <td>货场地点<span></span></td>
-                              <td>
-                              <input type="text" name="yard" id="yyard" value="<%=c.getYard() %>">
-                              </td>
                               <td>车牌号<span></span></td>
                               <td>
-                              <input type="text" name="carnumber" id="ccarnumber" value="<%=c.getCarNumber() %>">
+                              <input type="text" name="carnumber" id="ccarnumber" value="<%=w.getCarNumber() %>">
                               </td>
-                              <td>货场分区<span></span></td>
-                              <td><input name="section" id="ssection" value="<%=c.getSection()%>"></td>
-                              <td>检尺员<span></span></td>
-                                <td><input type="text" name="surveyor" id="ssurveyor" value="<%=c.getSurveyor() %>"></td>
+                              <td>采伐时间<span></span></td>
+                              <td>
+                              <input  name="cutdate" id="cutdate" value="<%=w.getCutdate() %>">
+                              </td>
+                              <td>进场时间<span></span></td>
+                              <td>
+                              <input  name="yarddate" id="yyarddate" value="<%=c.getYarddate() %>">
+                              </td>
+                              <td>伐区监管员<span></span></td>
+                              <td>
+                              <input type="text" name="forester" id="forester" value="<%=w.getForester() %>">
+                              </td>
                            </tr>
                         </table>
-                        <p class="table_p"><span>树材信息录入</span></p>
+                        <p class="table_p"><span>树材信息</span></p>
                         <table class="table" id="table5" style="width:1500px;height:auto">
                            <tbody id="ttt5">
                                 <% int i=1;%>
@@ -379,7 +385,7 @@ t=(List<tree>)request.getAttribute("tree");
                          </c:forEach>
                                 </tbody>
                             </table>
-                            <table>
+                            <!--  <table>
                             <tr>
                                 <div style="float:left;"><button class="btn btn-warning" type="button"  onclick="aaad()" value="添加">添加</button>
                                 <button class="btn btn-default" type="button"  onclick="dddelete()" value="删除">删除</button>
@@ -387,8 +393,8 @@ t=(List<tree>)request.getAttribute("tree");
                                <button class="btn btn-default" type="button"  onclick="treeAdd()" value="提交">提交</button>
                            </div>
                            </tr>
-                            </table>     
-                            <table class="table" >
+                            </table> -->    
+                            <table class="table1" >
                                 <tbody>
                                 <p class="table_p" style="margin-top: 65px;"><span>合计信息</span></p>
                                 <tr>
@@ -396,6 +402,10 @@ t=(List<tree>)request.getAttribute("tree");
                                         <input type="text" style="width:120px; font-size:20px" name="toltree" id="toltree" value="<%=c.getTolTree()%>" onclick="makecount()">根(块、件)<span></span></td>
                                     <td style="font-size:20px">合计树材<span></span>
                                         <input type="text" style="width:120px; font-size:20px" name="tolstere" id="tolstere" value="<%=c.getTolStere()%>">立方米(吨、根)<span></span></td>
+                                         <td style="font-size:20px">货场分区<span></span>
+                                       <input name="section" id="ssection" value="<%=c.getSection()%>"></td>
+                                     <td style="font-size:20px">检尺员<span></span>
+                                      <input type="text" name="surveyor" id="ssurveyor" value="<%=c.getSurveyor() %>"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -406,7 +416,8 @@ t=(List<tree>)request.getAttribute("tree");
                   <table>
                   <tr>
                   <td style="font-size:20px">请输入未通过审核原因:</td><td><input style="width:400px;font-size:20px" type="text" name="rejectreason" id="rejectreason"></td>
-                  <td><div class=" but_p"><button class="but_save" type="button"  onclick="not()" value="审核未通过">审核未通过 </button></div></td>
+                  <td><div class=" but_p"><button class="but_save" type="button"  onclick="not()" value="审核未通过">审核未通过 </button>
+                  <button class="but_save" id="btnPrint" type="button" value="打印">打印</button></div></td>
                  </tr>
                  </table>
                </form>

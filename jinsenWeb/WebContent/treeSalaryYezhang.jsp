@@ -239,7 +239,7 @@ function treeAdd()
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li class="active"> <a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>录入木材销售金额</span></a></li>
+    <li class="active"> <a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->

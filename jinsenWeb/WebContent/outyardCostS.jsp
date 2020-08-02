@@ -105,8 +105,8 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li ><a href="index.html"><i class="icon icon-home"></i> <span>信息通知</span></a> </li>
-
+    <li> <a href="outyardCostS.jsp"><i class="icon icon-home"></i><span>结算检尺费</span></a></li>
+    <li> <a href="#"><i class="icon icon-home"></i><span>结算其他费用</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->

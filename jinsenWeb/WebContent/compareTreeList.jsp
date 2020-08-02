@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>各部门查看已完成的工单</title>
+<title>录入木材装车照片</title>
 <!-- Custom CSS -->
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -99,22 +99,15 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>审核</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="yardMoneryDirector.jsp">费用结算</a></li>
-        <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
-      </ul>
-     </li>
-     <li><a href="workpageTreeBuyDirector.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
+     <li><a href="workpageTreeBuy.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
+    <li class="active"><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
-        <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
+        <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
-    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
-   <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
+     <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -123,7 +116,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <main>
     <article>
@@ -153,7 +146,7 @@
             method: "get",
             striped: true,
             singleSelect: false,
-            url: "workpageSevrlet?action=writepage&type=tongguo",
+            url: "workpageSevrlet?action=writepage&type=tongtree",
             data:{},
             dataType: "json",
             pagination: true, //分页
@@ -219,7 +212,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=finishworkPD&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="workpageSevrlet?action=finishWaTree&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -272,5 +265,6 @@
      document.gomenu.selector.selectedIndex = 2;
   }
 </script>
+
 </body>
 </html>

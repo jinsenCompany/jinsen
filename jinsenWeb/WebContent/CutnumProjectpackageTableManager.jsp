@@ -217,8 +217,8 @@ function inputNull(form){
     
     </div>
     <div class=" but_p" style="float:right;">
-    <!--  <button class="but_save" type="submit" id="mybutton" value="保存工程包">保存工程包</button></div>-->
-    <div class=" but_p" style="float:left;"><input style="float:right;" type="button" id="btnPrint" value="打印"/></div>
+    <!--  <button class="but_save" type="submit" id="mybutton" value="保存工程包">保存工程包</button></div>
+    <div class=" but_p" style="float:left;"><input style="float:right;" type="button" id="btnPrint" value="打印"/></div>-->
     <div style="clear: both;padding-bottom: 40px"></div>
     </div>
     </div>

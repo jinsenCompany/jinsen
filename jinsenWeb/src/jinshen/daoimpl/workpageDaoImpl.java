@@ -1,12 +1,11 @@
 package jinshen.daoimpl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
-
 import java.util.ArrayList;
 
 import jinshen.bean.codejson;
@@ -16,7 +15,6 @@ import jinshen.bean.tree;
 import jinshen.bean.workpage;
 import jinshen.bean.workpageStatus;
 import jinshen.bean.yardManage;
-import jinshen.bean.treebuy;
 import jinshen.dao.workpageDao;
 import jinshen.db.DBcon;
 
@@ -25,6 +23,7 @@ public class workpageDaoImpl implements workpageDao {
 	private DBcon dbc=new DBcon();
     Connection connection = null;
     PreparedStatement pStatement = null;
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
 	@Override
 	public int addWorkPage(workpage cp) {
@@ -112,6 +111,10 @@ public class workpageDaoImpl implements workpageDao {
 			if(rs.next()) {
 				addr.setWorkid(rs.getDouble(1));
 				addr.setCutNum(rs.getString(2));
+				///java.util.Date cuttime1=new java.util.Date(rs.getTimestamp(3).getTime());
+		       //// String strDate= format.format(cuttime1); //格式化成yyyy-MM-dd格式的时间字符串
+		        //Date newDate =format.parse(strDate); 
+		        //java.util.Date cuttime = new java.util.Date(newDate.getTime());//最后转换成
 				addr.setCutdate(rs.getDate(3));
 				addr.setCutSite(rs.getString(4));
 				addr.setCheckSite(rs.getString(5));
@@ -550,6 +553,30 @@ public class workpageDaoImpl implements workpageDao {
 			dbc.close();
 		}
 		return addr;
+	}
+
+	@Override
+	public List<workpage> findsinglework(String sql) {
+		List<workpage> addrList=new ArrayList<workpage>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				workpage addr=new workpage();
+				addr.setWorkid(rs.getDouble(1));
+				addr.setCutNum(rs.getString(2));
+				addr.setCutdate(rs.getDate(3));
+				addr.setCutSite(rs.getString(4));
+				addr.setCheckSite(rs.getString(5));
+				addr.setCarNumber(rs.getString(6));
+				addr.setForester(rs.getString(7));
+				addrList.add(addr);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return addrList;
 	}
 	
 }

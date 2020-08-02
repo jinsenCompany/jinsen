@@ -269,15 +269,14 @@ function inputNull(form){
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
      <li><a href="workpageTreeBuy.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTree.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
+    <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treein.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
-    <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>查询采伐工单信息</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->

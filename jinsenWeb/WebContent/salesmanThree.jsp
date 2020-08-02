@@ -71,7 +71,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="planteam.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 规划队首页</a></div>
+    <div id="breadcrumb"> <a href="salesmanThree.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 

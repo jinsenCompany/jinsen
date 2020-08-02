@@ -15,6 +15,7 @@ public interface workpageDao {
 	public int addCodeStatus(String sql);//添加工单状态（目前考虑要不要用）
 	public List<codejson> findcodeJson(String sql);//发现工单个别信息
 	public boolean delete_work(double workid);
+	public List<workpage> findsinglework(String sql);//发现工单个别信息
 	
 	public int addWorkpageStatus(workpageStatus cp);//插入工单状况（最新）
 	

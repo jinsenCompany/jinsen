@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="jinshen.bean.*" %>
-<%@ page import="java.util.List" %>
+<%@page import="java.util.*"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -258,6 +259,12 @@ function inputNull(form){
 </script>
 </head>
 <body>
+<% Date d = new Date();
+
+SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+String now = df.format(d); %>
+<% workpage c=(workpage)request.getAttribute("workpage");%>
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
 </div>
@@ -303,11 +310,10 @@ function inputNull(form){
     <li><a href="compareTreeDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treeinDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
-    <li><a href="passworkpageDirector.jsp"><i class="icon icon-th-list"></i> <span>查询采伐工单信息</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
   </ul>
@@ -325,39 +331,43 @@ function inputNull(form){
             <form>
             <div id="divprint">
                 <div class="top">
-                <p class="table_p"><span>进场信息输入</span></p>
+                <p class="table_p"><span>采伐工单信息</span></p>
                        <table class="table1">
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" placeholder="工单号">
+                          <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
-                          <input type="text" name="cutnum" id="ccutnum" placeholder="采伐证号">
+                          <input type="text" name="cutnum" id="ccutnum" value="<%=c.getCutNum() %>">
                            </td>
                            <td>采伐地点<span></span></td>
                           <td>
-                          <input type="text" name="cutsite" id="ccutsite" placeholder="采伐地点">
+                          <input type="text" name="cutsite" id="ccutsite" value="<%=c.getCutSite() %>">
                            </td>
-                           <td>进场时间<span></span></td>
+                           <td>货场地点<span></span></td>
                               <td>
-                              <input type="date" name="yarddate" id="yyarddate" placeholder="进场时间">
+                              <input type="text" name="yard" id="yyard" value="<%=c.getCheckSite() %>">
                               </td>
                            </tr>
                            <tr>
-                              <td>货场地点<span></span></td>
-                              <td>
-                              <input type="text" name="yard" id="yyard" placeholder="货场地点">
-                              </td>
                               <td>车牌号<span></span></td>
                               <td>
-                              <input type="text" name="carnumber" id="ccarnumber" placeholder="车牌号">
+                              <input type="text" name="carnumber" id="ccarnumber" value="<%=c.getCarNumber() %>">
                               </td>
-                              <td>货场分区<span></span></td>
-                              <td><select name="section" id="ssection"><option>A区</option><option>B区</option><option>C区</option><option>D区</option><option>无固定位置</option></select></td>
-                              <td>检尺员<span></span></td>
-                                   <td><input type="text" name="surveyor" id="ssurveyor" placeholder="检尺员"></td>
+                              <td>采伐时间<span></span></td>
+                              <td>
+                              <input  name="cutdate" id="cutdate" value="<%=c.getCutdate() %>">
+                              </td>
+                              <td>进场时间<span></span></td>
+                              <td>
+                              <input  name="yarddate" id="yyarddate" value="<%=now%>">
+                              </td>
+                              <td>伐区监管员<span></span></td>
+                              <td>
+                              <input type="text" name="forester" id="forester" value="<%=c.getForester() %>">
+                              </td>
                            </tr>
                         </table>
                         <p class="table_p"><span>树材信息录入</span></p>
@@ -375,7 +385,7 @@ function inputNull(form){
           </div>
                </tr>
                         </table>     
-                            <table class="table" >
+                            <table class="table1" >
                                 <tbody>
                                 <p class="table_p" style="margin-top: 65px;"><span>合计信息</span></p>
                                 <tr>
@@ -383,6 +393,9 @@ function inputNull(form){
                                         <input type="text" style="width:120px; font-size:20px" name="toltree" id="toltree" onclick="makecount()">根(块、件)<span></span></td>
                                     <td style="font-size:20px">合计树材<span></span>
                                         <input type="text" style="width:120px; font-size:20px" name="tolstere" id="tolstere">立方米(吨、根)<span></span></td>
+                                     <td>货场分区<span></span><select name="section" id="ssection"><option>A区</option><option>B区</option><option>C区</option><option>D区</option><option>无固定位置</option></select><span></span></td>
+                                     <td style="font-size:20px">检尺员<span></span>
+                                      <input type="text" style="width:120px; font-size:20px" name="surveyor" id="ssurveyor"><span></span></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -391,7 +404,7 @@ function inputNull(form){
                   <div class="" style="text-align:center">
                   <span><button class="btn" type="button"  onclick="treeAdd()" value="提交">提交</button></span>
                  
-                 <span><input class="btn" type="button" id="btnPrint" value="打印"/>  </span>  </div>
+                 <span><input style=""class="btn" type="button" id="btnPrint" value="打印"/>  </span>  </div>
                 <div style="clear: both;padding-bottom: 40px"></div>
             </form>
         </div>

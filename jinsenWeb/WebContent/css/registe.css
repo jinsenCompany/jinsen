@@ -55,3 +55,16 @@ td{border: 1 !important;}
 .top select,.top input[type=text],.top input[type=password]{color: #999;text-align: center;height:32px;border-radius: 4px;font-size: 16px;border: 1px #ccc solid}
 .top tr td{margin-bottom: 20px !important;}
 .but_p{text-align: center;}
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 13px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}

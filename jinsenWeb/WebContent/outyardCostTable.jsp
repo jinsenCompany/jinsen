@@ -187,12 +187,10 @@ t=(List<surveyorFee>)request.getAttribute("surveyorFee");
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
-  <ul>
-     <li ><a href="index.html"><i class="icon icon-home"></i> <span>信息通知</span></a> </li>
-    <li> <a href="manageCutnum.jsp"><i class="icon icon-th-list"></i> <span>录入砍伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th-list"></i> <span>查看采伐证材料</span></a></li>
-    <li> <a href="manageCutnumshenhe.jsp"><i class="icon icon-th-list"></i> <span>审核采伐证材料</span></a></li>
-  </ul>
+  <ul class="quick-actions">
+        <li class="bg_ly span3"> <a href="outyardCostS.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span> 结算检尺费</a> </li>
+        <li class="bg_lo span3"> <a href="#"> <i class="icon-th"></i>结算其他费用</a> </li>
+      </ul>
 </div>
 
 

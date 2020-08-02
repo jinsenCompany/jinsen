@@ -123,12 +123,12 @@ function inputNull(form){
                              <input style="width:50%;border:0px;background-color: transparent" type="text" name="cutnum" id="cccutnum" value="<%=c.getCutNum() %>" placeholder="采伐证号">
                            </td>
                            <td colspan="2">
-                              <input  type="date" name="cutdate" value="<%=c.getCutdate() %>"  id="ccutdate" placeholder="采伐时间">
+                              <input  name="cutdate" value="<%=c.getCutdate() %>"  id="ccutdate" placeholder="采伐时间" pattern = "yyyy-MM-dd HH:mm:ss">
                            </td>
                            </tr>
                            <tr>
                             <th colspan="2">采伐地点</th>
-                            <th colspan="2">检验地点</th>
+                            <th colspan="2">货场地点</th>
                             <th colspan="2">车牌号</th>                          
                            </tr>
                            <tr>

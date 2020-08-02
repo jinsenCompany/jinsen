@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>各部门查看已完成的工单</title>
+<title>录入木材装车照片</title>
 <!-- Custom CSS -->
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -123,7 +123,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <main>
     <article>
@@ -153,7 +153,7 @@
             method: "get",
             striped: true,
             singleSelect: false,
-            url: "workpageSevrlet?action=writepage&type=tongguo",
+            url: "workpageSevrlet?action=writepage&type=tongtree",
             data:{},
             dataType: "json",
             pagination: true, //分页
@@ -219,7 +219,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=finishworkPD&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="workpageSevrlet?action=finishWaTreeD&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -272,5 +272,6 @@
      document.gomenu.selector.selectedIndex = 2;
   }
 </script>
+
 </body>
 </html>

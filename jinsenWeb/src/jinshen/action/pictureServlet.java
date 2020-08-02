@@ -41,7 +41,8 @@ public class pictureServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		doPost(request, response);
 	}
 
 	/**
@@ -75,14 +76,14 @@ public class pictureServlet extends HttpServlet {
 				   int wpp=wpd.updateWorkpagestatus1(workid,ws);
 					System.out.println(wpp);
 					if(wpp>0) {
-						out.write("保存状态成功");
+						out.print("保存状态成功");
 					}
 			    else {
 			    	out.print("保存状态失败");		
 			    }
-				out.print("保存图片成功");
+				//out.print("保存图片成功");
 			}
-			response.sendRedirect("compareTree.jsp");
+			//response.sendRedirect("compareTree.jsp");
 		}
 		else if("writepage".equals(action))
         {

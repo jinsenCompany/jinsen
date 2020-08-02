@@ -165,7 +165,7 @@
 					<div class="form-group">
 						<input type="text" class="form-control" id="v_code0"
 							placeholder="请输入验证码" style="width: 500px; height: 20px;">
-						<img src="/jinsenWeb/CheckCodeServlet" id="img" /> <a
+						<img src="/jinsen/CheckCodeServlet" id="img" /> <a
 							href="" id="a">看不清？点击换一张</a>
 					</div>
 

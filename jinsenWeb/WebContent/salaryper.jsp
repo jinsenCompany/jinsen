@@ -83,7 +83,7 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li> <a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>录入木材销售金额</span></a></li>
+    <li> <a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -100,7 +100,7 @@
   <div class="container-fluid">
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lg span3"> <a href="treeSalaryYezhang.jsp"><i class="icon-signal"></i> <span>录入木材销售金额</span></a></li>
+        <li class="bg_lg span3"> <a href="treeSalaryYezhang.jsp"><i class="icon-signal"></i> <span>木材销售工单数据</span></a></li>
       </ul>
     </div>
 <!--End-Action boxes-->    
