@@ -37,6 +37,19 @@ td,th{text-align:center;vertical-align:middle}
 	background-color: #3383da; 	
 	cursor: pointer; 
 	}
+.p-tail {
+    padding: 10px;
+    font-size: 12px;
+    color: #8a6d3b;
+}
+.i-tail {
+    width: 14px;
+    height: 11px;
+    position: relative;
+    display: inline-block;
+    background-image: url(../img/listicon.jpg);
+    top: 1px;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -117,13 +130,13 @@ function inputNull(form){
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
    <div  id="divprint">
    <form onSubmit="return inputNull(this)" action="salaryServlet?action=addcustomer" method="POST" >
    <div class="top">
-   <p class="table_p"><span>1 树材信息录入</span></p>
+   <p class="p-tail"><i class="i-tail"></i> 创建客户信息页面</p>
    <table class="table1" border="1">
     <caption class="book_h01">客户信息</caption>
     <tr>

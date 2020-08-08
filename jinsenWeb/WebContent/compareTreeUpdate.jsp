@@ -13,6 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <title>信息中心核实装车情况</title>
+    <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
     <link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
     <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
@@ -57,7 +58,8 @@
 </style>
 <script type="text/javascript">
 function yes(){
-	var workid=document.getElementById("workid").value;
+	var workid=document.getElementById("wworkid").value;
+	alert("审核通过");
 	//var rejectreason=document.getElementById("rejectreason").value;
 	//var designum=$("designum").val();
 	$.ajax({
@@ -112,7 +114,7 @@ t=(List<tree>)request.getAttribute("tree");
 %>
 <% workpageStatus w=(workpageStatus)request.getAttribute("workpageStatus");%>
 <% workpage o=(workpage)request.getAttribute("workpage");%>
-<% compareTree p=(compareTree)request.getAttribute("compareTree");%>
+<% compareTree p=(compareTree)request.getAttribute("picpath");%>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -175,6 +177,7 @@ t=(List<tree>)request.getAttribute("tree");
          class="i-tail"></i> 该页面主要是货场管理员上传装车情况</p>
     </div>
     <div class="top">
+    <div id="divprint">
   <form>
   <p class="table_p"><span>采伐工单信息</span></p>
       
@@ -182,7 +185,8 @@ t=(List<tree>)request.getAttribute("tree");
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">
+                           <input name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=o.getWorkid()%>" pattern="#0.##"/>" />
+                          <%--  <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">--%>
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
@@ -255,16 +259,18 @@ t=(List<tree>)request.getAttribute("tree");
                             </table>
     <table class="top-table">
         <%--  <tr><td class="top-table-label">上传照片</td><td colspan="5"><input class="filepath" type="file" id="pic" name="pic" value="<%=c.getPic() %>>"></td><td><button type="button" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>--%>
-        <tr><td class="top-table-label">上传照片</td><td colspan="5"><img class="filepath" width="300" height="120" id="pic" name="pic" src="<%=p.getPic() %>"></td><td><button type="button" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>
-        <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da" value="<%=p.getFile() %>>"></td></tr>
-         <tr><td><input type="submit" name="submit" value="Submit"></td></tr>
+        <tr><td class="top-table-label">上传照片</td><td><img src="DownfileServlet?action=comparePic&filename=<%=p.getPic() %>" alt="150"  width="250" height="150" /></td></tr>
+        <%--<tr><td class="top-table-label">上传照片</td><td colspan="5"><img src="${imgPath }" alt="111"  width="170" height="110" /></td></tr>
+          <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da" value="<%=p.getFile() %>>"></td></tr>
+         <tr><td><input type="submit" name="submit" value="Submit"></td></tr>--%>
     </table>
  </form>
+ </div>
  <div> 
    <div><p class="table_p" style="margin-top: 65px;font-size:20px"><span>请审核工单</span></p></div>
     <div class=" but_p" style="float:left;"><button class="but_save" type="button" onclick="yes()" value="审核通过">审核通过</button></div>
-    <div class=" but_p" style="float:left;"><button class="but_save" type="button"  onclick="not()" value="审核未通过">审核未通过 </button></div></td>
-    <div><input style="float:left;" class="but_save" type="button" id="btnPrint" value="打印"/></div>
+    <div class=" but_p" style="float:left;"><button class="but_save" type="button"  onclick="not()" value="审核未通过">审核未通过 </button></div>
+    <div class=" but_p" style="float:left;"><button class="but_save" type="button"  id="btnPrint" value="打印">打印</button></div>
                 <div style="clear: both;padding-bottom: 40px"></div>
  </div>
 
@@ -326,5 +332,10 @@ function a(){
 <script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/jQuery.print.js"></script>
 <script src="js/jquery.PrintArea.js" type="text/JavaScript"></script>
+<script type="text/javascript">
+$(function(){
+    $("#btnPrint").click(function(){ $("#divprint").printArea(); });
+});
+</script>
 </body>
 </html>

@@ -40,6 +40,7 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 <style>
 .table1{width:70%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+.table2{width:60%;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 td,th{text-align:center;vertical-align:middle}
          tr{text-align:center}
     .p-tail {
@@ -145,7 +146,7 @@ function treeAdd()
     $("input[type='checkbox']:checked").each(function(i){
     	var group=[];
     	var id=$(this).val();
-    	alert(id);
+    	//alert(id);
     	    group[0]=document.getElementById("sss"+id+"").value;
     	    group[1]=document.getElementById("tl"+id+"").value;
     	    group[2]=document.getElementById("tr"+id+"").value;
@@ -213,8 +214,9 @@ function dddelete()
 	for (var i=0;i<ck.length;i++)
 		{
 		     var j=$(ck[i]).val();
-		     alert(j);
+		     
 		     $("#"+j+"").empty();
+		     alert("删除成功");
 		}
 }
 function deleteAll()
@@ -303,15 +305,15 @@ function makecount()
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
     <li><a href="saleCalloutOrder.jsp"><i class="icon icon-home"></i><span>录入销售调令</span></a>
-    <li> <a href="saleCalloutOrdersee.jsp"><i class="icon icon-th-list"></i> <span>查看调令材料</span></a></li>
-    <li> <a href="saleCalloutOrderShenheModer.jsp"><i class="icon icon-th-list"></i> <span>查看调令审核</span></a></li>
+    <li><a href="saleCalloutOrdersee.jsp"><i class="icon icon-th-list"></i><span>查看调令材料</span></a></li>
+    <li><a href="saleCalloutOrderShenheModer.jsp"><i class="icon icon-th-list"></i><span>查看调令审核</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="salesmanTwo.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -320,7 +322,7 @@ function makecount()
          class="i-tail"></i> 该页面主要是销售部门输入销售调令页面</p>
     </div>
     <div class="find-top1">
-    <form onSubmit="return inputNull(this)" action="salaryServlet?action=addcontract" method="POST">
+    <form>
     <div class="top" id="divprint">
     <table style="margin-left:auto; margin-right:auto">
     <caption class="book_h01">木材销售调令</caption>
@@ -338,7 +340,7 @@ function makecount()
        </tbody>
     </table>
     <p class="table_p"><span>树材信息录入</span></p>
-       <table class="table" id="table5" style="width:1500px;height:auto">
+       <table class="table2" id="table5" style="width:1500px;height:auto">
           <tbody id="ttt5">
                                 
            </tbody>
@@ -360,9 +362,9 @@ function makecount()
       </tr>
       </table>
     </div>
-   <div class="1" ; style="text-align:center">
+   <div class="1" style="text-align:center">
 
-		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
+		    <span  style="text-align: center;"><button class="btn" type="button" onclick="treeAdd()" value="保存">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
 		 </div>
                 <div style="clear: both;padding-bottom: 40px"></div>

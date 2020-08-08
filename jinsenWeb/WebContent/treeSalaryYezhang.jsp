@@ -316,7 +316,7 @@ function treeAdd()
      <table>
       <tr>
       <div>
-         <button class="btn btn-default" type="button"  onclick="treeAdd()">提交</button>
+         <button style="width:160px" class="btn btn-default" type="button"  onclick="treeAdd()">提交木材信息</button>
          </div>
        </tr>
        </table>   
@@ -335,7 +335,6 @@ function treeAdd()
             </tr>
             <tr><td colspan="6" style="text-align: center">
                 <button class="add-but"><i class="glyphicon glyphicon-edit" onclick="mysave()"></i> 提交 </button>
-                <button class="add-del"><i class="glyphicon glyphicon-remove"></i> 取消</button>
                 <input style="float:center;" type="button" id="btnPrint" value="打印"/> 
             </tbody>
         </table>

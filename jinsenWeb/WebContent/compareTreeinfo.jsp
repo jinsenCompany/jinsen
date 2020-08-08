@@ -191,7 +191,7 @@ function alldo()
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="infoCenter.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <main class="all">
     <article class="artlce">
@@ -258,14 +258,26 @@ function alldo()
                     valign: 'middle'
                 },
                 {
-                    title: '图片路径',
-                    field: 'pic',
+                    title: '采伐证号',
+                    field: 'cutnum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '文件路径',
-                    field: 'file',
+                    title: '采伐时间',
+                    field: 'cutdate',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '采伐地点',
+                    field: 'cutsite',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '伐区监管员',
+                    field: 'forester',
                     align: 'center',
                     valign: 'middle'
                 },
@@ -276,7 +288,7 @@ function alldo()
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=singlecomparetree&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
+                        var  d = '<a href="pictureServlet?action=singlecomparetree1&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -460,14 +472,26 @@ function alldo()
                     valign: 'middle'
                 },
                 {
-                    title: '图片路径',
-                    field: 'pic',
+                    title: '采伐证号',
+                    field: 'cutnum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '文件路径',
-                    field: 'file',
+                    title: '采伐时间',
+                    field: 'cutdate',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '采伐地点',
+                    field: 'cutsite',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '伐区监管员',
+                    field: 'forester',
                     align: 'center',
                     valign: 'middle'
                 },
@@ -478,7 +502,7 @@ function alldo()
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=singlecomparetree&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
+                        var  d = '<a href="pictureServlet?action=singlecomparetree1&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -536,14 +560,26 @@ function alldo()
                     valign: 'middle'
                 },
                 {
-                    title: '图片路径',
-                    field: 'pic',
+                    title: '采伐证号',
+                    field: 'cutnum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '文件路径',
-                    field: 'file',
+                    title: '采伐时间',
+                    field: 'cutdate',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '采伐地点',
+                    field: 'cutsite',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '伐区监管员',
+                    field: 'forester',
                     align: 'center',
                     valign: 'middle'
                 },
@@ -554,7 +590,7 @@ function alldo()
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=singlecomparetree&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
+                        var  d = '<a href="pictureServlet?action=singlecomparetree1&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -611,14 +647,26 @@ function alldo()
                     valign: 'middle'
                 },
                 {
-                    title: '图片路径',
-                    field: 'pic',
+                    title: '采伐证号',
+                    field: 'cutnum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '文件路径',
-                    field: 'file',
+                    title: '采伐时间',
+                    field: 'cutdate',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '采伐地点',
+                    field: 'cutsite',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '伐区监管员',
+                    field: 'forester',
                     align: 'center',
                     valign: 'middle'
                 },
@@ -629,7 +677,7 @@ function alldo()
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=singlecomparetree&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
+                        var  d = '<a href="pictureServlet?action=singlecomparetree1&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a><button type="button" data-id="98"  class="btn btn-xs btn-primary" onclick="overtimedelete(\''+ row.workid + '\')">删除</button> ';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }

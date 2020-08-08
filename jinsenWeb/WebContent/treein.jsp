@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>输入进场木材数据</title>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!--  <link rel="stylesheet" href="css/all.css">-->
     <link rel="stylesheet" href="js/jQueryCalendar/calendar.css">
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -70,22 +71,58 @@ $(function(){
 })
 function aaad()
 {
+ 	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
+ 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='杉木'>"
+        +"检尺长(m)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'>检尺径<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+             +"材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
+             k=Number(k)+Number(1);
+            $("#ttt5").append(str); 
+             
+}
+$(function(){
+	aaad1();
+})
+function aaad1()
+{
+ 	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
+ 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='松木'>"
+        +"检尺长(m)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'>检尺径<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+             +"材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
+             k=Number(k)+Number(1);
+            $("#ttt6").append(str); 
+             
+}
+$(function(){
+	aaad2();
+})
+function aaad2()
+{
+ 	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
+ 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='杂木'>"
+        +"检尺长(m)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'>检尺径<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+             +"材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
+             k=Number(k)+Number(1);
+            $("#ttt7").append(str); 
+             
+}
+/*function aaad1()
+{
  	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">树材种<span></span>"
           +"<select style='width: 180px' name='treetype' id='sss"+k+"'>"
            +"<option>--请选择--</option>"
-          +"<option value='杉原木'>--杉原木--</option>"
-          +"<option value='杉小径'>--杉小径--</option>"
-          +"<option value='松原木'>--松原木--</option>"
-          +"<option value='松小径'>--松小径--</option>"
-          +"<option value='杂原木'>--杂原木--</option>"
-          +"<option value='杂小径'>--杂小径--</option></select>"
+          +"<option value='杉木'>--杉木--</option>"
+          +"<option value='松木'>--松木--</option>"
+          +"<option value='杂木'>--杂木--</option></select>"
         +"检尺长(m)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'>检尺径<span></span>"
           +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"'>"
              +"材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"' onclick='vvvolume("+k+")'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt5").append(str); 
              
-}
+}*/
 function dddelete()
 {
 	var ck= $("input[type='checkbox']:checked");
@@ -112,7 +149,7 @@ function deleteAll()
 	    $("#"+hh+"").empty();
 	}
 }
-function vvvolume(id)
+/*function vvvolume(id)
 {
 	var td=$("#td"+id+"").val();
 	var tr=$("#tr"+id+"").val();
@@ -132,7 +169,34 @@ function vvvolume(id)
         	document.getElementById("tv"+id+"").value=Number(data*num);
         }
     })}
-	}
+	}*/
+	function vvvolume(id)
+	{
+		var td=$("#td"+id+"").val();
+		var tr=$("#tr"+id+"").val();
+		var num=$("#n"+id+"").val();
+		if(num!="" && td!="" && tr!="")
+		{
+		$.ajax({
+	        url:"treeServlet",
+	        data:{
+	            "action":"volume",
+	            "td":td,
+	            "tr":tr 
+	        },
+	        type: "POST",
+	        dataType:"html",
+	        success: function (data) {
+	        	var vvv=Number(data*num);
+	        	vvv=vvv.toFixed(4);
+	        	document.getElementById("tv"+id+"").value=Number(vvv);
+	        }
+	    })}
+		}
+window.onload = function () {
+        locationInput = function () {
+        };
+    }
 function makecount()
 {
 	var mk=$("input[type='checkbox']:checked");
@@ -235,13 +299,15 @@ function treeAdd()
         dataType:"html",
         success: function (data) {
         	alert(data);
-        	/*if(data>0)
+        	if(data>0)
         		{
-        	        alert("添加成功！");
+        	        alert("保存成功！");
+        	        window.location.href = 'passworkpage.jsp';
         		}
         	else{
-        		 alert("请检查输入的材积是否已经超标");
-        	}*/
+        		 alert("保存失败");
+        		 window.location.href = 'passworkpage.jsp';
+        	}
         }
     })
     }
@@ -256,6 +322,42 @@ function inputNull(form){
 		}
 	}
 	}
+</script>
+<script type="text/javascript">
+function toggle(table5) {
+if (document.getElementById){
+ target = document.getElementById(table5);
+  if ( target.style.display == "none") {
+   target.style.display = ""; 
+  } else { 
+   target.style.display = "none";
+  }
+ }
+}
+</script>
+<script type="text/javascript">
+function toggle(table6) {
+if (document.getElementById){
+ target = document.getElementById(table6);
+  if ( target.style.display == "none") {
+   target.style.display = ""; 
+  } else { 
+   target.style.display = "none";
+  }
+ }
+}
+</script>
+<script type="text/javascript">
+function toggle(table7) {
+if (document.getElementById){
+ target = document.getElementById(table7);
+  if ( target.style.display == "none") {
+   target.style.display = ""; 
+  } else { 
+   target.style.display = "none";
+  }
+ }
+}
 </script>
 </head>
 <body>
@@ -301,15 +403,14 @@ String now = df.format(d); %>
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
      <li><a href="workpageTreeBuy.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTree.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
+    <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treein.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
-    <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>查询采伐工单信息</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -318,8 +419,8 @@ String now = df.format(d); %>
   <div id="content-header">
     <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
-    <article class="artlce">
-        <div class="book_con01">
+    <article>
+        <div>
             <h1 class="book_h01">录入进场木材信息</h1>
             <!--  <form  onSubmit="return inputNull(this)" action="treeServlet?action=inyard" method="POST" >-->
             <form>
@@ -330,7 +431,8 @@ String now = df.format(d); %>
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">
+                          <input name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>" />
+                          <%--  <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">--%>
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
@@ -370,9 +472,25 @@ String now = df.format(d); %>
                                 
                             </tbody>
                             </table>
+                            <table class="table" id="table6" style="width:1500px;height:auto">
+                           <tbody id="ttt6">
+                                
+                            </tbody>
+                            </table>
+                            <table class="table" id="table7" style="width:1500px;height:auto">
+                           <tbody id="ttt7">
+                                
+                            </tbody>
+                            </table>
                             <table>
                             <tr>
-               <div style="float:left;"><button class="btn btn-warning" type="button"  onclick="aaad()" value="添加">添加</button>
+               <div style="float:left;">
+               <button class="btn btn-warning" type="button"  value="显示或隐藏杉木" onclick="toggle('table5');">显示或隐藏杉木</button>
+               <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加杉木">添加杉木</button>
+               <button class="btn btn-warning" type="button"  value="显示或隐藏松木" onclick="toggle('table6')">显示或隐藏松木</button>
+               <button class="btn btn-warning" type="button"  onclick="aaad1()" value="添加松木">添加松木</button>
+               <button class="btn btn-warning" type="button"  value="显示或隐藏杂木" onclick="toggle('table7')">显示或隐藏杂木</button>
+               <button class="btn btn-warning" type="button"  onclick="aaad2()" value="添加杂木">添加杂木</button>
                <button class="btn btn-default" type="button"  onclick="dddelete()" value="删除">删除</button>
           <button class="btn btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button>
           <!--  <button class="btn btn-default" type="button"  onclick="treeAdd()" value="提交">提交</button>-->
@@ -456,6 +574,7 @@ function resetMenu() {
 $(function(){
     $("#btnPrint").click(function(){ $("#divprint").printArea(); });
 });
+
 </script> 
 </body>
 </html>

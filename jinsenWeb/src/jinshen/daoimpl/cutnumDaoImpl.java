@@ -380,7 +380,7 @@ public class cutnumDaoImpl implements cutnumDao{
 		String sql="insert into cutnum_application values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     	int res=0;
 		try {
-			res=dbc.doUpdate(sql, new Object[] {cp.getapplyid(),cp.getDesignum(),cp.getCutaddress(),cp.getCutaddress(),cp.getCutvillage(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),cp.getSmallblackarea(),cp.getOrigin(),
+			res=dbc.doUpdate(sql, new Object[] {cp.getapplyid(),cp.getDesignum(),cp.getCutaddress(),cp.getCutaddress(),cp.getCutvillage(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),cp.getDesignbook(),cp.getOrigin(),
 					cp.getForestage(),cp.getTypeconsist(),cp.getManagetype(),cp.getForestage(),cp.getCutarea(),cp.getCuttype(),cp.getCuttype(),cp.getCutstrength(),cp.getTreetype(),cp.getCutvolume(),cp.getCutnumer(),cp.getTotal(),
 					cp.getCutintermediate(),cp.getTotal2(),cp.getSizewood(),cp.getSmalltimber(),cp.getShorttimber(),cp.getFirewood(),cp.getCutpath(),cp.getApplaydate()});
 		}catch (Exception e) 
@@ -397,9 +397,9 @@ public class cutnumDaoImpl implements cutnumDao{
 	public int updateCutnumApply(double apid,cutnumApply cp) {
 		int res=0;
     	try {
-    		String sql="update cutnum_application set designum=?,cut_reson=?,cut_adress=?,cut_village=?,quartel=?,larg_block=?,small_block=?,small_block_area=?,origin=?,forest_type=?,type_consist=?,mange_type=?,forest_age=?,cut_area=?,cut_type=?,cut_way=?,"
+    		String sql="update cutnum_application set designum=?,cut_reson=?,cut_adress=?,cut_village=?,quartel=?,larg_block=?,small_block=?,designbook=?,origin=?,forest_type=?,type_consist=?,mange_type=?,forest_age=?,cut_area=?,cut_type=?,cut_way=?,"
     				+ "cut_strength=?,tree_type=?,cut_volume=?,cut_num=?,total=?,cut_intermediate=?,total2=?,size_wood=?,small_timber=?,short_timber=?,firewood=?,cutpath=?,applay_date=? WHERE apply_id="+apid+" ";
-    		res=dbc.doUpdate(sql, new Object[] {cp.getDesignum(),cp.getCutaddress(),cp.getCutaddress(),cp.getCutvillage(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),cp.getSmallblackarea(),cp.getOrigin(),
+    		res=dbc.doUpdate(sql, new Object[] {cp.getDesignum(),cp.getCutaddress(),cp.getCutaddress(),cp.getCutvillage(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),cp.getDesignbook(),cp.getOrigin(),
 					cp.getForestage(),cp.getTypeconsist(),cp.getManagetype(),cp.getForestage(),cp.getCutarea(),cp.getCuttype(),cp.getCuttype(),cp.getCutstrength(),cp.getTreetype(),cp.getCutvolume(),cp.getCutnumer(),cp.getTotal(),
 					cp.getCutintermediate(),cp.getTotal2(),cp.getSizewood(),cp.getSmalltimber(),cp.getShorttimber(),cp.getFirewood(),cp.getCutpath(),cp.getApplaydate()});
     	}catch(Exception e) {
@@ -477,7 +477,7 @@ public class cutnumDaoImpl implements cutnumDao{
     			ca.setQuartel(rs.getString(5));
     			ca.setLargeblock(rs.getString(6));
     			ca.setSmallblock(rs.getString(7));
-    			ca.setSmallblackarea(rs.getDouble(8));
+    			ca.setDesignbook(rs.getString(8));;
     			ca.setOrigin(rs.getString(9));
     			ca.setForesttype(rs.getString(10));
     			ca.setTypeconsist(rs.getString(11));

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="jinshen.bean.*"%>
@@ -80,6 +81,19 @@ tr {
 	#b{
 	text-align:left;
 	}
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 18px!important; 	height: 40px; width:120px;	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
 </style>
 <script type="text/javascript">
 	function inputNull(form) {
@@ -93,75 +107,12 @@ tr {
 		}
 	}
 </script>
-<script type="text/javascript" src="static/js/jquery-1.12.4.min.js"></script>
-	<script src="js/bstable/js/bootstrap.min.js"></script>
-	<script src="js/bstable/js/bootstrap-table.js"></script>
-	<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
-	<script>
-		//预览
-		function imgPreview(fileDom) {
-			//判断是否支持FileReader
-			if (window.FileReader) {
-				var reader = new FileReader();
-			} else {
-				alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
-			}
-			//获取文件
-			var file = fileDom.files[0];
-			var imageType = /^image\//;
-			//是否是图片
-			if (!imageType.test(file.type)) {
-				alert("请选择图片！");
-				return;
-			}
-			//读取完成
-			reader.onload = function(e) {
-				//获取图片dom
-				var img = document.getElementById("preview");
-				//图片路径设置为读取的图片
-				img.src = e.target.result;
-			};
-			reader.readAsDataURL(file);
-		}
-
-		function UpLoad() {
-			var formData = new FormData();
-			formDate.append('workid', workid);
-			formData.append('file', $('#pic')[0].files[0]); //添加图片信息的参数
-			formData.append('file', $('#da')[0].files[0]); //添加其他参数
-			$.ajax({
-				url : 'pictureServlet?action=treecompare',
-				type : 'POST',
-				cache : false, //上传文件不需要缓存
-				data : formData,
-				processData : false, // 告诉jQuery不要去处理发送的数据
-				contentType : false, // 告诉jQuery不要去设置Content-Type请求头
-				success : function(data) {
-					var rs = eval("(" + data + ")");
-					if (rs.state == 1) {
-						tipTopShow('上传成功！');
-					} else {
-						tipTopShow(rs.msg);
-					}
-				},
-				error : function(data) {
-					tipTopShow("上传失败");
-				}
-			})
-		}
-		/*
-		 function UpLoad() {
-		 //如果有其他的值，判断下是否为空
-
-		 var keyValue = $("#gridList").jqGridRowValue().Id;
-
-		 form2.action = "/List/AddEvidence?keyValue=" + keyValue;
-		 form2.submit();
-		 }*/
-	</script>
 </head>
 <body>
 <%cutnum c = (cutnum) request.getAttribute("cutnum");%>
+<%
+   String cutnumfile = request.getParameter("cutnumfile");
+  %>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -217,31 +168,28 @@ tr {
 	<main>
 
 		<div class="home-tab">
-			<i class="tab-i"></i> 所在位置：<span>上传采伐证材料</span>
+			<i class="tab-i"></i> 所在位置：<span>更新采伐证材料</span>
 		</div>
 		<div class="find-top">
 			<p class="p-tail">
-				<i class="i-tail"></i> 该页面主要是管理部门上传采伐证材料
+				<i class="i-tail"></i> 该页面主要是管理部门更新采伐证材料
 			</p>
 		</div>
 		<div class="find-top1">
-			<form onSubmit="return inputNull(this)"
-				action="cutnumServlet?action=cutnumUpdate" method="POST">
+			<form onSubmit="return inputNull(this)" action="cutnumServlet?action=cutnumUpdate" method="POST">
 				<div class="top" id="divprint">
 					<table class="biao">
-						<caption class="book_h01">录入采伐证材料</caption>
+						<caption class="book_h01">更新采伐证材料</caption>
 						<tr>
 							<td id="a">采伐证号</td>
 							<td id="b"><input type="text" name="cutnum" id="cutnum"
 								value="<%=c.getCutnum()%>"></td>
 							<td id="a">采伐证编号</td>
-							<td id="b"><input type=text name="certificatenum"
-								id="certificatenum" value="<%=c.getCertificatenum()%>"></td>
+							<td id="b"><input type=text name="certificatenum" id="certificatenum" value="<%=c.getCertificatenum() %>" ></td>
 						</tr>
 						<tr>
 							<td id="a">编号</td>
-							<td id="b"><input type=text name="numbern" id="numbern"
-								value="<%=c.getNumber()%>"></td>
+							 <td id="b"><input name="numbern" type="text" maxlength="32" id="numbern" readonly value="<fmt:formatNumber value="<%=c.getNumber()%>" pattern="#0.##"/>" /></td>
 							<td id="a">采伐公司</td>
 							<td id="b"><input type="text" name="company" id="company"
 								value="<%=c.getCompany()%>"></td>
@@ -322,31 +270,32 @@ tr {
 								value="<%=c.getEndtime()%>"></td>
 						</tr>
 						<tr>
-							<td id="a">领证人</td>
+							<td id="a">领证人:</td>
 							<td id="b"><input type="text" name="certifier" id="certifier"
 								value="<%=c.getCertifier()%>"></td>
-							<td id="a">更新期限</td>
+							<td id="a">更新期限:</td>
 							<td id="b"><input type="date" name="updatedate" id="updatedate"
 								value="<%=c.getUpdatedate()%>"></td>
 						</tr>
 						<tr>
-							<td id="a">更新面积</td>
+							<td id="a">更新面积:</td>
 							<td id="b"><input type="text" name="updatevolume" id="updatevolume"
 								value="<%=c.getUpdatevolume()%>"></td>
-							<td id="a">株树</td>
+							<td id="a">株树:</td>
 							<td id="b"><input type="text" name="updatenum" id="updatenum"
 								value="<%=c.getUpdatenum()%>"></td>
 						</tr>
 						<tr>
-							<td id="a">上传文件</td>
-							<td id="b"><input class="filepath" onchange="changepic(this)"
-								type="file" id="cutnumfile" name="cutnumfile"></td>
+							<td id="a">上传文件:</td>
+							<!-- <td id="b"><input class="filepath" onchange="changepic(this)"
+								type="file" id="cutnumfile" name="cutnumfile"></td>-->
+							<td>${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
 						</tr>
 					</table>
 				</div>
-				<div class=" but_p" style="float: center;">
-					<button class="but_save" type="submit" id="mybutton" value="保存工单">保存工单</button>
-					<button class="but_save" type="button" id="btnPrint" value="打印">打印</button>
+				<div style="text-align:center">
+					<button class="btn" type="submit" id="mybutton" value="更新工单">更新工单</button>
+					<button class="btn" type="button" id="btnPrint" value="打印">打印</button>
 				</div>
 				
 				<div style="clear: both; padding-bottom: 40px"></div>

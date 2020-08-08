@@ -10,6 +10,7 @@
     <title>更新伐区工单</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- Custom CSS -->
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
@@ -141,6 +142,27 @@ function not(){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
+       <ul>
+        <li><a href="workpageAdd.jsp">输入工单</a></li>
+        <li><a href="workpageShenheFaqu.jsp">审核工单</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+      </ul>
+     </li>
+    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
+    <li><a href="CutnumProjectpackageTable.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
+      </ul>
+     </li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -173,7 +195,7 @@ function not(){
                            </tr>
                            <tr>
                             <td colspan="2">
-                              <input style="width:50%;border:0px;background-color: transparent" type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>" placeholder="工单号">
+                             <input style="width:50%;border:0px;background-color: transparent" type="text" name="workid" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>" >
                            </td>
                            <td colspan="2">
                              <input style="width:50%;border:0px;background-color: transparent" type="text" name="cutnum" id="cccutnum" value="<%=c.getCutNum() %>" placeholder="采伐证号">

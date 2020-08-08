@@ -123,7 +123,7 @@
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
@@ -248,6 +248,4 @@
 <script type="text/javascript" src="/static/js/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
 <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-<script src="js/matrix.js"></script> 
-<script src="js/matrix.dashboard.js"></script>   
 </html>

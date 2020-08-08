@@ -446,6 +446,7 @@ public class salaryServlet extends HttpServlet {
             	out.print(flags);
         	}
         }
+        //销售调令
         else if("salecalloutAdd".equals(action)) {
             String rebate = request.getParameter("newtree");
     	    int id=Integer.parseInt(request.getParameter("id"));

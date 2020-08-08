@@ -193,7 +193,7 @@ function inputNull(form){
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>

@@ -13,6 +13,7 @@
 <head>
 <meta charset="UTF-8">
 <title>输入采伐证材料</title>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
     <link rel="stylesheet" href="css/registe.css"/>
@@ -93,75 +94,12 @@ tr {
 		}
 	}
 </script>
-<script type="text/javascript" src="static/js/jquery-1.12.4.min.js"></script>
-	<script src="js/bstable/js/bootstrap.min.js"></script>
-	<script src="js/bstable/js/bootstrap-table.js"></script>
-	<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
-	<script>
-		//预览
-		function imgPreview(fileDom) {
-			//判断是否支持FileReader
-			if (window.FileReader) {
-				var reader = new FileReader();
-			} else {
-				alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
-			}
-			//获取文件
-			var file = fileDom.files[0];
-			var imageType = /^image\//;
-			//是否是图片
-			if (!imageType.test(file.type)) {
-				alert("请选择图片！");
-				return;
-			}
-			//读取完成
-			reader.onload = function(e) {
-				//获取图片dom
-				var img = document.getElementById("preview");
-				//图片路径设置为读取的图片
-				img.src = e.target.result;
-			};
-			reader.readAsDataURL(file);
-		}
-
-		function UpLoad() {
-			var formData = new FormData();
-			formDate.append('workid', workid);
-			formData.append('file', $('#pic')[0].files[0]); //添加图片信息的参数
-			formData.append('file', $('#da')[0].files[0]); //添加其他参数
-			$.ajax({
-				url : 'pictureServlet?action=treecompare',
-				type : 'POST',
-				cache : false, //上传文件不需要缓存
-				data : formData,
-				processData : false, // 告诉jQuery不要去处理发送的数据
-				contentType : false, // 告诉jQuery不要去设置Content-Type请求头
-				success : function(data) {
-					var rs = eval("(" + data + ")");
-					if (rs.state == 1) {
-						tipTopShow('上传成功！');
-					} else {
-						tipTopShow(rs.msg);
-					}
-				},
-				error : function(data) {
-					tipTopShow("上传失败");
-				}
-			})
-		}
-		/*
-		 function UpLoad() {
-		 //如果有其他的值，判断下是否为空
-
-		 var keyValue = $("#gridList").jqGridRowValue().Id;
-
-		 form2.action = "/List/AddEvidence?keyValue=" + keyValue;
-		 form2.submit();
-		 }*/
-	</script>
 </head>
 <body>
 <%cutnum c = (cutnum) request.getAttribute("cutnum");%>
+<%
+   String cutnumfile = request.getParameter("cutnumfile");
+  %>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -245,8 +183,7 @@ tr {
 						</tr>
 						<tr>
 							<td id="a">编号</td>
-							<td id="b"><input type=text name="numbern" id="numbern"
-								value="<%=c.getNumber()%>"></td>
+							<td id="b"><input name="numbern" type="text" maxlength="32" id="numbern" readonly value="<fmt:formatNumber value="<%=c.getNumber()%>" pattern="#0.##"/>" /></td>
 							<td id="a">采伐公司</td>
 							<td id="b"><input type="text" name="company" id="company"
 								value="<%=c.getCompany()%>"></td>
@@ -344,8 +281,7 @@ tr {
 						</tr>
 						<tr>
 							<td id="a">上传文件</td>
-							<td id="b"><input class="filepath" onchange="changepic(this)"
-								type="file" id="cutnumfile" name="cutnumfile"></td>
+							<td>${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
 						</tr>
 					</table>
 				</div>

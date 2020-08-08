@@ -1,6 +1,9 @@
 package jinshen.action;
+import java.io.File;
+import java.io.FileOutputStream;
 /*管理部门录入采伐证servlet*/
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +19,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -74,6 +81,7 @@ public class cutnumServlet extends HttpServlet {
         if("addcutnum".equals(action)) {
         	String cutNum = request.getParameter("cutnum");
         	String certificatenum = request.getParameter("certificatenum");
+        	System.out.print(request.getParameter("cutNum"));
         	double number = Double.parseDouble(request.getParameter("numbern"));
         	String company = request.getParameter("company");
         	String cutsite = request.getParameter("cutsite");
@@ -112,7 +120,7 @@ public class cutnumServlet extends HttpServlet {
 			} 
 			java.sql.Date begin = new java.sql.Date(d.getTime()); 
 			java.sql.Date end = new java.sql.Date(dd.getTime()); 
-			java.sql.Date updated = new java.sql.Date(ddd.getTime()); 
+			java.sql.Date updated = new java.sql.Date(ddd.getTime());
 			cutnum cp = new cutnum();
 			cp.setCutnum(cutNum);
 			cp.setCertificatenum(certificatenum);
@@ -168,6 +176,229 @@ public class cutnumServlet extends HttpServlet {
 				sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum,cutnumfile from cutnum where cutnum='"+cutNum+"'";
 				cutnum cutnum=cnd.findCodeSingle(sql);
 				request.setAttribute("cutnum",cutnum);
+				request.getRequestDispatcher("manageCutnumUpdate.jsp").forward(request, response);//录入采伐证后跳转到更新采伐证页面
+			}
+        }
+        else if(action.equals("addcutnum1")) {
+        	cutnum cp = new cutnum();//采伐证信息
+        	String cutNum="";
+        	double volume=0;
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+        	Date d = null;
+			Date dd = null;
+			Date ddd=null;
+        	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+    		String savePath = this.getServletContext().getRealPath("/WEB-INF/cutnumfile");
+    		//得到文件访问的相对路径
+    		String readPath = "../WEB-INF/cutnumfile/";
+    		File file = new File(savePath);
+    		// 判断上传文件的保存目录是否存在
+    		if (!file.exists() || !file.isDirectory()) {
+    			System.out.println(savePath + "目录不存在，需要创建");
+    			// 创建目录
+    			file.mkdir();
+    		}
+    		// 消息提示
+    		String message = "";
+    		try {
+    			// 使用Apache文件上传组件处理文件上传步骤：
+    			// 1、创建一个DiskFileItemFactory工厂
+    			DiskFileItemFactory factory = new DiskFileItemFactory();
+    			// 2、创建一个文件上传解析器
+    			ServletFileUpload upload = new ServletFileUpload(factory);
+    			// 解决上传文件名的中文乱码
+    			upload.setHeaderEncoding("UTF-8");
+    			// 3、判断提交上来的数据是否是上传表单的数据
+    			if (!ServletFileUpload.isMultipartContent(request)) {
+    				// 按照传统方式获取数据
+    				return;
+    			}
+    			// 4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+    			List<FileItem> list = upload.parseRequest(request);
+    			System.out.println(list.size());
+    			for (FileItem item : list) {
+    				// 如果fileitem中封装的是普通输入项的数据
+    				if (item.isFormField()) {
+    					String name = item.getFieldName();//普通输入项username
+    					if("cutnum".equals(name)) {
+    						cp.setCutnum(item.getString("UTF-8"));
+    						cutNum=item.getString("UTF-8");
+    					}
+    					else if("certificatenum".equals(name)) {
+    						cp.setCertificatenum(item.getString("UTF-8"));
+    					}
+    					else if("numbern".equals(name)) {
+    						cp.setNumber(Double.parseDouble((item.getString("UTF-8"))));
+    					}
+    					else if("company".equals(name)) {
+    						cp.setCompany(item.getString("UTF-8"));
+    					}
+    					else if("gpsinfo".equals(name)) {
+    						cp.setGpsinfo(item.getString("UTF-8"));
+    					}
+    					else if("cutsite".equals(name)) {
+    						cp.setcutsite(item.getString("UTF-8"));
+    					}
+    					else if("sizhi".equals(name)) {
+    						cp.setSizhi(item.getString("UTF-8"));
+    					}
+    					else if("treeorigin".equals(name)) {
+    						cp.setTreeorigin(item.getString("UTF-8"));
+    					}
+    					else if("foresttype".equals(name)) {
+    						cp.setforesttype(item.getString("UTF-8"));
+    					}
+    					else if("treetype".equals(name)) {
+    						cp.setTreetype(item.getString("UTF-8"));
+    					}
+    					else if("ownership".equals(name)) {
+    						cp.setOwnership(item.getString("UTF-8"));
+    					}
+    					else if("forestid".equals(name)) {
+    						cp.setForestid(item.getString("UTF-8"));
+    					}
+    					else if("cuttype".equals(name)) {
+    						cp.setcuttype(item.getString("UTF-8"));
+    					}
+    					else if("cutmethod".equals(name)) {
+    						cp.setcutmethod(item.getString("UTF-8"));
+    					}
+    					else if("cutqiang".equals(name)) {
+    						cp.setcutqiang(item.getString("UTF-8"));
+    					}
+    					else if("cutarea".equals(name)) {
+    						cp.setcutarea(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("treenum".equals(name)) {
+    						cp.settreenum(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cutstore".equals(name)) {
+    						cp.setcutstore(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("volume".equals(name)) {
+    						cp.setvolume(Double.parseDouble(item.getString("UTF-8")));
+    						volume=Double.parseDouble(item.getString("UTF-8"));
+    					}
+    					else if("starttime".equals(name)) {
+    						String sttime=item.getString("UTF-8");
+    						try {
+    							d = format.parse(sttime);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date begin = new java.sql.Date(d.getTime()); 
+    						cp.setStarttime(begin);
+    					}
+    					else if("endtime".equals(name)) {
+    						String endtime=item.getString("UTF-8");
+    						try {
+    							dd = format.parse(endtime);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date end = new java.sql.Date(dd.getTime()); 
+    						cp.setEndtime(end);
+    					}
+    					else if("certifier".equals(name)) {
+    						cp.setCertifier(item.getString("UTF-8"));
+    					}
+    					else if("updatedate".equals(name)) {
+    						String updatedate=item.getString("UTF-8");
+    						try {
+    							ddd = format.parse(updatedate);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date update = new java.sql.Date(ddd.getTime()); 
+    						cp.setUpdatedate(update);
+    					}	
+    					else if("updatevolume".equals(name)) {
+    						cp.setUpdatevolume(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("updatenum".equals(name)) {
+    						cp.setUpdatenum(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					// 解决普通输入项的数据的中文乱码问题
+    					String value = item.getString("UTF-8");
+    					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
+    					System.out.println(name + "=" + value);
+    				} else {// 如果fileitem中封装的是上传文件
+    						// 得到上传的文件名称，
+    					String filename = item.getName();
+    					System.out.println(filename);
+    					if (filename == null || filename.trim().equals("")) {
+    						continue;
+    					}
+    					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+    					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+    					filename = filename.substring(filename.lastIndexOf("\\") + 1);
+    					//request.setAttribute("filename", filename);
+    					// 获取item中的上传文件的输入流
+    					InputStream in = item.getInputStream();
+    					// 创建一个文件输出流
+    					FileOutputStream outt = new FileOutputStream(savePath + "\\" + filename);
+    					//输出文件保存路径
+    					System.out.println("savePath:" + savePath + "\\" +filename);
+    					//显示文件读取的相对路径
+    					readPath = readPath+ filename;
+    					cp.setCutnumfile(readPath);
+    					System.out.println("readPath :"+ readPath);
+    					// 创建一个缓冲区
+    					byte buffer[] = new byte[1024];
+    					// 判断输入流中的数据是否已经读完的标识
+    					int len = 0;
+    					// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+    					while ((len = in.read(buffer)) > 0) {
+    						// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+    						outt.write(buffer, 0, len);
+    					}
+    					// 关闭输入流
+    					in.close();
+    					// 关闭输出流
+    					outt.close();
+    					// 删除处理文件上传时生成的临时文件
+    					item.delete();
+    					message = "文件上传成功！";
+    				}
+    			}
+    		} catch (Exception e) {
+    			message = "文件上传失败！";
+    			e.printStackTrace();
+    		}
+    		sql="select count(*) from cutnum where cutnum='"+cutNum+"'";
+			int flag=0;
+			double f=cnd.findcount(sql);
+			if(f==1) {
+				out.print("该采伐证已经录入、采伐证号重复");
+			}
+			else {
+				flag=cnd.addCutnum(cp);
+				out.print("采伐证材料保存成功");
+				//0：未拨交，1：已拨交，2：已完成前中检查，3：已完成伐终检查，10：采伐证锁定
+				if(flag>0) {
+					sql="select cutnumid from cutnum WHERE cutnum='"+cutNum+"'";
+					cutnumStatus cd=cnd.findCutnumStatus(sql);
+					double cutnumid=cd.getCutnumid();
+					cutnumStatus cs=new cutnumStatus();
+					cs.setCutnumid(cutnumid);
+					cs.setStatus(0);
+					cs.setCutnumVolume(volume);
+					int flagS=cnd.addCutnumStatus(cs);
+					if(flagS>0) {
+						out.write("采伐证状态插入成功");
+					}
+				}
+			}
+			if(flag==1) {
+				sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum,cutnumfile from cutnum where cutnum='"+cutNum+"'";
+				cutnum cutnum=cnd.findCodeSingle(sql);
+				String cutnumfile = cutnum.getCutnumfile();
+				cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);
+				request.setAttribute("cutnum",cutnum);
+				request.setAttribute("cutnumfile",cutnumfile);
 				request.getRequestDispatcher("manageCutnumUpdate.jsp").forward(request, response);//录入采伐证后跳转到更新采伐证页面
 			}
         }
@@ -340,6 +571,9 @@ public class cutnumServlet extends HttpServlet {
         	//System.out.println("...."+number + "...");
         	sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum,cutnumfile from cutnum where cutnum='"+str+"'";
         	cutnum cutn = cnd.findCodeSingle(sql);
+        	String cutnumfile=cutn.getCutnumfile();
+        	cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);
+        	request.setAttribute("cutnumfile", cutnumfile);
         	request.setAttribute("cutnum", cutn);
         	request.getRequestDispatcher("manageCutnumUpdate.jsp").forward(request, response);
         }
@@ -351,6 +585,9 @@ public class cutnumServlet extends HttpServlet {
         	//System.out.println("...."+number + "...");
         	sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum,cutnumfile from cutnum where cutnum='"+str+"'";
         	cutnum cutn = cnd.findCodeSingle(sql);
+        	String cutnumfile=cutn.getCutnumfile();
+        	cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);
+        	request.setAttribute("cutnumfile", cutnumfile);
         	request.setAttribute("cutnum", cutn);
         	request.getRequestDispatcher("manageCutnumUpdateAssis.jsp").forward(request, response);
         }
@@ -586,7 +823,8 @@ public class cutnumServlet extends HttpServlet {
         	String quartel = request.getParameter("quartel");
         	String largeblock = request.getParameter("largeblock");
         	String smallblock = request.getParameter("smallblock");
-        	double smallblackarea = Double.parseDouble(request.getParameter("smallblackarea"));
+        	//double smallblackarea = Double.parseDouble(request.getParameter("smallblackarea"));
+        	String designbook = request.getParameter("designbook");
         	String origin = request.getParameter("origin");
         	String foresttype = request.getParameter("foresttype");
         	String typeconsist = request.getParameter("typeconsist");
@@ -626,7 +864,7 @@ public class cutnumServlet extends HttpServlet {
 			cp.setQuartel(quartel);
 			cp.setLargeblock(largeblock);
 			cp.setSmallblock(smallblock);
-			cp.setSmallblackarea(smallblackarea);
+			cp.setDesignbook(designbook);
 			cp.setOrigin(origin);
 			cp.setForesttype(foresttype);
 			cp.setTypeconsist(typeconsist);
@@ -666,6 +904,210 @@ public class cutnumServlet extends HttpServlet {
 				if(flags>0) {
 				out.print("插入成功");}
 			}
+        }
+        //利用uploadfile上传文件
+        else if("cutnumapply1".equals(action)) {
+			cutnumApply cp=new cutnumApply();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        	Date d = null;
+        	String designum="";
+        	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+    		String savePath = this.getServletContext().getRealPath("/WEB-INF/applyfile");
+    		//得到文件访问的相对路径
+    		String readPath = "../WEB-INF/applyfile/";
+    		File file = new File(savePath);
+    		// 判断上传文件的保存目录是否存在
+    		if (!file.exists() || !file.isDirectory()) {
+    			System.out.println(savePath + "目录不存在，需要创建");
+    			// 创建目录
+    			file.mkdir();
+    		}
+    		// 消息提示
+    		String message = "";
+    		try {
+    			// 使用Apache文件上传组件处理文件上传步骤：
+    			// 1、创建一个DiskFileItemFactory工厂
+    			DiskFileItemFactory factory = new DiskFileItemFactory();
+    			// 2、创建一个文件上传解析器
+    			ServletFileUpload upload = new ServletFileUpload(factory);
+    			// 解决上传文件名的中文乱码
+    			upload.setHeaderEncoding("UTF-8");
+    			// 3、判断提交上来的数据是否是上传表单的数据
+    			if (!ServletFileUpload.isMultipartContent(request)) {
+    				// 按照传统方式获取数据
+    				return;
+    			}
+    			// 4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+    			List<FileItem> list = upload.parseRequest(request);
+    			System.out.println(list.size());
+    			for (FileItem item : list) {
+    				// 如果fileitem中封装的是普通输入项的数据
+    				if (item.isFormField()) {
+    					String name = item.getFieldName();//普通输入项username
+    					if("designum".equals(name)) {
+    						cp.setDesignum(item.getString("UTF-8"));
+    						designum=item.getString("UTF-8");
+    					}
+    					else if("cutreason".equals(name)) {
+    						cp.setCutaddress(item.getString("UTF-8"));
+    					}
+    					else if("cutvillage".equals(name)) {
+    						cp.setCutvillage(item.getString("UTF-8"));
+    					}
+    					else if("quartel".equals(name)) {
+    						cp.setQuartel(item.getString("UTF-8"));
+    					}
+    					else if("largeblock".equals(name)) {
+    						cp.setLargeblock(item.getString("UTF-8"));
+    					}
+    					else if("smallblock".equals(name)) {
+    						cp.setSmallblock(item.getString("UTF-8"));
+    					}
+    					else if("designbook".equals(name)) {
+    						cp.setDesignbook(item.getString("UTF-8"));
+    					}
+    					else if("origin".equals(name)) {
+    						cp.setOrigin(item.getString("UTF-8"));
+    					}
+    					else if("foresttype".equals(name)) {
+    						cp.setForesttype(item.getString("UTF-8"));
+    					}
+    					else if("typeconsist".equals(name)) {
+    						cp.setTypeconsist(item.getString("UTF-8"));
+    					}
+    					else if("managetype".equals(name)) {
+    						cp.setManagetype(item.getString("UTF-8"));
+    					}
+    					else if("forestage".equals(name)) {
+    						cp.setForestage(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cutarea".equals(name)) {
+    						cp.setCutarea(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cuttype".equals(name)) {
+    						cp.setCuttype(item.getString("UTF-8"));
+    					}
+    					else if("cutway".equals(name)) {
+    						cp.setCutway(item.getString("UTF-8"));
+    					}
+    					else if("cutstrength".equals(name)) {
+    						cp.setCutstrength(item.getString("UTF-8"));
+    					}
+    					else if("treetype".equals(name)) {
+    						cp.setTreetype(item.getString("UTF-8"));
+    					}
+    					else if("cutvolume".equals(name)) {
+    						cp.setCutvolume(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cutnumer".equals(name)) {
+    						cp.setCutnumer(Integer.parseInt(item.getString("UTF-8")));
+    					}
+    					else if("total".equals(name)) {
+    						cp.setTotal(Double.parseDouble(item.getString("UTF-8")));
+    						
+    					}
+    					else if("cutintermediate".equals(name)) {
+    						cp.setCutintermediate(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("total2".equals(name)) {
+    						cp.setTotal2(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("sizewood".equals(name)) {
+    						cp.setSizewood(item.getString("UTF-8"));
+    					}
+    					else if("smalltimber".equals(name)) {
+    						cp.setSmalltimber(item.getString("UTF-8"));
+    					}
+    					else if("shorttimber".equals(name)) {
+    						cp.setShorttimber(item.getString("UTF-8"));
+    					}
+    					else if("firewood".equals(name)) {
+    						cp.setFirewood(item.getString("UTF-8"));
+    					}
+    					else if("applaydate".equals(name)) {
+    						String sttime=item.getString("UTF-8");
+    						try {
+    							d = format.parse(sttime);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date begin = new java.sql.Date(d.getTime()); 
+    						cp.setApplaydate(begin);
+    					}
+    					// 解决普通输入项的数据的中文乱码问题
+    					String value = item.getString("UTF-8");
+    					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
+    					System.out.println(name + "=" + value);
+    				} else {// 如果fileitem中封装的是上传文件
+    						// 得到上传的文件名称，
+    					String filename = item.getName();
+    					System.out.println(filename);
+    					if (filename == null || filename.trim().equals("")) {
+    						continue;
+    					}
+    					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+    					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+    					filename = filename.substring(filename.lastIndexOf("\\") + 1);
+    					//request.setAttribute("filename", filename);
+    					// 获取item中的上传文件的输入流
+    					InputStream in = item.getInputStream();
+    					// 创建一个文件输出流
+    					FileOutputStream outt = new FileOutputStream(savePath + "\\" + filename);
+    					//输出文件保存路径
+    					System.out.println("savePath:" + savePath + "\\" +filename);
+    					//显示文件读取的相对路径
+    					readPath = readPath+ filename;
+    					cp.setCutpath(readPath);
+    					System.out.println("readPath :"+ readPath);
+    					// 创建一个缓冲区
+    					byte buffer[] = new byte[1024];
+    					// 判断输入流中的数据是否已经读完的标识
+    					int len = 0;
+    					// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+    					while ((len = in.read(buffer)) > 0) {
+    						// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+    						outt.write(buffer, 0, len);
+    					}
+    					// 关闭输入流
+    					in.close();
+    					// 关闭输出流
+    					outt.close();
+    					// 删除处理文件上传时生成的临时文件
+    					item.delete();
+    					message = "文件上传成功！";
+    				}
+    			}
+    		} catch (Exception e) {
+    			message = "文件上传失败！";
+    			e.printStackTrace();
+    		}
+    		int flag=cnd.addCutnumApply(cp);
+			if(flag>0) {
+				cutnumfeedback cf=new cutnumfeedback();
+				//cf.setApplyid(applyid);
+				String unablereason="";
+				String replenishpath="";
+				sql="select apply_id from cutnum_application where designum='"+designum+"'";
+				cutnumfeedback apid=cnd.findApplyid(sql);
+				double ap=apid.getApplyid();
+				//System.out.println("...."+apid + "...");
+				cf.setApplyid(ap);
+				cf.setStatus(0);
+				cf.setUnablereason(unablereason);
+				cf.setReplenishpath(replenishpath);
+				int flags=cnd.addcutumapplystatus(cf);
+				if(flags>0) {
+    				message = "文件上传成功！";
+    				request.setAttribute("message", message);
+    				request.getRequestDispatcher("cutnumApply.jsp").forward(request, response);
+    				}
+    			else {
+    				message = "文件上传成功！";
+    				//request.setAttribute("message", message);
+    				request.getRequestDispatcher("cutnumApply.jsp").forward(request, response);
+    			}
+        }
         }
         //查看采伐证申请信息：未审核：0，已通过：1，第一次未通过或者第二次审核未通过:2或5,补充材料:3 ,第二次审核补充材料：4
         else if("seecutnumApply".equals(action)) {
@@ -718,10 +1160,27 @@ public class cutnumServlet extends HttpServlet {
         	str=str.replace("'", "");
         	double number=Double.parseDouble(str);
         	//System.out.println("...."+number + "...");
-        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,small_block_area,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
+        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,designbook,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
         	cutnumApply cutnumApply=cnd.findCutnumApply(sql);
+        	String applyfile=cutnumApply.getCutpath();
+        	applyfile = applyfile.substring(applyfile.lastIndexOf("/") + 1);
+        	request.setAttribute("applyfile", applyfile);
         	request.setAttribute("cutnumApply", cutnumApply);
         	request.getRequestDispatcher("cutnumApplyupdate.jsp").forward(request, response);
+        }
+      //管理经理查看采伐申请明细
+        else if("seeallapplyAssis".equals(action)) {
+        	String str=request.getParameter("applyid");
+        	str=str.replace("'", "");
+        	double number=Double.parseDouble(str);
+        	//System.out.println("...."+number + "...");
+        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,designbook,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
+        	cutnumApply cutnumApply=cnd.findCutnumApply(sql);
+        	String applyfile=cutnumApply.getCutpath();
+        	applyfile = applyfile.substring(applyfile.lastIndexOf("/") + 1);
+        	request.setAttribute("applyfile", applyfile);
+        	request.setAttribute("cutnumApply", cutnumApply);
+        	request.getRequestDispatcher("cutnumApplyupdateAssis.jsp").forward(request, response);
         }
         //规划队修改采伐证申请
         else if("seeallapplyW".equals(action)) {
@@ -729,10 +1188,13 @@ public class cutnumServlet extends HttpServlet {
         	str=str.replace("'", "");
         	double number=Double.parseDouble(str);
         	//System.out.println("...."+number + "...");
-        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,small_block_area,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
+        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,designbook,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
         	cutnumApply cutnumApply=cnd.findCutnumApply(sql);
         	sql="select unable_reson FROM feedback_application where apply_id="+number+"";
         	cutnumfeedback cutnumfeedback=cnd.findCutfeedback(sql);
+        	String applyfile=cutnumApply.getCutpath();
+        	applyfile = applyfile.substring(applyfile.lastIndexOf("/") + 1);
+        	request.setAttribute("applyfile", applyfile);
         	request.setAttribute("cutnumApply", cutnumApply);
         	request.setAttribute("cutnumfeedback", cutnumfeedback);
         	request.getRequestDispatcher("cutnumApplyfeedbackW.jsp").forward(request, response);
@@ -743,10 +1205,16 @@ public class cutnumServlet extends HttpServlet {
         	str=str.replace("'", "");
         	double number=Double.parseDouble(str);
         	//System.out.println("...."+number + "...");
-        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,small_block_area,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
+        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,designbook,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
         	cutnumApply cutnumApply=cnd.findCutnumApply(sql);
-        	sql="select unable_reson FROM feedback_application where apply_id="+number+"";
-        	cutnumfeedback cutnumfeedback=cnd.findCutfeedback(sql);
+        	sql="select unable_reson,replenish_path FROM feedback_application where apply_id="+number+"";
+        	cutnumfeedback cutnumfeedback=cnd.findCutfeedbackP(sql);
+        	String replenish=cutnumfeedback.getReplenishpath();//补充材料路径
+        	replenish = replenish.substring(replenish.lastIndexOf("/") + 1);
+        	String applyfile=cutnumApply.getCutpath();
+        	applyfile = applyfile.substring(applyfile.lastIndexOf("/") + 1);
+        	request.setAttribute("applyfile", applyfile);
+        	request.setAttribute("replenish", replenish);
         	request.setAttribute("cutnumApply", cutnumApply);
         	request.setAttribute("cutnumfeedback", cutnumfeedback);
         	request.getRequestDispatcher("cutnumApplyfeedbackPass.jsp").forward(request, response);
@@ -756,7 +1224,7 @@ public class cutnumServlet extends HttpServlet {
         	String mytype = request.getParameter("type");
         	String designum = request.getParameter("designum");
         	String unablereson = request.getParameter("unablereson");
-        	System.out.println("...."+unablereson + "...");
+        	//System.out.println("...."+unablereson + "...");
         	if(mytype.equals("yes")) {
         		
         		//System.out.println("...."+designum + "...");
@@ -776,6 +1244,7 @@ public class cutnumServlet extends HttpServlet {
         		sql="SELECT f.apply_id from feedback_application as f JOIN cutnum_application as c on f.apply_id=c.apply_id WHERE c.designum='"+designum+"'";
         		cutnumfeedback apid=cnd.findApplyid(sql);
         		double ap=apid.getApplyid();
+        		//System.out.println("...."+ap + "...");
         		cutnumfeedback cf=new cutnumfeedback();
         		if (unablereson!=null)
         		{
@@ -846,7 +1315,7 @@ public class cutnumServlet extends HttpServlet {
             	String quartel = request.getParameter("quartel");
             	String largeblock = request.getParameter("largeblock");
             	String smallblock = request.getParameter("smallblock");
-            	double smallblackarea = Double.parseDouble(request.getParameter("smallblackarea"));
+            	String designbook =request.getParameter("designbook");
             	String origin = request.getParameter("origin");
             	String foresttype = request.getParameter("foresttype");
             	String typeconsist = request.getParameter("typeconsist");
@@ -891,7 +1360,7 @@ public class cutnumServlet extends HttpServlet {
     			cp.setQuartel(quartel);
     			cp.setLargeblock(largeblock);
     			cp.setSmallblock(smallblock);
-    			cp.setSmallblackarea(smallblackarea);
+    			cp.setDesignbook(designbook);
     			cp.setOrigin(origin);
     			cp.setForesttype(foresttype);
     			cp.setTypeconsist(typeconsist);
@@ -933,19 +1402,253 @@ public class cutnumServlet extends HttpServlet {
     			}
     			}
     	 }
+        //
+        else if("updateCutnumapply1".equals(action)) {
+        	cutnumApply cp=new cutnumApply();
+        	cutnumfeedback cf=new cutnumfeedback();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        	Date d = null;
+        	String designum="";
+        	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+    		String savePath = this.getServletContext().getRealPath("/WEB-INF/applyfile");
+    		//得到文件访问的相对路径
+    		String readPath = "../WEB-INF/applyfile/";
+    		File file = new File(savePath);
+    		// 判断上传文件的保存目录是否存在
+    		if (!file.exists() || !file.isDirectory()) {
+    			System.out.println(savePath + "目录不存在，需要创建");
+    			// 创建目录
+    			file.mkdir();
+    		}
+    		// 消息提示
+    		String message = "";
+    		try {
+    			// 使用Apache文件上传组件处理文件上传步骤：
+    			// 1、创建一个DiskFileItemFactory工厂
+    			DiskFileItemFactory factory = new DiskFileItemFactory();
+    			// 2、创建一个文件上传解析器
+    			ServletFileUpload upload = new ServletFileUpload(factory);
+    			// 解决上传文件名的中文乱码
+    			upload.setHeaderEncoding("UTF-8");
+    			// 3、判断提交上来的数据是否是上传表单的数据
+    			if (!ServletFileUpload.isMultipartContent(request)) {
+    				// 按照传统方式获取数据
+    				return;
+    			}
+    			// 4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+    			List<FileItem> list = upload.parseRequest(request);
+    			System.out.println(list.size());
+    			for (FileItem item : list) {
+    				// 如果fileitem中封装的是普通输入项的数据
+    				if (item.isFormField()) {
+    					String name = item.getFieldName();//普通输入项username
+    					if("designum".equals(name)) {
+    						cp.setDesignum(item.getString("UTF-8"));
+    						designum=item.getString("UTF-8");
+    					}
+    					else if("cutreason".equals(name)) {
+    						cp.setCutaddress(item.getString("UTF-8"));
+    					}
+    					else if("cutvillage".equals(name)) {
+    						cp.setCutvillage(item.getString("UTF-8"));
+    					}
+    					else if("quartel".equals(name)) {
+    						cp.setQuartel(item.getString("UTF-8"));
+    					}
+    					else if("largeblock".equals(name)) {
+    						cp.setLargeblock(item.getString("UTF-8"));
+    					}
+    					else if("smallblock".equals(name)) {
+    						cp.setSmallblock(item.getString("UTF-8"));
+    					}
+    					else if("designbook".equals(name)) {
+    						cp.setDesignbook(item.getString("UTF-8"));
+    					}
+    					else if("origin".equals(name)) {
+    						cp.setOrigin(item.getString("UTF-8"));
+    					}
+    					else if("foresttype".equals(name)) {
+    						cp.setForesttype(item.getString("UTF-8"));
+    					}
+    					else if("typeconsist".equals(name)) {
+    						cp.setTypeconsist(item.getString("UTF-8"));
+    					}
+    					else if("managetype".equals(name)) {
+    						cp.setManagetype(item.getString("UTF-8"));
+    					}
+    					else if("forestage".equals(name)) {
+    						cp.setForestage(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cutarea".equals(name)) {
+    						cp.setCutarea(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cuttype".equals(name)) {
+    						cp.setCuttype(item.getString("UTF-8"));
+    					}
+    					else if("cutway".equals(name)) {
+    						cp.setCutway(item.getString("UTF-8"));
+    					}
+    					else if("cutstrength".equals(name)) {
+    						cp.setCutstrength(item.getString("UTF-8"));
+    					}
+    					else if("treetype".equals(name)) {
+    						cp.setTreetype(item.getString("UTF-8"));
+    					}
+    					else if("cutvolume".equals(name)) {
+    						cp.setCutvolume(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("cutnumer".equals(name)) {
+    						cp.setCutnumer(Integer.parseInt(item.getString("UTF-8")));
+    					}
+    					else if("total".equals(name)) {
+    						cp.setTotal(Double.parseDouble(item.getString("UTF-8")));
+    						
+    					}
+    					else if("cutintermediate".equals(name)) {
+    						cp.setCutintermediate(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("total2".equals(name)) {
+    						cp.setTotal2(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("sizewood".equals(name)) {
+    						cp.setSizewood(item.getString("UTF-8"));
+    					}
+    					else if("smalltimber".equals(name)) {
+    						cp.setSmalltimber(item.getString("UTF-8"));
+    					}
+    					else if("shorttimber".equals(name)) {
+    						cp.setShorttimber(item.getString("UTF-8"));
+    					}
+    					else if("firewood".equals(name)) {
+    						cp.setFirewood(item.getString("UTF-8"));
+    					}
+    					else if ("cutpath".equals(name)) {
+    						String cutpath=readPath + item.getString("UTF-8");
+    						cp.setCutpath(cutpath);
+    						System.out.println("cutpath:" + cutpath);
+    					}
+    					else if("applaydate".equals(name)) {
+    						String sttime=item.getString("UTF-8");
+    						try {
+    							d = format.parse(sttime);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date begin = new java.sql.Date(d.getTime()); 
+    						cp.setApplaydate(begin);
+    					}
+    					// 解决普通输入项的数据的中文乱码问题
+    					String value = item.getString("UTF-8");
+    					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
+    					System.out.println(name + "=" + value);
+    				} else {// 如果fileitem中封装的是上传文件
+    						// 得到上传的文件名称，
+    					String filename = item.getName();
+    					System.out.println(filename);
+    					if (filename == null || filename.trim().equals("")) {
+    						continue;
+    					}
+    				
+    					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+    					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+    					filename = filename.substring(filename.lastIndexOf("\\") + 1);
+    					//request.setAttribute("filename", filename);
+    					// 获取item中的上传文件的输入流
+    					InputStream in = item.getInputStream();
+    					// 创建一个文件输出流
+    					FileOutputStream outt = new FileOutputStream(savePath + "\\" + filename);
+    					//输出文件保存路径
+    					System.out.println("savePath:" + savePath + "\\" +filename);
+    					//显示文件读取的相对路径
+    					readPath = readPath+ filename;
+    					cf.setReplenishpath(readPath);//补充材料的路径
+    					System.out.println("readPath :"+ readPath);
+    					// 创建一个缓冲区
+    					byte buffer[] = new byte[1024];
+    					// 判断输入流中的数据是否已经读完的标识
+    					int len = 0;
+    					// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+    					while ((len = in.read(buffer)) > 0) {
+    						// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+    						outt.write(buffer, 0, len);
+    					}
+    					// 关闭输入流
+    					in.close();
+    					// 关闭输出流
+    					outt.close();
+    					// 删除处理文件上传时生成的临时文件
+    					item.delete();
+    					message = "文件上传成功！";
+    				}
+    			}
+    		} catch (Exception e) {
+    			message = "文件上传失败！";
+    			e.printStackTrace();
+    		}
+    		sql="select apply_id from cutnum_application where designum='"+designum+"'";
+			cutnumfeedback apid=cnd.findApplyid(sql);
+			double ap=apid.getApplyid();
+			int flag=cnd.updateCutnumApply(ap,cp);//更新采伐证申请表
+			if(flag>0) {
+				
+    			//sql="select apply_id from cutnum_application where designum like '%"+designum+"%'";
+				//cutnumfeedback apid=cnd.findApplyid(sql);
+				//double ap=apid.getApplyid();
+				//cf.setApplyid(ap);
+				cf.setStatus(4);//提交补充可办理
+    			int flagf=cnd.updateCutnumApplypath(ap, cf);
+    			if(flagf>0) {
+    				message = "文件上传成功！";
+    				request.setAttribute("message", message);
+    				request.getRequestDispatcher("cutnumApplyfeedback.jsp").forward(request, response);
+    				}
+    			else {
+    				message = "文件上传成功！";
+    				request.setAttribute("message", message);
+    				request.getRequestDispatcher("cutnumApplyfeedback.jsp").forward(request, response);
+    			}
+			}
+        }
         //管理部门审核以补充材料的申请书
         else if("seeallapplyBu".equals(action)) {
         	String str=request.getParameter("applyid");
         	str=str.replace("'", "");
         	double number=Double.parseDouble(str);
-        	//System.out.println("...."+number + "...");
-        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,small_block_area,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
+        	//System.out.println("...."+number + "...");small_block_area
+        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,designbook,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
         	cutnumApply cutnumApply=cnd.findCutnumApply(sql);
+        	String applyfile=cutnumApply.getCutpath();
+        	applyfile = applyfile.substring(applyfile.lastIndexOf("/") + 1);
         	sql="select unable_reson,replenish_path FROM feedback_application where apply_id="+number+"";
         	cutnumfeedback cutnumfeedback=cnd.findCutfeedbackP(sql);
+        	String replenish=cutnumfeedback.getReplenishpath();
+        	replenish = replenish.substring(replenish.lastIndexOf("/") + 1);
+        	request.setAttribute("replenish", replenish);
+        	request.setAttribute("applyfile", applyfile);
         	request.setAttribute("cutnumApply", cutnumApply);
         	request.setAttribute("cutnumfeedback", cutnumfeedback);
         	request.getRequestDispatcher("cutnumApplyshenhe.jsp").forward(request, response);
+        }
+      //管理经理审核以补充材料的申请书
+        else if("seeallapplyBuA".equals(action)) {
+        	String str=request.getParameter("applyid");
+        	str=str.replace("'", "");
+        	double number=Double.parseDouble(str);
+        	//System.out.println("...."+number + "...");small_block_area
+        	sql="SELECT designum,cut_reson,cut_adress,cut_village,quartel,larg_block,small_block,designbook,origin,forest_type,type_consist,mange_type,forest_age,cut_area,cut_type,cut_way,cut_strength,tree_type,cut_volume,cut_num,total,cut_intermediate,total2,size_wood,small_timber,short_timber,firewood,cutpath,applay_date from cutnum_application where apply_id="+number+"";
+        	cutnumApply cutnumApply=cnd.findCutnumApply(sql);
+        	String applyfile=cutnumApply.getCutpath();
+        	applyfile = applyfile.substring(applyfile.lastIndexOf("/") + 1);
+        	sql="select unable_reson,replenish_path FROM feedback_application where apply_id="+number+"";
+        	cutnumfeedback cutnumfeedback=cnd.findCutfeedbackP(sql);
+        	String replenish=cutnumfeedback.getReplenishpath();
+        	replenish = replenish.substring(replenish.lastIndexOf("/") + 1);
+        	request.setAttribute("replenish", replenish);
+        	request.setAttribute("applyfile", applyfile);
+        	request.setAttribute("cutnumApply", cutnumApply);
+        	request.setAttribute("cutnumfeedback", cutnumfeedback);
+        	request.getRequestDispatcher("cutnumApplyshenheAssis.jsp").forward(request, response);
         }
         else if("findCutnumF".equals(action)) {
         	String year=request.getParameter("year");
@@ -1000,8 +1703,11 @@ public class cutnumServlet extends HttpServlet {
         	str=str.replace("'", "");
         	//double number=Double.parseDouble(str);
         	//System.out.println("...."+str + "...");
-        	sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum from cutnum where cutnum='"+str+"'";
+        	sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum,cutnumfile from cutnum where cutnum='"+str+"'";
         	cutnum cutnum = cnd.findCodeSingle(sql);
+        	String cutnumfile=cutnum.getCutnumfile();
+        	cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);
+        	request.setAttribute("cutnumfile", cutnumfile);
         	request.setAttribute("cutnum", cutnum);
         	request.getRequestDispatcher("cutareaAllotupdate.jsp").forward(request, response);	
         }
@@ -1011,7 +1717,7 @@ public class cutnumServlet extends HttpServlet {
         	String rebate = request.getParameter("project");
         	JSONArray jb = JSONArray.fromObject(rebate);
         	String each="";
-        	//System.out.println("...."+jb + "...");
+        	System.out.println("...."+jb + "...");
         	for(int i=0;i<jb.length();i++)
         	{
         		each = jb.getString(i);

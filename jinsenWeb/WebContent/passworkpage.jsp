@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>各部门查看已完成的工单</title>
+<title>录入检尺数据页面</title>
 <!-- Custom CSS -->
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -116,13 +116,13 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"><a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <main>
     <article>
     <div>
     <div class="find-top">
-        <p class="p-tail"><i class="i-tail"></i> 请选择你要所要进行的操作。</p>
+        <p class="p-tail"><i class="i-tail"></i> 请选择工单录入木材数据。</p>
     </div>
     <div class="table-con">
         <table id="table1" class="table-hover"></table>

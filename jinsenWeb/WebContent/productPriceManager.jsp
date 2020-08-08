@@ -273,7 +273,7 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="salaryper.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 管理员首页</a></div>
+    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <main>
     <article class="artlce">
@@ -361,8 +361,7 @@ String now = df.format(d); %>
         </table>
     </div>
     <div style="text-align: center">
-    <button class="add-but"><i class="glyphicon glyphicon-edit" onclick="mysave()"></i> 提交 </button>
-    <button class="add-del"><i class="glyphicon glyphicon-remove"></i>取消</button>
+    <button class="add-but" type="button" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i> 提交 </button>
     <button class="add-but" id="btnPrint"><i class="glyphicon glyphicon-edit"></i> 打印</button>
     </div>
     <div class="table-con">

@@ -14,6 +14,7 @@
 <meta charset="UTF-8">
    <title>输入销售合同页面</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="css/bootstrap-2.0.3.css" rel="stylesheet">
     <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
     <link rel="stylesheet" href="css/registe.css"/>
@@ -228,14 +229,13 @@ b=(List<salecontract>)request.getAttribute("salecontractTree");
           <div class="widget-content">
             <ul class="unstyled">
               <li> <span class="icon24 icomoon-icon-arrow-up-2 green"></span><%=c.getTotalStere()/c.getTreenumber()*100 %>%<span class="pull-right strong"><%=c.getTreenumber() %></span>
-                <div class="progress progress-striped ">
-                  <div style="width: 81%;" class="bar"></div>
+                <div class="progress progress-striped active">
+                  <div style="width: <%=c.getTotalStere()/c.getTreenumber()*100 %>%;" class="bar"></div>
                 </div>
               </li>
             </ul>
           </div>
         </div>
-
 </main>
 </div>
 <script src="js/jquery.js"></script>

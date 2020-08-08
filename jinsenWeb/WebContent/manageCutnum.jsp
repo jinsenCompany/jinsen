@@ -153,7 +153,7 @@ function inputNull(form){
 		         class="i-tail"></i> 该页面主要是管理部门上传采伐证材料</p>
 		  </div>
 		    <div class="find-top1">
-		    <form onSubmit="return inputNull(this)" action="cutnumServlet?action=addcutnum" method="POST">
+		    <form id="myform" action="cutnumServlet?action=addcutnum1" method="POST" enctype="multipart/form-data">
 		    <div class="top" id="divprint" >
 		    <table class="biao" >
 				<caption class="book_h01">录入采伐证材料</caption>
@@ -166,7 +166,7 @@ function inputNull(form){
 		       <tr>
 				   <td id="a">编号</td>
 				   <td id="b"><input type="text" name="numbern" id="numbern"></td>
-				   <td id="a">采伐公司</td>
+				   <td id="a">林权单位</td>
 				   <td id="b"><input type="text" name="company" id="company"></td>
 			   </tr>
 			   <tr>

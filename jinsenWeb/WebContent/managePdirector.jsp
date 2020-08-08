@@ -111,7 +111,6 @@
 </div>
 <!--close-Header-part--> 
 
-
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
   <ul class="nav">
@@ -133,10 +132,12 @@
         <li><a class="sOutbox" title="" href="#"><i class="icon-arrow-up"></i> 发件箱</a></li>
         <li class="divider"></li>
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
+        <li></li>
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -162,7 +163,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="managePdirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="managePdirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->    
 
@@ -189,10 +190,6 @@
 <!--end-main-container-part-->
 
 <!--Footer-part-->
-
-<div class="row-fluid">
-  <div id="footer" class="span12"> 2020 ; JInsen. <a href="#">JInsen.in</a> </div>
-</div>
 
 <!--end-Footer-part-->
 

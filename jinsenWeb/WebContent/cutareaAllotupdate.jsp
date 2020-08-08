@@ -357,10 +357,7 @@ tr {
 						</tr>
 						<tr>
 							<td id="a">上传照片</td>
-							<td id="b"><input class="filepath" onchange="changepic(this)"
-								type="file" id="pic" name="pic" ></td>
-							<td id="a">上传文件</td>
-							<td id="b"><input  type="file" name="da" id="da"></td>
+							<td>${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
 						</tr>
 					</table>
 				</div>

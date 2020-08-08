@@ -22,7 +22,20 @@ body,td,th {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 18px;c
 .table1{width:60%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 td,th{text-align:center;vertical-align:middle}
    tr{text-align:center}
-    .table_p{line-height: 28px;border-bottom: 1px #d0e6ec solid;position: relative;margin-bottom: 10px;
+    .table_p{line-height: 28px;border-bottom: 1px #d0e6ec solid;position: relative;margin-bottom: 10px;}
+    .p-tail {
+    padding: 10px;
+    font-size: 12px;
+    color: #8a6d3b;
+}
+.i-tail {
+    width: 14px;
+    height: 11px;
+    position: relative;
+    display: inline-block;
+    background-image: url(../img/listicon.jpg);
+    top: 1px;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -103,11 +116,11 @@ function inputNull(form){
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <div class="top">
-   <p class="table_p"><span>2 显示客户信息</span></p>
+   <p class="p-tail"><i class="i-tail"></i>显示客户信息</p>
 <div class="table-con">
         <table id="table1" class="table-style"></table>
     </div>

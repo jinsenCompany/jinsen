@@ -205,7 +205,7 @@ function inputNull(form){
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -215,8 +215,9 @@ function inputNull(form){
     </div>
     <div class="find-top1">
     <h1 class="book_h01" align="top">创建工程包</h1>
-    <form onSubmit="return inputNull(this)" action="cutnumServlet?action=addprojectid" method="POST">
     <div class="top" id="divprint">
+    <form action="cutnumServlet?action=addprojectid" method="POST">
+    
     <p class="htv"><span>请输入工程包信息:</span></p>
     <br>
     <br>
@@ -235,17 +236,16 @@ function inputNull(form){
     <div class="table-con">
         <table id="table1" class="table-style"></table>
     </div>
-    
-    </div>
-    <div class="1" ; style="text-align:center">
+    </form> 
+    <div class="1" style="text-align:center">
 
-		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
-		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
+		    <span  style="text-align: center;"><button style="width:160px" class="btn"  onclick="addproject()" value="保存工程包">保存工程包</button></span>
+		    
 		 </div>
     <div style="clear: both;padding-bottom: 40px"></div>
-    </form> 
-
     </div>
+    </div>
+
 
 </main>
 </div>

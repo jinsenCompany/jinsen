@@ -13,7 +13,7 @@ public class cutnumApply {
 	private String quartel;
 	private String largeblock;
 	private String smallblock;
-	private double smallblackarea;
+	private String designbook;
 	private String origin;
 	private String foresttype;
 	private String typeconsist;
@@ -82,12 +82,6 @@ public class cutnumApply {
 	}
 	public void setSmallblock(String smallblock) {
 		this.smallblock = smallblock;
-	}
-	public double getSmallblackarea() {
-		return smallblackarea;
-	}
-	public void setSmallblackarea(double smallblackarea) {
-		this.smallblackarea = smallblackarea;
 	}
 	public String getOrigin() {
 		return origin;
@@ -216,6 +210,13 @@ public class cutnumApply {
 	public void setApplaydate(Date applaydate) {
 		this.applaydate = applaydate;
 	}
+	public String getDesignbook() {
+		return designbook;
+	}
+	public void setDesignbook(String designbook) {
+		this.designbook = designbook;
+	}
+	
 
 
 }

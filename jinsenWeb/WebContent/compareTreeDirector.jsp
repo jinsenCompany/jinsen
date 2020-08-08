@@ -13,6 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <title>货场管理核实装车情况</title>
+    <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
     <link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
     <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
@@ -154,9 +155,9 @@ t=(List<tree>)request.getAttribute("tree");
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>审核</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="yardMoneryDirector.jsp">费用结算</a></li>
+        <li><a href="goodsYardCost.jsp">费用结算</a></li>
         <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
       </ul>
      </li>
@@ -168,8 +169,10 @@ t=(List<tree>)request.getAttribute("tree");
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
+     <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
+   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i> <span>货场费用报表</span></a> </li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -186,8 +189,7 @@ t=(List<tree>)request.getAttribute("tree");
         <p class="p-tail"><i
          class="i-tail"></i> 该页面主要是货场管理员上传装车情况</p>
     </div>
-    <!--  <form  id="myForm" action="pictureServlet?action=treecompare" method="post">-->
-    <form action="">
+    <form  id="myForm" action="pictureServlet?action=treecompare2" method="post" name="myForm" enctype="multipart/form-data">
     <div class="top">
     <p class="table_p"><span>采伐工单信息</span></p>
       
@@ -195,7 +197,8 @@ t=(List<tree>)request.getAttribute("tree");
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">
+                           <input name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=o.getWorkid()%>" pattern="#0.##"/>" />
+                          <%--  <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">--%>
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
@@ -269,11 +272,11 @@ t=(List<tree>)request.getAttribute("tree");
                 <p class="table_p"><span>上传装车照片</span></p>
           <table class="top-table">
         <tr><td class="top-table-label">上传照片</td><td colspan="5"><input class="filepath" type="file" id="pic" name="pic"></td><td><button type="button" class="btn" style="float:right" data-toggle="modal" data-target="#myModal_1" onclick="a()">查看图片</button></td></tr>
-        <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da"></td></tr>
-         <!--  <tr><td><input type="submit" name="submit" class="btn" value="保存"></td></tr>-->
+        <!--  <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da"></td></tr>-->
+         <tr><td><input type="submit" name="submit" class="btn" value="保存"></td></tr>
     </table>
     </div>
-    <div class="but_p" style="float:center;"><button class="but_save" type="button" onclick="treecompare()" value="保存">保存</button></div>
+    <!--<div class="but_p" style="float:center;"><button class="but_save" type="button" onclick="treecompare()" value="保存">保存</button></div>-->
     </form>
 <!-- 显示最近添加的员工 -->
     <div class="table-con">

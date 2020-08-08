@@ -283,7 +283,7 @@ function inputNull(form){
 <!--main-container-part-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="Surveyor.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 检尺员首页</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
     <article class="artlce">
         <div class="book_con01" id="divprint">
@@ -329,7 +329,7 @@ function inputNull(form){
                <div style="float:left;"><button class="btn btn-warning" type="button"  onclick="aaad()" value="添加">添加</button>
                <button class="btn btn-default" type="button"  onclick="dddelete()" value="删除">删除</button>
           <button class="btn btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button>
-          <button class="btn btn-default" type="button"  onclick="treeAdd()" value="提交">提交</button>
+          <button style="width:160px" class="btn btn-default" type="button"  onclick="treeAdd()" value="提交木材信息">提交木材信息</button>
           </div>
                </tr>
                         </table>     

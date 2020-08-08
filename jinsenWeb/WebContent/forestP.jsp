@@ -30,7 +30,7 @@
             method: "get",
             striped: true,
             singleSelect: false,
-            url: "workpageSevrlet?action=writepage&type=pass",
+            url: "workpageSevrlet?action=writepage&type=passall",
             data:{},
             dataType: "json",
             pagination: true, //分页
@@ -126,16 +126,17 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
-<%-- 
-<div id="user-nav" class="navbar navbar-inverse">
+
+<%-- <div id="user-nav" class="navbar navbar-inverse">
 <table  class="icon-user">
-<tr><td><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %></td></tr>
+<tr><td><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</td></tr>
 </table>
 </div>
---%>  
+  --%>
 
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
@@ -169,7 +170,7 @@
 <div id="content"> 
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <!--Action boxes-->

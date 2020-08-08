@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>     
 <%@ page import="jinshen.bean.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
@@ -177,7 +177,7 @@ t=(List<tree>)request.getAttribute("tree");
 <!--sidebar-menu-->
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
@@ -197,7 +197,7 @@ t=(List<tree>)request.getAttribute("tree");
 				    <td  >发货单位</td>
 					<td><input type="text" name="fahuodanwei" id="fahuodanwei" ></td>
 					<td  >工单号</td>
-					<td><input  type="text" name="workid" id="workid" value="<%=c.getWorkid()%>"></td>
+					<td><input  type="text" name="workid" id="workid" maxlength="32" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>"></td>
 					<td >采伐证号</td>
 					<td><input type="text" name="cutNum" id="cutNum" value="<%=c.getCutNum()%>"></td>
 
@@ -207,7 +207,7 @@ t=(List<tree>)request.getAttribute("tree");
 					<td><input type="text" name="shouhuodanwei" id="shouhuodanwei" ></td>
 			
 				   <td >时间</td>
-		    		<td><input type="date" name="cutdate" id="cutdate" value="<%=c.getCutdate()%>"></td>
+		    		<td><input type="text" name="cutdate" id="cutdate" value="<%=c.getCutdate()%>"></td>
 				   <td >采伐地点</td>
 				   <td><input type="text" name="cutsite" id="cutsite" value="<%=c.getCutSite()%>"></td>
 			   </tr>

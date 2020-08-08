@@ -96,7 +96,7 @@ border-color: #0d7adf;
                     valign: 'middle'
                 },
                 {
-                    title: '设计采伐证号',
+                    title: '申请书号',
                     field: 'designum',
                     align: 'center',
                     valign: 'middle'
@@ -124,7 +124,7 @@ border-color: #0d7adf;
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapply&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>未审核</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapply&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未审核</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -185,7 +185,7 @@ border-color: #0d7adf;
                     valign: 'middle'
                 },
                 {
-                    title: '设计采伐证号',
+                    title: '申请书号',
                     field: 'designum',
                     align: 'center',
                     valign: 'middle'
@@ -213,7 +213,7 @@ border-color: #0d7adf;
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapplyPass&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>全部申请</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapplyPass&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看全部申请</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -278,7 +278,7 @@ border-color: #0d7adf;
                     valign: 'middle'
                 },
                 {
-                    title: '设计采伐证号',
+                    title: '申请书号',
                     field: 'designum',
                     align: 'center',
                     valign: 'middle'
@@ -306,7 +306,7 @@ border-color: #0d7adf;
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapply&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>未审核</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapply&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未审核</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -370,7 +370,7 @@ border-color: #0d7adf;
                     valign: 'middle'
                 },
                 {
-                    title: '设计采伐证号',
+                    title: '申请书号',
                     field: 'designum',
                     align: 'center',
                     valign: 'middle'
@@ -398,7 +398,7 @@ border-color: #0d7adf;
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapplyPass&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>已通过</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapplyPass&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看已通过</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -459,7 +459,7 @@ border-color: #0d7adf;
                     valign: 'middle'
                 },
                 {
-                    title: '设计采伐证号',
+                    title: '申请书号',
                     field: 'designum',
                     align: 'center',
                     valign: 'middle'
@@ -487,7 +487,7 @@ border-color: #0d7adf;
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapplyBu&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>未通过</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapplyPass&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未通过</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -548,7 +548,7 @@ border-color: #0d7adf;
                     valign: 'middle'
                 },
                 {
-                    title: '设计采伐证号',
+                    title: '申请书号',
                     field: 'designum',
                     align: 'center',
                     valign: 'middle'
@@ -576,7 +576,7 @@ border-color: #0d7adf;
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapplyBu&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>审核补充材料申请书</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapplyBu&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看补充材料申请</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -587,6 +587,7 @@ border-color: #0d7adf;
     </script>   
 </head> 
 <body>
+${message}
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台</a></h1>
 </div>
@@ -624,10 +625,10 @@ border-color: #0d7adf;
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li ><a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li>
-    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
-    <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
+    <li class="active"><a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li>
+    <li><a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
+    <li><a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
+    <li><a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -636,7 +637,7 @@ border-color: #0d7adf;
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <main>
   <div class="find-top1" style="vertical-align:middle">

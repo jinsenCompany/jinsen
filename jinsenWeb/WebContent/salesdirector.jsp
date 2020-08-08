@@ -49,6 +49,7 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -79,8 +80,8 @@
   <div class="container-fluid">
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lb span3"> <a href="salaryContractList.jsp"> <i class="icon-dashboard"></i>合同进度 </a> </li>
-        <li class="bg_lg span3"> <a href="saleCalloutOrderShenhe.jsp"><i class="icon-signal"></i> <span>审批调令</span></a></li>
+        <li class="bg_lb span3"><a href="salaryContractList.jsp"><i class="icon-dashboard"></i>合同进度 </a> </li>
+        <li class="bg_lg span3"><a href="saleCalloutOrderShenhe.jsp"><i class="icon-signal"></i><span>审批调令</span></a></li>
       </ul>
     </div>
 <!--End-Action boxes-->    

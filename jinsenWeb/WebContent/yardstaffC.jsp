@@ -55,6 +55,7 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -67,6 +68,7 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
+     <li><a href="goodsYardCost2.jsp"><i class="icon icon-home"></i><span>费用结算</span></a></li>
     <li><a href="yardMonery.jsp"><i class="icon icon-home"></i> <span>费用统计</span></a> </li>
   </ul>
 </div>
@@ -80,22 +82,21 @@
   </div>
 <!--End-breadcrumbs-->
 
-<h4 align="center">货场费用统计表</h4>
-		<table border="" cellspacing="" cellpadding="" style="margin-left:auto; margin-right:auto;">			
-			<tr><td colspan="15">货场</td><!--<td></td><!--<td></td><!--<td></td><!--<td></td><!--<td></td><!--<td></td><!--<td></td><!--<td></td><!--<td></td>--><!--<td></td>--><!--<td></td>--><!--<td></td>--><!--<td></td>--><!--<td></td>--></tr>
-			<tr><td>序号</td><td>项目</td><td>1月</td><td>2月</td><td>3月</td><td>4月</td><td>5月</td><td>6月</td><td>7月</td><td>8月</td><td>9月</td><td>10月</td><td>11月</td><td>12月</td><td>合计</td></tr>
-			<tr><td>1</td><td>钩机整堆</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>2</td><td>人工整堆</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>3</td><td>装车工资</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>4</td><td>场地维护</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>5</td><td>场地资金</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>6</td><td>看护工资</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>7</td><td>电费</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>8</td><td>设备维护</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>9</td><td>运费</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td>10</td><td>检尺费</td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td><td><input type="text" name="gj" id="gj" value="" /></td></tr>
-			<tr><td colspan="2">小计</td><!--<td >小计</td>--><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-		</table>
+<div>
+    <div class="find-top">
+        <p class="p-tail"><i class="i-tail"></i> 本页面是货场费用台账。</p>
+    </div>
+    <!--  <div class="find-top1">
+    <table class="top-table">
+     <tr><td class="top-table-label">年份：</td><td><select id="sa_year" name="sa_year" onChange="change_year()" readonly unselectable="on"></select></tr>
+     <tr><td colspan="10" style="text-align: center"><button class="add-but" onclick="table1()"><i class="glyphicon glyphicon-edit"></i>库存盘点表</button></td></tr>
+      </table>
+    </div>-->
+    <div class="table-con">
+    <div align="center"></div>
+        <table id="table1" class="table-style"></table>
+    </div>
+   </div> 
 </div>
 
 <!--end-main-container-part-->
@@ -125,7 +126,117 @@
 <script src="js/matrix.popover.js"></script> 
 <script src="js/jquery.dataTables.min.js"></script> 
 <script src="js/matrix.tables.js"></script> 
-
+ <script src="js/jquery.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script>
+$(function(){
+    table1();
+})
+    function table1()
+    {
+    	$('#table1').bootstrapTable('destroy');
+    	$('#table1').bootstrapTable({
+            method: "post",
+            striped: false,
+            theadClasses: "thead-blue",//设置thead-blue为表头样式
+    	    classes: "table table-bordered table-striped table-sm table-dark", 
+            singleSelect: false,
+            cache: false,//缓存
+            url: "workpageSevrlet?action=goodsyardList",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search:true, //显示搜索框
+            showColumns: true,                  //是否显示所有的列
+            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            showRefresh: true,                  //是否显示刷新按钮
+            contentType: "application/x-www-form-urlencoded",
+            exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
+            showExport: true,  //是否显示导出按钮    
+            //buttonsAlign:"right",  //按钮位置    
+            exportTypes:['excel','xlsx','csv'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
+            exportOptions:{
+                // ignoreColumn: [0,1],  //忽略某一列的索引
+                fileName: "货场费用台账",  //文件名称设置
+                worksheetName: 'sheet1',  //表格工作区名称
+                tableName: "货场费用台账",
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
+            },
+            columns: [
+            	[
+            		{
+            			"title": "货场费用台账",
+                        "font-size":"100px",
+                        "halign":"center",
+                        "align":"center",
+                        "valign": "middle",
+                        "colspan": 9
+            		}
+            	],
+            	[
+                {
+                    title: "时间",
+                    field: 'luRuDate',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: "货场",
+                    field: 'yard',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                	 title: "项目",
+                     field: 'feetype',
+                     align: 'center',
+                     valign: 'middle'
+                },
+            	{
+                title: "数量",
+                field: 'num',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '单位',
+                field: 'unit',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '单价',
+                field: 'unitprice',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '金额',
+                field: 'price',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '备注',
+                field: 'remarks',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: "录入人员",
+                field: 'luruperson',
+                align: 'center',
+                valign: 'middle'
+            }
+            ]
+            ]
+        });
+    }
+    </script> 
 <script type="text/javascript">
   // This function is called from the pop-up menus to transfer to
   // a different page. Ignore if the value returned is a null string:

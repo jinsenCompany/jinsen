@@ -87,6 +87,7 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -111,7 +112,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->    
 
@@ -276,7 +277,7 @@ function resetMenu() {
                 align: 'center',
                 valign: 'middle'
             },
-            {
+            /*{
                 title: '进度',
                 field: 'opr',
                 width: 180,
@@ -287,7 +288,7 @@ function resetMenu() {
                     //var  d = '<a href="cutnumServlet?action=watchProgress&cutnumid=\''+ row.cutnumid + '\'"><button  href = "javascript:void(0)" target="_blank" onclick = "openDialog()" data-id="98" class="btn btn-xs btn-primary">进度</button></a>';
                     return  d;
                 }
-            },
+            },*/
             {
                 title: '查看',
                 field: 'opr',

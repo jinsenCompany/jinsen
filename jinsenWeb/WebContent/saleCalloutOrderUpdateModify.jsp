@@ -329,7 +329,7 @@ b=(List<saleCalloutOrder>)request.getAttribute("saleOrdertree");
        </tbody>
     </table>
     <p class="table_p"><span>树材信息录入</span></p>
-    <table id="table5" style="width:2000px;height:auto;margin-left:center; margin-right:center">
+    <table id="table5" style="width:1500px;height:auto;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse">
      <tbody id="ttt5">
       <% int i=1;%>
         <c:forEach items="${saleOrdertree}" var="b">      

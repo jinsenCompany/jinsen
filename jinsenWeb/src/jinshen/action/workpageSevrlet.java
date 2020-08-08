@@ -1,6 +1,9 @@
 package jinshen.action;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,14 +25,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jinshen.bean.CancellingStockTable;
 import jinshen.bean.Laowu;
 import jinshen.bean.codejson;
 import jinshen.bean.compareTree;
 import jinshen.bean.compareVolume;
+import jinshen.bean.cutnum;
 import jinshen.bean.cutnumStatus;
 import jinshen.bean.cutnumfeedback;
+import jinshen.bean.goodsYardCost;
 import jinshen.bean.inyard;
 import jinshen.bean.managesdatecard;
 import jinshen.bean.tree;
@@ -454,6 +464,13 @@ public class workpageSevrlet extends HttpServlet {
             	List<workpage> work=wpd.findsinglework(sql);
             	mapper.writeValue(response.getWriter(), work);
         	}
+        	//全部通过通过
+        	else if(mytype.equals("passall"))
+        	{
+        		sql="select w.workid,w.cutNum,w.cutdate,w.cutSite,w.forester from workpage as w JOIN workpage_status on w.workid=workpage_status.workid WHERE workpage_status.workid_status=9";
+            	List<codejson> work=wpd.findcodeJson(sql);
+            	mapper.writeValue(response.getWriter(), work);
+        	}
         	//删除
         	else if(mytype.equals("alldelete"))
         	{
@@ -540,7 +557,21 @@ public class workpageSevrlet extends HttpServlet {
         			}
         	}
         }
-        //伐区监管员查看工单信息
+        //经理查看工单信息
+    	else if(action.equals("faquworkpageM"))
+    	{
+    		String str=request.getParameter("workid");
+    		str=str.replace("'", "");
+    		double workid=Double.parseDouble(str);
+    		sql="select * from workpage where workid="+workid+"";
+    		workpage workpage=wpd.findCodeSingle(sql);
+    		sql="SELECT reject_reason FROM workpage_status join workpage on workpage_status.workid=workpage.workid WHERE workpage_status.workid="+workid+"";
+    		workpageStatus workpageStatus=wpd.findWapStatus(sql);
+    		request.setAttribute("workpage", workpage);
+    		request.setAttribute("workpageStatus", workpageStatus);
+		    request.getRequestDispatcher("workpageUpdateFaquManager.jsp").forward(request, response);
+    	}
+      //伐区监管员查看工单信息
     	else if(action.equals("faquworkpage"))
     	{
     		String str=request.getParameter("workid");
@@ -613,7 +644,67 @@ public class workpageSevrlet extends HttpServlet {
     			ws.setWorkidstatus(3);
     			int flag1=wpd.updateWorkpagestatus1(workid, ws);
     			if(flag1>0) {
-    				out.print("更新成功");
+    				//out.print("更新成功");
+    				String message="更新成功";
+    				request.setAttribute("message", message);
+    			    request.getRequestDispatcher("message.jsp").forward(request, response);
+    			}
+    		}
+        	}
+    	   else
+    	   {
+    	      flag=wpd.addWorkPage(cp);
+    	   }
+        }
+      //伐区经理修改被信息中心退回的工单
+    	else if("updateWorkpageFaquM".equals(action))
+        {
+        	double workid=Double.parseDouble(request.getParameter("workid"));
+        	System.out.println("...." +workid + "...");
+        	String cutNum = request.getParameter("cutnum");
+        	String cutdate=request.getParameter("cutdate");
+        	String cutSite=request.getParameter("cutsite");
+        	String checkSite=request.getParameter("checksite");
+        	String carNumber=request.getParameter("carnumber");
+        	String gpsinfo=request.getParameter("gpsinfo");
+        	String forester=request.getParameter("forester");
+        	String loadphoto=request.getParameter("loadphoto");
+        	//double batchNum=Double.parseDouble(request.getParameter("batchNum"));
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date d = null;
+			try {
+				d = format.parse(cutdate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			java.sql.Date cuttime = new java.sql.Date(d.getTime()); 
+			workpage cp=new workpage();
+			//cp.setWorkid(workid);
+			cp.setCutNum(cutNum);
+			cp.setCutdate(cuttime);
+			cp.setCutSite(cutSite);
+			cp.setCheckSite(checkSite);
+			cp.setCarNumber(carNumber);
+			cp.setGpsinfo(gpsinfo);
+			cp.setLoadphoto(loadphoto);
+			cp.setForester(forester);
+			cp.setBatchNum(1);
+		    sql = "select count(*) from workpage where workid="+cp.getWorkid()+"";
+		    int flag=0;
+		    double f=wpd.findcount(sql);
+        	if(f>0) {
+    		     flag=wpd.updateWorkPageFa(cp,workid);
+    		if (flag>0)
+    		{
+    			workpageStatus ws=new workpageStatus();
+    			ws.setWorkidstatus(3);
+    			int flag1=wpd.updateWorkpagestatus1(workid, ws);
+    			if(flag1>0) {
+    				//out.print("更新成功");
+    				String message="更新成功";
+    				request.setAttribute("message", message);
+    			    request.getRequestDispatcher("message.jsp").forward(request, response);
     			}
     		}
         	}
@@ -763,20 +854,23 @@ public class workpageSevrlet extends HttpServlet {
     		String signingtime = request.getParameter("signingtime");
     		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date d = null;
+			Date dd=null;
 			try {
 				d = format.parse(signingtime);
+				dd = format.parse(borndate);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 			java.sql.Date signingdate = new java.sql.Date(d.getTime());
+			java.sql.Date borntime = new java.sql.Date(dd.getTime());
 			String cooperationyear = request.getParameter("cooperationyear");
 			String team = request.getParameter("team");
 			String yeji = request.getParameter("yeji");
         	managesdatecard cp=new managesdatecard();
         	cp.setOwnername(ownername);
 			cp.setSex(sex);
-			cp.setBorndate(borndate);
+			cp.setBorndate(borntime);
 			cp.setIdnumber(idnumber);
 			cp.setBornplace(bornplace);
 			cp.setEnterprisename(enterprisename);
@@ -803,6 +897,184 @@ public class workpageSevrlet extends HttpServlet {
         		out.print("添加失败");
         	}
     	}
+        //上传施工方资料
+    	else if(action.equals("managesdateCard1")) {
+    		managesdatecard cp = new managesdatecard();//采伐证信息
+        	String ownername="";
+        	double volume=0;
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+        	Date d = null;
+			Date dd = null;
+			Date ddd=null;
+        	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+    		String savePath = this.getServletContext().getRealPath("/WEB-INF/managesCardfile");//施工方资料
+    		//得到文件访问的相对路径
+    		String readPath = "../WEB-INF/managesCardfile/";
+    		File file = new File(savePath);
+    		// 判断上传文件的保存目录是否存在
+    		if (!file.exists() || !file.isDirectory()) {
+    			System.out.println(savePath + "目录不存在，需要创建");
+    			// 创建目录
+    			file.mkdir();
+    		}
+    		// 消息提示
+    		String message = "";
+    		try {
+    			// 使用Apache文件上传组件处理文件上传步骤：
+    			// 1、创建一个DiskFileItemFactory工厂
+    			DiskFileItemFactory factory = new DiskFileItemFactory();
+    			// 2、创建一个文件上传解析器
+    			ServletFileUpload upload = new ServletFileUpload(factory);
+    			// 解决上传文件名的中文乱码
+    			upload.setHeaderEncoding("UTF-8");
+    			// 3、判断提交上来的数据是否是上传表单的数据
+    			if (!ServletFileUpload.isMultipartContent(request)) {
+    				// 按照传统方式获取数据
+    				return;
+    			}
+    			// 4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+    			List<FileItem> list = upload.parseRequest(request);
+    			System.out.println(list.size());
+    			for (FileItem item : list) {
+    				// 如果fileitem中封装的是普通输入项的数据
+    				if (item.isFormField()) {
+    					String name = item.getFieldName();//普通输入项username
+    					if("ownername".equals(name)) {
+    						cp.setOwnername(item.getString("UTF-8"));
+    						ownername=item.getString("UTF-8");
+    					}
+    					else if("sex".equals(name)) {
+    						cp.setSex(item.getString("UTF-8"));
+    					}
+    					else if("borndate".equals(name)) {
+    						String borndate=item.getString("UTF-8");
+    						try {
+    							d = format.parse(borndate);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date borntime = new java.sql.Date(d.getTime()); 
+    						cp.setBorndate(borntime);
+    					}
+    					else if("idnumber".equals(name)) {
+    						cp.setIdnumber(item.getString("UTF-8"));
+    					}
+    					else if("bornplace".equals(name)) {
+    						cp.setBornplace(item.getString("UTF-8"));
+    					}
+    					else if("enterprisename".equals(name)) {
+    						cp.setEnterprisename(item.getString("UTF-8"));
+    					}
+    					else if("businesslicense".equals(name)) {
+    						cp.setBusinesslicense(item.getString("UTF-8"));
+    					}
+    					else if("address".equals(name)) {
+    						cp.setAddress(item.getString("UTF-8"));
+    					}
+    					else if("contact".equals(name)) {
+    						cp.setContact(item.getString("UTF-8"));
+    					}
+    					else if("engineeringbag".equals(name)) {
+    						cp.setEngineeringbag(item.getString("UTF-8"));
+    					}
+    					else if("cutnum".equals(name)) {
+    						cp.setCutnum(item.getString("UTF-8"));
+    					}
+    					else if("quartel".equals(name)) {
+    						cp.setQuartel(item.getString("UTF-8"));
+    					}
+    					else if("largeblock".equals(name)) {
+    						cp.setLargeblock(item.getString("UTF-8"));
+    					}
+    					else if("smallblock".equals(name)) {
+    						cp.setSmallblock(item.getString("UTF-8"));
+    					}
+    					else if("allarea".equals(name)) {
+    						cp.setAllarea(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("totaloutwood".equals(name)) {
+    						cp.setTotaloutwood(Double.parseDouble(item.getString("UTF-8")));
+    					}
+    					else if("areapiece".equals(name)) {
+    						cp.setAreapiece(Integer.parseInt(item.getString("UTF-8")));
+    					}
+    					else if("signingtime".equals(name)) {
+    						String signingtime=item.getString("UTF-8");
+    						try {
+    							d = format.parse(signingtime);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date signingt = new java.sql.Date(d.getTime()); 
+    						cp.setSigningtime(signingt);;
+    					}
+    					else if("cooperationyear".equals(name)) {
+    						cp.setCooperationyear(item.getString("UTF-8"));
+    					}
+    					else if("team".equals(name)) {
+    						cp.setTeam(item.getString("UTF-8"));
+    					}
+    					else if("yeji".equals(name)) {
+    						String yeji=item.getString("UTF-8");
+    						cp.setYeji(yeji);
+    					}
+    					// 解决普通输入项的数据的中文乱码问题
+    					String value = item.getString("UTF-8");
+    					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
+    					System.out.println(name + "=" + value);
+    				} else {// 如果fileitem中封装的是上传文件
+    						// 得到上传的文件名称，
+    					String filename = item.getName();
+    					System.out.println(filename);
+    					if (filename == null || filename.trim().equals("")) {
+    						continue;
+    					}
+    					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+    					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+    					filename = filename.substring(filename.lastIndexOf("\\") + 1);
+    					//request.setAttribute("filename", filename);
+    					// 获取item中的上传文件的输入流
+    					InputStream in = item.getInputStream();
+    					// 创建一个文件输出流
+    					FileOutputStream outt = new FileOutputStream(savePath + "\\" + filename);
+    					//输出文件保存路径
+    					System.out.println("savePath:" + savePath + "\\" +filename);
+    					//显示文件读取的相对路径
+    					readPath = readPath+ filename;
+    					cp.setManagepath(readPath);
+    					System.out.println("readPath :"+ readPath);
+    					// 创建一个缓冲区
+    					byte buffer[] = new byte[1024];
+    					// 判断输入流中的数据是否已经读完的标识
+    					int len = 0;
+    					// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+    					while ((len = in.read(buffer)) > 0) {
+    						// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+    						outt.write(buffer, 0, len);
+    					}
+    					// 关闭输入流
+    					in.close();
+    					// 关闭输出流
+    					outt.close();
+    					// 删除处理文件上传时生成的临时文件
+    					item.delete();
+    					message = "文件上传成功！";
+    				}
+    			}
+    		} catch (Exception e) {
+    			message = "文件上传失败！";
+    			e.printStackTrace();
+    		}
+    		int flag=wpd.addmanagesdatecard(cp);
+        	if(flag>0) {
+        		out.print("添加成功");
+        	}
+        	else {
+        		out.print("添加失败");
+        	}
+    	}
         //在资料卡页面显示已添加货场管理信息
     	else if(action.equals("managesdateCardinfo")) {
     		sql="SELECT * from managesdatecard";
@@ -822,6 +1094,9 @@ public class workpageSevrlet extends HttpServlet {
 			List<tree> tree=trd.findTree(sql);
 			sql="select * from comparetree where workid="+workid+"";
     		compareTree compareTree=wpd.findcompares(sql);
+    		String comparefile = compareTree.getPic();
+    		comparefile = comparefile.substring(comparefile.lastIndexOf("/") + 1);
+    		request.setAttribute("comparefile", comparefile);
     		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
@@ -913,6 +1188,265 @@ public class workpageSevrlet extends HttpServlet {
 			request.setAttribute("tree", tree);
 			request.getRequestDispatcher("compareTreeDirector.jsp").forward(request, response);
         }
+        else if("goodsYardCost".equals(action)) {
+        	double gouJiZD = Double.parseDouble(request.getParameter("gouJiZD"));
+        	double renGongZD = Double.parseDouble(request.getParameter("renGongZD"));
+        	double zhuangCheGZ = Double.parseDouble(request.getParameter("zhuangCheGZ"));
+        	double changDiWH = Double.parseDouble(request.getParameter("changDiWH"));
+        	double changDiZJ = Double.parseDouble(request.getParameter("changDiZJ"));
+        	double kanHuGZ = Double.parseDouble(request.getParameter("kanHuGZ"));
+        	double dianFei = Double.parseDouble(request.getParameter("dianFei"));
+
+        	double sheBeiWH = Double.parseDouble(request.getParameter("sheBeiWH"));
+        	double yunFei = Double.parseDouble(request.getParameter("yunFei"));
+        	double surveyorFee = Double.parseDouble(request.getParameter("surveyorFee"));
+        	double totolCost = Double.parseDouble(request.getParameter("totolCost"));
+        	String luRuDate = request.getParameter("LuRuDate");
+        	//System.out.print(sheBeiWH);
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        	Date d = null;
+			try {
+				d = format.parse(luRuDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			java.sql.Date luRuDatee = new java.sql.Date(d.getTime()); 
+			goodsYardCost cp=new goodsYardCost();
+            cp.setGouJiZD(gouJiZD);
+            cp.setRenGongZD(renGongZD);
+            cp.setZhuangCheGZ(zhuangCheGZ);
+            cp.setChangDiWH(changDiWH);
+            cp.setChangDiZJ(changDiZJ);
+            cp.setKanHuGZ(kanHuGZ);
+            cp.setDianFei(dianFei);
+            cp.setSheBeiWH(sheBeiWH);
+            cp.setYunFei(yunFei);
+            cp.setSurveyorFee(surveyorFee);
+			cp.setTotolCost(totolCost);
+            cp.setLuRuDate(luRuDatee);
+
+			int flag=wpd.addgoodsYardCost(cp);
+
+			if(flag>0) {
+			
+				out.print("保存成功");
+			}
+			else {
+        		out.print("保存失败");
+        	}
+        }
+        //费用盘点
+        else if("feeAdd".equals(action)) {
+        	String LuRuDate = request.getParameter("LuRuDate");
+        	String yard = request.getParameter("yard");
+        	String luruperson = request.getParameter("luruperson");
+        	String rebate = request.getParameter("newtree");
+        	int id=Integer.parseInt(request.getParameter("id"));
+        	JSONObject jb = JSONObject.fromObject(rebate);
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        	Date luRuDatee=null;
+        	try {
+        		luRuDatee = new java.sql.Timestamp(format.parse(LuRuDate).getTime());
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        	for(int i=0;i<id;i++)
+        	{
+        		JSONArray s=jb.getJSONArray(String.valueOf(i));
+        		goodsYardCost g=new goodsYardCost();
+        		g.setYard(yard);
+        		g.setLuRuDate(luRuDatee);
+        		g.setFeetype(s.getString(0));
+        		g.setNum(Integer.parseInt(s.getString(1)));
+        		g.setUnit(s.getString(2));
+        		g.setUnitprice(Double.parseDouble(s.getString(3)));
+        		g.setPrice(Double.parseDouble(s.getString(4)));
+        		g.setRemarks(s.getString(5));
+            	g.setLuruperson(luruperson);
+            	int flag=wpd.addgoodsYardfee(g);
+            	out.print(flag);
+        	}
+        }
+        //货场费用台账
+        else if(action.equals("goodsyardList")) {
+        	sql="SELECT * FROM goodyard_cost";//货场费用
+        	List<goodsYardCost> goodsYardCost=wpd.findgoodsYard(sql);
+        	mapper.writeValue(response.getWriter(), goodsYardCost);
+        }
+        //退库单
+        else if("addCancellingStockTable".equals(action)) {
+        	//double workid=Double.parseDouble(request.getParameter("workid"));
+        	String cancellingStockDate = request.getParameter("cancellingStockDate");
+        	System.out.print(cancellingStockDate);
+        	String cancellingStockSite=request.getParameter("cancellingStockSite");
+        	String treetype=request.getParameter("treetype");
+        	String tlong=request.getParameter("tlong");
+        	String tradius=request.getParameter("tradius");
+        	//String gpsinfo=request.getParameter("gpsinfo");
+        	int num=Integer.parseInt(request.getParameter("num"));
+        	//String loadphoto=request.getParameter("loadphoto");
+        	//double batchNum=Double.parseDouble(request.getParameter("batchNum"));
+        	String tvolume=request.getParameter("tvolume");
+        	String cancellingStockReason=request.getParameter("cancellingStockReason");
+        	String path=request.getParameter("path");
+    
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date d = null;
+			try {
+				d = format.parse(cancellingStockDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			java.sql.Date cuttime = new java.sql.Date(d.getTime());
+			sql="";//从inyard数据库中选取材积 
+			CancellingStockTable cs=new CancellingStockTable();
+			cs.setCancellingStockDate(cuttime);
+			cs.setCancellingStockSite(cancellingStockSite);
+			cs.setTreetype(treetype);
+			cs.setTlong(tlong);
+			cs.setTradius(tradius);
+			cs.setNum(num);
+			cs.setTvolume(tvolume);
+			cs.setCancellingStockReason(cancellingStockReason);
+			cs.setPath(path);
+			int flag=wpd.addCancellingStockTable(cs);
+			if(flag>0) {
+			out.print("保存成功");}
+			else {
+				out.print("保存失败");
+			}
+	}
+        else if(action.equals("addCancellingStockTable1")) {
+        	CancellingStockTable cs=new CancellingStockTable();//退库单信息
+        	String cutNum="";
+        	double volume=0;
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+        	Date d = null;
+			Date dd = null;
+			Date ddd=null;
+        	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+    		String savePath = this.getServletContext().getRealPath("/WEB-INF/cancelfile");
+    		//得到文件访问的相对路径
+    		String readPath = "../WEB-INF/cancelfile/";
+    		File file = new File(savePath);
+    		// 判断上传文件的保存目录是否存在
+    		if (!file.exists() || !file.isDirectory()) {
+    			System.out.println(savePath + "目录不存在，需要创建");
+    			// 创建目录
+    			file.mkdir();
+    		}
+    		// 消息提示
+    		String message = "";
+    		try {
+    			// 使用Apache文件上传组件处理文件上传步骤：
+    			// 1、创建一个DiskFileItemFactory工厂
+    			DiskFileItemFactory factory = new DiskFileItemFactory();
+    			// 2、创建一个文件上传解析器
+    			ServletFileUpload upload = new ServletFileUpload(factory);
+    			// 解决上传文件名的中文乱码
+    			upload.setHeaderEncoding("UTF-8");
+    			// 3、判断提交上来的数据是否是上传表单的数据
+    			if (!ServletFileUpload.isMultipartContent(request)) {
+    				// 按照传统方式获取数据
+    				return;
+    			}
+    			// 4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+    			List<FileItem> list = upload.parseRequest(request);
+    			System.out.println(list.size());
+    			for (FileItem item : list) {
+    				// 如果fileitem中封装的是普通输入项的数据
+    				if (item.isFormField()) {
+    					String name = item.getFieldName();//普通输入项username
+    					if("cancellingStockDate".equals(name)) {
+    						String sttime=item.getString("UTF-8");
+    						try {
+    							d = format.parse(sttime);
+    						} catch (ParseException e) {
+    							// TODO Auto-generated catch block
+    							e.printStackTrace();
+    						} 
+    						java.sql.Date begin = new java.sql.Date(d.getTime()); 
+    						cs.setCancellingStockDate(begin);
+    					}
+    					else if("cancellingStockSite".equals(name)) {
+    						cs.setCancellingStockSite(item.getString("UTF-8"));
+    					}
+    					else if("cancellingStockReason".equals(name)) {
+    						cs.setCancellingStockReason(item.getString("UTF-8"));
+    					}
+    					else if("treetype".equals(name)) {
+    						cs.setTreetype(item.getString("UTF-8"));
+    					}
+    					else if("tlong".equals(name)) {
+    						cs.setTlong(item.getString("UTF-8"));
+    					}
+    					else if("tradius".equals(name)) {
+    						cs.setTradius(item.getString("UTF-8"));
+    					}
+    					else if("num".equals(name)) {
+    						cs.setNum(Integer.parseInt(item.getString("UTF-8")));
+    					}
+    					else if("tvolume".equals(name)) {
+    						cs.setTvolume(item.getString("UTF-8"));
+    					}
+    					// 解决普通输入项的数据的中文乱码问题
+    					String value = item.getString("UTF-8");
+    					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
+    					System.out.println(name + "=" + value);
+    				} else {// 如果fileitem中封装的是上传文件
+    						// 得到上传的文件名称，
+    					String filename = item.getName();
+    					System.out.println(filename);
+    					if (filename == null || filename.trim().equals("")) {
+    						continue;
+    					}
+    					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+    					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+    					filename = filename.substring(filename.lastIndexOf("\\") + 1);
+    					//request.setAttribute("filename", filename);
+    					// 获取item中的上传文件的输入流
+    					InputStream in = item.getInputStream();
+    					// 创建一个文件输出流
+    					FileOutputStream outt = new FileOutputStream(savePath + "\\" + filename);
+    					//输出文件保存路径
+    					System.out.println("savePath:" + savePath + "\\" +filename);
+    					//显示文件读取的相对路径
+    					readPath = readPath+ filename;
+    					cs.setPath(readPath);
+    					System.out.println("readPath :"+ readPath);
+    					// 创建一个缓冲区
+    					byte buffer[] = new byte[1024];
+    					// 判断输入流中的数据是否已经读完的标识
+    					int len = 0;
+    					// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+    					while ((len = in.read(buffer)) > 0) {
+    						// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+    						outt.write(buffer, 0, len);
+    					}
+    					// 关闭输入流
+    					in.close();
+    					// 关闭输出流
+    					outt.close();
+    					// 删除处理文件上传时生成的临时文件
+    					item.delete();
+    					message = "文件上传成功！";
+    				}
+    			}
+    		} catch (Exception e) {
+    			message = "文件上传失败！";
+    			e.printStackTrace();
+    		}
+    		int flag=wpd.addCancellingStockTable(cs);
+    		if(flag>0) {
+    			out.print("保存成功");}
+    			else {
+    				out.print("保存失败");
+    			}
+        }
+
         
 	}
 

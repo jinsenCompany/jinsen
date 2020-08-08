@@ -10,6 +10,7 @@
     <title>更新工单</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- Custom CSS -->
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
@@ -117,7 +118,7 @@ function inputNull(form){
                            </tr>
                            <tr>
                             <td colspan="2">
-                              <input style="width:50%;border:0px;background-color: transparent" type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>" placeholder="工单号">
+                              <input style="width:50%;border:0px;background-color: transparent" type="text" name="workid" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>" >
                            </td>
                            <td colspan="2">
                              <input style="width:50%;border:0px;background-color: transparent" type="text" name="cutnum" id="cccutnum" value="<%=c.getCutNum() %>" placeholder="采伐证号">

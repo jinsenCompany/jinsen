@@ -87,10 +87,12 @@ function yes(){
         dataType:"html",
         success: function (data) {
         	if(data>0){
-        		alert("插入成功");
+        		alert("反馈成功");
+        		window.location.href = 'cutnumApplysee.jsp';
         	}
         	else{
-        		alert("插入失败");
+        		alert("反馈失败");
+        		window.location.href = 'cutnumApplysee.jsp';
         	}
         }
     })
@@ -110,9 +112,11 @@ function not(){
         success: function (data) {
         	if(data>0){
         		alert("反馈成功");
+        		window.location.href = 'cutnumApplysee.jsp';
         	}
         	else{
         		alert("反馈失败");
+        		window.location.href = 'cutnumApplysee.jsp';
         	}
         }
     })
@@ -122,6 +126,9 @@ function not(){
 <body>
 <%cutnumApply c=(cutnumApply)request.getAttribute("cutnumApply");%>
 <%cutnumfeedback f=(cutnumfeedback)request.getAttribute("cutnumfeedback"); %>
+<%
+   String cutnumfile = request.getParameter("cutnumfile");
+  %>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -164,6 +171,10 @@ function not(){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
+    <li class="active"><a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li>
+    <li><a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
+    <li><a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
+    <li><a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -184,7 +195,7 @@ function not(){
     <table class="table1" border="1">
     <caption class="book_h01">林木采伐证申请表</caption>
        <tr>
-       <th colspan="1" id="yhh">采伐证号</th><td><input style="width:80%;border:0px;background-color: transparent" type="text" name="designum" id="designum" value="<%=c.getDesignum()%>"></td>
+       <th colspan="1" id="yhh">申请书号</th><td><input style="width:80%;border:0px;background-color: transparent" type="text" name="designum" id="designum" value="<%=c.getDesignum()%>"></td>
        <th colspan="1" id="yhh">采伐理由</th><td colspan="2"><input style="width:80%;border:0px;background-color: transparent" type="text" name="cutreason" id="cutreason" value="<%=c.getCutreason()%>"></td>
        </tr>
        <tr>
@@ -202,14 +213,14 @@ function not(){
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="smallblock" id="smallblock" value="<%=c.getSmallblock()%>"></td>
        </tr>
        <tr>
-       <th>小班面积</th>
+       <th>设计书编号</th>
        <th>林种起源</th>
        <th>地类或树种</th>
        <th>树种组成</th>
        <th>森岭经营类型</th>
        </tr>
        <tr>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="smallblackarea" id="smallblackarea" value="<%=c.getSmallblackarea()%>"></td>
+       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="designbook" id="designbook" value="<%=c.getDesignbook() %>"></td>
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="origin" id="origin" value="<%=c.getOrigin()%>"></td>
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="foresttype" id="foresttype" value="<%=c.getForesttype()%>"></td>
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="typeconsist" id="typeconsist" value="<%=c.getTypeconsist()%>"></td>
@@ -267,8 +278,8 @@ function not(){
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="firewood" id="firewood" value="<%=c.getFirewood()%>"></td> 
        </tr>
        <tr>
-        <td class="top-table-label">上传附件</td><td><input class="filepath" onchange="changepic(this)" type="file" id="cutpath" name="cutpath"></td>
-        <td class="top-table-label">申请时间</td><td colspan="2"><input type="date" name="applaydate" id="applaydate" value="<%=c.getApplaydate()%>"></td>
+        <td class="top-table-label">上传附件</td><td>${applyfile}<a href="DownfileServlet?action=applyfile&filename=<%=c.getCutpath() %>">下载</a></td>
+        <td class="top-table-label">申请时间</td><td><input type="date" id="applaydate" name="applaydate" value="<%=c.getApplaydate() %>"></td>
        </tr>
     </table>
     </div>
@@ -280,7 +291,7 @@ function not(){
     <td>无法办理原因:</td><td><input style="width:500px;" type="text" name="unablereson" id="unablereson" value="<%=f.getUnablereason()%>"></td>
     </tr>
     <tr>
-    <td>请添加补充材料:</td><td><input type="file" name="replenishpath" id="replenishpath" value="<%=f.getReplenishpath() %>"></td>
+    <td>请添加补充材料:</td><td>${replenish}<a href="DownfileServlet?action=applyfile&filename=<%=f.getReplenishpath() %>">下载</a></td>
     </tr>
     </table>
     </div>

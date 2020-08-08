@@ -209,7 +209,7 @@ function alldo()
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <main class="all">
     <article class="artlce">
@@ -360,13 +360,13 @@ function alldo()
             success: function (data) {
             	if(data)
             		{
-            		alert("hh删除成功！");
+            		alert("删除成功！");
             		$("#table1").bootstrapTable('refresh');
             		
             		}
             		
             	else
-            		alert("hh删除失败！");
+            		alert("删除失败！");
             }
         })
     }

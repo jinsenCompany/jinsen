@@ -275,7 +275,7 @@ public class managerServlet extends HttpServlet {
 							System.out.println("ERROR!");
 						}
 					}
-					else if (s.getPower_type().equals("销售结算员")) {
+					else if (s.getPower_type().equals("销售结算操作员")) {
 						if (db.logintime(u)) {
 							PrintWriter out = response.getWriter();
 							out.write("salesprice");
@@ -401,6 +401,42 @@ public class managerServlet extends HttpServlet {
 				out.write("fail");
 			}
 		}
-	}
+		else if (action.equals("index_app")) { 
+			System.out.println("index_app");
 
+			String staff_id = request.getParameter("staff_id");
+			String password = request.getParameter("password");
+
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String createtime = format.format(new Date());
+			System.out.println(createtime);
+			Timestamp Time = Timestamp.valueOf(createtime);
+			// System.out.println(staff_id);
+			// System.out.println(password);
+			usermanage u = new usermanage();
+			u.setStaff_id(staff_id);
+			u.setPassword(password);
+			u.setLogintime(Time);
+			usermanage s = new usermanage();
+			s = db.login(u);
+			HttpSession session = request.getSession();
+			request.getParameter(staff_id);
+			session.setAttribute("staff_id", staff_id);
+			if(s.getPower_type().equals("检尺员"))
+			{
+				System.out.println("yes");
+				if(db.logintime(u))
+				{
+					PrintWriter out = response.getWriter();
+					out.write("surveyore");
+				}
+				else 
+				{
+					System.out.println("ERROR!");
+				}
+				
+			}
+
+	}
+	}
 }

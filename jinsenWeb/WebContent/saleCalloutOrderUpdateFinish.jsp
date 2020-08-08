@@ -46,7 +46,7 @@
 #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
 #h a:hover{color:white;background: green}
 .table1{margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
-.table2{margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+.table2{width:60%;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 .p-tail {
     padding: 10px;
     font-size: 12px;
@@ -142,7 +142,7 @@ b=(List<saleCalloutOrder>)request.getAttribute("saleOrdertree");
        </tbody>
     </table>
     <p class="table_p"><span>树材信息录入</span></p>
-    <table id="table5" style="width:2000px;height:auto;margin-left:center; margin-right:center">
+    <table id="table5" style="width:1500px;height:auto;margin-left:center; margin-right:center">
      <tbody id="ttt5">
       <% int i=1;%>
         <c:forEach items="${saleOrdertree}" var="b">      

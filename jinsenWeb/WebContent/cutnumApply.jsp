@@ -96,6 +96,7 @@ function inputNull(form){
 </script>
 </head>
 <body>
+${message}
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -146,7 +147,7 @@ function inputNull(form){
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="planteam.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -155,32 +156,81 @@ function inputNull(form){
          class="i-tail"></i> 该页面主要是管理部门上传采伐证材料</p>
     </div>
     <div class="find-top1">
-    <form onSubmit="return inputNull(this)" action="cutnumServlet?action=cutnumapply" method="POST">
+    <form id="myform" action="cutnumServlet?action=cutnumapply1" method="POST" enctype="multipart/form-data">
     <div class="top" id="divprint">
 		<div id="table">
 		<table  class="biao" >
 		<caption class="book_h01">林木采伐证申请表</caption>
-		    <tr><td id="a">采伐证号</td><td id="b"><input  type="text" name="designum" id="designum"></td><td id="a">采伐理由</td><td><input type="text" name="cutreason" id="cutreason"></td></tr>
-		    <tr><td id="a">乡(镇、场)</td><td id="b"><input type="text" name="cutaddress" id="cutaddress"></td><td id="a">村(工区)</td><td><input type="text" name="cutvillage" id="cutvillage"></td></tr>
-		    <tr><td id="a">林班</td><td id="b"><input type="text" name="quartel" id="quartel"></td><td id="a">大班</td><td><input type="text" name="largeblock" id="largeblock"></td></tr>
-		    <tr><td id="a">小班</td><td id="b"><input type="text" name="smallblock" id="smallblock"></td><td id="a">小班面积</td><td><input type="text" name="smallblackarea" id="smallblackarea"></td></tr>
-		    <tr><td id="a">林种起源</td><td id="b"><input type="text" name="origin" id="origin"></td><td id="a">地类或树种</td><td><input type="text" name="foresttype" id="foresttype"></td></tr>
-		    <tr><td id="a">树种组成</td><td id="b"><input  type="text" name="typeconsist" id="typeconsist"></td><td id="a">森岭经营类型</td><td><input type="text" name="managetype" id="managetype"></td></tr>
-		    <tr><td id="a">林龄</td><td id="b"><input type="text" name="forestage" id="forestage"></td><td id="a">采伐面积(亩)</td><td><input type="text" name="cutarea" id="cutarea"></td></tr>
-		    <tr><td id="a">采伐类型</td><td id="b"><select style="width: 200px;" name="cuttype" id="cuttype"><option value="">--请选择采伐类型--</option> <option value="1">主伐</option> <option value ="2">抚育采伐</option> <option value ="3">更新采伐</option><option value ="4">低产（效）林改造采伐</option><option value ="5">其他采伐</option></select></td>
-		    <td id="a">采伐方式</td><td><select style="width: 200px;" name="cutway" id="cutway"> <option value="" >--请选择采伐方式--</option> <option value="1">择伐</option> <option value ="2">间伐</option> <option value ="3">皆伐</option>  </select></td></tr>
-		    <tr><td id="a">采伐强度</td><td id="b"><input type="text" name="cutstrength" id="cutstrength"></td><td id="a">树种</td><td><input type="text" name="treetype" id="treetype"></td></tr>
-		    <tr><td id="a">采伐总蓄积</td><td id="b"><input type="text" name="cutvolume" id="cutvolume "></td><td id="a">采伐株树</td><td><input type="text" name="cutnumer" id="cutnumer"></td></tr>
-		    <tr><td id="a">计采伐蓄积</td><td id="b"><input type="text" name="total" id="total"></td><td id="a">采伐蓄积间伐</td><td><input type="text" name="cutintermediate" id="cutintermediate"></td></tr>
-		    <tr><td id="a">计采伐出材量</td><td id="b"><input type="text" name="total2" id="total2"></td><td id="a">规格材</td><td><input type="text" name="sizewood" id="sizewood"/></td></tr>
-		    <tr><td id="a">小径材</td><td id="b"><input type="text" name="smalltimber" id="smalltimber"></td><td id="a">短小材</td><td><input type="text" name="shorttimber" id="shorttimber"></td></tr>
-			<tr><td id="a">薪炭材</td><td id="b"><input type="text" name="firewood" id="firewood"></td><td id="a">短小材</td><td><input type="text" name="shorttimber" id="shorttimber"></td></tr>
-			<tr><td id="a">上传附件</td><td id="b"><input type="file" name="cutpath" id="cutpath"></td><td id="a">申请时间</td><td><input style="width: 172px;" type="date" name="applaydate" id="applaydate"></td></tr>
+		    <tr>
+		    <td id="a">申请书号</td><td id="b"><input  type="text" name="designum" id="designum"></td>
+		    <td id="a">采伐理由</td><td><input type="text" name="cutreason" id="cutreason"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">设计书编号</td><td id="b"><input type="text" name="designbook" id="designbook"></td>
+		    <td id="a">乡(镇、场)</td><td id="b"><input type="text" name="cutaddress" id="cutaddress"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">村(工区)</td><td id="b"><input type="text" name="cutvillage" id="cutvillage"></td>
+		    <td id="a">林班</td><td id="b"><input type="text" name="quartel" id="quartel"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">大班</td><td id="b"><input type="text" name="largeblock" id="largeblock"></td>
+		    <td id="a">小班</td><td id="b"><input type="text" name="smallblock" id="smallblock"></td>
+		    </tr>
+		    <tr><td id="a">林种起源</td><td id="b"><input type="text" name="origin" id="origin"></td>
+		    <td id="a">地类或树种</td><td><input type="text" name="foresttype" id="foresttype"></td>
+		    </tr>
+		    <tr><td id="a">树种组成</td><td id="b"><input  type="text" name="typeconsist" id="typeconsist"></td>
+		    <td id="a">森林经营类型</td><td><input type="text" name="managetype" id="managetype"></td>
+		    </tr>
+		    <tr><td id="a">林龄</td><td id="b"><input type="text" name="forestage" id="forestage"></td>
+		    <td id="a">采伐面积(亩)</td><td><input type="text" name="cutarea" id="cutarea"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">采伐类型</td><td id="b"><select style="width: 200px;" name="cuttype" id="cuttype">
+		    <option value="">--请选择采伐类型--</option> 
+		    <option value="1">主伐</option> 
+		    <option value ="2">抚育采伐</option> 
+		    <option value ="3">更新采伐</option>
+		    <option value ="4">低产（效）林改造采伐</option>
+		    <option value ="5">其他采伐</option></select></td>
+		    <td id="a">采伐方式</td><td><select style="width: 200px;" name="cutway" id="cutway"> 
+		    <option value="" >--请选择采伐方式--</option>
+		    <option value="1">择伐</option> 
+		    <option value ="2">间伐</option> 
+		    <option value ="3">皆伐</option></select></td>
+		    </tr>
+		    <tr><td id="a">采伐强度</td><td id="b"><input type="text" name="cutstrength" id="cutstrength"></td>
+		    <td id="a">树种</td><td><input type="text" name="treetype" id="treetype"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">采伐总蓄积</td><td id="b"><input type="text" name="cutvolume" id="cutvolume "></td>
+		    <td id="a">采伐株树</td><td><input type="text" name="cutnumer" id="cutnumer"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">计采伐蓄积</td><td id="b"><input type="text" name="total" id="total"></td>
+		    <td id="a">采伐蓄积间伐</td><td><input type="text" name="cutintermediate" id="cutintermediate"></td>
+		    </tr>
+		    <tr>
+		    <td id="a">计采伐出材量</td><td id="b"><input type="text" name="total2" id="total2"></td><td id="a">规格材</td>
+		    <td><input type="text" name="sizewood" id="sizewood"/></td>
+		    </tr>
+		    <tr>
+		    <td id="a">小径材(非规格材)</td><td id="b"><input type="text" name="smalltimber" id="smalltimber"></td>
+		    <td id="a">短小材(非规格材)</td><td id="b"><input type="text" name="shorttimber" id="shorttimber"></td>
+		    </tr>
+			<tr>
+			<td id="a">薪衫材</td><td  id="b"><input type="text" name="firewood" id="firewood"></td>
+			<td id="a">申请时间</td><td><input style="width: 172px;" type="date" name="applaydate" id="applaydate"></td>
+		    </tr>
+			<tr>
+		    <td id="a">上传附件</td><td><input type="file" name="cutpath" id="cutpath"></td>
+			</tr>
 	
 		</table>
 		</div>
 		</div>
-		<div class="1" ; style="text-align:center">
+		<div class="1"  style="text-align:center">
 
 		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 

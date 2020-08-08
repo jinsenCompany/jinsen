@@ -232,7 +232,7 @@ function inputNull(form){
          class="i-tail"></i> 该页面主要是伐区拨交页面</p>
     </div>
     <div class="find-top1">
-    <h1 class="book_h01" align="top">伐区拨交</h1>
+    <h1 class="book_h01" >伐区拨交</h1>
     <div class="top" id="divprint">
     <p class="htv"><span>工程包信息:</span></p>
     <table style="margin:auto">

@@ -93,9 +93,11 @@ function yes(){
         success: function (data) {
         	if(data>0){
         		alert("插入成功");
+        		window.location.href = 'cutnumApplyfeedback.jsp';
         	}
         	else{
         		alert("插入失败");
+        		window.location.href = 'cutnumApplyfeedback.jsp';
         	}
         }
     })
@@ -115,9 +117,11 @@ function not(){
         success: function (data) {
         	if(data>0){
         		alert("反馈成功");
+        		window.location.href = 'cutnumApplyfeedback.jsp';
         	}
         	else{
         		alert("反馈失败");
+        		window.location.href = 'cutnumApplyfeedback.jsp';
         	}
         }
     })
@@ -186,41 +190,34 @@ function not(){
          class="i-tail"></i> 该页面主要是规划队上传采伐证材料</p>
     </div>
     <div class="find-top1">
-    <form onSubmit="return inputNull(this)" action="cutnumServlet?action=updateCutnumapply" method="POST">
+    <form id="myform" onSubmit="return inputNull(this)" action="cutnumServlet?action=updateCutnumapply1" method="POST" method="POST" enctype="multipart/form-data">
     <div class="top" id="divprint">
     <table class="table1" border="1">
     <caption class="book_h01">林木采伐证申请表</caption>
-       <tr>
-       <th colspan="1" id="yhh">采伐证号</th><td><input style="width:80%;border:0px;background-color: transparent" type="text" name="designum" id="designum" value="<%=c.getDesignum()%>"></td>
+      <tr>
+       <th colspan="1" id="yhh">申请书号</th><td><input style="width:80%;border:0px;background-color: transparent" type="text" name="designum" id="designum" value="<%=c.getDesignum()%>"></td>
        <th colspan="1" id="yhh">采伐理由</th><td colspan="2"><input style="width:80%;border:0px;background-color: transparent" type="text" name="cutreason" id="cutreason" value="<%=c.getCutreason()%>"></td>
        </tr>
        <tr>
+       <th>设计书编号</th>
        <th>乡(镇、场)</th>
        <th>村(工区)</th>
        <th>林班</th>
        <th>大班</th>
-       <th>小班</th>
        </tr>
        <tr>
+       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="designbook" id="designbook" value="<%=c.getDesignbook() %>"></td>
        <td ><input style="width:80%;border:0px;background-color: transparent" type="text" name="cutaddress" id="cutaddress" value="<%=c.getCutaddress()%>"></td>
        <td><input style="width:80%;border:0px;background-color: transparent" style="width:80%;border:0px;background-color: transparent" type="text" name="cutvillage" id="cutvillage" value="<%=c.getCutvillage()%>"></td>
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="quartel" id="quartel" value="<%=c.getQuartel()%>"></td>
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="largeblock" id="largeblock" value="<%=c.getLargeblock()%>"></td>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="smallblock" id="smallblock" value="<%=c.getSmallblock()%>"></td>
        </tr>
        <tr>
-       <th>小班面积</th>
+       <th>小班</th>
        <th>林种起源</th>
        <th>地类或树种</th>
        <th>树种组成</th>
-       <th>森岭经营类型</th>
-       </tr>
-       <tr>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="smallblackarea" id="smallblackarea" value="<%=c.getSmallblackarea()%>"></td>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="origin" id="origin" value="<%=c.getOrigin()%>"></td>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="foresttype" id="foresttype" value="<%=c.getForesttype()%>"></td>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="typeconsist" id="typeconsist" value="<%=c.getTypeconsist()%>"></td>
-       <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="managetype" id="managetype" value="<%=c.getManagetype()%>"></td>
+       <th>森林经营类型</th>
        </tr>
        <tr>
        <th>林龄</th>
@@ -263,8 +260,8 @@ function not(){
        <tr>
        	<th rowspan="1" colspan="1">计采伐出材量</th>
        <th rowspan="1" colspan="1">规格材</th>
-       <th rowspan="1" colspan="1">小径材</th>
-       <th rowspan="1" colspan="1">短小材</th>
+       <th rowspan="1" colspan="1">小径材(非规格材)</th>
+       <th rowspan="1" colspan="1">短小材(非规格材)</th>
        </tr>
        <tr>
        	<td><input style="width:80%;border:0px;background-color: transparent" type="text" name="total2" id="total2" value="<%=c.getTotal2()%>"></td>
@@ -274,8 +271,8 @@ function not(){
        <td><input style="width:80%;border:0px;background-color: transparent" type="text" name="firewood" id="firewood" value="<%=c.getFirewood()%>"></td> 
        </tr>
        <tr>
-        <td class="top-table-label">上传附件</td><td><input class="filepath" onchange="changepic(this)" type="file" id="cutpath" name="cutpath"></td>
-        <td class="top-table-label">申请时间</td><td colspan="2"><input type="date" name="applaydate" id="applaydate" value="<%=c.getApplaydate()%>"></td>
+        <td class="top-table-label">上传附件</td><td colspan="2"><input  name="cutpath" id="cutpath" value="${applyfile}"><a href="DownfileServlet?action=applyfile&filename=<%=c.getCutpath() %>">下载</a></td>
+        <td class="top-table-label">申请时间</td><td colspan="1"><input type="date" name="applaydate" id="applaydate" value="<%=c.getApplaydate()%>"></td>
        </tr>
     </table>
     </div>
@@ -291,7 +288,7 @@ function not(){
     </tr>
     </table>
     </div>
-    
+    <br>
     <div> 
    <div class="but_p" style="float:center;">
     <button class="but_save" type="submit" id="mybutton" value="修改申请">修改申请</button>

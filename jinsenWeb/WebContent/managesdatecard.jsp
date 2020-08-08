@@ -166,7 +166,7 @@ function inputNull(form){
 
 <div id="content">
  <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -175,7 +175,7 @@ function inputNull(form){
          class="i-tail"></i> 该页面主要是木材生产施工方管理资料卡</p>
     </div>
     <div class="find-top1">
-    <form onSubmit="return inputNull(this)" action="workpageSevrlet?action=managesdateCard" method="POST">
+    <form id="myform" onSubmit="return inputNull(this)" action="workpageSevrlet?action=managesdateCard1" method="POST" enctype="multipart/form-data">
     <div class="top" id="divprint">
     <table class="biao">
     <caption class="book_h01">录入施工方资料</caption>
@@ -187,7 +187,7 @@ function inputNull(form){
 			<option value="女">女</option>
 			</select>
 			</td></tr>
-		    <tr><td id="a">出生年月</td><td id="b"><input type="text" name="borndate" id="borndate"></td><td id="a">身份证号</td><td id="b"><input type="text" name="idnumber" id="idnumber"></td></tr>
+		    <tr><td id="a">出生年月</td><td id="b"><input type="date" name="borndate" id="borndate"></td><td id="a">身份证号</td><td id="b"><input type="text" name="idnumber" id="idnumber"></td></tr>
 		    <tr><td id="a">籍贯</td><td id="b"><input type="text" name="bornplace" id="bornplace"></td><td id="a">企业名称</td><td id="b"><input type="text" name="enterprisename" id="enterprisename"></td></tr>
 		    <tr><td id="a">企业营业执照</td><td id="b"><input type="text" name="businesslicense" id="businesslicense"></td><td id="a">家庭住址</td><td id="b"><input type="text" name="address" id="address"></td></tr>
 		    <tr><td id="a">联系方式</td><td id="b"><input type="text" name="contact" id="contact"></td><td id="a">工程包</td><td id="b"><input type="text" name="engineeringbag" id="engineeringbag"></td></tr>
@@ -197,11 +197,11 @@ function inputNull(form){
 		    <tr><td id="a">伐区片数</td><td id="b"><input type="text" name="areapiece" id="areapiece"></td><td id="a">与金森合作年份</td><td id="b"><input type="text" name="cooperationyear" id="cooperationyear"></td></tr>
 		    <tr><td id="a">施工队伍</td><td id="b" colspan="4"><input style="width:744px;"  type="text" name="team" id="team"></td></tr>
 		    <tr><td id="a">施工业绩</td><td id="b" colspan="4"><input style="width:744px;"  type="text" name="yeji" id="yeji" ></td></tr>
-			<tr><td id="a">上传附件</td><td id="b"><input type="file" name="cutpath" id="cutpath"></td><td id="a">合同签订时间</td><td><input style="width: 172px;" type="date" name="signingtime" id="signingtime"></td></tr>
+			<tr><td id="a">上传附件</td><td id="b"><input type="file" name="managepath" id="managepath"></td><td id="a">合同签订时间</td><td><input style="width: 172px;" type="date" name="signingtime" id="signingtime"></td></tr>
 	
 		</table>
 		</div>
-		<div class="1" ; style="text-align:center">
+		<div class="1" style="text-align:center">
 
 		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 

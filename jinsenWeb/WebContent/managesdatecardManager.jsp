@@ -167,7 +167,7 @@ function inputNull(form){
 
 <div id="content">
  <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -176,7 +176,7 @@ function inputNull(form){
          class="i-tail"></i> 该页面主要是木材生产施工方管理资料卡</p>
     </div>
     <div class="find-top1">
-    <form onSubmit="return inputNull(this)" action="workpageSevrlet?action=managesdateCard" method="POST">
+    <form id="myform" onSubmit="return inputNull(this)" action="workpageSevrlet?action=managesdateCard1" method="POST" enctype="multipart/form-data">
     <div class="top" id="divprint">
     <table class="biao">
     <caption class="book_h01">录入施工方资料</caption>
@@ -198,7 +198,7 @@ function inputNull(form){
 		    <tr><td id="a">伐区片数</td><td id="b"><input type="text" name="areapiece" id="areapiece"></td><td id="a">与金森合作年份</td><td id="b"><input type="text" name="cooperationyear" id="cooperationyear"></td></tr>
 		    <tr><td id="a">施工队伍</td><td id="b" colspan="4"><input style="width:744px;"  type="text" name="team" id="team"></td></tr>
 		    <tr><td id="a">施工业绩</td><td id="b" colspan="4"><input style="width:744px;"  type="text" name="yeji" id="yeji" ></td></tr>
-			<tr><td id="a">上传附件</td><td id="b"><input type="file" name="cutpath" id="cutpath"></td><td id="a">合同签订时间</td><td><input style="width: 172px;" type="date" name="signingtime" id="signingtime"></td></tr>
+			<tr><td id="a">上传附件</td><td id="b"><input type="file" name="managepath" id="managepath"></td><td id="a">合同签订时间</td><td><input style="width: 172px;" type="date" name="signingtime" id="signingtime"></td></tr>
 	
 		</table>
 		</div>

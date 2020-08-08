@@ -8,7 +8,7 @@ public class managesdatecard {//木材生产施工方管理资料卡
 	private int cardid;//资料卡id
 	private String ownername;//业主姓名
 	private String sex;//性别
-	private String borndate;//出生年月
+	private Date borndate;//出生年月
 	private String idnumber;//身份证号
 	private String bornplace;//籍贯
 	private String enterprisename;//企业名称
@@ -27,7 +27,14 @@ public class managesdatecard {//木材生产施工方管理资料卡
 	private String cooperationyear;//与金森合作年份
 	private String team;//施工队伍
 	private String yeji;//施工业绩
+	private String managepath;//施工方资料
 	
+	public String getManagepath() {
+		return managepath;
+	}
+	public void setManagepath(String managepath) {
+		this.managepath = managepath;
+	}
 	public int getCardid() {
 		return cardid;
 	}
@@ -46,10 +53,11 @@ public class managesdatecard {//木材生产施工方管理资料卡
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public String getBorndate() {
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	public Date getBorndate() {
 		return borndate;
 	}
-	public void setBorndate(String borndate) {
+	public void setBorndate(Date borndate) {
 		this.borndate = borndate;
 	}
 	public String getIdnumber() {

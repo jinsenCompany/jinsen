@@ -187,10 +187,10 @@ t=(List<surveyorFee>)request.getAttribute("surveyorFee");
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
-  <ul class="quick-actions">
-        <li class="bg_ly span3"> <a href="outyardCostS.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span> 结算检尺费</a> </li>
-        <li class="bg_lo span3"> <a href="#"> <i class="icon-th"></i>结算其他费用</a> </li>
-      </ul>
+ <ul>
+    <li> <a href="outyardCostS.jsp"><i class="icon icon-home"></i><span>结算检尺费</span></a></li>
+    <li> <a href="#"><i class="icon icon-home"></i><span>结算其他费用</span></a></li>
+  </ul>
 </div>
 
 

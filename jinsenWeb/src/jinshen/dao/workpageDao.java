@@ -21,7 +21,8 @@ public interface workpageDao {
 	
 	public int insertcompareTree(compareTree t);//插入照片
 	public List<compareTree> findcomparet(String sql);//发现用于bootstrap显示
-	public compareTree findcompares(String sql);//发现图片信息用于页面显示
+	public compareTree findcompares(String sql);//发现comparetreet图片信息用于页面显示
+	public compareTree findcompares1(String sql);//发现图片信息用于页面显示
 	
 	public int updateWorkpagestatus(double workid,workpageStatus ws);//信息中心第一次审核更新工单状态yes
 	public int updateWorkpagestatusN(double workid,workpageStatus ws);//信息中心第一次审核更新工单状态not
@@ -40,4 +41,11 @@ public interface workpageDao {
     
 	public List<tree> findTree(String sql);
 	public workpage findCodeSingle1(String sql);//木材收购单发现工单信息
+	
+	public int addgoodsYardCost(goodsYardCost cp);//货场费用数据存入数据库中
+	public int addgoodsYardfee(goodsYardCost cp);
+	 public List<goodsYardCost> findgoodsYard(String sql);//货场费用台账
+	 
+	 public int addCancellingStockTable(CancellingStockTable cp);//退库单
+
 }

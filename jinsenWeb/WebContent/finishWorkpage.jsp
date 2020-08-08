@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <title>已完成进场工单</title>
-
+    <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
 	<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
     <link rel="stylesheet" href="js/jQueryCalendar/calendar.css">
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
@@ -112,7 +112,8 @@ t=(List<tree>)request.getAttribute("tree");
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">
+                           <input name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>" />
+                          <%--  <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">--%>
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
@@ -177,9 +178,9 @@ t=(List<tree>)request.getAttribute("tree");
                                 </tbody>
                             </table>
                             <table class="table1">
-                            <tr><td colspan="5"><img  width="400" height="600" id="pic" name="pic" src="./img/3.jpg"></td>
+                            <tr><!--  <td colspan="5"><img  width="400" height="600" id="pic" name="pic" src="./img/3.jpg"></td>-->
                             <td>&nbsp;&nbsp;&nbsp;</td>
-                           <td colspan="5"><img width="400" height="600" name="da" id="da" src="./img/1.jpg"></td></tr>
+                           <td colspan="5">货场拍照：<img src="DownfileServlet?action=comparePic&filename=<%=m.getPic() %>" alt="150"  width="300" height="400" /></td></tr>
                             </table>
                             <div class=" but_p">
                             <button style="width:200px" class="but_save" type="button"  onclick="window.location.href='map.jsp'" value="显示地图">显示地图</button>

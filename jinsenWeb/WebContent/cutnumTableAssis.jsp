@@ -289,7 +289,7 @@ border-color: #0d7adf;
 <!--sidebar-menu-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="superManage.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>返回超级管理员首页</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <main class="all">
         <div class="find-top1">

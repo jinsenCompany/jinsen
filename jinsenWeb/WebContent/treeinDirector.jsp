@@ -300,22 +300,24 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>审核</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="yardMoneryDirector.jsp">费用结算</a></li>
+        <li><a href="goodsYardCost.jsp">费用结算</a></li>
         <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
       </ul>
      </li>
      <li><a href="workpageTreeBuyDirector.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTreeDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
+    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
         <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
+     <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
+   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i> <span>货场费用报表</span></a> </li>
   </ul>
 </div>
 <!--sidebar-menu-->

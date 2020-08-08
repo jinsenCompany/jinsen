@@ -194,9 +194,6 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li> <a href="CutnumProjectpackage.jsp"><i class="icon icon-th-list"></i><span>创建工程包</span></a></li>
-    <!--  <li> <a href="CutnumProjectpackageShenhe.jsp"><i class="icon icon-inbox"></i> <span>审核工程包</span></a> </li>-->
-    <li> <a href="CutnumProjectpackageTable.jsp"><i class="icon icon-inbox"></i> <span>工程包管理台账</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -232,8 +229,8 @@ function inputNull(form){
         <table id="table2" class="table-style"></table>
     </div>
     </div>
-    <div class=" but_p" style="float:right;">
-    <button class="but_save" type="button" onclick="addproject()" value="保存工程包">保存工程包</button>
+    <div class=" but_p" style="float:center;">
+    <button class="but_save" type="button" onclick="addproject()" value="更新工程包">更新工程包</button>
     <button class="but_save" type="submit" id="mybutton" value="返回添加工程包" onclick="javascrtpt:window.location.href='cutnumProjectpackage.jsp'">返回添加工程包</button></div>
    </div>
 </main>

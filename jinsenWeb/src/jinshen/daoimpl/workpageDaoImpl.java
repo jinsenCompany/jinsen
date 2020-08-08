@@ -8,8 +8,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+import jinshen.bean.CancellingStockTable;
 import jinshen.bean.codejson;
 import jinshen.bean.compareTree;
+import jinshen.bean.goodsYardCost;
 import jinshen.bean.managesdatecard;
 import jinshen.bean.tree;
 import jinshen.bean.workpage;
@@ -406,13 +408,13 @@ public class workpageDaoImpl implements workpageDao {
 
 	@Override
 	public int addmanagesdatecard(managesdatecard cp) {
-		String sql = "insert into managesdatecard values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into managesdatecard values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		int res=0;
 		try {
 			res=dbc.doUpdate(sql, new Object[] {cp.getCardid(),cp.getOwnername(),cp.getSex(),cp.getBorndate(),cp.getIdnumber(),
 					cp.getBornplace(),cp.getEnterprisename(),cp.getBusinesslicense(),cp.getAddress(),cp.getContact(),
 					cp.getEngineeringbag(),cp.getCutnum(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),
-					cp.getAllarea(),cp.getTotaloutwood(),cp.getAreapiece(),cp.getSigningtime(),cp.getCooperationyear(),cp.getTeam(),cp.getYeji()});
+					cp.getAllarea(),cp.getTotaloutwood(),cp.getAreapiece(),cp.getSigningtime(),cp.getCooperationyear(),cp.getTeam(),cp.getYeji(),cp.getManagepath()});
 		}
 		catch (Exception e) 
 		{
@@ -434,7 +436,7 @@ public class workpageDaoImpl implements workpageDao {
 				addr.setCardid(rs.getInt(1));
 				addr.setOwnername(rs.getString(2));
 				addr.setSex(rs.getString(3));
-				addr.setBorndate(rs.getString(4));
+				addr.setBorndate(rs.getDate(4));
 				addr.setIdnumber(rs.getString(5));
 				addr.setBornplace(rs.getString(6));
 				addr.setEnterprisename(rs.getString(7));
@@ -577,6 +579,96 @@ public class workpageDaoImpl implements workpageDao {
 			dbc.close();
 		}
 		return addrList;
+	}
+
+	@Override
+	public int addgoodsYardCost(goodsYardCost cp) {
+		String sql="insert into goodsyard_cost values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    	int res=0;
+		try {
+			res=dbc.doUpdate(sql,new Object[] {cp.getGouJiZD(),cp.getRenGongZD(),cp.getZhuangCheGZ(),cp.getChangDiWH(),cp.getChangDiZJ(),cp.getKanHuGZ(),cp.getDianFei(),cp.getSheBeiWH(),cp.getYunFei(),cp.getSurveyorFee(),cp.getTotolCost(),cp.getLuRuDate()});
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public List<goodsYardCost> findgoodsYard(String sql) {
+		List<goodsYardCost> addrList=new ArrayList<goodsYardCost>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				goodsYardCost a=new goodsYardCost();
+				a.setYard(rs.getString(1));
+				a.setLuRuDate(rs.getDate(2));
+				a.setFeetype(rs.getString(3));
+				a.setNum(rs.getInt(4));
+				a.setUnit(rs.getString(5));
+				a.setUnitprice(rs.getDouble(6));
+				a.setPrice(rs.getDouble(7));
+				a.setRemarks(rs.getString(8));
+				a.setLuruperson(rs.getString(9));
+				addrList.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return addrList;
+	}
+
+	@Override
+	public compareTree findcompares1(String sql) {
+		compareTree addr = new compareTree();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			if(rs.next()) {
+				addr.setPic(rs.getString(1));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return addr;
+	}
+
+	@Override
+	public int addCancellingStockTable(CancellingStockTable cp) {
+		String sql="insert into cancellingstockstable values(?,?,?,?,?,?,?,?,?,?)";
+    	int res=0;
+		try {
+			res=dbc.doUpdate(sql, new Object[] {cp.getId(),cp.getCancellingStockDate(),cp.getCancellingStockSite(),cp.getTreetype(),cp.getTlong(),cp.getTradius(),cp.getNum(),cp.getTvolume(),cp.getCancellingStockReason(),cp.getPath()});
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public int addgoodsYardfee(goodsYardCost cp) {
+		String sql="insert into goodyard_cost values(?,?,?,?,?,?,?,?,?)";
+    	int res=0;
+		try {
+			res=dbc.doUpdate(sql,new Object[] {cp.getYard(),cp.getLuRuDate(),cp.getFeetype(),cp.getNum(),cp.getUnit(),cp.getUnitprice(),cp.getPrice(),cp.getRemarks(),cp.getLuruperson()});
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally {
+			dbc.close();
+		}
+		return res;
 	}
 	
 }

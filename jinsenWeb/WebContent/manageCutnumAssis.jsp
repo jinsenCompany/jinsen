@@ -145,7 +145,7 @@ function inputNull(form){
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -154,7 +154,7 @@ function inputNull(form){
 		         class="i-tail"></i> 该页面主要是管理部门上传采伐证材料</p>
 		  </div>
 		    <div class="find-top1">
-		    <form onSubmit="return inputNull(this)" action="cutnumServlet?action=addcutnum" method="POST">
+		    <form id="myform" action="cutnumServlet?action=addcutnum1" method="POST" enctype="multipart/form-data">
 		    <div class="top" id="divprint" >
 		    <table class="biao" >
 				<caption class="book_h01">录入采伐证材料</caption>
@@ -245,7 +245,7 @@ function inputNull(form){
 		    </tr>
 		    <tr>
 		    		<td id="a">上传照片</td>
-		    		<td id="b"><input class="filepath" onchange="changepic(this)" type="file" id="cutnumfile" name="cutnumfile"></td>
+		    		<td id="b"><input class="filepath"  type="file" id="cutnumfile" name="cutnumfile"></td>
 		    </tr>
 		    </table>
     </div>

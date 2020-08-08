@@ -160,7 +160,7 @@ String now = df.format(d); %>
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <article class="artlce">
@@ -295,7 +295,7 @@ String now = df.format(d); %>
                              <tr>
                                 <td colspan="2">货场管理员：</td>
                                 <td colspan="2">检尺员：</td>
-                                <td colspan="2">货场监管员：</td>
+                                <td colspan="2">伐区监管员：</td>
                              </tr>
                              
                              <tr>

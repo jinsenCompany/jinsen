@@ -102,7 +102,7 @@ $(function(){
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=seeallapplyW&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button>全部申请</a>';
+                        var  d = '<a href="cutnumServlet?action=seeallapplyW&applyid=\''+ row.applyid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看全部申请</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -145,6 +145,7 @@ $(function(){
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->

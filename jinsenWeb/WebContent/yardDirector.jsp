@@ -21,72 +21,78 @@
 <script src="js/bstable/js/bootstrap-table.js"></script>
 <script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
 <script>
-    $(function(){
-        table1();
-    })
-    function table1(){
-        $('#table1').bootstrapTable({
-        	theadClasses: "thead-blue",//设置thead-blue为表头样式
-    	    classes: "table table-bordered table-striped table-sm table-dark",
-            method: "get",
-            striped: true,
-            singleSelect: false,
-            url: "workpageSevrlet?action=writepage&type=tongguo",
-            data:{},
-            dataType: "json",
-            pagination: true, //分页
-            pageSize: 8,
-            pageNumber: 1,
-            search: true, //显示搜索框
-            contentType: "application/x-www-form-urlencoded",
-            showRefresh: true,                      //是否显示刷新按钮
-            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
-            detailView: true,
-            columns: [
-            	{
-                    checkbox: "true",
-                    field: 'check',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: "工单号",
-                    field: 'workid',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '采伐证号',
-                    field: 'cutNum',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '采伐地点',
-                    field: 'cutSite',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '伐区监管员',
-                    field: 'forester',
-                    align: 'center'
-                },
-                {
-                    title: '操作',
-                    field: 'opr',
-                    width: 180,
-                    align: 'center',
-                    formatter: function (cellval, row) {
-                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=seetongguo&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
-                        return  d;
-                    }
-                },
-            ]
-        });
-    }
+$(function(){
+    table1();
+})
+function table1(){
+    $('#table1').bootstrapTable({
+    	theadClasses: "thead-blue",//设置thead-blue为表头样式
+	    classes: "table table-bordered table-striped table-sm table-dark",
+        method: "get",
+        striped: true,
+        singleSelect: false,
+        url: "workpageSevrlet?action=writepage&type=passall",
+        data:{},
+        dataType: "json",
+        pagination: true, //分页
+        pageSize: 8,
+        pageNumber: 1,
+        search: true, //显示搜索框
+        contentType: "application/x-www-form-urlencoded",
+        showRefresh: true,                      //是否显示刷新按钮
+        showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+        detailView: true,
+        columns: [
+        	{
+                checkbox: "true",
+                field: 'check',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: "工单号",
+                field: 'workid',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '采伐证号',
+                field: 'cutnum',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '采伐时间',
+                field: 'cutdate',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '采伐地点',
+                field: 'cutsite',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '伐区监管员',
+                field: 'forester',
+                align: 'center'
+            },
+            {
+                title: '操作',
+                field: 'opr',
+                width: 180,
+                align: 'center',
+                formatter: function (cellval, row) {
+                    //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                    var  d = '<a href="workpageSevrlet?action=finishWorkpage&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                    //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                    return  d;
+                }
+            },
+        ]
+    });
+}
  </script>
 <body>
 <!--Header-part-->
@@ -121,6 +127,7 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -133,9 +140,9 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>审核</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="yardMoneryDirector.jsp">费用结算</a></li>
+        <li><a href="goodsYardCost.jsp">费用结算</a></li>
         <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
       </ul>
      </li>
@@ -150,6 +157,7 @@
      <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
+   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i> <span>货场费用报表</span></a> </li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -158,7 +166,7 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="yardDirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 规划队首页</a></div>
+    <div id="breadcrumb"> <a href="yardDirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
@@ -166,10 +174,10 @@
   <div class="container-fluid">
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lb"> <a href="yardInventoryBootstrap.jsp"> <i class="icon-dashboard"></i>货场盘点</a> </li>
-        <li class="bg_lg span3"> <a href="workpageTreeBuy.jsp"><i class="icon-signal"></i> <span>木材收购单</span></a></li>
-        <li class="bg_ly"> <a href="treein.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span>录入进场木材数据</a> </li>
-        <li class="bg_lo"> <a href="treeout.jsp"> <i class="icon-th"></i>录入出场木材数据</a> </li>
+        <li class="bg_lb"> <a href="yardInventoryBootstrapDirector.jsp"> <i class="icon-dashboard"></i>货场盘点</a> </li>
+        <li class="bg_lg span3"> <a href="workpageTreeBuyDirector.jsp"><i class="icon-signal"></i> <span>木材收购单</span></a></li>
+        <li class="bg_ly"> <a href="passworkpageDirector.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span>录入进场木材数据</a> </li>
+        <li class="bg_lo"> <a href="treeoutDirector.jsp"> <i class="icon-th"></i>录入出场木材数据</a> </li>
         <li class="bg_ls"> <a href="cancellingStocksTable.jsp"> <i class="icon-fullscreen"></i>货场报损</a> </li>
       </ul>
     </div>

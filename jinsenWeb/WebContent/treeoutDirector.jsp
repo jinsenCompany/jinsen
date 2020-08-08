@@ -268,9 +268,9 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>审核</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="yardMoneryDirector.jsp">费用结算</a></li>
+        <li><a href="goodsYardCost.jsp">费用结算</a></li>
         <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
       </ul>
      </li>
@@ -282,15 +282,17 @@ function inputNull(form){
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
+     <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a> </li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
+   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i> <span>货场费用报表</span></a> </li>
   </ul>
 </div>
 <!--sidebar-menu-->
 <!--main-container-part-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="Surveyor.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 检尺员首页</a></div>
+    <div id="breadcrumb"> <a href="yardDirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
     <article class="artlce">
         <div class="book_con01" id="divprint">
@@ -336,7 +338,7 @@ function inputNull(form){
                <div style="float:left;"><button class="btn btn-warning" type="button"  onclick="aaad()" value="添加">添加</button>
                <button class="btn btn-default" type="button"  onclick="dddelete()" value="删除">删除</button>
           <button class="btn btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button>
-          <button class="btn btn-default" type="button"  onclick="treeAdd()" value="提交">提交</button>
+          <button style="width:160px" class="btn btn-default" type="button"  onclick="treeAdd()" value="提交木材信息">提交木材信息</button>
           </div>
                </tr>
                         </table>     

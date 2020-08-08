@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>信息中心审核补交材料的进场数据</title>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
     <link rel="stylesheet" href="js/jQueryCalendar/calendar.css">
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 
@@ -354,7 +355,8 @@ t=(List<tree>)request.getAttribute("tree");
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">
+                          <input name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=o.getWorkid()%>" pattern="#0.##"/>" />
+                          <%--  <input type="text" name="workid" id="wworkid" value="<%=o.getWorkid() %>">--%>
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>

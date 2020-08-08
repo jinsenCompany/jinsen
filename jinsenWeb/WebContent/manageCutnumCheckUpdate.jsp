@@ -60,13 +60,6 @@ function inputNull(form){
 		}
 	}
 	}
-<head>
-    <meta charset="UTF-8">
-    <title>输入采伐证材料</title>
-    <link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
-    <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
-    <link rel="stylesheet" href="css/all.css">
-
 
 </script>
 </head>

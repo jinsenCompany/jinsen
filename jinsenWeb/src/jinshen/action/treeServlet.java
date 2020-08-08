@@ -539,8 +539,10 @@ public class treeServlet extends HttpServlet {
 		            sql="select * from volume where tlong ="+Double.parseDouble(s.getString(1))+" and tradius="+Double.parseDouble(s.getString(2));
 		            volume vll=vl.findVolumeSingle(sql);
 		            float tvolume = 0.00f; 
-		    		tvolume=(float)vll.getMvolume();
-		            t.setTvolume(tvolume*t.getNum());
+		    		//tvolume=(float)vll.getMvolume();
+		            //t.setTvolume(tvolume*t.getNum());
+		            t.setTvolume(Double.parseDouble(s.getString(4)));
+		            System.out.println(Double.parseDouble(s.getString(4)));
 		            t.setUnitprice(1);//默认单价为1
 		            t.setTotalnum(1);
 		            flagt=trd.addTree(t);//添加木材信息到数据库中
@@ -567,16 +569,17 @@ public class treeServlet extends HttpServlet {
 				workpageStatus ws=new workpageStatus();
 				ws.setWorkidstatus(4);//检尺员填写木材信息工单状态为4
 				int wpp=wpd.updateWorkpagestatus1(workid,ws);
-				if(wpp>0) {
+				/*if(wpp>0) {
 					out.print("保存成功");
 				}
 				else {
 					out.write("保存失败");
-				}
+				}*/
 				//System.out.println(workid);
+				out.print(wpp);
 			}
 			else {
-				out.print("保存失败");	
+				out.print(flag);	
 			}	
         }
         //更新进场表
@@ -1055,7 +1058,7 @@ public class treeServlet extends HttpServlet {
         	//通过
         	else if(mytype.equals("pass"))
         	{
-        		sql="select i.workid,i.cutNum,i.yarddate,i.cutSite,i.carNumber,i.yard,i.surveyor,i.section from inyard as i join workpage_status as w on i.workid=w.workid where w.workid_status=5";
+        		sql="select i.workid,i.cutNum,i.yarddate,i.cutSite,i.carNumber,i.yard,i.surveyor,i.section from inyard as i join workpage_status as w on i.workid=w.workid where w.workid_status=5 or w.workid_status>7";
         		List<inyard> worki=trd.findinyards(sql);
             	mapper.writeValue(response.getWriter(), worki);
         	}

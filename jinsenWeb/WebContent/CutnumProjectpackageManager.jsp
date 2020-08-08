@@ -62,7 +62,7 @@ td,th{text-align:center;vertical-align:middle}
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
 	font-size: 13px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
-	padding: 3px 18px; 	
+	padding: 3px 22px; 	
 	display: inline-block; 	vertical-align: middle; 	
 	font-weight: normal; 	border-radius: 3px; 	
 	margin: 0 8px 0 3px; 	
@@ -206,7 +206,7 @@ function inputNull(form){
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -238,13 +238,14 @@ function inputNull(form){
     </div>
     
     </div>
-    <div class="1" ; style="text-align:center">
+    </form> 
+   <div class="1" style="text-align:center">
 
-		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
-		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
+		    <span  style="text-align: center;"><button style="width:160px" class="btn" onclick="addproject()" value="保存工程包">保存工程包</button></span>
+		    
 		 </div>
     <div style="clear: both;padding-bottom: 40px"></div>
-    </form> 
+    
 
     </div>
 

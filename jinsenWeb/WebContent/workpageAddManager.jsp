@@ -133,23 +133,24 @@ String now = df.format(d); %>
   <ul>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="workpageAdd.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaqu.jsp">审核工单</a></li>
+        <li><a href="workpageAddManager.jsp">输入工单</a></li>
+        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">2</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">3</span></a>
      <ul>
-        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="CutnumProjectpackageManager.jsp">创建工程包</a></li>
+        <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+        <li><a href="cutareaAllotManager.jsp">伐区拨交</a></li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTable.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
+    <li> <a href="manageCutnumCheckManager.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li><a href="productPriceManager.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
+    <li><a href="CutnumProjectpackageTableManager.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
-        <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
+        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
       </ul>
      </li>
   </ul>
@@ -160,7 +161,7 @@ String now = df.format(d); %>
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <article class="artlce">
@@ -295,7 +296,7 @@ String now = df.format(d); %>
                              <tr>
                                 <td colspan="2">货场管理员：</td>
                                 <td colspan="2">检尺员：</td>
-                                <td colspan="2">货场监管员：</td>
+                                <td colspan="2">伐区监管员：</td>
                              </tr>
                              
                              <tr>

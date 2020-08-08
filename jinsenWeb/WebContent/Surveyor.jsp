@@ -47,6 +47,7 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -58,12 +59,11 @@
     <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treein.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
-    <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>查询采伐工单信息</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -72,14 +72,14 @@
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="Surveyor.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <!--Action boxes-->
   <div class="container-fluid">
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lg span4"> <a href="treein.jsp"><i class="icon-signal"></i> <span>录入进场木材数据</span></a></li>
+        <li class="bg_lg span4"> <a href="passworkpage.jsp"><i class="icon-signal"></i> <span>录入进场木材数据</span></a></li>
         <li class="bg_ly span4"> <a href="treeout.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span> 录入出场木材数据 </a> </li>
       </ul>
     </div>   

@@ -303,7 +303,7 @@ function deleteAll()
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -358,9 +358,9 @@ function deleteAll()
       </tr>
       </table>
     </div>
-   <div class="1" ; style="text-align:center">
+   <div class="1" style="text-align:center">
 
-		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
+		    <span  style="text-align: center;"><button class="btn" type="button" onclick="treeAdd()" value="保存">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
 		 </div>
     </form>

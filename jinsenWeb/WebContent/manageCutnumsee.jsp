@@ -91,7 +91,7 @@
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
@@ -125,7 +125,7 @@ $(function(){
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
-            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+            //showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             showRefresh: true,                  //是否显示刷新按钮
             contentType: "application/x-www-form-urlencoded",
@@ -157,6 +157,18 @@ $(function(){
                     "colspan": 22
                 }],
                 [
+                	 {
+                         title: '查看采伐证材料',
+                         field: 'opr',
+                         width: 180,
+                         align: 'center',
+                         formatter: function (cellval, row) {
+                             //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                             var  d = '<a href="cutnumServlet?action=watch&cutnum=\''+ row.cutnum + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                             //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                             return  d;
+                         }
+                     },
                 	{
                         title: '采伐开始时间',
                         field: 'starttime',
@@ -280,19 +292,8 @@ $(function(){
                     field: 'certifier',
                     align: 'center',
                     valign: 'middle'
-                },
-                {
-                    title: '操作',
-                    field: 'opr',
-                    width: 180,
-                    align: 'center',
-                    formatter: function (cellval, row) {
-                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=watch&cutnum=\''+ row.cutnum + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
-                        return  d;
-                    }
-                },
+                }
+               
                 ],
             ]
         });

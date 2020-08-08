@@ -65,6 +65,9 @@ pageEncoding="UTF-8"%>
 
     </div>
 <div id="content">
+<div id="content-header">
+    <div id="breadcrumb"> <a href="superManage.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+  </div>
 <main>
     <div class="home-tab"><i class="tab-i"></i> 所在位置：<span>角色信息管理界面</span></div>
     <div class="find-top">
