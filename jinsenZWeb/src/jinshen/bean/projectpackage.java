@@ -1,21 +1,25 @@
 package jinshen.bean;
 
-import java.sql.Date;
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class projectpackage {
-	private Double projectPackageid;
+	private int projectPackageid;
 	private Date projpackageStarttime;
 	private String contractNum;
 	private String contractionSide;
 	private String cuttime;
 	private String forester;
 	private String accessory;
-	public double getprojectPackageid() {
+	private String projectPackageName;//工程包名称
+	public int getprojectPackageid() {
 		return projectPackageid;
 	}
-	public void setprojectPackageid(double projectPackageid) {
+	public void setprojectPackageid(int projectPackageid) {
 		this.projectPackageid=projectPackageid;
 	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getProjpackageStarttime() {
 		return projpackageStarttime;
 	}
@@ -52,4 +56,11 @@ public class projectpackage {
 	public void setAccessory(String accessory) {
 		this.accessory = accessory;
 	}
+	public String getProjectPackageName() {
+		return projectPackageName;
+	}
+	public void setProjectPackageName(String projectPackageName) {
+		this.projectPackageName = projectPackageName;
+	}
+	
 }

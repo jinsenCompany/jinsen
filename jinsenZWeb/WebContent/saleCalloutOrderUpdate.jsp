@@ -72,7 +72,7 @@ function yes(){
 	$("input[type='checkbox']:checked").each(function(i){
     	var group=[];
     	var id=$(this).val();
-    	alert(id);
+    	//alert(id);
     	    group[0]=document.getElementById("surveyor"+id+"").value;
     	    if(group[0]=="")
     	    	{
@@ -84,7 +84,7 @@ function yes(){
     	    }
     });
 	var mymap=JSON.stringify(map);
-	alert(mymap);
+	//alert(mymap);
 	$.ajax({
 		url:"salaryServlet?action=worksaleyesorno&type=yes",
         //url:"cutnumServlet",
@@ -98,6 +98,7 @@ function yes(){
         success: function (data) {
         	if(data>0){
         		alert("审核通过");
+        		window.location.href = 'saleCalloutOrderShenhe.jsp';
         	}
         	else{
         		alert("审核保存失败");
@@ -118,6 +119,7 @@ function not(){
         success: function (data) {
         	if(data>0){
         		alert("反馈成功");
+        		window.location.href = 'saleCalloutOrderShenhe.jsp';
         	}
         	else{
         		alert("反馈失败");
@@ -211,7 +213,7 @@ su=(List<surveyor>)request.getAttribute("surveyor");%>
        </tr>
        <tr>
         <td>调令号:</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="saleCalloutOrder" id="saleCalloutOrder" value="<%=s.getSaleCalloutOrder() %>"></td> 
-        <td>货款金额:</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="Paymentamount" id="Paymentamount" value="<%=s.getPaymentamount() %>"></td> 
+        <%-- <td>货款金额:</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="Paymentamount" id="Paymentamount" value="<%=s.getPaymentamount() %>"></td> --%>
         <td>合计数量</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="totalnum" id="totalnum" onclick="makecount()" value="<%=s.getTotalnum() %>"></td>
       <td>通知签发人</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="Signer" id="Signer" value="<%=s.getSigner() %>"></td>
        </tr>

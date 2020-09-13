@@ -23,7 +23,7 @@ public interface treeDao {
 	public int findMaxid();
 	public int updateTree(String sql);
 	//public List<cat> findByNameList(String sql);
-	public int addTreeout(tree c);
+	public int addTreeout(tree c);//录入出仓数据
 	public int updateTreeout(tree c);
 	public int updateTreeout(String sql);
 	public int addInyard(inyard cp);
@@ -35,6 +35,11 @@ public interface treeDao {
 	public outyard findOutSingle(String sql);
 	public int updateWork(String sql);
 	public outyard findworkid(String sql);
+	public List<outyard> findtreeoutCode(String sql);
+	
+	//销售码单状态
+	public int addTreeoutStatus(outyard c);//录入出仓数据
+	public int updateTreeoutStatus(outyard cp,double workid);//更新销售码单状态
 	
 	public compareVolume findVolume(String sql);//砍伐证的材积与输入材积和进行比较
 	

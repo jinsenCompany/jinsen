@@ -45,7 +45,7 @@
     	var now = new Date();
     	var year = now.getFullYear();
 
-    	for(var i = year; i > year -10 ; i --)
+    	for(var i = year; i > year -20 ; i --)
     	{
     		var str = '<option>'+i+'</option>';
     		
@@ -105,6 +105,7 @@
                     title: "货场",
                     field: 'yardname',
                     align: 'center',
+                    width:300,
                     valign: 'middle'
                 },
                 {
@@ -114,6 +115,7 @@
                   	   return document.getElementById("sa_year").value;
                      },*/
                      align: 'center',
+                     width:300,
                      valign: 'middle'
                 },
             	/*{
@@ -147,7 +149,19 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="treeServlet?action=findyardList&yardname=\''+ row.yardname + '\'&yeart=\''+ row.yeart + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="treeServlet?action=findyardList&yardname=\''+ row.yardname + '\'&yeart=\''+ row.yeart + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看货场库存</button></a>';
+                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                        return  d;
+                    }
+                },
+                {
+                    title: '操作',
+                    field: 'opr',
+                    width: 180,
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="workpageSevrlet?action=findyardfeed&yardname=\''+ row.yardname + '\'&yeart=\''+ row.yeart + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看货场费用</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -206,7 +220,7 @@
     <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进仓木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>-->
@@ -226,8 +240,8 @@
   <div id="content-header">
     <div id="breadcrumb"> <a href="yardDirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
-<main class="all">
-    <article class="artlce">
+<main>
+    <article>
     <div>
     <div class="find-top">
         <p class="p-tail"><i class="i-tail"></i> 本页面是货场盘点页面。</p>

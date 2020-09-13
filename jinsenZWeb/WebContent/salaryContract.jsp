@@ -60,9 +60,9 @@ td,th{text-align:center;vertical-align:middle}
             margin-top: 35px; margin-left:10px}
         .table_p span{border-bottom: 3px #42cdec solid;display: inline-block;position: absolute;bottom: -1px;font-weight: bold;font-size: 20px}
         .but_p button{width: 200px}
-        .btn{ 	
+ .btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
-	font-size: 13px!important; 	height: 30px; 	
+	font-size: 20px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
 	padding: 3px 18px; 	
 	display: inline-block; 	vertical-align: middle; 	
@@ -71,6 +71,32 @@ td,th{text-align:center;vertical-align:middle}
 	border: 1px solid #3383da; 	
 	color: #ffffff; 	
 	background-color: #3383da; 	
+	cursor: pointer; 
+	}
+ .btnS{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 20px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #CC99FF; 	
+	color: #ffffff; 	
+	background-color: #CC99FF; 	
+	cursor: pointer; 
+	}
+ .btnR{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 20px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid red; 	
+	color: #ffffff; 	
+	background-color: red; 	
 	cursor: pointer; 
 	}
 </style>
@@ -87,19 +113,34 @@ function aaad()
            +"<option value='杉木' selected='selected'>--杉木--</option>"
            +"<option value='松木'>--松木--</option>"
            +"<option value='杂木'>--杂木--</option>"
-           +"<option value='杉薪'>--杉薪--</option>"
-           +"<option value='松薪'>--松薪--</option>"
-           +"<option value='杂薪'>--杂薪--</option>"
            +"<option value='衫短材'>--衫短材--</option>"
            +"<option value='杉木兜'>--杉木兜--</option>"
            +"<option value='杉直柄'>--杉直柄--</option>"
            +"<option value='特种材'>--特种材--</option>"
            +"<option value='其他'>--其他--</option></select>"
-        +"长度(米)<span></span><input style='width: 180px' name='tlong' id='tl"+k+"' value='2-4'>"
-        +"口径(厘米)<span></span><input style='width: 180px' name='tradius' id='tr"+k+"' value='8-9'>"
-          +"单价(元/立方米)<span></span><input type='text' style='width: 180px' name='unitprice' id='up"+k+"'></td></tr>";
+        +"长度(米)<span></span><input type='text' style='width: 180px' name='tlong' id='tl"+k+"' value='2-4'>"
+        +"口径(厘米)<span></span><input type='text' style='width: 180px' name='tradius' id='tr"+k+"' value='8-9'>"
+          +"单价(元/立方米)<span></span><input type='text' style='width: 180px' name='unitprice' id='up"+k+"' value='0' onfocus='if(this.value=='0') this.value=''' onblur='if(this.value=='') this.value='0''></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt5").append(str); 
+             
+}
+$(function(){
+	aaadS();
+})
+function aaadS()
+{
+ 	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">树材种<span></span>"
+          +"<select style='width: 180px' name='treetype' id='sss"+k+"'>"
+           +"<option>--请选择--</option>"
+           +"<option value='杉薪' selected='selected'>--杉薪--</option>"
+           +"<option value='松薪'>--松薪--</option>"
+           +"<option value='杂薪'>--杂薪--</option></select>"
+        +"长度(米)<span></span><input type='text' style='width: 180px' name='tlong' id='tl"+k+"' value='2-4'>"
+        +"<input type='text' style='width: 180px;display:none' name='tradius' id='tr"+k+"' value=''>"
+          +"单价(元/立方米、吨)<span></span><input type='text' style='width: 180px' name='unitprice' id='up"+k+"' value='0' onfocus='if(this.value=='0') this.value=''' onblur='if(this.value=='') this.value='0''></td></tr>";
+             k=Number(k)+Number(1);
+            $("#ttt5S").append(str); 
              
 }
 /**
@@ -247,7 +288,7 @@ function deleteAll()
 //利用fromdata保存文件
 function addsalaryContract()
 {
-	var map={};
+	/* var map={};
 	var kk=Number(0),ki=Number(0);
 	$("input[type='checkbox']:checked").each(function(i){
     	var group=[];
@@ -282,7 +323,7 @@ function addsalaryContract()
         ki=Number(j)+Number(1);
 	    }
     }); 
-    var mymap=JSON.stringify(map);
+    var mymap=JSON.stringify(map); */
     $.ajax({
         url:"salaryServlet?action=addcontract1",
         /*data:{
@@ -306,7 +347,7 @@ function addsalaryContract()
         		}
         	else{
         		 alert("上传失败");
-        		 window.location.href = 'salaryContract.jsp';
+        		 //window.location.href = 'salaryContract.jsp';
         	}
         }
     })
@@ -331,6 +372,30 @@ function load()
     })
 }
 </script>
+<script type="text/javascript">
+function toggle(table5) {
+if (document.getElementById){
+ target = document.getElementById(table5);
+  if ( target.style.display == "none") {
+   target.style.display = ""; 
+  } else { 
+   target.style.display = "none";
+  }
+ }
+}
+</script>
+<script type="text/javascript">
+function toggle(table6) {
+if (document.getElementById){
+ target = document.getElementById(table6);
+  if ( target.style.display == "none") {
+   target.style.display = ""; 
+  } else { 
+   target.style.display = "none";
+  }
+ }
+}
+</script>
 </head>
 <body onload="load()">
 <!--Header-part-->
@@ -347,7 +412,7 @@ function load()
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -362,7 +427,13 @@ function load()
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+ </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -374,10 +445,11 @@ function load()
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
-   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">1</span></a>
+    <ul>
+  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="salaryContract.jsp">创建合同</a></li>
+        <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
@@ -386,19 +458,34 @@ function load()
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li><a href="saleCalloutOrder.jsp"><i class="icon icon-home"></i><span>录入销售调令</span></a>
-    <li><a href="saleCalloutOrdersee.jsp"><i class="icon icon-th-list"></i> <span>查看调令材料</span></a></li>
-    <li><a href="saleCalloutOrderShenheModer.jsp"><i class="icon icon-th-list"></i> <span>查看调令审核</span></a></li>
-     <li><a href="outyardCostS.jsp"><i class="icon icon-home"></i><span>结算检尺费</span></a></li>
-    <li><a href="salaryContractList.jsp"><i class="icon icon-home"></i> <span>合同进度</span></a></li>
-    <li><a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
+     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
+        <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
+        <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+        <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
+        <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
+      </ul>
+     </li>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
+        <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
+      </ul>
+     </li>
   </ul>
 </div>
 <!--sidebar-menu-->
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+    <div id="breadcrumb"> <a href="salaryper" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -420,22 +507,64 @@ function load()
        </tr>
        </tbody>
     </table>
-    <p class="table_p"><span>树材信息录入</span></p>
-       <table class="table2" id="table5" style="width:100%;height:auto">
-          <tbody id="ttt5">
+<!--     <p class="table_p"><span>树材信息录入</span></p> -->
+<!--        <table class="table2" id="table5" style="width:100%;height:auto;margin-left:120px"> -->
+<!--           <tbody id="ttt5"> -->
                                 
-           </tbody>
-           </table>
-      <table class="table">
-      <tbody>
-           <tr>
-           <div style="float:left;"><button class="btn btn-warning" type="button"  onclick="aaad()" value="添加">添加</button>
-           <button class="btn btn-default" type="button"  onclick="dddelete()" value="删除">删除</button>
-          <button class="btn btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button>
-          </div>
-            </tr>
-        </tbody>
-      </table>
+<!--            </tbody> -->
+<!--            </table> -->
+<!--            <table class="table2" id="table5" style="width:100%;height:auto;margin-left:0"> -->
+<!--            <tbody id="ttt5S"> -->
+           
+<!--            </tbody> -->
+<!--            </table> -->
+       <p class="table_p"><span>树材信息录入</span></p>
+                        <div style="text-align:center">
+                        <button  class="btn" type="button"  value="添加普通树材" onclick="toggle('table5');"><span style="font-size:26px">添加普通树材</span></button>
+                        <button  class="btnR" type="button"  value="添加薪材" onclick="toggle('table6');"><span style="font-size:26px">添加薪材</span></button>
+                        <button class="btnS" type="button"  onclick="deleteAll()" value="清空"><span style="font-size:26px">清空</span></button>
+                        </div>
+                        <br>
+                        <table class="table2" id="table5" style="width:100%;height:auto;display: none;margin-left:12px">
+                           <tbody id="ttt5">
+                                
+                            </tbody>
+                            <tr>
+                            <td>
+                            <div>
+                            <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加普通树材">添加普通树材</button>
+                            <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
+                             <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
+                            </div>
+                            </td>
+                            </tr>
+                            </table>
+                            <table class="table2" id="table6" style="width:100%;height:auto;display: none;margin-left:0">
+                            <tbody id="ttt5S">
+                                
+                            </tbody>
+                            <tr>
+                            <td>
+                            <div>
+                            <button class="btn btn-warning" type="button"  onclick="aaadS()" value="添加薪材">添加薪材</button>
+                            <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
+                             <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
+                            </div>
+                            </td>
+                            </tr>
+                            </table>
+<!--       <table class="table"> -->
+<!--       <tbody> -->
+<!--            <tr> -->
+<!--            <div style="text-align:left"> -->
+<!--            <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加普通树材">添加普通树材</button> -->
+<!--            <button class="btnR btn-warning" type="button"  onclick="aaadS()" value="添加薪材">添加薪材</button> -->
+<!--            <button class="btnS btn-default" type="button"  onclick="dddelete()" value="删除">删除</button> -->
+<!--           <button class="btnS btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button> -->
+<!--           </div> -->
+<!--             </tr> -->
+<!--         </tbody> -->
+<!--       </table> -->
       <div style="border:1px solid #3383da;font-size:18px">
       <p style="font-style: italic;color: red;">费用负担说明：     &nbsp;&nbsp;1：装车费&nbsp;&nbsp;&nbsp;&nbsp; 2：检尺费&nbsp;&nbsp;&nbsp;&nbsp;3：其他费用&nbsp;&nbsp;&nbsp;&nbsp;4：木材装运过程中所发生的安全事故，其民事（经济赔偿或经济补偿等）、行政等法律责任</p>
       </div>
@@ -443,19 +572,23 @@ function load()
       <table style="margin-left:auto; margin-right:auto">
       <tr>
       <td>交货地点</td><td><select name="deliveryplace" id="deliveryplace"><option selected="selected">选择</option></select></td>
-      <td>数量(立方米/吨)</td><td><input type="text" name="treenumber" id="treenumber"></td>
+      <td>数量(立方米/吨)</td><td><input style="width:400px" type="text" name="treenumber" id="treenumber"></td>
+      </tr>
+      <tr>
       <td>费用负担</td><td><input style="text-decoration: underline;" type="text" name="cost" id="cost" value="甲方：      乙方：   "></td>
       <!--  <td>检尺标准</td><td><select id="measurestard" name="measurestard" multiple><option>衫小径单材积足码检</option><option>衫原木逢五进</option><option>杂木双码逢五进</option><option>小径单材积足码检</option></select></td>-->
-      <td>检尺标准</td><td><input id="measurestard" name="measurestard" value="衫小径单材积足码检"></td>
+      <td>检尺标准</td><td><input type="text" style="width:400px" id="measurestard" name="measurestard" value="衫小径单材积足码检"></td>
       </tr>
       <tr>
       <td>结算方式</td><td><input type="text" name="settlemethod" id="settlemethod"></td>
-      <td>合同开始时间</td><td><input type="date" name="starttime" id="starttime"></td>
-      <td>合同结束时间</td><td><input type="date" name="endtime" id="endtime"></td>
-      <td>保证金(元)</td><td><input type="text" name="margin" id="margin"></td>     
+      <td>保证金(元)</td><td><input type="text" style="width:400px" name="margin" id="margin"></td>
       </tr>
       <tr>
-      <td class="top-table-label">上传文件</td><td><input class="filepath" onchange="changepic(this)" type="file" id="contractfile" name="contractfile"></td>
+      <td>合同开始时间</td><td><input type="date"  name="starttime" id="starttime"></td>
+      <td>合同结束时间</td><td><input type="date" style="width:400px" name="endtime" id="endtime"></td>   
+      </tr>
+      <tr>
+      <td class="top-table-label">上传文件</td><td><input class="filepath"  type="file" id="contractfile" name="contractfile"></td>
       </tr>
       </table>
     </div>

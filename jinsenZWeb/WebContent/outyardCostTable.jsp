@@ -59,7 +59,9 @@ function priceCount(id)
 	
 	var volume=document.getElementById("tv"+id+"").value;
 	var unitprice=document.getElementById("un"+id+"").value;
-	document.getElementById("pr"+id+"").value=(volume*unitprice);
+	price=Number(volume*unitprice);
+	ttprice=price.toFixed(2);
+	document.getElementById("pr"+id+"").value=(ttprice);
 }
 //计算合计金额
 function makecount()
@@ -73,6 +75,7 @@ function makecount()
     {
 	     surveyorFee+=Number(document.getElementById("pr"+id+"").value);
 	}
+	surveyorFee=surveyorFee.toFixed(2);
    document.getElementById("surveyorFee").value=Number(surveyorFee);
 }
 function mysave()
@@ -83,7 +86,7 @@ function mysave()
 	var surveyorFee=document.getElementById("surveyorFee").value;
 	var length=$("#table5 tr").length;
 	length=length-1;
-	alert(length);
+	//alert(length);
     for(var id=1;id<=length;id++){
     	var group=[];
     	group[0]=document.getElementById("un"+id+"").value;
@@ -110,10 +113,11 @@ function mysave()
         type: "POST",
         dataType:"html",
         success: function (data) {
-        	alert(data);
+        	//alert(data);
         	if(data>0)
     		{
     	        alert("添加成功！");
+    	        window.location.href = 'outyardCostS.jsp';
     		}
         	else{
         		alert("添加失败！");
@@ -121,7 +125,10 @@ function mysave()
         }
     })
   }
-
+window.onload = function () {
+    locationInput = function () {
+    };
+}
 </script>
 </head>
 <body>
@@ -187,9 +194,40 @@ t=(List<surveyorFee>)request.getAttribute("surveyorFee");
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
- <ul>
-    <li> <a href="outyardCostS.jsp"><i class="icon icon-home"></i><span>结算检尺费</span></a></li>
-    <li> <a href="#"><i class="icon icon-home"></i><span>结算其他费用</span></a></li>
+  <ul>
+  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="salaryContract.jsp">创建合同</a></li>
+        <li><a href="salaryContractList.jsp">合同进度</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="productowner.jsp">创建客户信息</a></li>
+        <li><a href="productownerSee.jsp">查看客户信息</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
+        <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
+        <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+        <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
+        <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
+      </ul>
+     </li>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
+        <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
+      </ul>
+     </li>
   </ul>
 </div>
 
@@ -227,7 +265,7 @@ t=(List<surveyorFee>)request.getAttribute("surveyorFee");
 			        <td>货场分区</td>
 				    <td><input type="text" name="section" id="section" value="<%=c.getSection()%>"></td>	
 				    <td>采伐证号</td>
-				    <td><input type="text" name="cutnum" id="cutnum" value="<%=c.getCutnum() %>"></td>
+				    <td><input type="text" name="cutnum" id="cutnum" value="<%=c.getCutnum()%>"></td>
 			    </tr>   
 			  	<tr> 
 				    <td>出场时间</td>
@@ -251,7 +289,7 @@ t=(List<surveyorFee>)request.getAttribute("surveyorFee");
                                                                                             检尺径&nbsp;<span></span><input type='text' style='width: 130px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}">
                                                                                             根数&nbsp;<span></span><input type='text' style='width: 130px' name='num' id='n<%=i%>' value="${b.getNum()}">
                                                                                             材积(m^3、T、根)&nbsp;<span></span><input type='text' style='width: 130px' name='tvolume' id='tv<%=i%>' value="${b.getTvolume()}">
-                                                                                            单价&nbsp;<span></span><input type='text' style='width: 130px' name='unitprice'  id='un<%=i%>' value="${b.getUnitprice()}">
+                                                                                            单价&nbsp;<span></span><input type='text' style='width: 130px' name='unitprice'  id='un<%=i%>' value="${b.getUnitprice()}" oninput='priceCount("<%=i%>")' onclick='locationInput'>
                                                                                             金额&nbsp;<span></span><input type='text' style='width: 130px' name='price' id='pr<%=i%>' onclick='priceCount("<%=i%>")' value="${b.getPrice()}">
                            </td>
                            </tr>

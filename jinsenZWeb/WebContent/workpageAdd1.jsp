@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -19,17 +21,20 @@
 <link type="text/css" rel="stylesheet" href="css/PrintArea.css" />
 <script src="js/jquery.js" type="text/javascript"></script>
 <style type="text/css">
- .table_p{line-height: 28px;border-bottom: 1px #d0e6ec solid;position: relative;margin-bottom: 10px; 
+.table_p{line-height: 28px;border-bottom: 1px #d0e6ec solid;position: relative;margin-bottom: 10px; 
             margin-top: 35px; margin-left:10px}
-        .table_p span{border-bottom: 3px #42cdec solid;display: inline-block;position: absolute;bottom: -1px;font-weight: bold;font-size: 20px}
-        .but_p button{width: 80px}
-        #h li{float: left; }
-        #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
-         #h a:hover{color:white;background: green}
-          .table1{width:60%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
-         td,th{text-align:center;vertical-align:middle}
-         tr{text-align:center}
-         .btn{ 	
+.table_p span{border-bottom: 3px #42cdec solid;display: inline-block;position: absolute;bottom: -1px;font-weight: bold;font-size: 20px}
+.but_p button{width: 80px}
+#h li{float: left; }
+#h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
+#h a:hover{color:white;background: green}
+         
+input{margin-top:5px;margin-bottom:-2px;}
+         
+.table1{width:80%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+td,th{text-align:center;vertical-align:middle}
+tr{text-align:center}
+	.btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
 	font-size: 13px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
@@ -55,30 +60,39 @@ function inputNull(form){
 		}
 	}
 	}
-function addworkpage(){
-	var td=$("#wworkid"+id+"").val();
-	var tr=$("#cccutnum"+id+"").val();
-	var num=$("#ccutdate"+id+"").val();
-	if(num!="" && td!="" && tr!="")
-	{
-	$.ajax({
-        url:"treeServlet",
-        data:{
-            "action":"volumeout",
-            "td":td,
-            "tr":tr 
-        },
-        type: "POST",
-        dataType:"html",
-        success: function (data) {
-        	document.getElementById("tv"+id+"").value=Number(data*num);
-        }
-    })}
-}
 </script>
-
+<script type="text/javascript">
+    function funworkid(){
+    	var _name=document.getElementById('cccutnum').value;
+    	 var workid = document.getElementById('wworkid');
+         var name=_name.substring(5,9);
+    	    var date = new Date();
+    	    var year = date.getFullYear();
+    	    var month = date.getMonth() + 1;
+    	    var strDate = date.getDate();
+            var day=date.getDate();
+            var hour=date.getHours();
+            var mini=date.getMinutes();
+            var second=date.getSeconds();
+    	    var seperator = "/";
+    	    if (month >= 1 && month <= 9) {
+    	        month = "0" + month;
+    	    }
+    	    if (strDate >= 0 && strDate <= 9) {
+    	        strDate = "0" + strDate;
+    	    }
+    	     var currentDate = name + month + strDate + hour + mini + second; //当前日期
+    	     workid.value = currentDate; //赋值给input.value
+    	     //workid.setAttribute('disabled', 'disabled'); //不可编辑
+    }
+    </script>
 </head>
 <body>
+<% Date d = new Date();
+
+SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+String now = df.format(d); %>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">产销部门平台</a></h1>
@@ -117,16 +131,27 @@ function addworkpage(){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li><a href="index.html"><i class="icon icon-home"></i> <span>生产数据查询</span></a> </li>
+  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+      </ul>
+     </li>
+     <li><a href="treeinYezhang.jsp"><i class="icon icon-inbox"></i> <span>打印检尺野帐</span></a> </li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="workorderAdd.jsp">发送工单通知</a></li>
         <li><a href="workpageAdd.jsp">输入工单</a></li>
         <li><a href="workpageShenheFaqu.jsp">审核工单</a></li>
       </ul>
      </li>
-    <li><a href="productionCheck.jsp"><i class="icon icon-inbox"></i> <span>生产检查</span></a> </li>
-    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
+    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>   
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -135,31 +160,31 @@ function addworkpage(){
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="hello2.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <article class="artlce">
         <div class="book_con01">
-    <form  onSubmit="return inputNull(this)" action="workpageSevrlet?action=addWorkpage" method="POST" >
+    <form  onSubmit="return inputNull(this)" action="workpageSevrlet?action=addWorkpage1" method="POST" >
                 <div class="top" id="divprint">
 
                         <div class="top_out">
-                          <table class="table1" border="1">
-                           <caption class="book_h01">创建工单</caption>
+                          <table class="table1"  border="1">
+                           <caption class="book_h01">伐区生产工单</caption>
                            <tr>
-                           <th colspan="2">工单号</th>
                            <th colspan="2">采伐证号</th>
-                          <th colspan="2">采伐时间</th>
+                           <th colspan="2">工单号</th>
+                          <th colspan="2">时间</th>
                            </tr>
                            <tr>
-                            <td colspan="2">
-                              <input type="text" name="workid" id="wworkid" placeholder="工单号">
+                           <td colspan="2">
+                             <input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" >
                            </td>
                            <td colspan="2">
-                             <input type="text" name="cutnum" id="cccutnum" placeholder="采伐证号">
+                              <input style="width:80%;border:0px;" type="text" name="workid" id="wworkid" onclick="funworkid()" >
                            </td>
                            <td colspan="2">
-                              <input  name="cutdate" id="ccutdate" placeholder="采伐时间">
+                              <input  type="text" name="cutdate" id="ccutdate" value="<%=now%>">
                            </td>
                            </tr>
                            <tr>
@@ -169,24 +194,19 @@ function addworkpage(){
                            </tr>
                            <tr>
                            <td colspan="2">
-                              <input type="text" name="cutsite" id="ccutsite " placeholder="采伐地点">
+                              <input style="width:80%;border:0px;" type="text" name="cutsite" id="ccutsite ">
                            </td>
                            <td colspan="2">
-                              <input type="text" name="checksite" id="ccchecksite" placeholder="检验地点">
+                              <input style="width:80%;border:0px;" type="text" name="checksite" id="ccchecksite" >
                            </td>
                            <td colspan="2">
-                              <input type="text" name="carnumber" id="ccarnumber" placeholder="车牌号">
+                              <input style="width:80%;border:0px;" type="text" name="carnumber" id="ccarnumber" >
                            </td>
                            </tr>
-                           <tr>
-                           <td colspan="2">GPS信息</td><td colspan="4"><input style="width:400px" type="text" name="gpsinfo" id="gpsinfo" placeholder="gps信息"></td>
-                           </tr>
-                           <tr>
-                           <td colspan="2">装车情况</td><td colspan="4"><input style="width:400px" type="file" name="loadphoto" id="loadphoto" placeholder="装车情况"></td>
-                           </tr>
+                           
                               <tr>
                                  <th scope="col">序号</th>
-                                 <th scope="col">树    种</th>
+                                 <th scope="col">树材种</th>
                                   <th scope="col">检  尺  长</th>
                                   <th scope="col">检  尺  径</th>
                                   <th scope="col">根  数</th>
@@ -195,8 +215,8 @@ function addworkpage(){
                               <tr>
                                  <td>1</td>
                                  <td>&nbsp; </td>
-                                 <td> &nbsp;</td>
-                                 <td> &nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
                                  <td>&nbsp; </td>
                                  <td>&nbsp;</td>
                               </tr>
@@ -232,20 +252,68 @@ function addworkpage(){
                                  <td>&nbsp; </td>
                                  <td>&nbsp;</td>
                               </tr>
+                               <tr>
+                                 <td>7</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                              </tr>
+                               <tr>
+                                 <td>8</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                              </tr>
+                               <tr>
+                                 <td>9</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                              </tr>
+                               <tr>
+                                 <td>10</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                              </tr>
+                               <tr>
+                                 <td>总计</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp; </td>
+                                 <td>&nbsp;</td>
+                              </tr>
                              <tr>
-                                <td colspan="2">伐区监管员</td>
-                                <td colspan="4"><input type="text" name="forester" id="fforester" placeholder="伐区监管员"></td>
+                                <td colspan="2">货场管理员：</td>
+                                <td colspan="2">检尺员：</td>
+                                <td colspan="2">伐区监管员：</td>
+                             </tr>
+                             
+                             <tr>
+                                <td colspan="2"></td>
+                                <td colspan="2"></td>
+                                <td colspan="2"><input style="width:80%;border:0px;" type="text" name="forester" id="fforester" ></td>
                              </tr>
                             </table>
                         </div>
 
                 </div>
-               <div class="1" ; style="text-align:center">
+             <div class="1"  style="text-align:center">
 
 		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
-		 </div>
-                <div style="clear: both;padding-bottom: 40px"></div>
+		   </div>
+                  <div style="clear: both;padding-bottom: 40px"></div>
+                
             </form>
           </div>
           </article>
@@ -254,7 +322,6 @@ function addworkpage(){
 
 </div>
 <!--end-Footer-part-->
-
 <script src="js/excanvas.min.js"></script> 
 <script src="js/jquery.min.js"></script> 
 <script src="js/jquery.ui.custom.js"></script> 

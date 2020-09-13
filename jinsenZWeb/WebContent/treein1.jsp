@@ -218,7 +218,7 @@ function inputNull(form){
     <li class="active"><a href="index.html"><i class="icon icon-home"></i> <span>信息通知</span></a> </li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="treein.jsp">录入进场木材数据</a></li>
+        <li><a href="treein.jsp">录入进仓木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
@@ -238,7 +238,7 @@ function inputNull(form){
             <div class="top" id="divprint">
                <div class="top_out">
                        <table class="table1" border="1">
-                       <caption class="book_h01">录入进场木材数据</caption>
+                       <caption class="book_h01">录入进仓木材数据</caption>
                          <tr>
                          <th colspan="2">工单号</th>
                          <th>采伐证号</th>

@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>木材生产结算</title>
+    <title>生产工资及其它费用结算清单</title>
     <link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
     <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
@@ -44,31 +44,22 @@
     </style>
 <script src="js/bstable/js/bootstrap.min.js"></script>  
 <script type="text/javascript">
-
 function mycreate()
 {
 	//var length=$("#codetable tr").length;
 	var cutnum=document.getElementById("cutnum").value;
-	if(cutnum=="")
-		{
-		    alert("请输入采伐证号！");
-		}
-	else
-		{
+	var timeStart=document.getElementById("timeStart").value;
+	//alert(timeStart)
+	var timeEnd=document.getElementById("timeEnd").value;
 	length=(length-1)*2;
 	var group=[];
-	for(var i=1;i<=length;i++)
-		{
-		     if(document.getElementById("code"+i+"").value!="")
-		     group[i-1]=document.getElementById("code"+i+"").value;
-		}
-	var mygroup=JSON.stringify(group);	
 	$.ajax({
         url:"salaryServlet",
         data:{
-            "action":"savew",
-            "mygroup":mygroup,
-            "cutnum":cutnum
+            "action":"savew1",
+            "cutnum":cutnum,
+            "timeStart":timeStart,
+            "timeEnd":timeEnd
         },
         type: "POST",
         dataType:"json",
@@ -78,115 +69,109 @@ function mycreate()
         		alert("您所需要生成的码单信息有误，请重新核对");
         		}
         	else{
-        	var tree=data["tree"];
-        	var code=data["work"];
-        	var project=data["project"];
-        	//alert(code);
-        	$("#myproject").empty();
-        	for(var i=0;i<project.length;i++)
+        	var cutCompack=data["cutCompack"];
+        	var contractionSide=data["contractionSide"];
+        	var tree=data["worktree"];
+        	var yunfeinum=0;
+        	for(var i=0;i<cutCompack.length;i++)
     		{
-        		var j=project[i];
-        		var str3="<table class='top-table'>"
-        			  +"<tr><td class='top-table-label'>工程包：</td>"
-        	           +"<td><input type='text' id='projectPackageid' disabled='disabled' value='"+j.projectPackageid+"''></td>"
-        	            +"<td class='top-table-label' >劳务承包人：</td>"
-        	            +"<td><input type='text' disabled='disabled' id='forperson' value='"+j.forperson+"'></td>"
-        	            +"<td class='top-table-label' >伐区管理单位：</td>"
-        	            +"<td><input type='text' disabled='disabled' id='manageUnit' value='"+j.manageUnit+"'></td></tr></table>";
-        		$("#myproject").append(str3); 
+        		var j=cutCompack[i];
+        		var manageUnit=j.company;
+        		var projectPackageName=j.projectPackageName;
     		}
-        	$("#mysomething").empty();
-        	for(var i=0;i<code.length;i++)
-    		{
-        		var j=code[i];
-        		var str2="<table class='top-table'>"
-        			+"<tr><p class='table_p'><span>工单"+j.workid+"</span></p>"
-        			+"</tr><tr><td class='top-table-label'>工单：</td>"
-                    +"<td><input type='text' id='workid' disabled='disabled' value='"+j.workid+"'></td></tr></table>";
-        		$("#mysomething").append(str2); 
-    		}
+        	for(var i=0;i<contractionSide.length;i++){
+        		var j=contractionSide[i];
+        		var forperson=j.contractionSide;
+        	}
         	$("#ttt").empty();
-        	var str="<tr><p class='table_p'><span>材种信息</span></p></tr>"
-                  +"<tr><td class='top-table-label'>材种：</td>"
-                  +"<td class='top-table-label'>材积：</td>"
-                  +"<td class='top-table-label'>单价：</td>"
-                  +"<td class='top-table-label'>金额：</td></tr>";
+        	/*var str="<tr><p class='table_p'><span>序号</span></p></tr>"
+                  +"<tr><td class='top-table-label'>项目</td>"
+                  +"<td class='top-table-label'>数量</td>"
+                  +"<td class='top-table-label'>单位</td>"
+                  +"<td class='top-table-label'>单价(元)</td>"
+                  +"<td class='top-table-label'>金额(元)</td></tr>";*/
         	for(var i=0;i<tree.length;i++){
         		var j=tree[i];
-        	str+="<tr id='"+(i+1)+"'><td><select id='treetype"+(i+1)+"' ><option>"+j.type+"</option></select></td>"
-                  +"<td><input type=text disabled=disabled value='"+j.tvolume+"' id='volume"+(i+1)+"'></td>"
-                   +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"'></td>"
-                  +"<td><input type='text' id='price"+(i+1)+"' onclick='priceCount("+(i+1)+")' value='"+j.price+"'></td></tr>"
+        	      var str="<tr id='"+(i+1)+"'><td style='width:50px'>"+(i+1)+"</td>"
+        	      +"<td><input type=text style='border:0px;background-color: transparent;' readonly='readonly' id='treetype"+(i+1)+"' value='"+j.type+"'></td>"
+                  +"<td><input type=text style='border:0px;background-color: transparent;' readonly='readonly' value='"+j.tvolume+"' id='volume"+(i+1)+"'></td>"
+                  +"<td style='width:60px'>m³</td>"
+                   +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"' oninput='priceCount("+(i+1)+")&totalOne()' onclick='locationInput'></td>"
+                  +"<td><input type='text' readonly='readonly' id='price"+(i+1)+"' onclick='priceCount("+(i+1)+")' value='"+j.price+"'></td></tr>"
+                  $("#ttt").append(str); 
+        	      yunfeinum+=Number(j.tvolume);
         	}
-        	ttt.innerHTML=str;
+        	//ttt.innerHTML=str;
+        	document.getElementById("manageUnit").value=manageUnit;
+        	document.getElementById("projectPackageName").value=projectPackageName;
+        	document.getElementById("forperson").value=forperson;
+        	document.getElementById("freightNum").value=yunfeinum;
+        	document.getElementById("premiumNum").value=yunfeinum;
         }}
     })
 }
-}
 
-function mysave()
-{
-	var map={};
-	var kk=0;
-	var cutnum=$("#cutnum").val();
-	var projectPackageid=document.getElementById("projectPackageid").value;
-	var forperson=document.getElementById("forperson").value;
-	var manageUnit=document.getElementById("manageUnit").value;
-	var person=document.getElementById("person").value;
-	var ttvolume=document.getElementById("ttvolume").value;
-	var tprice=document.getElementById("tprice").value;
-		var length=$("#ttt tr").length;
-		length=length-2;
-    	for(var id=1;id<=length;id++){
-    		var group=[];
-    	    group[0]=document.getElementById("treetype"+id+"").value;
-    	    group[1]=document.getElementById("unitprice"+id+"").value;
-    	    group[2]=document.getElementById("price"+id+"").value;
-    	    if(group[0]==""|| group[1]==""|| group[2]=="")
-    	    	{
-    	    	alert("请将信息填写完整！");
-    	    	}
-    	    else{
-               map[id-1]=group;
-    	    }
-    	}
-    	kk=length;
-    var mymap=JSON.stringify(map);
-    $.ajax({
-        url:"salaryServlet",
-        data:{
-            "action":"saveLaowu",
-            "newtree":mymap,
-            "id":kk,
-            "cutnum":cutnum,
-            "projectPackageid":projectPackageid,
-            "forperson":forperson,
-            "manageUnit":manageUnit,
-            "person":person,
-            "ttvolume":ttvolume,
-            "tprice":tprice
-        },
-        type: "POST",
-        dataType:"html",
-        success: function (data) {
-        	alert(data);
-        	if(data>0)
-    		{
-    	        alert("添加成功！");
-    		}
-        }
-    })
-  }
+
 //计算金额
 function priceCount(id)
 {
 	
 	var volume=document.getElementById("volume"+id+"").value;
 	var unitprice=document.getElementById("unitprice"+id+"").value;
-	document.getElementById("price"+id+"").value=(volume*unitprice);
+	var vvvo=volume*unitprice;
+	var vvvo=vvvo.toFixed(2);
+	document.getElementById("price"+id+"").value=vvvo;
+}
+//计算运费
+function priceYun()
+{
+	
+	var volume=document.getElementById("freightNum").value;
+	var unitprice=document.getElementById("unitfreight").value;
+	var vvvo=volume*unitprice;
+	var vvvo=vvvo.toFixed(2);
+	document.getElementById("freight").value=vvvo;
+}
+//计算保险费
+function pricePremium()
+{
+	
+	var volume=document.getElementById("premiumNum").value;
+	var unitprice=document.getElementById("unitpremium").value;
+	var vvvo=volume*unitprice;
+	var vvvo=vvvo.toFixed(2);
+	document.getElementById("premium").value=vvvo;
+}
+//计算小计
+function totalOne(){
+	var freight=document.getElementById("freight").value;
+	var length=$("#ttt tr").length;
+    length=length;
+    var tprice=Number(0);
+    var toprice=Number(0);
+    for(var id=1;id<=length;id++)
+    {
+    	tprice+=Number(document.getElementById("price"+id+"").value);
+    }
+    toprice=Number(tprice)+Number(freight);
+    //alert(toprice)
+    toprice=toprice.toFixed(2);
+    document.getElementById("toprice").value=toprice;
+}
+//税费
+function shuifei(){
+	//var freight=document.getElementById("toprice").value;
+	//var premium=document.getElementById("premium").value;
+	var shuifei=Number(document.getElementById("toprice").value)+Number(document.getElementById("premium").value);
+	//alert(shuifei)
+	shuifei=shuifei.toFixed(2);
+	var shengyu=Number(shuifei*0.041);
+	shengyu=shengyu.toFixed(2);
+	document.getElementById("taxationNum").value=shuifei;
+	document.getElementById("taxation").value=shengyu;
 }
 //计算合计材积和金额
-function makecount()
+/*function makecount()
 {
 	var length=$("#ttt tr").length;
 	    length=length-2;
@@ -202,7 +187,95 @@ function makecount()
 	}
    document.getElementById("ttvolume").value=Number(ttvolume);
    document.getElementById("tprice").value=Number(tprice);
+}*/
+window.onload = function () {
+    locationInput = function () {
+    };
 }
+function maketotal(){
+	var totalall=Number(document.getElementById("toprice").value)+Number(document.getElementById("taxation").value)+Number(document.getElementById("premium").value);
+	totalall=totalall.toFixed(2);
+	document.getElementById("totalAll").value=Number(totalall);
+}
+//保存
+function mysave()
+{
+	var map={};
+	var kk=0;
+	var cutnum=$("#cutnum").val();
+	var projectPackageName=document.getElementById("projectPackageName").value;
+	var forperson=document.getElementById("forperson").value;
+	var manageUnit=document.getElementById("manageUnit").value;
+	var person=document.getElementById("person").value;
+	var freightNum=document.getElementById("freightNum").value;
+	var unitfreight=document.getElementById("unitfreight").value;
+	var freight=document.getElementById("freight").value;
+	var remarks=document.getElementById("remarks").value;
+	var toprice=document.getElementById("toprice").value;
+	var premiumNum=document.getElementById("premiumNum").value;
+	var unitpremium=document.getElementById("unitpremium").value;
+	var premium=document.getElementById("premium").value;
+	var taxationNum=document.getElementById("taxationNum").value;
+	var taxation=document.getElementById("taxation").value;
+	var totalAll=document.getElementById("totalAll").value;
+	//var ttvolume=document.getElementById("ttvolume").value;
+	//var tprice=document.getElementById("tprice").value;
+		var length=$("#ttt tr").length;
+		length=length;
+    	for(var id=1;id<=length;id++){
+    		var group=[];
+    	    group[0]=document.getElementById("treetype"+id+"").value;
+    	    group[1]=document.getElementById("volume"+id+"").value;
+    	    group[2]=document.getElementById("unitprice"+id+"").value;
+    	    group[3]=document.getElementById("price"+id+"").value;
+    	    if(group[0]==""|| group[1]==""|| group[2]==""||group[3]=="")
+    	    	{
+    	    	alert("请将信息填写完整！");
+    	    	}
+    	    else{
+               map[id-1]=group;
+    	    }
+    	}
+    	kk=length;
+    var mymap=JSON.stringify(map);
+    $.ajax({
+        url:"salaryServlet",
+        data:{
+            "action":"saveLaowuAll",
+            "newtree":mymap,
+            "id":kk,
+            "cutnum":cutnum,
+            "projectPackageName":projectPackageName,
+            "forperson":forperson,
+            "manageUnit":manageUnit,
+            "person":person,
+            "remarks":remarks,
+            "freightNum":freightNum,
+            "unitfreight":unitfreight,
+            "freight":freight,
+            "toprice":toprice,
+            "premiumNum":premiumNum,
+            "unitpremium":unitpremium,
+            "premium":premium,
+            "taxationNum":taxationNum,
+            "taxation":taxation,
+            "totalAll":totalAll,
+        },
+        type: "POST",
+        dataType:"html",
+        success: function (data) {
+        	//alert(data);
+        	if(data>0)
+    		{
+    	        alert("添加成功！");
+    	        window.location.href = 'productPrice.jsp';
+    		}
+        	else {
+        		alert("添加失败！");
+        	}
+        }
+    })
+  }
 </script>
 </head>
 <body>
@@ -223,7 +296,7 @@ String now = df.format(d); %>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -238,7 +311,14 @@ String now = df.format(d); %>
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -246,27 +326,39 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="workpageAdd.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaqu.jsp">审核工单</a></li>
-      </ul>
-     </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">2</span></a>
-     <ul>
-        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
-      </ul>
-     </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTable.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+       <ul>
+      
+        <li><a href="workpageAdd.jsp">野账录入</a></li>
+        <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+      </ul>
+     </li>
+    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+       <ul>
+        <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
+        <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
+      </ul>
+     </li>
+    <!--  <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li> -->
+    <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>      
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -277,90 +369,119 @@ String now = df.format(d); %>
 <main>
     <article class="artlce">
     <div class="find-top">
-        <p class="p-tail"><i class="i-tail"></i>该界面是生成木材生产结算的主要界面</p>
+        <p class="p-tail"><i class="i-tail"></i>该界面是生成木材生产结算的主要界面<br>使用说明：输入采伐证编号生成工程包和伐区管理单位等</p>
     </div>
     <div class="find-top1" id="divprint">
     <pre align="center">结算时间：<%=now%></pre>	
            <table class="top-table">
-            <tr ><p class="table_p"><span>请输入采伐证号：</span></p>
+            <tr><p class="table_p" style="margin-left: 40%;"><span style="font-size:20pt">生产工资及其它费用结算清单</span></p>
             </tr>
+            <tr><p><span style="font-size:16pt;color: blue; border-left: medium none; border-right: medium none; border-top: medium none; border-bottom: 1px solid rgb(192,192,192)">请选择时间以及输入采伐证号:</span></p></tr>
             <tr>
-                <td class="top-table-label" >采伐证号：</td>
-                <td><input type="text" id="cutnum" value=""></td>
-                <td colspan="" style="margin-top: 10px;margin-bottom: 10px">
-                <button class="add-but" type="button" onclick="mycreate()"><i class="glyphicon glyphicon-edit"></i>生成</button></td>
+               <td colspan="2">选择开始日期：</td><td><input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01"></td>
+               <td colspan="2">选择结束日期：</td><td><input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
+                <td class="top-table-label" colspan="2">采伐证编号：</td>
+                <td colspan="2"><input type="text" id="cutnum" name="cutnum" value="" oninput='mycreate()' onclick='locationInput'></td>
+            </tr>
+            </table>
+            <br>
+            <table class="top-table">
+            <tr>
+            <td>工程包:</td>
+                <td colspan="2"><input type="text" name="projectPackageName" id="projectPackageName" value=""></td>
+            <td colspan="2">劳务承包人：</td>
+                <td colspan="2"><input type="text" name="forperson" id="forperson" value=""></td>
+                <td colspan="2">伐区管理单位：</td>
+                <td colspan="2"><input type="text" name="manageUnit" id="manageUnit" value=""></td>
             </tr>
         </table>
-        <div id="myproject">
-        <table class="top-table">
+        <table class="top-table" border="1">
         <tr>
-            <td class="top-table-label">工程包:</td><td><input type="text" name="projectPackageid" id="projectPackageid" disabled="disabled"></td>
-            <td class="top-table-label">劳务承包人：</td><td><input type="text" name="forperson" id="forperson" disabled="disabled"></td>
-            <td class="top-table-label">伐区管理单位：</td><td><input type="text" name="manageUnit" id="manageUnit" disabled="disabled"></td>
+        <th style="width:60px;text-align: center">序号</th>
+        <th style="width:240px;text-align: center">项目</th>
+        <th style="width:240px;text-align: center">数量</th>
+        <th style="width:60px;text-align: center">单位</th>
+        <th style="width:240px;text-align: center">单价（元）</th>
+        <th style="width:240px;text-align: center">金额（元）</th>
+        <th colspan="2" style="text-align: center">备注</th>
+        </tr>
+        <tr>
+        <td colspan="6">
+         <table id="ttt">
+         <tr>
+         <td>1</td>
+        <td>生产工资(衫杂木)</td>
+        <td><input type="text" name="" id=""></td>
+        <td>m³</td>
+        <td><input type="text" name="unitprice" id="unitprice"></td>
+        <td><input type="text" name="price" id="price"></td>
+        <td rowspan="8">&nbsp;&nbsp;</td>
+        </tr>
+        <tr>
+        <td>2</td>
+        <td>生产工资(松木)</td>
+        <td><input type="text" name="" id=""></td>
+        <td>m³</td>
+        <td><input type="text" name="unitprice" id="unitprice"></td>
+        <td><input type="text" name="price" id="price"></td>
+        </tr>
+        <tr>
+        <td>3</td>
+        <td>生产工资 薪材（1.2T折算1m³）</td>
+        <td><input type="text" name="" id=""></td>
+        <td>m³</td>
+        <td><input type="text" name="unitprice" id="unitprice"></td>
+        <td><input type="text" name="price" id="price"></td>
+        </tr>
+              </table>
+        </td>
+         </tr>
+        <tr>
+        <td>4</td>
+        <td>运费</td>
+        <td><input type="text" style="border:0px;background-color: transparent;" name="freightNum" id="freightNum"></td>
+        <td>m³</td>
+        <td><input type="text" name="unitfreight" id="unitfreight" value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceYun()&totalOne()' onclick='locationInput'></td>
+        <td><input type="text" name="freight" id="freight" value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" ></td>
+        <td rowspan="5"><input type="text" id="remarks" name="remarks"></td>
+        </tr>
+        <tr>
+        <td colspan="2" style="text-align: center">小计</td>
+        <td colspan="3">&nbsp;</td>
+        <td colspan="1"><input type="text" name="toprice" id="toprice" value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" onclick='totalOne()'></td>
+        </tr>
+        <tr>
+        <td colspan="2" style="text-align: center">保险费</td>
+        <td><input type="text" style="border:0px;background-color: transparent;" name="premiumNum" id="premiumNum"></td>
+        <td>m³</td>
+        <td><input type="text" name="unitpremium" id="unitpremium" value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='pricePremium()&shuifei()& maketotal()' onclick='locationInput'></td>
+        <td><input type="text" name="premium" id="premium" value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
+        </tr>
+        <tr>
+        <td colspan="2" style="text-align: center">税费</td>
+        <td colspan="3"><input type="text" style="width:250px" name="taxationNum" id="taxationNum"></td>
+        <td colspan="1"><input type="text" name="taxation" id="taxation"></td>
+        </tr>
+        <tr>
+        <td colspan="2" style="text-align: center">合计</td>
+        <td colspan="4"><input type="text" name="totalAll" id="totalAll"></td>
         </tr>
         </table>
-        </div>
-        <div id="mysomething">
-        <table class="top-table">
-          <tr><p class="table_p"><span>主要信息</span></p>
-          </tr>
-          <tr>
-          <td class="top-table-label">工单：</td>
-           <td><input type="text" id="workid" disabled="disabled"></td>
-          </tr>
-      </table>
-        </div>
-          <table class="top-table" id="ttt">
-              <tr><p class="table_p"><span>材种信息</span></p>
-              </tr>
-          <tr><td class="top-table-label">材种：</td>
-              <td class="top-table-label">材积：</td>
-              <td class="top-table-label">单价：</td>
-              <td class="top-table-label">金额：</td>
-          </tr>
-          <tr>
-              <td><select id="treetype"><option value="">材种选择</option>
-              <option value="shan">杉原木</option>
-              <option value="song">松原木</option>
-              <option value="xiao">杉小径</option>
-              <option value="songxiao">松小径</option>
-              <option value="za">杂原木</option>
-              <option value="zaxiao">杂小径</option>
-              </select></td>
-              <td><input type="text" disabled="disabled" id="tvolume"></td>
-              <td><input type="text" disabled="disabled" id="unitprice"></td>
-              <td><input type="text" disabled="disabled" id="price"></td>
-          </tr>
-      </table>
-        <table class="table" >
-                 <tbody>
-                 <p class="table_p" style="margin-top: 65px;"><span>合计信息</span></p>
-                <tr>
-                 <td style="font-size:20px;width:auto">合计材积<span></span>
-                  <input type="text" style="width:120px; font-size:20px" name="ttvolume" id="ttvolume" onclick="makecount()">立方米<span></span></td>
-                  <td style="font-size:20px">合计金额<span></span>
-                   <input type="text" style="width:120px; font-size:20px" name="tprice" id="tprice">元<span></span></td>
-                   </tr>
-                   </tbody>
-         </table>   
         <table class="table" >
             <tbody>
-            <p class="table_p"><span>填单人</span></p>
             <tr>
-                <td>分管领导:<span></span></td>
-                <td><input type="text"disabled="disabled"></td>
-                <td>生产经营部负责人:<span></span></td>
-                <td><input type="text" disabled="disabled"></td>
+                <td>生产科经理:<span></span></td>
+                <td><input type="text" style="border:0px;background-color: transparent;" readonly="readonly"></td>
                 <td>复核:<span></span></td>
-                <td><input type="text" disabled="disabled"></td>
+                <td><input type="text" style="border:0px;background-color: transparent;" readonly="readonly"></td>
                 <td>填单人:<span></span></td>
                 <td><input type="text" name="person" id="person"></td>
             </tr>
             </tbody>
         </table>
-    </div>
-    <div style="text-align: center">
-    <button class="add-but" type="button" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i> 提交 </button>
+        </div>
+        <div style="text-align: center">
+    <button class="add-but" style="color:red;margin-right:65px;" type="button" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i>保存</button>
     <button class="add-but" id="btnPrint"><i class="glyphicon glyphicon-edit"></i> 打印</button>
     </div>
     <div class="table-con">

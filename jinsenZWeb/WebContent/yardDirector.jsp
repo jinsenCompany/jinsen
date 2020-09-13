@@ -111,7 +111,7 @@ function table1(){
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -126,8 +126,14 @@ function table1(){
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
-    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <%-- <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>--%>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -150,7 +156,7 @@ function table1(){
     <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进仓木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>-->
@@ -178,8 +184,8 @@ function table1(){
       <ul class="quick-actions">
         <li class="bg_lb"> <a href="yardInventoryBootstrapDirector.jsp"> <i class="icon-dashboard"></i>货场盘点</a> </li>
         <li class="bg_lg span3"> <a href="workpageTreeBuyDirector.jsp"><i class="icon-signal"></i> <span>木材收购单</span></a></li>
-        <li class="bg_ly"> <a href="passworkpageDirector.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span>录入进场木材数据</a> </li>
-        <li class="bg_lo"> <a href="treeoutDirector.jsp"> <i class="icon-th"></i>录入出场木材数据</a> </li>
+        <li class="bg_ly"> <a href="saleCalloutOrderShenhe.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span>审批调令</a> </li>
+        <li class="bg_lo"> <a href="SurveyorAddinfo.jsp"> <i class="icon-th"></i>新增检尺员信息</a> </li>
         <li class="bg_ls"> <a href="cancellingStocksTable.jsp"> <i class="icon-fullscreen"></i>货场报损</a> </li>
       </ul>
     </div>

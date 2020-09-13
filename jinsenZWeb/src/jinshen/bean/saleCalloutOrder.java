@@ -15,7 +15,7 @@ public class saleCalloutOrder {
 	private String Paymentnum;
 	private String Paymentamount;
 	private String Signer;
-	private int totalnum;
+	private String totalnum;//合计数量
 	private String treetype;
 	private String tlong;
 	private String tradius;
@@ -79,10 +79,10 @@ public class saleCalloutOrder {
 	public void setSigner(String signer) {
 		Signer = signer;
 	}
-	public int getTotalnum() {
+	public String getTotalnum() {
 		return totalnum;
 	}
-	public void setTotalnum(int totalnum) {
+	public void setTotalnum(String totalnum) {
 		this.totalnum = totalnum;
 	}
 	public String getTreetype() {

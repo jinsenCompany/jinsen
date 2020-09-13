@@ -31,7 +31,7 @@
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -46,8 +46,14 @@
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
-    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -57,11 +63,11 @@
   <ul>
      <!--  <li><a href="workpageTreeBuy.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
     <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>-->
-    <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进场木材数据</span></a></li>
+    <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
     <li><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
     <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进仓木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
@@ -81,7 +87,7 @@
   <div class="container-fluid">
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lg span4"> <a href="passworkpage.jsp"><i class="icon-signal"></i> <span>录入进场木材数据</span></a></li>
+        <li class="bg_lg span4"> <a href="passworkpage.jsp"><i class="icon-signal"></i> <span>录入进仓木材数据</span></a></li>
         <li class="bg_ly span4"> <a href="treeoutCover.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span> 录入出场木材数据 </a> </li>
       </ul>
     </div>   
@@ -115,15 +121,6 @@
 
 
 <!--end-Footer-part-->
-
-<script src="js/excanvas.min.js"></script> 
-<script src="js/jquery.min.js"></script> 
-<script src="js/jquery.ui.custom.js"></script> 
-<script src="js/bootstrap.min.js"></script> 
-<script src="js/jquery.flot.min.js"></script> 
-<script src="js/jquery.flot.resize.min.js"></script> 
-<script src="js/jquery.peity.min.js"></script> 
-<script src="js/fullcalendar.min.js"></script> 
 <script src="js/matrix.js"></script> 
 <script src="js/matrix.dashboard.js"></script> 
 <script src="js/jquery.gritter.min.js"></script> 
@@ -156,20 +153,34 @@
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 8,
+            pageSize: 15,
             pageNumber: 1,
             search: true, //显示搜索框
             contentType: "application/x-www-form-urlencoded",
             showRefresh: true,                      //是否显示刷新按钮
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             detailView: true,
+            contentType: "application/x-www-form-urlencoded",
+            exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
+            showExport: true,  //是否显示导出按钮    
+            buttonsAlign:"right",  //按钮位置    
+            exportTypes:['excel','xlsx','csv','pdf'],
+            exportOptions:{
+                // ignoreColumn: [0,1],  //忽略某一列的索引
+                fileName: "工单汇总",  //文件名称设置
+                worksheetName: 'sheet1',  //表格工作区名称
+                tableName: "工单汇总",
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight','border'], //设置格式
+            },
             columns: [
-            	{
-                    checkbox: "true",
-                    field: 'check',
+            	{						
+						title: '序号',
+						width: 100,
                     align: 'center',
-                    valign: 'middle'
-                },
+						formatter: function (value, row, index) {
+							return index+1;
+						}
+	                },//该列显示序号，分页不是从1开始
                 {
                     title: "工单号",
                     field: 'workid',
@@ -256,4 +267,17 @@ function resetMenu() {
 }
 </script> 
 </body>
+<script src="js/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/bootstrap-table-export.js"></script>
+<script src="js/tableExport.js"></script>
+<script src="js/jquery.base64.js"></script>
+<script type="text/javascript" src="/static/js/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script src="js/matrix.js"></script> 
+<script src="js/matrix.dashboard.js"></script>  
 </html>

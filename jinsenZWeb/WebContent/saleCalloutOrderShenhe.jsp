@@ -102,7 +102,7 @@
     <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进仓木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>-->
@@ -111,7 +111,7 @@
     <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>新增检尺员信息</span></a></li>
    <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
    <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i><span>货场费用报表</span></a> </li>
-   <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li>
+   <li class="active"><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -165,7 +165,7 @@
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 8,
+            pageSize: 15,
             pageNumber: 1,
             search: true, //显示搜索框
             contentType: "application/x-www-form-urlencoded",
@@ -174,10 +174,12 @@
             detailView: true,
             columns: [
                 {
-                    title: "序号",
-                    field: 'saleCallid',
+                	title: '序号',
+					width: 100,
                     align: 'center',
-                    valign: 'middle'
+				    formatter: function (value, row, index) {
+							return index+1;
+						}
                 },
                 {
                     title: "调运时间",
@@ -222,12 +224,12 @@
                 align: 'center',
                 valign: 'middle'
             },
-            {
-                title: "货款金额",
-                field: 'paymentamount',
-                align: 'center',
-                valign: 'middle'
-            },
+//             {
+//                 title: "货款金额",
+//                 field: 'paymentamount',
+//                 align: 'center',
+//                 valign: 'middle'
+//             },
             {
                 title: '合计数量',
                 field: 'totalnum',
@@ -247,7 +249,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCallid=\''+ row.saleCallid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看全部</button></a>';
+                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCalloutOrder=\''+ row.saleCalloutOrder + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">审批调令</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -262,7 +264,7 @@
             url:"salaryServlet",
             data:{
                 "action":"alldelete",
-                "saleCallid":saleCallid,
+                "saleCalloutOrder":saleCalloutOrder,
             },
             type: "Post",
             dataType:"json",
@@ -296,7 +298,7 @@
             url: "salaryServlet?action=writesale&type=notshenhe",
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -313,125 +315,6 @@
                 fileName: "未审核",  //文件名称设置
                 worksheetName: 'sheet1',  //表格工作区名称
                 tableName: "未审核",
-                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
-            },
-            columns: [
-                {
-                    title: "序号",
-                    field: 'saleCallid',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: "时间",
-                    width:'200px',
-                    field: 'callidtime',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '合同编号',
-                    width:'200px',
-                    field: 'contractnum',
-                    align: 'center',
-                    valign: 'middle'
-                },
-            	{
-                title: "调令号",
-                field: 'saleCalloutOrder',
-                /*formatter:function(value,row,index){
-              	   return document.getElementById("cutnum").value;
-                 },*/
-                align: 'center',
-                valign: 'middle'
-            },
-            {
-                title: '购货人',
-                width:'200px',
-                field: 'demander',
-                align: 'center',
-                valign: 'middle'
-            },
-            {
-                title: '供货地点',
-                width:'200px',
-                field: 'yard',
-                align: 'center',
-                valign: 'middle'
-            },
-            {
-                title: '供货分区',
-                field: 'section',
-                align: 'center',
-                valign: 'middle'
-            },
-            {
-                title: "货款金额",
-                field: 'paymentamount',
-                align: 'center',
-                valign: 'middle'
-            },
-            {
-                title: '合计数量',
-                field: 'totalnum',
-                align: 'center',
-                valign: 'middle'
-            },
-            {
-                title: '通知签发人',
-                field: 'signer',
-                align: 'center',
-                valign: 'middle'
-            },
-                {
-                    title: '操作',
-                    field: 'opr',
-                    width: 180,
-                    align: 'center',
-                    formatter: function (cellval, row) {
-                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCallid=\''+ row.saleCallid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未审核</button></a>';
-                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
-                        return  d;
-                    }
-                },
-            ]
-        });
-    }
-    </script>
-    
-<script type="text/javascript">
-    function pass()
-    {
-    	$('#myModal_pass').modal('hide');
-    	$('#table1').bootstrapTable('destroy');
-    	$('#table1').bootstrapTable({
-    	    theadClasses: "thead-blue",//设置thead-blue为表头样式
-    	    classes: "table table-bordered table-striped table-sm table-dark", 
-            method: "post",
-            striped: false,
-            singleSelect: false,
-            cache: false,//缓存
-            url: "salaryServlet?action=writesale&type=pass",
-            dataType: "json",
-            pagination: true, //分页
-            pageSize: 10,
-            pageNumber: 1,
-            search:true, //显示搜索框
-            showColumns: true,                  //是否显示所有的列
-            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
-            cardView: false,                    //是否显示详细视图
-            showRefresh: true,                  //是否显示刷新按钮
-            contentType: "application/x-www-form-urlencoded",
-            exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
-            showExport: true,  //是否显示导出按钮    
-            buttonsAlign:"right",  //按钮位置    
-            exportTypes:['excel','xlsx','csv'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
-            exportOptions:{
-                // ignoreColumn: [0,1],  //忽略某一列的索引
-                fileName: "已通过",  //文件名称设置
-                worksheetName: 'sheet1',  //表格工作区名称
-                tableName: "已通过",
                 excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
             },
             columns: [
@@ -484,12 +367,12 @@
                 align: 'center',
                 valign: 'middle'
             },
-            {
-                title: "货款金额",
-                field: 'paymentamount',
-                align: 'center',
-                valign: 'middle'
-            },
+//             {
+//                 title: "货款金额",
+//                 field: 'paymentamount',
+//                 align: 'center',
+//                 valign: 'middle'
+//             },
             {
                 title: '合计数量',
                 field: 'totalnum',
@@ -509,7 +392,128 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="salaryServlet?action=salecallupdateM&saleCallid=\''+ row.saleCallid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看已通过</button></a>';
+                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCalloutOrder=\''+ row.saleCalloutOrder + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未审核</button></a>';
+                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                        return  d;
+                    }
+                },
+            ]
+        });
+    }
+    </script>
+    
+<script type="text/javascript">
+    function pass()
+    {
+    	$('#myModal_pass').modal('hide');
+    	$('#table1').bootstrapTable('destroy');
+    	$('#table1').bootstrapTable({
+    	    theadClasses: "thead-blue",//设置thead-blue为表头样式
+    	    classes: "table table-bordered table-striped table-sm table-dark", 
+            method: "post",
+            striped: false,
+            singleSelect: false,
+            cache: false,//缓存
+            url: "salaryServlet?action=writesale&type=pass",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 15,
+            pageNumber: 1,
+            search:true, //显示搜索框
+            showColumns: true,                  //是否显示所有的列
+            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            showRefresh: true,                  //是否显示刷新按钮
+            contentType: "application/x-www-form-urlencoded",
+            exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
+            showExport: true,  //是否显示导出按钮    
+            buttonsAlign:"right",  //按钮位置    
+            exportTypes:['excel','xlsx','csv'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
+            exportOptions:{
+                // ignoreColumn: [0,1],  //忽略某一列的索引
+                fileName: "已通过",  //文件名称设置
+                worksheetName: 'sheet1',  //表格工作区名称
+                tableName: "已通过",
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
+            },
+            columns: [
+                {
+                	title: '序号',
+					width: 100,
+                    align: 'center',
+				    formatter: function (value, row, index) {
+							return index+1;
+						}
+                },
+                {
+                    title: "调运时间",
+                    width:'200px',
+                    field: 'callidtime',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '合同编号',
+                    width:'200px',
+                    field: 'contractnum',
+                    align: 'center',
+                    valign: 'middle'
+                },
+            	{
+                title: "调令号",
+                field: 'saleCalloutOrder',
+                /*formatter:function(value,row,index){
+              	   return document.getElementById("cutnum").value;
+                 },*/
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '购货人',
+                width:'200px',
+                field: 'demander',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '供货地点',
+                width:'200px',
+                field: 'yard',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '供货分区',
+                field: 'section',
+                align: 'center',
+                valign: 'middle'
+            },
+//             {
+//                 title: "货款金额",
+//                 field: 'paymentamount',
+//                 align: 'center',
+//                 valign: 'middle'
+//             },
+            {
+                title: '合计数量',
+                field: 'totalnum',
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+                title: '通知签发人',
+                field: 'signer',
+                align: 'center',
+                valign: 'middle'
+            },
+                {
+                    title: '操作',
+                    field: 'opr',
+                    width: 180,
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="salaryServlet?action=salecallupdateM&saleCalloutOrder=\''+ row.saleCalloutOrder + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看已通过</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -533,7 +537,7 @@
             url: "salaryServlet?action=writesale&type=notpass",
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -554,13 +558,15 @@
             },
             columns: [
                 {
-                    title: "序号",
-                    field: 'saleCallid',
+                	title: '序号',
+					width: 100,
                     align: 'center',
-                    valign: 'middle'
+				    formatter: function (value, row, index) {
+							return index+1;
+						}
                 },
                 {
-                    title: "时间",
+                    title: "调运时间",
                     width:'200px',
                     field: 'callidtime',
                     align: 'center',
@@ -602,12 +608,12 @@
                 align: 'center',
                 valign: 'middle'
             },
-            {
-                title: "货款金额",
-                field: 'paymentamount',
-                align: 'center',
-                valign: 'middle'
-            },
+//             {
+//                 title: "货款金额",
+//                 field: 'paymentamount',
+//                 align: 'center',
+//                 valign: 'middle'
+//             },
             {
                 title: '合计数量',
                 field: 'totalnum',
@@ -627,7 +633,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCallid=\''+ row.saleCallid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未通过</button></a>';
+                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCalloutOrder=\''+ row.saleCalloutOrder + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看未通过</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
@@ -651,7 +657,7 @@
             url: "salaryServlet?action=writesale&type=buchong",
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -673,9 +679,11 @@
             columns: [
                 {
                     title: "序号",
-                    field: 'saleCallid',
+                    width: 100,
                     align: 'center',
-                    valign: 'middle'
+				    formatter: function (value, row, index) {
+							return index+1;
+						}
                 },
                 {
                     title: "时间",
@@ -720,12 +728,12 @@
                 align: 'center',
                 valign: 'middle'
             },
-            {
-                title: "货款金额",
-                field: 'paymentamount',
-                align: 'center',
-                valign: 'middle'
-            },
+//             {
+//                 title: "货款金额",
+//                 field: 'paymentamount',
+//                 align: 'center',
+//                 valign: 'middle'
+//             },
             {
                 title: '合计数量',
                 field: 'totalnum',
@@ -745,7 +753,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCallid=\''+ row.saleCallid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看补充材料</button></a>';
+                        var  d = '<a href="salaryServlet?action=salecallupdate&saleCalloutOrder=\''+ row.saleCalloutOrder + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看补充材料</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }

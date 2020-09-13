@@ -3,6 +3,7 @@
     <%@ page import="jinshen.bean.*" %>
 <%@ page import="java.util.List" %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+  <%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -43,6 +44,11 @@ List<tree> t=null;
     <table class="table1" border="1">
     <caption class="book_h01">木材销售码单</caption>
     <tbody>
+    <tr>
+    <td>销售码单号</td>
+    <td colspan="9">
+    <input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="workid" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="${workid}" pattern="#0.##"/>" ></td></tr>
+    <tr>
     <tr>
     <td style="width:200px">供货单位</td><td><input style="border:0;background-color: transparent;font-size:20px" name="provider" id="provider" value="<%=w.getProvider() %>"></td>
     <td>合同号</td><td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" name="contractnum" id="contractnum" value="<%=s.getContractnum() %>"></td>

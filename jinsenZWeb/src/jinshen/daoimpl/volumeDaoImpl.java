@@ -47,8 +47,8 @@ public class volumeDaoImpl implements volumeDao{
 		try {
 			ResultSet rs=dbc.doQuery(sql, new Object[] {});
 			while(rs.next()) {
-				addr.setTlong(rs.getDouble(1));
-				addr.setTradius(rs.getDouble(2));
+				addr.setTradius(rs.getDouble(1));
+				addr.setTlong(rs.getDouble(2));
 				addr.setMvolume(rs.getDouble(3));
 			}
 		}catch(Exception e) {

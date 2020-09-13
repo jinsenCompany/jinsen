@@ -33,8 +33,12 @@ public class cutnum {
 	private String smalltimber;//非规格材小径
 	private String shorttimber;//非规格材短小材
 	private String firewood;//薪材
-	private double projectid;//工程包id
+	private int projectid;//工程包id
 	private String cutnumfile;//上传文件
+	private Date creatcutDate;//创建表的时间
+	private String projectPackageName;//工程包名称
+	
+	private String cStatus;//采伐证状态
 	
 	private double number;//编号
 	private String cutsite;//
@@ -213,10 +217,10 @@ public class cutnum {
 	public void setFirewood(String firewood) {
 		this.firewood = firewood;
 	}
-	public double getProjectid() {
+	public int getProjectid() {
 		return projectid;
 	}
-	public void setProjectid(double projectid) {
+	public void setProjectid(int projectid) {
 		this.projectid = projectid;
 	}
 	public String getCutnumfile() {
@@ -303,6 +307,25 @@ public class cutnum {
 	public void setUpdatenum(double updatenum) {
 		this.updatenum = updatenum;
 	}//株树
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	public Date getCreatcutDate() {
+		return creatcutDate;
+	}
+	public void setCreatcutDate(Date creatcutDate) {
+		this.creatcutDate = creatcutDate;
+	}
+	public String getProjectPackageName() {
+		return projectPackageName;
+	}
+	public void setProjectPackageName(String projectPackageName) {
+		this.projectPackageName = projectPackageName;
+	}
+	public String getcStatus() {
+		return cStatus;
+	}
+	public void setcStatus(String cStatus) {
+		this.cStatus = cStatus;
+	}
 	
 	
 	

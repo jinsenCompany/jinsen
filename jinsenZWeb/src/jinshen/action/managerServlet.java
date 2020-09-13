@@ -198,8 +198,9 @@ public class managerServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			request.getParameter(staff_id);
 			session.setAttribute("staff_id", staff_id);
+			session.setAttribute("staff_name", s.getStaff_name());
 			Object v_code1 = session.getAttribute("v_code");
-			// System.out.println("v_code1:"+v_code1);
+			System.out.println("v_code1:"+s.getStaff_name());
 			// System.out.println("v_code0:"+v_code0);
 			session.removeAttribute("v_code");
 			if (v_code1 != null) {

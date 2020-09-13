@@ -37,6 +37,11 @@ public interface workpageDao {
     
     public int addmanagesdatecard(managesdatecard cp);//将木材生产施工方管理资料卡保存到数据库中
     public List<managesdatecard> findmanagesdatecard(String sql);//搜索数据库中的资料卡信息
+    public List<projectpackage> seachProject(String sql);//搜搜索工程包和工程包签订时间
+    public cutnum searchVolume(String sql);//查询工程包相关得采伐证出材量
+    public managesdatecard findmanagecardAll(String sql);//显示施工方详细信息
+    public managesdatecard findmanagecardId(String sql);//显示施工方id
+    public int Updatemanagesdatecard(managesdatecard cp,int id);//将木材生产施工方管理资料卡保存到数据库中
     
     public List<workpage> findWorkpageC(String sql);//通过工单号查询工单信息
     public workpage printworkpage();
@@ -47,6 +52,7 @@ public interface workpageDao {
 	public int addgoodsYardCost(goodsYardCost cp);//货场费用数据存入数据库中
 	public int addgoodsYardfee(goodsYardCost cp);
 	 public List<goodsYardCost> findgoodsYard(String sql);//货场费用台账
+	 public List<goodsYardCost> findgoodsYardDet(String sql);//货场费用汇总
 	 
 	 public int addCancellingStockTable(CancellingStockTable cp);//退库单
 	 

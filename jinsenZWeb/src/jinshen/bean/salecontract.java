@@ -14,7 +14,7 @@ public class salecontract {
 	private String tradius;
 	private double unitprice;
 	private String deliveryplace;
-	private String treenumber;
+	private String treenumber;//合计数量
 	private String cost;
 	private String measurestard;//检测标准
 	private String settlemethod;

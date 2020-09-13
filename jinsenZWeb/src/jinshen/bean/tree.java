@@ -10,6 +10,7 @@ public class tree {
 	private double tvolume;
 	private double unitprice;
 	private double totalnum;
+	private int treeid;
 	public String getTreetype() {
 		return treetype;
 	}
@@ -57,6 +58,12 @@ public class tree {
 	}
 	public void setTotalnum(double totalnum) {
 		this.totalnum = totalnum;
+	}
+	public int getTreeid() {
+		return treeid;
+	}
+	public void setTreeid(int treeid) {
+		this.treeid = treeid;
 	}
 	
 }

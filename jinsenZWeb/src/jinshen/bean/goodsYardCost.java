@@ -26,7 +26,10 @@ public class goodsYardCost {
 	private double unitprice;
 	private double price;
 	private String remarks;
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	
+	private String tyeart;
+	private String tmonth;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getLuRuDate() {
 		return luRuDate;
 	}
@@ -146,6 +149,18 @@ public class goodsYardCost {
 	}
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public String getTyeart() {
+		return tyeart;
+	}
+	public void setTyeart(String tyeart) {
+		this.tyeart = tyeart;
+	}
+	public String getTmonth() {
+		return tmonth;
+	}
+	public void setTmonth(String tmonth) {
+		this.tmonth = tmonth;
 	}
 	
 	

@@ -55,6 +55,7 @@ public class chartServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session=request.getSession();
+        ObjectMapper mapper = new ObjectMapper();
         chartDao cd= new chartDaoImpl();
         //木材销售价格折线图（时间）
         if(action.equals("treechart")) {
@@ -83,7 +84,7 @@ public class chartServlet extends HttpServlet {
         	response.getWriter().write(json);
         }
         //木材生产销售报表
-        else if(action.equals("producetree")) {
+        else if(action.equals("producetree13")) {
         	String year = request.getParameter("year");
         	String month = request.getParameter("month");
         	//System.out.println("...." +month + "...");
@@ -256,177 +257,177 @@ public class chartServlet extends HttpServlet {
 			map.writeValue(response.getWriter(), dplist);
         }
         //木材销售报表
-        else if(action.equals("treeoutTable")) {
-        	String year = request.getParameter("year");
-        	String month = request.getParameter("month");
-        	//System.out.println("...." +month + "...");
-        	List<treeoutPrint> dp = cd.findTreeout();
-        	//System.out.println("...."+dp + "...");
-			List<treeoutPrint> dplist = new ArrayList<treeoutPrint>();
-			if(dp != null) {
-				if (month.equals("1-12"))
-				{
-					for(int i = 0;i<dp.size();i ++)
-					{
-				    treeoutPrint d = cd.printTreeoutY(Integer.valueOf(year));
-					d.setWorkid(dp.get(i).getWorkid());
-					d.setYear(dp.get(i).getYear());
-					d.setMonth(dp.get(i).getMonth());
-					d.setCarNumber(dp.get(i).getCarNumber());
-					d.setYard(dp.get(i).getYard());
-					d.setSection(dp.get(i).getSection());
-					d.setTreetype(dp.get(i).getTreetype());
-					d.setTlong(dp.get(i).getTlong());
-					d.setTradius(dp.get(i).getTradius());
-					d.setNum(dp.get(i).getNum());
-					d.setTvolume(dp.get(i).getTvolume());
-					d.setUnitprice(dp.get(i).getUnitprice());
-					d.setPrice(dp.get(i).getPrice());
-					d.setSurveyor(dp.get(i).getSurveyor());
-					d.setSaleman(dp.get(i).getSaleman());
-					dplist.add(d);
-					}
-				}
-				else if(month.equals("1-3")) {
-					int month1=1;
-					int month2=2;
-					int month3=3;
-					for(int i = 0;i<dp.size();i ++) {
-						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
-						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
-						{
-							d.setWorkid(dp.get(i).getWorkid());
-	     					   d.setYear(dp.get(i).getYear());
-	     					   d.setMonth(dp.get(i).getMonth());
-	     					   d.setCarNumber(dp.get(i).getCarNumber());
-	     					   d.setYard(dp.get(i).getYard());
-	     					   d.setSection(dp.get(i).getSection());
-	     					   d.setTreetype(dp.get(i).getTreetype());
-	     					   d.setTlong(dp.get(i).getTlong());
-	     					   d.setTradius(dp.get(i).getTradius());
-	     					   d.setNum(dp.get(i).getNum());
-	     					   d.setTvolume(dp.get(i).getTvolume());
-	     					   d.setUnitprice(dp.get(i).getUnitprice());
-	     					   d.setPrice(dp.get(i).getPrice());
-	     					   d.setSurveyor(dp.get(i).getSurveyor());
-	     					   d.setSaleman(dp.get(i).getSaleman());
-								dplist.add(d);
-						}
-					}
-				}
-				else if(month.equals("4-6")) {
-					int month1=4;
-					int month2=5;
-					int month3=6;
-					for(int i = 0;i<dp.size();i ++) {
-						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
-						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
-						{
-							d.setWorkid(dp.get(i).getWorkid());
-	     					   d.setYear(dp.get(i).getYear());
-	     					   d.setMonth(dp.get(i).getMonth());
-	     					   d.setCarNumber(dp.get(i).getCarNumber());
-	     					   d.setYard(dp.get(i).getYard());
-	     					   d.setSection(dp.get(i).getSection());
-	     					   d.setTreetype(dp.get(i).getTreetype());
-	     					   d.setTlong(dp.get(i).getTlong());
-	     					   d.setTradius(dp.get(i).getTradius());
-	     					   d.setNum(dp.get(i).getNum());
-	     					   d.setTvolume(dp.get(i).getTvolume());
-	     					   d.setUnitprice(dp.get(i).getUnitprice());
-	     					   d.setPrice(dp.get(i).getPrice());
-	     					   d.setSurveyor(dp.get(i).getSurveyor());
-	     					   d.setSaleman(dp.get(i).getSaleman());
-								dplist.add(d);
-						}
-					}
-				}
-				else if(month.equals("7-9")) {
-					int month1=7;
-					int month2=8;
-					int month3=9;
-					for(int i = 0;i<dp.size();i ++) {
-						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
-						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
-						{
-							d.setWorkid(dp.get(i).getWorkid());
-	     					   d.setYear(dp.get(i).getYear());
-	     					   d.setMonth(dp.get(i).getMonth());
-	     					   d.setCarNumber(dp.get(i).getCarNumber());
-	     					   d.setYard(dp.get(i).getYard());
-	     					   d.setSection(dp.get(i).getSection());
-	     					   d.setTreetype(dp.get(i).getTreetype());
-	     					   d.setTlong(dp.get(i).getTlong());
-	     					   d.setTradius(dp.get(i).getTradius());
-	     					   d.setNum(dp.get(i).getNum());
-	     					   d.setTvolume(dp.get(i).getTvolume());
-	     					   d.setUnitprice(dp.get(i).getUnitprice());
-	     					   d.setPrice(dp.get(i).getPrice());
-	     					   d.setSurveyor(dp.get(i).getSurveyor());
-	     					   d.setSaleman(dp.get(i).getSaleman());
-								dplist.add(d);
-						}
-					}
-				}
-				else if(month.equals("10-12")) {
-					int month1=10;
-					int month2=11;
-					int month3=12;
-					for(int i = 0;i<dp.size();i ++) {
-						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
-						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
-						{
-							d.setWorkid(dp.get(i).getWorkid());
-	     					   d.setYear(dp.get(i).getYear());
-	     					   d.setMonth(dp.get(i).getMonth());
-	     					   d.setCarNumber(dp.get(i).getCarNumber());
-	     					   d.setYard(dp.get(i).getYard());
-	     					  d.setSection(dp.get(i).getSection());
-	     					   d.setTreetype(dp.get(i).getTreetype());
-	     					   d.setTlong(dp.get(i).getTlong());
-	     					   d.setTradius(dp.get(i).getTradius());
-	     					   d.setNum(dp.get(i).getNum());
-	     					   d.setTvolume(dp.get(i).getTvolume());
-	     					   d.setUnitprice(dp.get(i).getUnitprice());
-	     					   d.setPrice(dp.get(i).getPrice());
-	     					   d.setSurveyor(dp.get(i).getSurveyor());
-	     					   d.setSaleman(dp.get(i).getSaleman());
-								dplist.add(d);
-						}
-					}
-				}
-				else
-					{
-					for(int i = 0;i<dp.size();i ++) 
-					   {
-						treeoutPrint d = cd.printTreeout(Integer.valueOf(year),Integer.valueOf(month));
-						//System.out.println("...." +d+ "...");
-                       if ((Integer.valueOf(year) == dp.get(i).getYear() && Integer.valueOf(month) == dp.get(i).getMonth()))
-						 {
-                    	   d.setWorkid(dp.get(i).getWorkid());
-     					   d.setYear(dp.get(i).getYear());
-     					   d.setMonth(dp.get(i).getMonth());
-     					   d.setCarNumber(dp.get(i).getCarNumber());
-     					   d.setYard(dp.get(i).getYard());
-     					   d.setSection(dp.get(i).getSection());
-     					   d.setTreetype(dp.get(i).getTreetype());
-     					   d.setTlong(dp.get(i).getTlong());
-     					   d.setTradius(dp.get(i).getTradius());
-     					   d.setNum(dp.get(i).getNum());
-     					   d.setTvolume(dp.get(i).getTvolume());
-     					   d.setUnitprice(dp.get(i).getUnitprice());
-     					   d.setPrice(dp.get(i).getPrice());
-     					   d.setSurveyor(dp.get(i).getSurveyor());
-     					   d.setSaleman(dp.get(i).getSaleman());
-							dplist.add(d);
-						}
-					}
-					}
-			}
-			//System.out.println("...." +dplist + "...");
-			ObjectMapper map = new ObjectMapper();
-			map.writeValue(response.getWriter(), dplist);
-        }
+//        else if(action.equals("treeoutTable1")) {
+//        	String year = request.getParameter("year");
+//        	String month = request.getParameter("month");
+//        	//System.out.println("...." +month + "...");
+//        	List<treeoutPrint> dp = cd.findTreeout();
+//        	//System.out.println("...."+dp + "...");
+//			List<treeoutPrint> dplist = new ArrayList<treeoutPrint>();
+//			if(dp != null) {
+//				if (month.equals("1-12"))
+//				{
+//					for(int i = 0;i<dp.size();i ++)
+//					{
+//				    treeoutPrint d = cd.printTreeoutY(Integer.valueOf(year));
+//					d.setWorkid(dp.get(i).getWorkid());
+//					d.setYear(dp.get(i).getYear());
+//					d.setMonth(dp.get(i).getMonth());
+//					d.setCarNumber(dp.get(i).getCarNumber());
+//					d.setYard(dp.get(i).getYard());
+//					d.setSection(dp.get(i).getSection());
+//					d.setTreetype(dp.get(i).getTreetype());
+//					d.setTlong(dp.get(i).getTlong());
+//					d.setTradius(dp.get(i).getTradius());
+//					d.setNum(dp.get(i).getNum());
+//					d.setTvolume(dp.get(i).getTvolume());
+//					d.setUnitprice(dp.get(i).getUnitprice());
+//					d.setPrice(dp.get(i).getPrice());
+//					d.setSurveyor(dp.get(i).getSurveyor());
+//					d.setSaleman(dp.get(i).getSaleman());
+//					dplist.add(d);
+//					}
+//				}
+//				else if(month.equals("1-3")) {
+//					int month1=1;
+//					int month2=2;
+//					int month3=3;
+//					for(int i = 0;i<dp.size();i ++) {
+//						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
+//						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
+//						{
+//							d.setWorkid(dp.get(i).getWorkid());
+//	     					   d.setYear(dp.get(i).getYear());
+//	     					   d.setMonth(dp.get(i).getMonth());
+//	     					   d.setCarNumber(dp.get(i).getCarNumber());
+//	     					   d.setYard(dp.get(i).getYard());
+//	     					   d.setSection(dp.get(i).getSection());
+//	     					   d.setTreetype(dp.get(i).getTreetype());
+//	     					   d.setTlong(dp.get(i).getTlong());
+//	     					   d.setTradius(dp.get(i).getTradius());
+//	     					   d.setNum(dp.get(i).getNum());
+//	     					   d.setTvolume(dp.get(i).getTvolume());
+//	     					   d.setUnitprice(dp.get(i).getUnitprice());
+//	     					   d.setPrice(dp.get(i).getPrice());
+//	     					   d.setSurveyor(dp.get(i).getSurveyor());
+//	     					   d.setSaleman(dp.get(i).getSaleman());
+//								dplist.add(d);
+//						}
+//					}
+//				}
+//				else if(month.equals("4-6")) {
+//					int month1=4;
+//					int month2=5;
+//					int month3=6;
+//					for(int i = 0;i<dp.size();i ++) {
+//						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
+//						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
+//						{
+//							d.setWorkid(dp.get(i).getWorkid());
+//	     					   d.setYear(dp.get(i).getYear());
+//	     					   d.setMonth(dp.get(i).getMonth());
+//	     					   d.setCarNumber(dp.get(i).getCarNumber());
+//	     					   d.setYard(dp.get(i).getYard());
+//	     					   d.setSection(dp.get(i).getSection());
+//	     					   d.setTreetype(dp.get(i).getTreetype());
+//	     					   d.setTlong(dp.get(i).getTlong());
+//	     					   d.setTradius(dp.get(i).getTradius());
+//	     					   d.setNum(dp.get(i).getNum());
+//	     					   d.setTvolume(dp.get(i).getTvolume());
+//	     					   d.setUnitprice(dp.get(i).getUnitprice());
+//	     					   d.setPrice(dp.get(i).getPrice());
+//	     					   d.setSurveyor(dp.get(i).getSurveyor());
+//	     					   d.setSaleman(dp.get(i).getSaleman());
+//								dplist.add(d);
+//						}
+//					}
+//				}
+//				else if(month.equals("7-9")) {
+//					int month1=7;
+//					int month2=8;
+//					int month3=9;
+//					for(int i = 0;i<dp.size();i ++) {
+//						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
+//						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
+//						{
+//							d.setWorkid(dp.get(i).getWorkid());
+//	     					   d.setYear(dp.get(i).getYear());
+//	     					   d.setMonth(dp.get(i).getMonth());
+//	     					   d.setCarNumber(dp.get(i).getCarNumber());
+//	     					   d.setYard(dp.get(i).getYard());
+//	     					   d.setSection(dp.get(i).getSection());
+//	     					   d.setTreetype(dp.get(i).getTreetype());
+//	     					   d.setTlong(dp.get(i).getTlong());
+//	     					   d.setTradius(dp.get(i).getTradius());
+//	     					   d.setNum(dp.get(i).getNum());
+//	     					   d.setTvolume(dp.get(i).getTvolume());
+//	     					   d.setUnitprice(dp.get(i).getUnitprice());
+//	     					   d.setPrice(dp.get(i).getPrice());
+//	     					   d.setSurveyor(dp.get(i).getSurveyor());
+//	     					   d.setSaleman(dp.get(i).getSaleman());
+//								dplist.add(d);
+//						}
+//					}
+//				}
+//				else if(month.equals("10-12")) {
+//					int month1=10;
+//					int month2=11;
+//					int month3=12;
+//					for(int i = 0;i<dp.size();i ++) {
+//						treeoutPrint d = cd.printTreeoutM(Integer.valueOf(year),month1,month2,month3);
+//						if((Integer.valueOf(year) == dp.get(i).getYear() && (month1== dp.get(i).getMonth() || month2== dp.get(i).getMonth() || month3== dp.get(i).getMonth())))
+//						{
+//							d.setWorkid(dp.get(i).getWorkid());
+//	     					   d.setYear(dp.get(i).getYear());
+//	     					   d.setMonth(dp.get(i).getMonth());
+//	     					   d.setCarNumber(dp.get(i).getCarNumber());
+//	     					   d.setYard(dp.get(i).getYard());
+//	     					  d.setSection(dp.get(i).getSection());
+//	     					   d.setTreetype(dp.get(i).getTreetype());
+//	     					   d.setTlong(dp.get(i).getTlong());
+//	     					   d.setTradius(dp.get(i).getTradius());
+//	     					   d.setNum(dp.get(i).getNum());
+//	     					   d.setTvolume(dp.get(i).getTvolume());
+//	     					   d.setUnitprice(dp.get(i).getUnitprice());
+//	     					   d.setPrice(dp.get(i).getPrice());
+//	     					   d.setSurveyor(dp.get(i).getSurveyor());
+//	     					   d.setSaleman(dp.get(i).getSaleman());
+//								dplist.add(d);
+//						}
+//					}
+//				}
+//				else
+//					{
+//					for(int i = 0;i<dp.size();i ++) 
+//					   {
+//						treeoutPrint d = cd.printTreeout(Integer.valueOf(year),Integer.valueOf(month));
+//						//System.out.println("...." +d+ "...");
+//                       if ((Integer.valueOf(year) == dp.get(i).getYear() && Integer.valueOf(month) == dp.get(i).getMonth()))
+//						 {
+//                    	   d.setWorkid(dp.get(i).getWorkid());
+//     					   d.setYear(dp.get(i).getYear());
+//     					   d.setMonth(dp.get(i).getMonth());
+//     					   d.setCarNumber(dp.get(i).getCarNumber());
+//     					   d.setYard(dp.get(i).getYard());
+//     					   d.setSection(dp.get(i).getSection());
+//     					   d.setTreetype(dp.get(i).getTreetype());
+//     					   d.setTlong(dp.get(i).getTlong());
+//     					   d.setTradius(dp.get(i).getTradius());
+//     					   d.setNum(dp.get(i).getNum());
+//     					   d.setTvolume(dp.get(i).getTvolume());
+//     					   d.setUnitprice(dp.get(i).getUnitprice());
+//     					   d.setPrice(dp.get(i).getPrice());
+//     					   d.setSurveyor(dp.get(i).getSurveyor());
+//     					   d.setSaleman(dp.get(i).getSaleman());
+//							dplist.add(d);
+//						}
+//					}
+//					}
+//			}
+//			//System.out.println("...." +dplist + "...");
+//			ObjectMapper map = new ObjectMapper();
+//			map.writeValue(response.getWriter(), dplist);
+//        }
         //销售管理主页面销售报表的显示
         else if(action.equals("saleman")) {
         	List<salemansql> dp = cd.findsaleman();
@@ -442,6 +443,172 @@ public class chartServlet extends HttpServlet {
         	}
         	ObjectMapper map = new ObjectMapper();
 			map.writeValue(response.getWriter(), dplist);
+        }
+        else if(action.equals("producetree1")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	//System.out.println("...." +month + "...");
+        	String sql="";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
+        	{
+        	sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        			"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        			"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"'  GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
+        	List<producetree> dp = cd.findProduceDet(sql);
+        	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
+        		List<producetree> dp = cd.findProduceDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
+        		List<producetree> dp = cd.findProduceDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
+        	{
+        		sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"' GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
+        		List<producetree> dp = cd.findProduceDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	
+        }
+        //木材产出库存详细
+        else if("totalproduce".equals(action)) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	//System.out.println("...." +month + "...");
+        	String sql="";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
+        	{
+        	sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
+        			" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        	List<producetree> dp = cd.findProduceTol(sql);
+        	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
+        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		List<producetree> dp = cd.findProduceTol(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
+        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		List<producetree> dp = cd.findProduceTol(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
+        	{
+        		sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
+        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		List<producetree> dp = cd.findProduceTol(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        }
+        //木材销售台账
+        else if(action.equals("treeoutTable")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	//System.out.println("...." +month + "...");
+        	String sql="";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
+        	{
+            //sql="select w.workid,year(w.yarddate) as yeart,month(w.yarddate) as montht,w.carNumber,w.yard,w.section,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,t.unitprice,t.totalnum,w.surveyor, s.salesman from outyard as w JOIN treeout as t join saleman as s on w.workid=t.workid=s.workid";
+        	sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        			"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"'\r\n" + 
+        			"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        	List<treeoutPrint> dp = cd.findTreeout(sql);
+        	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"'\r\n" + 
+        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        		List<treeoutPrint> dp = cd.findTreeout(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"'\r\n" + 
+        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        		List<treeoutPrint> dp = cd.findTreeout(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
+        	{
+        		sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"'\r\n" + 
+        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        		List<treeoutPrint> dp = cd.findTreeout(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        }
+      //木材销售总的材积台账
+        else if(action.equals("treeoutDetTable")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	//System.out.println("...." +month + "...");
+        	String sql="";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
+        	{
+            //sql="select w.workid,year(w.yarddate) as yeart,month(w.yarddate) as montht,w.carNumber,w.yard,w.section,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,t.unitprice,t.totalnum,w.surveyor, s.salesman from outyard as w JOIN treeout as t join saleman as s on w.workid=t.workid=s.workid";
+        	sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        			"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"'\r\n" + 
+        			"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
+        	List<treeoutPrint> dp = cd.findTreeoutDet(sql);
+        	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"'\r\n" + 
+        				"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
+        		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"'\r\n" + 
+        				"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
+        		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
+        	{
+        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"'\r\n" + 
+        				"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
+        		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
         }
         
 	}

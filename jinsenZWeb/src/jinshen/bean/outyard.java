@@ -16,14 +16,18 @@ public class outyard {
 	private String Contractnum;//销售合同号
 	private String saleCalloutorderid;//销售调令
 	private String section;
-	private String batchNum;//坚持标准
+	private String batchNum;//检尺标准
+	private String demander;//需求方
+	private String provider;//供放
+	
+	private int outStatus;//销售码单状态；0：录入销售码单，1：录入销售部门销售结算单
 	public double getWorkid() {
 		return workid;
 	}
 	public void setWorkid(double workid) {
 		this.workid = workid;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd ", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss ", timezone = "GMT+8")
 	public Date getYarddate() {
 		return yarddate;
 	}
@@ -89,6 +93,24 @@ public class outyard {
 	}
 	public void setBatchNum(String batchNum) {
 		this.batchNum = batchNum;
+	}
+	public String getDemander() {
+		return demander;
+	}
+	public void setDemander(String demander) {
+		this.demander = demander;
+	}
+	public String getProvider() {
+		return provider;
+	}
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+	public int getOutStatus() {
+		return outStatus;
+	}
+	public void setOutStatus(int outStatus) {
+		this.outStatus = outStatus;
 	}
 	
 	

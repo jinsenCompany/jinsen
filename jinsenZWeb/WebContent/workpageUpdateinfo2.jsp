@@ -287,7 +287,7 @@ function not(){
                               </tr>
                              <tr>
                              <th colspan="2">检验员</th>
-                             <th colspan="2">林务员</th>
+                             <th colspan="2">伐区管理员</th>
                              <th colspan="2">楞厂管理员</th>
                              </tr>
                              <tr>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="jinshen.bean.*"%>
@@ -13,7 +14,6 @@
 <head>
 <meta charset="UTF-8">
 <title>输入采伐证材料</title>
-<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
     <link rel="stylesheet" href="css/registe.css"/>
@@ -81,6 +81,19 @@ tr {
 	#b{
 	text-align:left;
 	}
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 18px!important; 	height: 40px; width:120px;	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
 </style>
 <script type="text/javascript">
 	function inputNull(form) {
@@ -97,9 +110,10 @@ tr {
 </head>
 <body>
 <%cutnum c = (cutnum) request.getAttribute("cutnum");%>
-<%
-   String cutnumfile = request.getParameter("cutnumfile");
-  %>
+  <% List<cutnum> o=null;
+o=(List<cutnum>)request.getAttribute("cutnumtree");
+%>
+
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -142,11 +156,15 @@ tr {
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li ><a href="cutnumApplyseeAassis.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li>
-    <li> <a href="manageCutnumAssis.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumseeAssis.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
-    <li> <a href="cutnumTableAssis.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
-    <li> <a href="manageCutnumshenhe.jsp"><i class="icon icon-th-list"></i> <span>审核采伐证材料</span></a></li>
+  <!-- 
+    <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
+  --> 
+    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>   
+<!-- 
+    <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
+  
+   -->
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -158,137 +176,128 @@ tr {
 <!--End-breadcrumbs-->
 	
 	<main>
-
+   
 		<div class="home-tab">
-			<i class="tab-i"></i> 所在位置：<span>采伐证材料</span>
+			<i class="tab-i"></i> 所在位置：<span>查看采伐证材料详情</span>
 		</div>
 		<div class="find-top">
 			<p class="p-tail">
-				<i class="i-tail"></i> 该页面主要是管理部门查看采伐证材料
+				<i class="i-tail"></i> 该页面主要是管理部门查看采伐证材料详情
 			</p>
 		</div>
 		<div class="find-top1">
-			<form onSubmit="return inputNull(this)"
-				action="cutnumServlet?action=cutnumUpdate" method="POST">
+		<!-- 	
+		<form onSubmit="return inputNull(this)" action="cutnumServlet?action=cutnumUpdate" method="POST">
+		-->			
+		<form onSubmit="return inputNull(this)" action="1" method="POST">
 				<div class="top" id="divprint">
-					<table class="biao">
-						<caption class="book_h01">采伐证材料</caption>
-						<tr>
-							<td id="a">采伐证号</td>
-							<td id="b"><input type="text" name="cutnum" id="cutnum"
-								value="<%=c.getCutnum()%>"></td>
-							<td id="a">采伐证编号</td>
-							<td id="b"><input type=text name="certificatenum"
-								id="certificatenum" value="<%=c.getCertificatenum()%>"></td>
-						</tr>
-						<tr>
-							<td id="a">编号</td>
-							<td id="b"><input name="numbern" type="text" maxlength="32" id="numbern" readonly value="<fmt:formatNumber value="<%=c.getNumber()%>" pattern="#0.##"/>" /></td>
-							<td id="a">采伐公司</td>
-							<td id="b"><input type="text" name="company" id="company"
-								value="<%=c.getCompany()%>"></td>
-						</tr>
-						<tr>
-							<td id="a">采伐地点</td>
-							<td id="b"><input type="text" name="cutsite" id="cutsite"
-								value="<%=c.getcutsite()%>"></td>
-							<td id="a">采伐四至</td>
-							<td id="b"><input type="text" name="sizhi" id="sizhi"
-								value="<%=c.getSizhi()%>"></td>
-						</tr>
+				<table  class="table1" border="1">
+			<caption class="book_h01">查看采伐证材料详情</caption>
+			<tr>
+				<td >林权单位</td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 230px;" type="text" id="company" name="company" value="<%=c.getCompany()%>"/></td>
+				<td>采伐证号</td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="<%=c.getCertificatenum()%>"/></td>
+			</tr>
+			<tr>
+			 <td>林权证号</td>
+			 <td colspan="2"><input  style="border:0px;background-color: transparent;width: 400px;" type="text" id="forestid" name="forestid" value="<%=c.getForestid()%>"></td>
+			 <td>采伐证编号</td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutnum" name="cutnum" value="<%=c.getCutnum()%>"></td>
+			</tr>
+			<tr>
+				<td>采伐地点</td>
+				<td colspan="5" >
+				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="cutaddress" name="cutaddress" value="<%=c.getCutaddress()%>">乡镇，     
+				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="cutvillage" name="cutvillage" value="<%=c.getCutvillage()%>">村，
+				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="quartel" name="quartel" value="<%=c.getQuartel()%>">林班，
+				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="largeblock" name="largeblock" value="<%=c.getLargeblock()%>">大班，
+				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="smallblock" name="smallblock" value="<%=c.getSmallblock()%>">小班
+				</td>
+			</tr>	
+			<tr>
+				<td>采伐类型</td>
+				<td colspan="2"><input style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cuttype" id="cuttype" value="<%=c.getCuttype()%>"></td>
+				<td>采伐方式</td>
+				<td colspan="2"><input style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cutmethod" id="cutmethod" value="<%=c.getCutmethod()%>"> </td>
+			</tr>
+			<tr>
+			    <td>采伐强度(%)</td>
+				<td colspan="2"><input style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutqiang" name="cutqiang" value="<%=c.getCutarea()%>"></td>
+				<td>采伐面积(公顷)</td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;"type="text" id="cutarea" name="cutarea" value="<%=c.getCutarea()%>"></td>		   
+			</tr>
+			
+			<tr>
+				<td>采伐开始时间</td>
+				<td colspan="2"><input style="width: 300px;" type="date" name="starttime" id="starttime" value="<%=c.getStarttime()%>"></td>
+				<td >采伐截止时间</td>
+				<td colspan="2"><input style="width: 300px;" type="date" name="endtime" id="endtime" value="<%=c.getEndtime()%>"></td>
+			</tr>	
+		    <tr>
+				<td>下载附件:</td>
+				<!-- <td id="b"><input class="filepath" onchange="changepic(this)"
+				type="file" id="cutnumfile" name="cutnumfile"></td>-->
+				<td colspan="5">${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
+			</tr> 
+			</table>
+			
+			<table id="tabletree" class="table1" border="1">
+		    <tr>
+		     <th colspan="6">出材量</th>
+		    </tr>
+		    <tr>
+		    <th>树种</th>    <!--treetype  -->
+		    <th>小计</th>     <!-- total -->
+		    <th>规格材</th>  <!--sizewood  -->
+		    <th>小径材(非规格材)</th>  <!--smalltimber  -->
+		    <th>短小材(非规格材)</th>   <!-- shorttimber -->
+		    <th>薪碳材</th>             <!-- firewood -->
+		    </tr>
+		    
+		<% int i=1;%>
+		     <c:forEach items="${cutnumtree}" var="b">    
+		     <tr id="<%=i%>">
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" name="treetype" id="tree<%=i%>" value="${b.getTreetype()}"></td>         
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' style='' name='total' id='tot<%=i%>' value="${b.getTotal()}"></td>
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='sizewood' id='size<%=i%>' value="${b.getSizewood()}"></td>
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='smalltimber' id='small<%=i%>' value="${b.getSmalltimber()}"></td>
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='shorttimber' id='short<%=i%>' value="${b.getShorttimber()}"></td>
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='firewood' id='fire<%=i%>' value="${b.getFirewood()}"></td></tr>
+		     </tr>     
+        <%i++; %>
+             </c:forEach>
 
-						<tr>
-						<td id="a">GPS定位:</td>
-						<td id="b"><input style="width:204%;" type="text" name="gpsinfo" id="gpsinfo" value="<%=c.getGpsinfo()%>">
-
-
-						<tr>
-							<td id="a">林分起源</td>
-							<td id="b"><input type="text" name="treeorigin" id="treeorigin"
-								value="<%=c.getTreeorigin()%>"></td>
-							<td id="a">林种</td>
-							<td id="b"><input type="text" name="foresttype" id="foresttype"
-								value="<%=c.getforesttype()%>"></td>
-						</tr>
-
-						<tr>
-							<td id="a">树种</td>
-							<td id="b"><input type="text" name="treetype" id="treetype"
-								value="<%=c.getTreetype()%>"></td>
-							<td id="a">权属</td>
-							<td id="b"><input type="text" name="ownership" id="ownership"
-								value="<%=c.getOwnership()%>"></td>
-						</tr>
-
-						<tr>
-							<td id="a">林权证号</td>
-							<td id="b"><input type="text" name="forestid" id="forestid"
-								value="<%=c.getForestid()%>"></td>
-							<td id="a">采伐类型</td>
-							<td id="b"><input type="text" name="cuttype" id="cuttype"
-								value="<%=c.getcuttype()%>"></td>
-						</tr>
-
-						<tr>
-							<td id="a">采伐方式</td>
-							<td id="b"><input type="text" name="cutmethod" id="cutmethod"
-								value="<%=c.getcutmethod()%>"></td>
-							<td id="a">采伐强度</td>
-							<td id="b"><input type="text" name="cutqiang" id="cutqiang"
-								value="<%=c.getcutqiang()%>"></td>
-						</tr>
-
-						<tr>
-							<td id="a">采伐面积</td>
-							<td id="b"><input type="text" name="cutarea" id="cutarea"
-								value="<%=c.getcutarea()%>"></td>
-							<td id="a">株数</td>
-							<td id="b"><input type="text" name="treenum" id="treenum"
-								value="<%=c.gettreenum()%>"></td>
-						</tr>
-
-						<tr>
-							<td id="a">采伐蓄积</td>
-							<td id="b"><input type="text" name="cutstore" id="cutstore"
-								value="<%=c.getcutstore()%>"></td>
-							<td id="a">出材量</td>
-							<td id="b"><input type="text" name="volume" id="volume"
-								value="<%=c.getvolume()%>"></td>
-						</tr>
-						<tr>
-							<td id="a">采伐开始时间</td>
-							<td id="b"><input type="date" name="starttime" id="starttime"
-								value="<%=c.getStarttime()%>"></td>
-							<td id="a">采伐截止时间</td>
-							<td id="b"><input type="date" name="endtime" id="endtime"
-								value="<%=c.getEndtime()%>"></td>
-						</tr>
-						<tr>
-							<td id="a">领证人</td>
-							<td id="b"><input type="text" name="certifier" id="certifier"
-								value="<%=c.getCertifier()%>"></td>
-							<td id="a">更新期限</td>
-							<td id="b"><input type="date" name="updatedate" id="updatedate"
-								value="<%=c.getUpdatedate()%>"></td>
-						</tr>
-						<tr>
-							<td id="a">更新面积</td>
-							<td id="b"><input type="text" name="updatevolume" id="updatevolume"
-								value="<%=c.getUpdatevolume()%>"></td>
-							<td id="a">株树</td>
-							<td id="b"><input type="text" name="updatenum" id="updatenum"
-								value="<%=c.getUpdatenum()%>"></td>
-						</tr>
-						<tr>
-							<td id="a">上传文件</td>
-							<td>${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
-						</tr>
-					</table>
+		    <tr>   <!--，此行为出材量、总计 -->
+		    <th><input style="border:0px;background-color: transparent"  type="text" name="chucai" id='chucai' value="合计(出材量)"></th>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="volume" id='volume' onclick="tvolume()" value="<%=c.getVolume()%>"></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewoodAll" id='size4' onclick="sizeTall()" value="<%=c.getSizewoodAll()%>"></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimberAll" id='small4' onclick="sizeTall()" value="<%=c.getSmalltimberAll()%>"></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimberAll" id='short4' onclick="shortTall()" value="<%=c.getShorttimberAll()%>"></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewoodAll" id='fire4' onclick="fireTall()" value="<%=c.getFirewoodAll()%>"></td>
+		    </tr>
+		    </table>
+		  <br>
 				</div>
-				<div class=" but_p" style="float: center;">
-					<button class="but_save" type="button" id="btnPrint" value="打印">打印</button>
+				<div style="text-align:center">
+				<button class="btn" type="submit" id="mybutton" value="更新采伐证">更新采伐证</button>
+				<button class="but_save" type="button" value="返回" onclick="javascrtpt:window.location.href='manageCutnumsee.jsp'">返回采伐证信息列表</button>
+				<button class="btn" type="button" id="btnPrint" value="打印">打印</button>
 				</div>
+				
+				<div style="clear: both; padding-bottom: 40px"></div>
 			</form>
+			<!-- 
+  <form  id="myForm" action="pictureServlet" method="post" enctype="multipart/form-data">
+    <table class="top-table">
+        <tr><td class="top-table-label">输入采伐号：</td><td colspan="5"><input type="text" name="workid" id="workid"></td></tr>
+        <tr><td class="top-table-label">上传照片</td><td colspan="5"><input class="filepath" onchange="changepic(this)" type="file" id="pic" name="pic"></td></tr>
+        <tr><td class="top-table-label">上传文件</td><td colspan="5"><input type="file" name="da" id="da"></td></tr>
+        <tr><td colspan="6" style="text-align: center"> <button class="add-but"  onclick="UpLoad()"><i class="glyphicon glyphicon-edit"></i> 提交</button>
+         <td>
+              <input type="submit" name="submit" value="Submit"></td>
+    </table>
+ </form> -->
 
 		</div>
 		<!-- 显示最近添加的员工 -->

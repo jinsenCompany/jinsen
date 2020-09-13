@@ -10,10 +10,13 @@ import jinshen.bean.cuntnumproj;
 import jinshen.bean.cutnum;
 import jinshen.bean.cutnumApply;
 import jinshen.bean.cutnumCheck;
+import jinshen.bean.cutnumProduced;
 import jinshen.bean.cutnumProgress;
 import jinshen.bean.cutnumStatus;
+import jinshen.bean.cutnumTable;
 import jinshen.bean.cutnumWatch;
 import jinshen.bean.cutnumfeedback;
+import jinshen.bean.projectPackTable;
 import jinshen.bean.projectpackage;
 import jinshen.dao.cutnumDao;
 import jinshen.db.DBcon;
@@ -25,11 +28,11 @@ public class cutnumDaoImpl implements cutnumDao{
     
     @Override
     public int addCutnum(cutnum cp) {
-    	String sql="insert into cutnum values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    	String sql="insert into cutnum values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     	int res=0;
 		try {
 			res=dbc.doUpdate(sql, new Object[] {cp.getCutnumid(),cp.getCutnum(),cp.getCertificatenum(),cp.getCompany(),cp.getCutaddress(),cp.getCutvillage(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),cp.getCuttype(),cp.getCutmethod(),
-					cp.getCutqiang(),cp.getCutarea(),cp.getForestid(),cp.getStarttime(),cp.getEndtime(),cp.getVolume(),cp.getSizewoodAll(),cp.getSmalltimberAll(),cp.getShorttimberAll(),cp.getFirewoodAll(),cp.getProjectid(),cp.getCutnumfile()});
+					cp.getCutqiang(),cp.getCutarea(),cp.getForestid(),cp.getStarttime(),cp.getEndtime(),cp.getVolume(),cp.getSizewoodAll(),cp.getSmalltimberAll(),cp.getShorttimberAll(),cp.getFirewoodAll(),cp.getProjectid(),cp.getCutnumfile(),cp.getCreatcutDate()});
 		}catch (Exception e) 
 		{
 			e.printStackTrace();
@@ -57,18 +60,19 @@ public class cutnumDaoImpl implements cutnumDao{
     }
     
     @Override
-    public int updateCutnum(cutnum cp) {
+    public int updateCutnum(cutnum cp,int id) {
     	int res=0;
-    	try {
-    		String sql="update cutnum set cutnum=?,certificatenum=?,number=?,company=?,cutsite=?,sizhi=?,gpsinfo=?,treeorigin=?,foresttype=?,treetype=?,ownership=?,forestid=?,cuttype=?,cutmethod=?,cutqiang=?,cutarea=?,treenum=?,cutstore=?,volume=?,starttime=?,endtime=?,certifier=?,updatedate=?,updatevolume=?,updatenum=? where cutnum=?";
-    		res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getCertificatenum(),cp.getNumber(),cp.getCompany(),cp.getCutsite(),cp.getSizhi(),cp.getGpsinfo(),cp.getTreeorigin(),cp.getForesttype(),cp.getTreetype(),cp.getOwnership(),cp.getForestid(),
-					cp.getCuttype(),cp.getCutmethod(),cp.getCutqiang(),cp.getCutarea(),cp.getTreenum(),cp.getCutstore(),cp.getVolume(),cp.getStarttime(),cp.getEndtime(),cp.getCertifier(),cp.getUpdatedate(),cp.getUpdatevolume(),cp.getUpdatenum()});
-    	}catch(Exception e) {
+    	try {   		
+    		String sql="update cutnum set cutnum=?,certificatenum=?,company=?,cutaddress=?,cutvillage=?,quartel=?,largeblock=?,smallblock=?,cuttype=?,cutmethod=?,cutqiang=?,cutarea=?,forestid=?,starttime=?,endtime=?,volume=?,sizewoodAll=?,smalltimberAll=?,shorttimberAll=?,firewoodAll=?,creatcutDate=? where cutnumid='"+id+"'";
+    		res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getCertificatenum(),cp.getCompany(),cp.getCutaddress(),cp.getCutvillage(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),cp.getCuttype(),cp.getCutmethod(),cp.getCutqiang(),cp.getCutarea(),cp.getForestid(),cp.getStarttime(),cp.getEndtime(),cp.getVolume(),cp.getSizewoodAll(),cp.getSmalltimberAll(),cp.getShorttimberAll(),cp.getFirewoodAll(),cp.getCreatcutDate()});
+    	}
+    	catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			dbc.close();
 		}
 		return res;
+
     }
     
     @Override
@@ -160,8 +164,9 @@ public class cutnumDaoImpl implements cutnumDao{
     			cn.setSmalltimberAll(rs.getString(19));
     			cn.setShorttimberAll(rs.getString(20));
     			cn.setFirewoodAll(rs.getString(21));
-    			cn.setProjectid(rs.getDouble(22));
+    			cn.setProjectPackageName(rs.getString(22));
 				cn.setCutnumfile(rs.getString(23));
+				cn.setCreatcutDate(rs.getTimestamp(24));
     		}
     	}catch(Exception e) {
 			e.printStackTrace();
@@ -273,7 +278,8 @@ public class cutnumDaoImpl implements cutnumDao{
     			cn.setQuartel(rs.getString(6));
     			cn.setLargeblock(rs.getString(7));
     			cn.setSmallblock(rs.getString(8));
-    			cn.setVolume(rs.getDouble(9));   
+    			cn.setVolume(rs.getDouble(9));
+    			cn.setCreatcutDate(rs.getTimestamp(10));
 				cnw.add(cn);
     		}
     	}catch(Exception e) {
@@ -283,6 +289,34 @@ public class cutnumDaoImpl implements cutnumDao{
 		}
 		return cnw;
     }
+    //含有工程包
+    @Override
+    public List<cutnum> findCutnumPid(String sql){
+    	List<cutnum> cnw =new ArrayList<cutnum>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			cutnum cn = new cutnum();	
+    			cn.setCompany(rs.getString(1));
+    			cn.setCertificatenum(rs.getString(2));
+    			cn.setCutnum(rs.getString(3));
+    			cn.setCutaddress(rs.getString(4));
+    			cn.setCutvillage(rs.getString(5));
+    			cn.setQuartel(rs.getString(6));
+    			cn.setLargeblock(rs.getString(7));
+    			cn.setSmallblock(rs.getString(8));
+    			cn.setVolume(rs.getDouble(9));
+    			cn.setProjectPackageName(rs.getString(10));
+				cnw.add(cn);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return cnw;
+    }
+    
     //砍伐证审核界面
     @Override
     public List<cutnumWatch> findCuteSingle(String sql) {
@@ -329,12 +363,38 @@ public class cutnumDaoImpl implements cutnumDao{
 		}
 		return cnw;
     }
+    
+    @Override
+    public List<cutnum> findCutnumprojectStatus(String sql){
+    	List<cutnum> cnw =new ArrayList<cutnum>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			cutnum cn = new cutnum();
+    			cn.setCutnum(rs.getString(1));
+    			cn.setCertificatenum(rs.getString(2));
+    			cn.setStarttime(rs.getDate(3));
+    			cn.setEndtime(rs.getDate(4));
+				cn.setCompany(rs.getString(5));
+				cn.setCutarea(rs.getString(6));
+				cn.setVolume(rs.getDouble(7));
+				cn.setcStatus(rs.getString(8));
+				cnw.add(cn);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return cnw;
+    }
+    
     @Override
     public int addprojectid(String each,cutnum cn) {
-    	String sql="update cutnum set proj_package_id=? WHERE cutnum='"+each+"'";
+    	String sql="update cutnum set proj_package_Name=? WHERE cutnum='"+each+"'";
     	int res = 0;
     	try {
-    		res=dbc.doUpdate(sql, new Object[] {cn.getProjectid()});
+    		res=dbc.doUpdate(sql, new Object[] {cn.getProjectPackageName()});
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -360,10 +420,10 @@ public class cutnumDaoImpl implements cutnumDao{
     }*/
     @Override
     public int addprojectpackage(projectpackage cp) {
-    String sql="insert into proj_package values(?,?,?,?,?,?,?)";
+    String sql="insert into proj_package values(?,?,?,?,?,?,?,?)";
 	int res=0;
 	try {
-		res=dbc.doUpdate(sql, new Object[] {cp.getprojectPackageid(),cp.getProjpackageStarttime(),cp.getContractNum(),cp.getContractionSide(),cp.getCuttime(),cp.getForester(),cp.getAccessory()});
+		res=dbc.doUpdate(sql, new Object[] {cp.getprojectPackageid(),cp.getProjectPackageName(),cp.getProjpackageStarttime(),cp.getContractNum(),cp.getContractionSide(),cp.getCuttime(),cp.getForester(),cp.getAccessory()});
 	}catch (Exception e) 
 	{
 		e.printStackTrace();
@@ -391,8 +451,8 @@ public class cutnumDaoImpl implements cutnumDao{
     public int updateprojectpackage(projectpackage cp) {
     	int res=0;
     	try {
-    		String sql="update proj_package set proj_package_id=?,projpackageStarttime=?,contractNum=?,contractionSide=?,cuttime=?,forester=? where projpackageId=?";
-    		res=dbc.doUpdate(sql, new Object[] {cp.getprojectPackageid(),cp.getProjpackageStarttime(),cp.getContractNum(),cp.getContractionSide(),cp.getForester()});
+    		String sql="update proj_package set proj_package_Name=?,projpackageStarttime=?,contractNum=?,contractionSide=?,cuttime=?,forester=? proj_package_Name=?";
+    		res=dbc.doUpdate(sql, new Object[] {cp.getProjectPackageName(),cp.getProjpackageStarttime(),cp.getContractNum(),cp.getContractionSide(),cp.getCuttime(),cp.getForester()});
     	}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -407,12 +467,14 @@ public class cutnumDaoImpl implements cutnumDao{
     	try {
     		ResultSet rs=dbc.doQuery(sql, new Object[] {});
     		if(rs.next()) {
-    			pt.setprojectPackageid(rs.getDouble(1));
-    			pt.setProjpackageStarttime(rs.getDate(2));
-    			pt.setContractNum(rs.getString(3));
-    			pt.setContractionSide(rs.getString(4));
-    			pt.setCuttime(rs.getString(5));
-    			pt.setForester(rs.getString(6));
+    			pt.setprojectPackageid(rs.getInt(1));
+    			pt.setProjectPackageName(rs.getString(2));
+    			pt.setProjpackageStarttime(rs.getDate(3));
+    			pt.setContractNum(rs.getString(4));
+    			pt.setContractionSide(rs.getString(5));
+    			pt.setCuttime(rs.getString(6));
+    			pt.setForester(rs.getString(7));
+    			pt.setAccessory(rs.getString(8));
     		}
     	}catch(Exception e) {
 			e.printStackTrace();
@@ -429,12 +491,14 @@ public class cutnumDaoImpl implements cutnumDao{
     		ResultSet rs=dbc.doQuery(sql, new Object[] {});
     		while(rs.next()) {
     			projectpackage  pt= new projectpackage();
-    			pt.setprojectPackageid(rs.getDouble(1));
-    			pt.setProjpackageStarttime(rs.getDate(2));
-    			pt.setContractNum(rs.getString(3));
-    			pt.setContractionSide(rs.getString(4));
-    			pt.setCuttime(rs.getString(5));
-    			pt.setForester(rs.getString(6));
+    			pt.setprojectPackageid(rs.getInt(1));
+    			pt.setProjectPackageName(rs.getString(2));
+    			pt.setProjpackageStarttime(rs.getTimestamp(3));
+    			pt.setContractNum(rs.getString(4));
+    			pt.setContractionSide(rs.getString(5));
+    			pt.setCuttime(rs.getString(6));
+    			pt.setForester(rs.getString(7));
+    			pt.setAccessory(rs.getString(8));
     			ptp.add(pt);
     		}
     	}catch(Exception e) {
@@ -748,7 +812,7 @@ public class cutnumDaoImpl implements cutnumDao{
     		while(rs.next()) {
     			cuntnumproj cn = new cuntnumproj();
     			cn.setUpdatedate(rs.getDate(1));;
-    			cn.setProjectPackageid(rs.getDouble(2));
+    			cn.setProjectPackagename(rs.getString(2));
     			cn.setCutnum(rs.getString(3));
     			cn.setCertificatenum(rs.getString(4));
     			cn.setCutarea(rs.getDouble(5));
@@ -771,11 +835,12 @@ public class cutnumDaoImpl implements cutnumDao{
     		ResultSet rs=dbc.doQuery(sql, new Object[] {});
     		while(rs.next()) {
     			cutnumCheck cn = new cutnumCheck();
-    			cn.setCutnum(rs.getString(1));
-    			cn.setStarttime(rs.getDate(2));
-    			cn.setEndtime(rs.getDate(3));
-				cn.setcutsite(rs.getString(4));
-				cn.setStatus(rs.getInt(5));
+    			cn.setCertificatenum(rs.getString(1));
+    			cn.setCutnum(rs.getString(2));
+    			cn.setStarttime(rs.getDate(3));
+    			cn.setEndtime(rs.getDate(4));
+				cn.setStatus(rs.getString(5));
+				cn.setCutaddess(rs.getString(6));
 				cnw.add(cn);
     		}
     	}catch(Exception e) {
@@ -849,6 +914,199 @@ public class cutnumDaoImpl implements cutnumDao{
 		}
 		return cnw;
 	}
+
+	@Override
+	public int updateCutnumtree(cutnum cp, int id, String n) {
+		int res=0;
+    	try {   		
+    		String sql="update cutnum_tree set total=?,sizewood=?,smalltimber=?,shorttimber=?,firewood=? where cutnumid='"+id+"' and treetype='"+n+"'";
+    		res=dbc.doUpdate(sql, new Object[] {cp.getTotal(),cp.getSizewood(),cp.getSmalltimber(),cp.getShorttimber(),cp.getFirewood()});
+    	}
+    	catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public int updateCutnumvolume(cutnumStatus cp, double cutnumid) {
+		int res=0;
+    	try {
+    		String sql="update cutnum_status set statusVolume=? WHERE cutnumid="+cutnumid+"";
+    		res=dbc.doUpdate(sql, new Object[] {cp.getCutnumVolume()});
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public List<projectPackTable> findProjectDetails(String sql) {
+		List<projectPackTable> ptp = new ArrayList<projectPackTable>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			projectPackTable  pt= new projectPackTable();
+    			pt.setProjpackageStarttime(rs.getString(1));
+    			pt.setProjectPackageName(rs.getString(2));
+    			pt.setCertificatenum(rs.getString(3));
+    			pt.setCutarea(rs.getString(4));
+    			pt.setContractNum(rs.getString(5));
+    			pt.setContractionSide(rs.getString(6));
+    			pt.setCuttime(rs.getString(7));
+    			pt.setForester(rs.getString(8));
+    			pt.setAccessory(rs.getString(9));
+    			pt.setCutnum(rs.getString(10));
+    			pt.setTotalDesign(rs.getString(11));
+    			pt.setShanTreeDesign(rs.getString(12));
+    			pt.setSongTreeDesign(rs.getString(13));
+    			pt.setZaTreeDesign(rs.getString(14));
+    			pt.setTotalActual(rs.getString(15));
+    			pt.setShanTreeActual(rs.getString(16));
+    			pt.setSongTreeActual(rs.getString(17));
+    			pt.setZaTreeActual(rs.getString(18));
+    			ptp.add(pt);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return ptp;
+	}
+
+	@Override
+	public List<projectPackTable> findDesigntree(String sql) {
+		List<projectPackTable> ptp = new ArrayList<projectPackTable>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			projectPackTable  pt= new projectPackTable();
+    			pt.setCutnumid(rs.getString(1));
+    			pt.setTotalDesign(rs.getString(2));
+    			pt.setShanTreeDesign(rs.getString(3));
+    			pt.setSongTreeDesign(rs.getString(4));
+    			pt.setZaTreeDesign(rs.getString(5));
+    			ptp.add(pt);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return ptp;
+	}
+
+	@Override
+	public List<projectPackTable> findActualtree(String sql) {
+		List<projectPackTable> ptp = new ArrayList<projectPackTable>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			projectPackTable  pt= new projectPackTable();
+    			pt.setTotalActual(rs.getString(1));
+    			pt.setShanTreeActual(rs.getString(2));
+    			pt.setSongTreeActual(rs.getString(3));
+    			pt.setZaTreeActual(rs.getString(4));
+    			ptp.add(pt);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return ptp;
+	}
+	
+	@Override
+    public List<cutnumTable> findCutnumT(String sql){
+    	List<cutnumTable> cnw =new ArrayList<cutnumTable>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			cutnumTable cn = new cutnumTable();	
+    			cn.setCompany(rs.getString(1));
+    			cn.setCertificatenum(rs.getString(2));
+    			cn.setCutnum(rs.getString(3));
+    			cn.setCutaddress(rs.getString(4));
+    			cn.setCutvillage(rs.getString(5));
+    			cn.setQuartel(rs.getString(6));
+    			cn.setLargeblock(rs.getString(7));
+    			cn.setSmallblock(rs.getString(8));
+    			cn.setCreatcutDate(rs.getTimestamp(9));   
+   			
+    			cn.setTotalDesign(rs.getString(10));
+				cn.setShanTreeDesign(rs.getString(11));
+				cn.setSongTreeDesign(rs.getString(12));
+				cn.setZaTreeDesign(rs.getString(13));
+				
+				cn.setTotalProduced(rs.getString(14)); 
+				cn.setShamu(rs.getString(15));
+				cn.setSongmu(rs.getString(16)); 
+				cn.setZamu(rs.getString(17));
+				
+				cn.setTotalActual(rs.getString(18));
+				cn.setShanTreeActual(rs.getString(19));
+				cn.setSongTreeActual(rs.getString(20));
+				cn.setZaTreeActual(rs.getString(21));
+				cnw.add(cn);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return cnw;
+    }
+
+    @Override
+    public int addCutnumProduced(cutnumProduced cp) {
+    	String sql="insert into cutnum_produced values(?,?,?,?,?,?,?,?)";
+    	int res=0;
+		try {
+			res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getCertificatenum(),cp.getShamu(),cp.getSongmu(),cp.getZamu(),cp.getTotalProduced(),cp.getFaquManager(),cp.getCreatDateProduced()});
+		}catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		finally {
+			dbc.close();
+		}
+		return res;
+    }
+
+	@Override
+	public List<cutnum> findCutnumCOn(String sql) {
+		List<cutnum> cnw =new ArrayList<cutnum>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			cutnum cn = new cutnum();	
+    			cn.setCompany(rs.getString(1));
+    			cn.setCertificatenum(rs.getString(2));
+    			cn.setCutnum(rs.getString(3));
+    			cn.setCutaddress(rs.getString(4));
+    			cn.setCutvillage(rs.getString(5));
+    			cn.setQuartel(rs.getString(6));
+    			cn.setLargeblock(rs.getString(7));
+    			cn.setSmallblock(rs.getString(8));
+    			cn.setVolume(rs.getDouble(9));
+    			cn.setCreatcutDate(rs.getTimestamp(10));
+    			cn.setShorttimber(rs.getString(11));
+				cnw.add(cn);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return cnw;
+	}
+
 
 
 }

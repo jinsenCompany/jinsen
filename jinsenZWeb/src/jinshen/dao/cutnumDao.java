@@ -6,19 +6,24 @@ import jinshen.bean.cuntnumproj;
 import jinshen.bean.cutnum;
 import jinshen.bean.cutnumApply;
 import jinshen.bean.cutnumCheck;
+import jinshen.bean.cutnumProduced;
 import jinshen.bean.cutnumProgress;
 import jinshen.bean.cutnumStatus;
+import jinshen.bean.cutnumTable;
 import jinshen.bean.cutnumWatch;
 import jinshen.bean.cutnumfeedback;
+import jinshen.bean.projectPackTable;
 import jinshen.bean.projectpackage;
 
 public interface cutnumDao {
 	public int addCutnum(cutnum cp);//保存到表cutnum
 	public int addCutnumTree(cutnum cp);//保存到表cutnum_tree
-	public int updateCutnum(cutnum cp);
+	public int updateCutnum(cutnum cp,int id);
 	public cutnumStatus findCutnumStatus(String sql);//根据采伐证输入得到的信息得到cutnumid
 	public int addCutnumStatus(cutnumStatus cp);//在cutnum_status数据表中插入数据
 	public int updateCutnumStatus(cutnumStatus cp,double cutnumid);//更新采伐证状态，在工单录入界面，当采伐证超过蓄留材积采伐证状态变为1
+	public int updateCutnumtree(cutnum cp,int id,String n);//采伐证树材信息
+	public int updateCutnumvolume(cutnumStatus cp,double cutnumid);//更新采伐证材积再更新采伐证时
 	
 	public double findcount(String sql);
 	public cutnum findCodeSingle(String sql);
@@ -28,10 +33,12 @@ public interface cutnumDao {
 	public cutnum printCutnum();
     public List<cutnum> findCutnumC(String sql);
     public List<cutnum> findCutnumF(String sql);
+    public List<cutnum> findCutnumPid(String sql);//在检尺野账页面显示工程包信息
     
 	public List<cutnum> findCutnumproject(String sql);//用于在创建工程包页面选择采伐证号
 	public List<cutnum> findCutnumtree(String sql);
 	
+	public List<cutnum> findCutnumCOn(String sql);//查询锁定采伐证
 	//public int addprojectid(double each,cutnum cn);//添加工程包到数据库采伐证表中cutnum是double
 	//public int addprojectid(cutnum cn);
 	public int addprojectid(String each,cutnum cn);//添加工程包到数据库采伐证表中cutnum是字符型
@@ -61,4 +68,16 @@ public interface cutnumDao {
 	public int addcutnumCheck(cutnumCheck cp);//保存中期检查数据
 	
 	public cutnumProgress findProgress(String sql);//查看采伐证进程进度
+	
+	public List<cutnum> findCutnumprojectStatus(String sql);//在伐区拨交页面显示采伐证状态
+	
+	//工程包台账
+	public List<projectPackTable> findProjectDetails(String sql);//查询工程包创建时间到伐区管理人员
+	public List<projectPackTable> findDesigntree(String sql);//查询设计出材量
+	public List<projectPackTable> findActualtree(String sql);//查询实际出材量
+	
+	//采伐证台账
+	public List<cutnumTable> findCutnumT(String sql);//采伐证汇总
+	//f伐区管理员录入以生产量
+	public int addCutnumProduced(cutnumProduced cp);
 }

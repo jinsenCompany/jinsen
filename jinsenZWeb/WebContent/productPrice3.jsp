@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>木材产出</title>
+    <title>木材生产工资结算</title>
     <link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
     <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
     <link rel="stylesheet" href="css/tableall.css">
@@ -44,25 +44,12 @@ function mycreate()
 {
 	//var length=$("#codetable tr").length;
 	var cutnum=document.getElementById("cutnum").value;
-	if(cutnum=="")
-		{
-		    alert("请输入采伐证号！");
-		}
-	else
-		{
 	length=(length-1)*2;
 	var group=[];
-	for(var i=1;i<=length;i++)
-		{
-		     if(document.getElementById("code"+i+"").value!="")
-		     group[i-1]=document.getElementById("code"+i+"").value;
-		}
-	var mygroup=JSON.stringify(group);	
 	$.ajax({
         url:"salaryServlet",
         data:{
-            "action":"savew",
-            "mygroup":mygroup,
+            "action":"savew1",
             "cutnum":cutnum
         },
         type: "POST",
@@ -73,36 +60,23 @@ function mycreate()
         		alert("您所需要生成的码单信息有误，请重新核对");
         		}
         	else{
-        	var tree=data["tree"];
-        	var code=data["work"];
-        	//alert(code);
-        	$("#mysomething").empty();
-        	for(var i=0;i<code.length;i++)
+        	var cutCompack=data["cutCompack"];
+        	var contractionSide=data["contractionSide"];
+        	for(var i=0;i<cutCompack.length;i++)
     		{
-        		var j=code[i];
-        		var str2="<table class='top-table'>"
-        			+"<tr><p class='table_p'><span>工单"+j.workid+"</span></p>"
-        			+"</tr><tr><td class='top-table-label'>工单：</td>"
-                    +"<td><input type='text' id='checknum' disabled='disabled' value='"+j.workid+"'></td></tr></table>";
-        		$("#mysomething").append(str2); 
+        		var j=cutCompack[i];
+        		var manageUnit=j.company;
+        		var projectPackageid=j.projectid;
     		}
-        	$("#ttt").empty();
-        	var str="<tr><p class='table_p'><span>材种信息</span></p></tr>"
-                  +"<tr><td class='top-table-label' >材种：</td>"
-                  +"<td class='top-table-label'>材积：</td>"
-                  +"<td class='top-table-label'>单价：</td>"
-                  +"<td class='top-table-label'>金额：</td></tr>";
-        	for(var i=0;i<tree.length;i++){
-        		var j=tree[i];
-        	str+="<tr id='"+(i+1)+"'><td><select id='treetype"+(i+1)+"' ><option>"+j.type+"</option></select></td>"
-                  +"<td><input type=text disabled=disabled value='"+j.tvolume+"' id='volume"+(i+1)+"'></td>"
-                   +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"'></td>"
-                  +"<td><input type='text' id='price"+(i+1)+"' onclick='priceCount("+(i+1)+")' value='"+j.price+"'></td></tr>"
+        	for(var i=0;i<contractionSide.length;i++){
+        		var j=contractionSide[i];
+        		var forperson=j.contractionSide;
         	}
-        	ttt.innerHTML=str;
+        	document.getElementById("manageUnit").value=manageUnit;
+        	document.getElementById("projectPackageid").value=projectPackageid;
+        	document.getElementById("forperson").value=forperson;
         }}
     })
-}
 }
 
 function mysave()
@@ -184,6 +158,10 @@ function makecount()
    document.getElementById("ttvolume").value=Number(ttvolume);
    document.getElementById("tprice").value=Number(tprice);
 }
+window.onload = function () {
+    locationInput = function () {
+    };
+}
 </script>
 </head>
 <body>
@@ -248,28 +226,97 @@ function makecount()
     <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>生产科</a></div>
   </div>
 <main>
-    <article class="artlce">
+    <article>
     <div class="find-top">
         <p class="p-tail"><i class="i-tail"></i>该界面是生成木材生产结算的主要界面</p>
     </div>
-    <div class="find-top1" class="divprint">
+    <div class="divprint">
            <table class="top-table">
-            <tr ><p class="table_p"><span>请输入采伐证号：</span></p>
+            <tr><p class="table_p" style="text-align: center;"><span style="font-size:20pt">生产工资及其它费用结算清单</span></p>
             </tr>
             <tr>
-                <td class="top-table-label" >采伐证号：</td>
-                <td><input type="text" id="cutnum" value=""></td>
-                <td>工程包:</td><td><input type="text" name="projectPackageid" id="projectPackageid" value=""></td>
-                <td>劳务承包人：</td><td><input type="text" name="forperson" id="forperson" value=""></td>
-                <td>伐区管理单位：</td><td><input type="text" name="manageUnit" id="manageUnit" value=""></td>
+                <td class="top-table-label" colspan="2">采伐证号：</td>
+                <td colspan="2"><input type="text" id="cutnum" value="" oninput='mycreate()' onclick='locationInput'></td>
+                <td colspan="2">工程包:</td>
+                <td colspan="2"><input type="text" name="projectPackageid" id="projectPackageid" value=""></td>
+            </tr>
+            <tr>
+            <td colspan="2">劳务承包人：</td>
+                <td colspan="2"><input type="text" name="forperson" id="forperson" value=""></td>
+                <td colspan="2">伐区管理单位：</td>
+                <td colspan="2"><input type="text" name="manageUnit" id="manageUnit" value=""></td>
             </tr>
         </table>
-        <table class="top-table" >
-         <tr><td colspan="6" style="margin-top: 10px;margin-bottom: 10px">
-        <button class="add-but" onclick="mycreate()"><i class="glyphicon glyphicon-remove"></i>生成</button></td>
+        <table class="top-table" border="1">
+        <tr>
+        <th>序号</th>
+        <th>项目</th>
+        <th>数量</th>
+        <th>单位</th>
+        <th>单价（元）</th>
+        <th>金额（元）</th>
+        <th colspan="2">备注</th>
+        </tr>
+        <tr>
+        <td>1</td>
+        <td>生产工资(衫杂木)</td>
+        <td><input name="" id=""></td>
+        <td>m³</td>
+        <td><input name="unitprice" id="unitprice"></td>
+        <td><input name="price" id="price"></td>
+        <td rowspan="8">&nbsp;&nbsp;</td>
+        </tr>
+        <tr>
+        <td>2</td>
+        <td>生产工资(松木)</td>
+        <td><input name="" id=""></td>
+        <td>m³</td>
+        <td><input name="unitprice" id="unitprice"></td>
+        <td><input name="price" id="price"></td>
+        
+        </tr>
+        <tr>
+        <td>3</td>
+        <td>生产工资 薪材（1.2T折算1m³）</td>
+        <td><input name="" id=""></td>
+        <td>m³</td>
+        <td><input name="unitprice" id="unitprice"></td>
+        <td><input name="price" id="price"></td>
+        
+        </tr>
+        <tr>
+        <td>4</td>
+        <td>运费</td>
+        <td><input name="" id=""></td>
+        <td>m³</td>
+        <td><input name="unitprice" id="unitprice"></td>
+        <td><input name="price" id="price"></td>
+        
+        </tr>
+        <tr>
+        <td colspan="2">小计</td>
+        <td colspan="2"><input name="" id=""></td>
+        <td>&nbsp;</td>
+        <td colspan="1"><input name="" id=""></td>
+        </tr>
+        <tr>
+        <td colspan="2">保险费</td>
+        <td><input name="" id=""></td>
+        <td>m³</td>
+        <td><input name="unitprice" id="unitprice"></td>
+        <td><input name="price" id="price"></td>
+        
+        </tr>
+        <tr>
+        <td colspan="2">税费</td>
+        <td colspan="4"><input name="" id=""></td>
+        </tr>
+        <tr>
+        <td colspan="2">合计</td>
+        <td colspan="4"><input name="" id=""></td>
         </tr>
         </table>
-       <div id="mysomething">
+       <%--  <div id="mysomething">
         <table class="top-table">
           <tr><p class="table_p"><span>主要信息</span></p>
           </tr>
@@ -313,11 +360,14 @@ function makecount()
                    <input type="text" style="width:120px; font-size:20px" name="tprice" id="tprice">元<span></span></td>
                    </tr>
                    </tbody>
-         </table>
+         </table>--%>
         <table class="table" >
             <tbody>
-            <p class="table_p"><span>填单人</span></p>
             <tr>
+                <td>生产科经理:<span></span></td>
+                <td><input type="text" disabled="disabled"></td>
+                <td>复核:<span></span></td>
+                <td><input type="text" disabled="disabled"></td>
                 <td>填单人:<span></span></td>
                 <td><input type="text" name="person" id="person"></td>
             </tr>

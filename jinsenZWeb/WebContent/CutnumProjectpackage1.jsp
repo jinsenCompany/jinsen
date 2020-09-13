@@ -373,7 +373,7 @@ $(function(){
                     valign: 'middle'
                 },
                 {
-                    title: '采法证号',
+                    title: '采伐证号',
                     field: 'certificatenum',
                     width:'auto',
                     align: 'center',

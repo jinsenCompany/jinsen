@@ -267,7 +267,7 @@ t=(List<tree>)request.getAttribute("tree");
   </div>
     <article>
         <div>
-            <h1 class="book_h01">录入进场木材信息</h1>
+            <h1 class="book_h01">录入进仓木材信息</h1>
             <form  onSubmit="return inputNull(this)" action="treeServlet?action=updateTreein" method="POST" >
             <div id="divprint">
                 <div class="top">

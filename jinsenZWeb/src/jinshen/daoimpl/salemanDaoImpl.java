@@ -6,17 +6,19 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import jinshen.bean.Laowu;
 import jinshen.bean.contractProgress;
 import jinshen.bean.customer;
+import jinshen.bean.cutnum;
 import jinshen.bean.cutnumStatus;
+import jinshen.bean.projectpackage;
 import jinshen.bean.saleCalloutOrder;
 import jinshen.bean.salecontract;
 import jinshen.bean.salemansql;
 import jinshen.bean.salesman;
 import jinshen.bean.singleworkid;
 import jinshen.bean.tree;
+import jinshen.bean.treeoutSalary;
 import jinshen.bean.worktree;
 import jinshen.bean.yardManage;
 import jinshen.dao.salemanDao;
@@ -75,6 +77,55 @@ public class salemanDaoImpl implements salemanDao{
 			while(rs.next()){
 				worktree w=new worktree();
 				w.setType(rs.getString(1));
+				w.setTlong(rs.getString(2));
+				w.setTradius(rs.getString(3));
+				w.setTvolume(rs.getDouble(4));
+				w.setUnitprice(rs.getDouble(5));
+				w.setPrice(rs.getDouble(6));
+				work.add(w);	
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return work;
+	}
+	
+	@Override
+	public List<worktree> findworktreeSalary(String sql)
+	{
+		List<worktree> work=new ArrayList<worktree>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()){
+				worktree w=new worktree();
+				w.setType(rs.getString(1));
+				w.setTlong(rs.getString(2));
+				w.setTradius(rs.getString(3));
+				w.setNum(rs.getString(4));
+				w.setTvolume(rs.getDouble(5));
+				w.setUnitprice(rs.getDouble(6));
+				w.setPrice(rs.getDouble(7));
+				work.add(w);	
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return work;
+	}
+	
+	@Override
+	public List<worktree> findworktreeSum(String sql)
+	{
+		List<worktree> work=new ArrayList<worktree>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()){
+				worktree w=new worktree();
+				w.setType(rs.getString(1));
 				w.setTvolume(rs.getDouble(2));
 				w.setUnitprice(rs.getDouble(3));
 				w.setPrice(rs.getDouble(4));
@@ -87,6 +138,7 @@ public class salemanDaoImpl implements salemanDao{
 		}
 		return work;
 	}
+	
 	@Override
 	public salesman findsaleSingle(String sql) {
 		salesman addr = new salesman();
@@ -191,10 +243,10 @@ public class salemanDaoImpl implements salemanDao{
 	//将工单结算信息插入到laowu表里
 	@Override
 	public int addProduce(Laowu cp) {
-		String sql="insert into Laowu values(?,?,?,?,?,?,?,?,?,?)";
+		String sql="insert into Laowu values(?,?,?,?,?,?,?,?,?,?,?)";
 		int res=0;
 		try {
-			res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getProjectPackageid(),cp.getForperson(),cp.getManageUnit(),cp.getTreetype(),cp.getUnitprice(),cp.getprice(),cp.getPerson(),cp.getttvolume(),cp.gettprice()});
+			res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getProjectPackageName(),cp.getForperson(),cp.getManageUnit(),cp.getTreetype(),cp.getUnitprice(),cp.getprice(),cp.getPerson(),cp.getttvolume(),cp.getTprice(),cp.getCreatTime()});
 					}catch(Exception e) {
 						e.printStackTrace();
 					}finally {
@@ -213,6 +265,27 @@ public class salemanDaoImpl implements salemanDao{
 			while(rs.next()){
 				singleworkid addr=new singleworkid();
 			    addr.setWorkid(rs.getDouble(1));
+			    sw.add(addr);
+			}
+			}catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}finally {
+				dbc.close();
+			}
+			return sw;
+	}
+	//在木材销售货款结算页面显示货场信息
+	@Override
+	public List<singleworkid> findworkidYard(String sql)
+	{
+		List<singleworkid> sw=new ArrayList<singleworkid>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()){
+				singleworkid addr=new singleworkid();
+			    addr.setWorkid(rs.getDouble(1));
+			    addr.setYard(rs.getString(2));
 			    sw.add(addr);
 			}
 			}catch(Exception e) {
@@ -336,14 +409,14 @@ public class salemanDaoImpl implements salemanDao{
 				while(rs.next()){
 					saleCalloutOrder co = new saleCalloutOrder();
 					co.setSaleCallid(rs.getInt(1));
-					co.setCallidtime(rs.getDate(2));
+					co.setCallidtime(rs.getTimestamp(2));
 					co.setContractnum(rs.getString(3));
 	    			co.setSaleCalloutOrder(rs.getString(4));
 					co.setYard(rs.getString(5));
 					co.setSection(rs.getString(6));
 	    			co.setDemander(rs.getString(7));
 	    			co.setPaymentamount(rs.getString(8));
-	    			co.setTotalnum(rs.getInt(9));
+	    			co.setTotalnum(rs.getString(9));
 	    			co.setSigner(rs.getString(10));
 					sa.add(co);
 				}
@@ -366,7 +439,7 @@ public class salemanDaoImpl implements salemanDao{
 					co.setContractnum(rs.getString(2));
 					co.setDemander(rs.getString(3));
 					co.setYard(rs.getString(4));
-					co.setTotalnum(rs.getInt(5));
+					co.setTotalnum(rs.getString(5));
 					co.setCallidtime(rs.getTimestamp(6));
 					sa.add(co);
 				}
@@ -417,7 +490,7 @@ public class salemanDaoImpl implements salemanDao{
     			cf.setSection(rs.getString(4));
     			cf.setDemander(rs.getString(5));
     			cf.setPaymentamount(rs.getString(6));
-    			cf.setTotalnum(rs.getInt(7));
+    			cf.setTotalnum(rs.getString(7));
     			cf.setSigner(rs.getString(8));
     			cf.setCallidtime(rs.getTimestamp(9));//new Timestamp(new Date().getTime())
     			cf.setCreattime(rs.getTimestamp(10));
@@ -597,7 +670,7 @@ public class salemanDaoImpl implements salemanDao{
 			ResultSet rs=dbc.doQuery(sql, new Object[] {});
 			while(rs.next()){
 				singleworkid addr=new singleworkid();
-			    addr.setProjectPackageid(rs.getDouble(1));
+			    addr.setProjectPackageName(rs.getString(1));
 			    addr.setForperson(rs.getString(2));
 			    addr.setManageUnit(rs.getString(3));
 			    sw.add(addr);
@@ -698,6 +771,331 @@ public class salemanDaoImpl implements salemanDao{
 			dbc.close();
 		}
 		return addr;
+	}
+
+	@Override
+	public List<cutnum> findcutnumPackid(String sql) {
+		List<cutnum> ct=new ArrayList<cutnum>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				cutnum a = new cutnum();
+				a.setCompany(rs.getString(1));
+				a.setProjectPackageName(rs.getString(2));
+				ct.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return ct;
+	}
+
+	@Override
+	public List<projectpackage> findContractionSide(String sql) {
+		List<projectpackage> p=new ArrayList<projectpackage>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				projectpackage a = new projectpackage();
+				a.setContractionSide(rs.getString(1));
+				p.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return p;
+	}
+
+	@Override
+	public List<cutnum> findcutnumPackidLin(String sql) {
+		List<cutnum> ct=new ArrayList<cutnum>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				cutnum a = new cutnum();
+				a.setCompany(rs.getString(1));
+				a.setProjectPackageName(rs.getString(2));
+				a.setCutaddress(rs.getString(3));
+				a.setCutvillage(rs.getString(4));
+				a.setQuartel(rs.getString(5));
+				a.setLargeblock(rs.getString(6));
+				a.setSmallblock(rs.getString(7));
+				ct.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return ct;
+	}
+
+	@Override
+	public int addProduceLaowu(Laowu cp) {
+		String sql="insert into Laowu_price values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		int res=0;
+		try {
+			res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getProjectPackageName(),cp.getForperson(),cp.getManageUnit(),cp.getFreightNum(),cp.getUnitfreight(),cp.getFreight(),
+					cp.getRemarks(),cp.getToprice(),cp.getPremiumNum(),cp.getUnitpremium(),cp.getPremium(),cp.getTaxationNum(),cp.getTaxation(),cp.getTotalAll(),
+					cp.getPerson(),cp.getCreatTime(),cp.getTreetype(),cp.getTvolume(),cp.getUnitprice(),cp.getprice()});
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
+	}
+	
+	@Override
+	public int addProduceTreesalary(Laowu cp) {
+		String sql="insert into produce_tree_salary values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		int res=0;
+		try {
+			res=dbc.doUpdate(sql, new Object[] {cp.getCutnum(),cp.getConsignee(),cp.getCompany(),cp.getYard(),cp.getContractnum(),cp.getSaleCalloutOrder(),cp.getTnum(),cp.getttvolume(),cp.getTprice(),
+					cp.getTworkid(),cp.getPerson(),cp.getTreetype(),cp.getTlong(),cp.getTradius(),cp.getNum(),cp.getTvolume(),cp.getUnitprice(),cp.getprice(),cp.getCreatTime(),});
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public List<Laowu> printTreeSalary(String sql) {
+		List<Laowu> l=new ArrayList<Laowu>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				Laowu a = new Laowu();
+				a.setCreatTime(rs.getTimestamp(1));
+				a.setProjectPackageName(rs.getString(2));
+				a.setCutnum(rs.getString(3));
+				a.setForperson(rs.getString(4));
+				a.setCompany(rs.getString(5));
+				a.setYard(rs.getString(6));
+				a.setTnum(rs.getString(7));
+				a.setTprice(rs.getDouble(8));
+				a.setTvolume(rs.getString(9));
+//				a.setTreetype(rs.getString(6));
+//				a.setTlong(rs.getString(7));
+//				a.setTradius(rs.getString(8));
+//				a.setNum(rs.getString(9));
+//				a.setTvolume(rs.getString(10));
+//				a.setUnitprice(rs.getDouble(11));
+//				a.setprice(rs.getDouble(12));
+				
+				l.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return l;
+	}
+
+	@Override
+	public List<cutnum> findById(String sql) {
+		List<cutnum> l=new ArrayList<cutnum>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				cutnum a = new cutnum();
+				a.setCutnumid(rs.getInt(1));
+				a.setCompany(rs.getString(2));
+				a.setCertificatenum(rs.getString(3));
+				a.setForestid(rs.getString(4));
+				a.setCutnum(rs.getString(5));
+				a.setCutaddress(rs.getString(6));
+				a.setCutvillage(rs.getString(7));
+				a.setQuartel(rs.getString(8));
+				a.setLargeblock(rs.getString(9));
+				a.setSmallblock(rs.getString(10));
+				a.setCuttype(rs.getString(11));
+				a.setCutmethod(rs.getString(12));
+				a.setCutqiang(rs.getString(13));
+				a.setCutarea(rs.getString(14));
+				a.setStarttime(rs.getDate(15));
+				a.setEndtime(rs.getDate(16));
+				l.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return l;
+	}
+
+	@Override
+	public List<salecontract> fincontractnum(String sql) {
+		List<salecontract> sm=new ArrayList<salecontract>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				salecontract ad= new salecontract();
+				ad.setTreetype(rs.getString(1));
+				ad.setTlong(rs.getString(2));
+				ad.setTradius(rs.getString(3));
+				ad.setDemander(rs.getString(4));
+				sm.add(ad);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return sm;
+	}
+
+	@Override
+	public List<treeoutSalary> findtreesalaOrder(String sql) {
+		List<treeoutSalary> sm=new ArrayList<treeoutSalary>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				treeoutSalary ad= new treeoutSalary();
+				ad.setSaleCalloutOrder(rs.getString(1));
+				ad.setContractnum(rs.getString(2));
+				ad.setDemander(rs.getString(3));
+				ad.setProvider(rs.getString(4));
+				ad.setYard(rs.getString(5));
+				sm.add(ad);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return sm;
+	}
+	@Override
+	public int addProduceTreeoutsalary(Laowu cp) {
+		String sql="insert into produce_treeout_salary values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		int res=0;
+		try {
+			res=dbc.doUpdate(sql, new Object[] {cp.getSaleCalloutOrder(),cp.getContractnum(),cp.getCutnum(),cp.getConsignee(),cp.getCompany(),cp.getYard(),cp.getTnum(),cp.getttvolume(),cp.getTprice(),
+					cp.getTworkid(),cp.getPerson(),cp.getTreetype(),cp.getTlong(),cp.getTradius(),cp.getNum(),cp.getTvolume(),cp.getUnitprice(),cp.getprice(),cp.getCreatTime(),});
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public List<Laowu> findtreeoutPridce(String sql) {
+		List<Laowu> l=new ArrayList<Laowu>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				Laowu a = new Laowu();
+				a.setContractnum(rs.getString(1));
+				a.setSaleCalloutOrder(rs.getString(2));
+				a.setConsignee(rs.getString(3));
+				a.setCompany(rs.getString(4));
+				a.setYard(rs.getString(5));
+				a.setTnum(rs.getString(6));
+				a.setTvolume(rs.getString(7));
+				a.setTprice(rs.getDouble(8));
+				a.setCreatTime(rs.getTimestamp(9));
+				l.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return l;
+	}
+
+	@Override
+	public List<Laowu> findtreeoutPridceDet(String sql) {
+		List<Laowu> l=new ArrayList<Laowu>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				Laowu a = new Laowu();
+				a.setSaleCalloutOrder(rs.getString(1));
+				a.setContractnum(rs.getString(2));
+				a.setCutnum(rs.getString(3));
+				a.setConsignee(rs.getString(4));
+				a.setCompany(rs.getString(5));
+				a.setYard(rs.getString(6));
+				a.setTnum(rs.getString(7));
+				a.setttvolume(rs.getDouble(8));
+				a.setTprice(rs.getDouble(9));
+				a.setTworkid(rs.getString(10));
+				a.setPerson(rs.getString(11));
+				a.setTreetype(rs.getString(12));
+				a.setTlong(rs.getString(13));
+				a.setTradius(rs.getString(14));
+				a.setNum(rs.getString(15));
+				a.setTvolume(rs.getString(16));
+				a.setUnitprice(rs.getDouble(17));
+				a.setprice(rs.getDouble(18));
+				a.setCreatTime(rs.getTimestamp(19));
+				l.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return l;
+	}
+
+	@Override
+	public List<Laowu> findProducePDet(String sql) {
+		List<Laowu> l=new ArrayList<Laowu>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				Laowu a = new Laowu();
+				a.setProjectPackageName(rs.getString(1));
+				a.setCutnum(rs.getString(2));
+				a.setConsignee(rs.getString(3));
+				a.setCompany(rs.getString(4));
+				a.setYard(rs.getString(5));
+				a.setContractnum(rs.getString(6));
+				a.setSaleCalloutOrder(rs.getString(7));
+				a.setTnum(rs.getString(8));
+				a.setttvolume(rs.getDouble(9));
+				a.setTprice(rs.getDouble(10));
+				a.setTworkid(rs.getString(11));
+				a.setPerson(rs.getString(12));
+				a.setTreetype(rs.getString(13));
+				a.setTlong(rs.getString(14));
+				a.setTradius(rs.getString(15));
+				a.setNum(rs.getString(16));
+				a.setTvolume(rs.getString(17));
+				a.setUnitprice(rs.getDouble(18));
+				a.setprice(rs.getDouble(19));
+				a.setCreatTime(rs.getTimestamp(20));
+				l.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			dbc.close();
+		}
+		return l;
 	}
 	
 

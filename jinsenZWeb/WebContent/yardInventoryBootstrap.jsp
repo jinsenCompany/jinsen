@@ -45,7 +45,7 @@
     	var now = new Date();
     	var year = now.getFullYear();
 
-    	for(var i = year; i > year -10 ; i --)
+    	for(var i = year; i > year -20 ; i --)
     	{
     		var str = '<option>'+i+'</option>';
     		

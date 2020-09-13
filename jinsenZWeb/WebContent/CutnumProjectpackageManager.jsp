@@ -62,7 +62,7 @@ td,th{text-align:center;vertical-align:middle}
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
 	font-size: 13px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
-	padding: 3px 22px; 	
+	padding: 3px 18px; 	
 	display: inline-block; 	vertical-align: middle; 	
 	font-weight: normal; 	border-radius: 3px; 	
 	margin: 0 8px 0 3px; 	
@@ -79,8 +79,13 @@ function addproject(){
 	var group=[];
 	//var projectPackageid=$("#projectPackageid").val();
 	var projectPackageid=document.getElementById("projectPackageid").value;
-	var projectPackagename=document.getElementById("projectPackagename").value;
-	var managerPhone=document.getElementById("managerPhone").value;
+	/*var projpackageStarttime=document.getElementById("projpackageStarttime").value;
+	var contractNum=document.getElementById("contractNum").value;
+	var contractionSide=document.getElementById("contractionSide").value;
+	var cuttime=document.getElementById("cuttime").value;
+	var forester=document.getElementById("forester").value;
+	var accessory=document.getElementById("accessory").value;*/
+	//alert(projectPackageid)
 	var str=$("#table1").bootstrapTable('getSelections');
 	if(str.length<1) {
 		alert("无选中记录！");
@@ -103,8 +108,6 @@ $.ajax({
         "action":"addproject",
         "project":mymap,
         "projectPackageid":projectPackageid,
-        "projectPackagename":projectPackagename,
-        "managerPhone":managerPhone
     },
     type: "POST",
     dataType:"html",
@@ -114,9 +117,11 @@ $.ajax({
     		{
     	        alert("添加成功！");
     	        $("#table1").bootstrapTable('refresh');
+    	        window.location.href = 'CutnumProjectpackage.jsp';
     		}
     	else{
     		 alert("添加失败");
+    		 window.location.href = 'CutnumProjectpackage.jsp';
     	}
     }
 })
@@ -133,6 +138,38 @@ function inputNull(form){
 		}
 	}
 	}
+function addprojectfile()
+{
+	//var formData = new FormData($('#myform'));
+	//formData.append('file', $('#file'));
+	//formData.append('cutnum', $('#cutnum'));
+	//alert(formData);
+    $.ajax({
+        url:"cutnumServlet?action=addprojectfile",
+        /*data:{
+            "action":"cutnumtreeAdd",
+            "newtree":mymap,
+            "id":kk,
+            "cutnum":cutnum 
+        },*/
+        type: "POST",
+        cache: false,
+        data: new FormData($('#myform')[0]), 
+        processData: false,
+        contentType: false,
+        dataType:"html",
+        success: function (data) {
+        	//alert(data);
+        	if(data>0)
+        		{
+        	        alert("上传文件成功！");
+        		}
+        	else{
+        		 alert("上传文件失败");
+        	}
+        }
+    })
+}
 </script>
 </head>
 <body>
@@ -177,36 +214,36 @@ function inputNull(form){
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
-  <ul>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="workpageAddManager.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
+   <ul>
+  	 <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="CutnumProjectpackageManager.jsp">创建工程包</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+         <li><a href="CutnumProjectpackageTableManager.jsp"><i class="label label-important"></i><span>工程包台账</span></a></li>
         <li><a href="cutareaAllotManager.jsp">伐区拨交</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
+       <ul>
+        <li><a href="workpageAddManager.jsp">输入工单</a></li>
+        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
       </ul>
      </li>
     <li> <a href="manageCutnumCheckManager.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
     <li><a href="productPriceManager.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTableManager.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
-     <ul>
-        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
-        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
-      </ul>
-     </li>
   </ul>
 </div>
 <!--sidebar-menu-->
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
@@ -216,17 +253,26 @@ function inputNull(form){
     </div>
     <div class="find-top1">
     <h1 class="book_h01" align="top">创建工程包</h1>
-    <form onSubmit="return inputNull(this)" action="cutnumServlet?action=addprojectid" method="POST">
     <div class="top" id="divprint">
+    <form id="myform" action="cutnumServlet?action=addprojectfile" method="POST" name="myform" enctype="multipart/form-data">
+    
     <p class="htv"><span>请输入工程包信息:</span></p>
     <br>
     <br>
     <br>
     <table style="margin:left">
        <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包创建时间:</td><td><input type="date" name="projpackageStarttime" id="projpackageStarttime"></td>
        <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包:</td><td><input type="text" name="projectPackageid" id="projectPackageid"></td>
-       <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包管理人员:</td><td><input type="text" name="projectPackagename" id="projectPackagename"></td>
-       <td>&nbsp;&nbsp;&nbsp;&nbsp;管理人员电话:</td><td><input type="text" name="managerPhone" id="managerPhone"></td>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;合同编号:</td><td><input type="text" name="contractNum" id="contractNum"></td>
+       </tr>
+       <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;施工方:</td><td><input type="text" name="contractionSide" id="contractionSide"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;采伐工期:</td><td><input type="text" name="cuttime" id="cuttime"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;伐区管理员:</td><td><input type="text" name="forester" id="forester"></td>   
+       </tr>
+       <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;上传合同:</td><td><input  type="file" name="accessory" ></td><td><input type="button"  class="btn" value="上传合同" onclick="addprojectfile()"></td>
        </tr>
     </table>
     <br>
@@ -236,18 +282,16 @@ function inputNull(form){
     <div class="table-con">
         <table id="table1" class="table-style"></table>
     </div>
-    
-    </div>
     </form> 
-   <div class="1" style="text-align:center">
+    <div class="1" style="text-align:center">
 
-		    <span  style="text-align: center;"><button style="width:160px" class="btn" onclick="addproject()" value="保存工程包">保存工程包</button></span>
+		    <span  style="text-align: center;"><button style="width:160px" class="btn"  onclick="addproject()" value="保存工程包">保存工程包</button></span>
 		    
 		 </div>
     <div style="clear: both;padding-bottom: 40px"></div>
-    
-
     </div>
+    </div>
+
 
 </main>
 </div>
@@ -324,20 +368,20 @@ $(function(){
                         align: 'center',
                         valign: 'middle'
                     },
-                    {
-                        title: "采伐证编号",
-                        field: 'cutnum',
-                        //width:'auto',
-                        align: 'center',
-                        valign: 'middle'
-                    },
-                    {
-                        title: '采法证号',
-                        field: 'certificatenum',
-                        width:'auto',
-                        align: 'center',
-                        valign: 'middle'
-                    },
+                	{
+                    title: "采伐证编号",
+                    field: 'cutnum',
+                    //width:'auto',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '采伐证号',
+                    field: 'certificatenum',
+                    width:'auto',
+                    align: 'center',
+                    valign: 'middle'
+                },
                 {
                     title: '采法许开始时间',
                     field: 'starttime',
@@ -353,7 +397,7 @@ $(function(){
                     valign: 'middle'
                 },
                 {
-                    title: '采伐公司',
+                    title: '林权单位',
                     field: 'company',
                     width:'200px',
                     align: 'center',
@@ -367,7 +411,7 @@ $(function(){
                     valign: 'middle'
                 },
                 {
-                    title: '采伐蓄积',
+                    title: '出材量',
                     field: 'volume',
                     //width:'40px',
                     align: 'center',

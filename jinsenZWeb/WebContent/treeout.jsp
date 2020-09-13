@@ -46,7 +46,7 @@
 .table1{margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 .btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
-	font-size: 13px!important; 	height: 30px; 	
+	font-size: 20px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
 	padding: 3px 18px; 	
 	display: inline-block; 	vertical-align: middle; 	
@@ -55,9 +55,10 @@
 	border: 1px solid #3383da; 	
 	color: #ffffff; 	
 	background-color: #3383da; 	
-	cursor: pointer; 
+	cursor: pointer;
+	width:120px;height:40px; 
 	}
-	.btna,.btnb,.btnc,.btnd{ 	
+.btna,.btnb,.btnc,.btnd,.btnred{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
 	font-size: 40px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
@@ -75,6 +76,7 @@
 .btnb {background-color: #F08080;}
 .btnc {background-color: #F4A460}
 .btnd {background-color: #CC99FF}
+.btnred {background-color: red;}
     </style>
 </head>
 <body>
@@ -231,6 +233,7 @@ function treeAdd()
 {
 	var map={};
 	var kk=Number(0),ki=Number(0);
+	var workid=$("#workid").val();
 	var yarddate=$("#yarddate").val();
 	var carnumber=$("#carnumber").val();
 	var surveyor=$("#surveyor").val();
@@ -291,6 +294,7 @@ function treeAdd()
             "action":"treeAddout",
             "newtree":mymap,
             "id":ki+kk,
+            "workid":workid,
            "yarddate":yarddate,
     	"carnumber":carnumber,
     	"surveyor":surveyor,
@@ -308,11 +312,11 @@ function treeAdd()
         	if(data>0)
         		{
         	        alert("添加成功！");
-        	        window.location.href = 'treeServlet?action=seetreeout&saleCalloutOrder='+saleCalloutOrder+'&yarddate='+yarddate+'';
+        	        window.location.href = 'treeServlet?action=seetreeout&saleCalloutOrder='+saleCalloutOrder+'&workid='+workid+'';
         		}
         	else {
         		alert("添加失败");
-        		window.location.href = 'treeoutCover.jsp';
+        		//window.location.href = 'treeoutCover.jsp';
         	}
         }
     })
@@ -377,8 +381,33 @@ if (document.getElementById){
  }
 }
 </script>
+<script type="text/javascript">
+    function funworkid(){
+    	var _name=document.getElementById('contractnum').value;
+    	 var workid = document.getElementById('workid');
+         var name=_name.substring(2,5);
+    	    var date = new Date();
+    	    var year = date.getFullYear();
+    	    var month = date.getMonth() + 1;
+    	    var strDate = date.getDate();
+            var day=date.getDate();
+            var hour=date.getHours();
+            var mini=date.getMinutes();
+            var second=date.getSeconds();
+    	    var seperator = "/";
+    	    if (month >= 1 && month <= 9) {
+    	        month = "0" + month;
+    	    }
+    	    if (strDate >= 0 && strDate <= 9) {
+    	        strDate = "0" + strDate;
+    	    }
+    	     var currentDate = name + month + strDate + hour + mini + second; //当前日期
+    	     workid.value = currentDate; //赋值给input.value
+    	     //workid.setAttribute('disabled', 'disabled'); //不可编辑
+    }
+    </script>
 </head>
-<body>
+<body onload="funworkid()">
 <% saleCalloutOrder s=(saleCalloutOrder)request.getAttribute("saleCalloutOrder");%>
 <% salecontract w=(salecontract)request.getAttribute("contractPrivoder");%>
 <% customer c=(customer)request.getAttribute("compShip");%>
@@ -426,12 +455,12 @@ String now = df.format(d); %>
     <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进仓木材数据</a></li>
         <li><a href="treeout.jsp">录入出仓木材数据</a></li>
       </ul>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>-->
-     <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进场木材数据</span></a></li>
+     <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
     <li class="active"><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
   </ul>
 </div>
@@ -446,23 +475,24 @@ String now = df.format(d); %>
             <h1 class="book_h01">录入出仓木材信息</h1>
             <form  onSubmit="return inputNull(this)" action="treeServlet?action=outyard" method="POST" >
                 <div class="top">
-                   <p class="table_p"><span>出场调令信息</span></p>
+                   <p class="table_p"><span>出仓调令信息</span></p>
                        <table class="table1" border="1">
     <tr>
-    <td style="width:200px">供货单位</td><td><input style="border:0;background-color: transparent" name="provider" id="provider" value="<%=w.getProvider() %>"></td>
-    <td>合同号</td><td><input style="border:0;background-color: transparent" name="contractnum" id="contractnum" value="<%=s.getContractnum() %>"></td>
-    <td style="width:100px">采伐证号</td><td><input  style="text-align:center" name="cutnum" id="cutnum"></td>
-    <td colspan="2">调运通知单号</td><td colspan="2"><input style="border:0;background-color: transparent" name="saleCalloutOrder" id="saleCalloutOrder" value="<%=s.getSaleCalloutOrder() %>"></td>
+    <td style="width:200px">供货单位</td><td><input readonly="readonly" style="border:0;background-color: transparent" name="provider" id="provider" value="<%=w.getProvider() %>"></td>
+    <td>合同号</td><td><input readonly="readonly" style="border:0;background-color: transparent" name="contractnum" id="contractnum" value="<%=s.getContractnum() %>"></td>
+    <td style="width:100px">采伐证号</td><td><input style="text-align:center" name="cutnum" id="cutnum"></td>
+    <td colspan="2">调运通知单号</td><td colspan="2"><input readonly="readonly" style="border:0;background-color: transparent" name="saleCalloutOrder" id="saleCalloutOrder" value="<%=s.getSaleCalloutOrder() %>"></td>
     </tr>
     <tr>
-    <td>收货单位</td><td><input style="border:0;background-color: transparent" name="company" id="company" value="<%=c.getCompany() %>"></td>
-    <td>检验地点(货场)</td><td><input style="border:0;background-color: transparent" name="yard" id="yard" value="<%=s.getYard() %>"><input style="width:50px;border:0;background-color: transparent" name="section" id="section" value="<%=s.getSection() %>"></td>
-    <td colspan="2">运输起讫</td><td colspan="4"><input style="border:0;background-color: transparent" name="shipaddress" id="shipaddress" value="<%=c.getShipaddress() %>"></td>
+    <td>收货单位</td><td><input readonly="readonly" style="border:0;background-color: transparent" name="company" id="company" value="<%=s.getDemander() %>"></td>
+    <td>检验地点(货场)</td><td><input readonly="readonly" style="border:0;background-color: transparent" name="yard" id="yard" value="<%=s.getYard() %>"><input style="width:50px;border:0;background-color: transparent" name="section" id="section" value="<%=s.getSection() %>"></td>
+    <td colspan="2">运输起讫</td><td colspan="4"><input readonly="readonly" style="border:0;background-color: transparent" name="shipaddress" id="shipaddress" value="<%=c.getShipaddress() %>"></td>
     </tr>
     <tr>
-    <td>有效时间</td><td colspan="3"><input style="border:0;background-color: transparent" name="callidtime" id="callidtime" value="<%=s.getCallidtime() %>"></td>
-    <td>车号</td><td colspan="2"><input name="carnumber" id="carnumber"></td>
-    <td>标品号</td><td colspan="2"><input style="border:0;background-color: transparent" name="marknumber" id="marknumber" value="<%=w.getMarknumber() %>"></td>
+    <td>有效时间</td><td colspan="1"><input readonly="readonly" style="border:0;background-color: transparent" name="callidtime" id="callidtime" value="<%=s.getCallidtime() %>"></td>
+    <td>销售码单号</td><td colspan="1"><input readonly="readonly" style="border:0;background-color: transparent" name="workid" id="workid"></td>
+    <td>车牌号</td><td colspan="2"><input name="carnumber" id="carnumber"></td>
+    <td>标品号</td><td colspan="2"><input readonly="readonly" style="border:0;background-color: transparent" name="marknumber" id="marknumber" value="<%=w.getMarknumber() %>"></td>
     </tr>
          </table>
        <p class="table_p"><span>树材信息录入</span></p>
@@ -471,7 +501,9 @@ String now = df.format(d); %>
                         <button  class="btnb" type="button"  value="松木" onclick="toggle('table6');"><span style="font-size:40px">松木</span></button>
                         <button  class="btnc" type="button"  value="杂木" onclick="toggle('table7');"><span style="font-size:40px">杂木</span></button>
                         <button  class="btnd" type="button"  value="其他木材" onclick="toggle('table8');"><span style="font-size:40px">其他木材</span></button>
+                        <button class="btnred" type="button"  onclick="deleteAll()" value="清空"><span style="font-size:40px">清空</span></button>
                         </div>
+                        <br>
                         <table class="table" id="table5" style="width:100%;height:auto;display: none">
                            <tbody id="ttt5">
                                 
@@ -481,7 +513,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加杉木">添加杉木</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                            <!-- <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button> -->
                             </div>
                             </td>
                             </tr>
@@ -495,7 +527,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad1()" value="添加松木">添加松木</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                            
                             </div>
                             </td>
                             </tr>
@@ -509,7 +541,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad2()" value="添加杂木">添加杂木</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                            
                             </div>
                             </td>
                             </tr>
@@ -523,7 +555,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad3()" value="添加木材">添加木材</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                            
                             </div>
                             </td>
                             </tr>
@@ -536,7 +568,7 @@ String now = df.format(d); %>
                                         <input type="text" style="width:200px; font-size:20px" name="toltree" id="toltree" onclick="makecount()">根(块、件)<span></span></td>
                                     <td style="font-size:20px">合计树材<span></span>
                                         <input type="text" style="width:200px; font-size:20px" name="tolstere" id="tolstere">立方米(吨、根)<span></span></td>
-                                     <td style="font-size:20px">出场时间<span></span><input style="width:200px; font-size:20px" name="yarddate" id="yarddate" value="<%=now%>"></td>
+                                     <td style="font-size:20px">出场时间<span></span><input readonly="readonly" style="width:200px; font-size:20px" name="yarddate" id="yarddate" value="<%=now%>"></td>
                                      <td style="font-size:20px">检尺员<span></span>
                                       <input type="text" style="width:200px; font-size:20px" name="surveyor" id="surveyor"><span></span></td>
                                 </tr>

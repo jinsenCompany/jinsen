@@ -71,7 +71,7 @@
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -86,8 +86,14 @@
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
-   <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+   <li>
+   <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+   </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -104,7 +110,9 @@
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
     <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>   
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
+    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>查看退证采伐证</span></a></li>
+    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>            
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   
@@ -216,7 +224,7 @@ function resetMenu() {
 <script src="js/bstable/js/bootstrap.min.js"></script>
 <script src="js/bstable/js/bootstrap-table.js"></script>
 <script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
-<script>
+<!--  <script>
     $(function(){
     	table1();
     })
@@ -309,7 +317,163 @@ function resetMenu() {
         ]
     });
     }
-</script>
+</script>-->
+<script>
+$(function(){
+	printCutnum();
+})
+    function printCutnum(){
+    	$('#table1').bootstrapTable('destroy');
+        $('#table1').bootstrapTable({
+            method: "post",
+            striped: true,
+            singleSelect: false,
+            url: "cutnumServlet?action=printCutnum",
+            //data:{},
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 15,
+            pageNumber: 1,
+            search:true, //显示搜索框
+            showColumns: true,                  //是否显示所有的列
+            //showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            showRefresh: true,                  //是否显示刷新按钮
+            contentType: "application/x-www-form-urlencoded",
+            exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
+            showExport: true,  //是否显示导出按钮    
+            buttonsAlign:"right",  //按钮位置    
+            exportTypes:['excel','xlsx','csv','pdf'],
+            exportOptions:{
+                // ignoreColumn: [0,1],  //忽略某一列的索引
+                fileName: "采伐证信息",  //文件名称设置
+                worksheetName: 'sheet1',  //表格工作区名称
+                tableName: "采伐证信息",
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
+            },
+            /*queryParams:function queryParams(params){
+                var temp = {
+						action:"printCutnum",
+						cutnum:document.getElementById("cutnum").value,
+				};     
+                return temp;
+            },*/
+            columns: [[
+            	{
+            		"title": "采伐证信息",
+                    "font-size":"100px",
+                    "halign":"center",
+                    "align":"center",
+                    "valign": "middle",
+                    "colspan": 13
+                }],
+                [
+                	{						
+ 						title: '序号',
+ 						width: 100,
+                        align: 'center',
+ 						formatter: function (value, row, index) {
+ 							return index+1;
+ 						}
+ 	                },//该列显示序号，分页不是从1开始
+                	{
+                        title: '林权单位',
+                        field: 'company',
+                        width: 180,
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: '采伐证号',
+                        width: 180,
+
+                        field: 'certificatenum',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: '采伐证编号',
+                        width: 180,
+
+                        field: 'cutnum',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                	
+                	
+                {
+                    title: '乡镇',
+                    field: 'cutaddress',
+                    width: 180,
+
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '村',
+                    field: 'cutvillage',
+                    width: 180,
+
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '林班',
+                    width: 180,
+
+                    field: 'quartel',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '大班',
+                    width: 180,
+
+                    field: 'largeblock',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: "小班",
+                    width: 180,
+
+                    field: 'smallblock',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '出材量',
+                    width: 180,
+
+                    field: 'volume',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '创建时间',
+                    width: 180,
+                    field: 'creatcutDate',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '查看',
+                    field: 'opr',
+                    width: 100,
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="cutnumServlet?action=watch&cutnum=\''+ row.cutnum + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                        return  d;
+                    }
+                },
+                ],
+            ]
+        });
+    }
+
+    </script>
  <script type="text/javascript">
         $(function(){
         	

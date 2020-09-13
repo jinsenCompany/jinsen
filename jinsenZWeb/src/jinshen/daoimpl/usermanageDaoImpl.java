@@ -419,17 +419,18 @@ public class usermanageDaoImpl implements usermanageDao
 			//System.out.println("333");
 			while(rs.next())
 			{
-				//System.out.println("sss");
-//				s.setStaff_id(rs.getString("staff_id"));
+				System.out.println("sss");
+//				/*s.setStaff_id(rs.getString("staff_id"));
 //            	s.setStaff_name(rs.getString("staff_name"));
 //            	s.setPassword(rs.getString("password"));
 //            	s.setCreatetime(rs.getDate("createtime"));
-//            	s.setBackups(rs.getString("backups"));
+//            	s.setBackups(rs.getString("backups"));*/
+				s.setStaff_name(rs.getString("staff_name"));
             	s.setPower_type(rs.getString("power_type"));
-//            	s.setIs_delete(rs.getInt("is_delete"));
-//            	s.setIs_lock(rs.getInt("is_lock"));
+//            	//s.setIs_delete(rs.getInt("is_delete"));
+//            	//s.setIs_lock(rs.getInt("is_lock"));
             	s.setLogintime(rs.getTimestamp("logintime"));
-//            	s.setExittime(rs.getDate("exittime"));
+//            	//s.setExittime(rs.getDate("exittime"));
             	
             	System.out.println("kkk"+s.getPower_type());
 			}

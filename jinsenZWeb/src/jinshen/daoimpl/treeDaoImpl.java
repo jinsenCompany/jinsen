@@ -50,10 +50,10 @@ public class treeDaoImpl implements treeDao {
 
 	@Override
 	public int addTree(tree c) {
-		String sql="insert into tree values(?,?,?,?,?,?,?,?)";
+		String sql="insert into tree values(?,?,?,?,?,?,?,?,?)";
 		int res=0;
 		try {
-			res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getTreetype(),c.getTlong(),c.getTradius(),c.getNum(),c.getTvolume(),c.getUnitprice(),c.getTotalnum()});
+			res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getTreetype(),c.getTlong(),c.getTradius(),c.getNum(),c.getTvolume(),c.getUnitprice(),c.getTotalnum(),c.getTreeid()});
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -157,10 +157,10 @@ public class treeDaoImpl implements treeDao {
 	
 	@Override
 	public int addTreeout(tree c) {
-		String sql="insert into treeout values(?,?,?,?,?,?,?,?)";
+		String sql="insert into treeout values(?,?,?,?,?,?,?,?,?)";
 		int res=0;
 		try {
-			res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getTreetype(),c.getTlong(),c.getTradius(),c.getNum(),c.getTvolume(),c.getUnitprice(),c.getTotalnum()});
+			res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getTreetype(),c.getTlong(),c.getTradius(),c.getNum(),c.getTvolume(),c.getUnitprice(),c.getTotalnum(),c.getTreeid()});
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -286,7 +286,7 @@ public class treeDaoImpl implements treeDao {
 			if(rs.next()) {
 				addr.setWorkid(rs.getDouble(1));
 				addr.setCutNum(rs.getString(2));
-				addr.setYarddate(rs.getDate(3));
+				addr.setYarddate(rs.getTimestamp(3));
 				addr.setCutSite(rs.getString(4));
 				addr.setCarNumber(rs.getString(5));
 				addr.setYard(rs.getString(6));
@@ -638,6 +638,60 @@ public class treeDaoImpl implements treeDao {
 					dbc.close();
 				}
 				return addr;
+			}
+
+			@Override
+			public List<outyard> findtreeoutCode(String sql) {
+				List<outyard> addrList=new ArrayList<outyard>();
+				try {
+					ResultSet rs=dbc.doQuery(sql, new Object[] {});
+					while(rs.next()) {
+						outyard a=new outyard();
+						a.setYarddate(rs.getTimestamp(1));
+						a.setWorkid(rs.getDouble(2));
+						a.setProvider(rs.getString(3));
+						a.setDemander(rs.getString(4));
+						a.setContractnum(rs.getString(5));
+						a.setSaleCalloutorderid(rs.getString(6));
+						a.setYard(rs.getString(7));
+						a.setToltree(rs.getDouble(8));
+						a.setTolstere(rs.getDouble(9));
+						addrList.add(a);
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+				}finally {
+					dbc.close();
+				}
+				return addrList;
+			}
+
+			@Override
+			public int addTreeoutStatus(outyard c) {
+				String sql="insert into treeout_status values(?,?)";
+				int res=0;
+				try {
+					res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getOutStatus()});
+				}catch(Exception e) {
+					e.printStackTrace();
+				}finally {
+					dbc.close();
+				}
+				return res;
+			}
+
+			@Override
+			public int updateTreeoutStatus(outyard cp, double workid) {
+				int res=0;
+				try {
+					String sql="update treeout_status set outStatus=? where workid='"+workid+"'";
+					res=dbc.doUpdate(sql, new Object[] {cp.getOutStatus()});
+				}catch(Exception e) {
+					e.printStackTrace();
+				}finally {
+					dbc.close();
+				}
+				return res;
 			}
 
 

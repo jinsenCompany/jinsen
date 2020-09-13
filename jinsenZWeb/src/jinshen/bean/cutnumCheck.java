@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class cutnumCheck {
 	private double cutnumid;
-	private int status;
+	private String status;
 	private double cutnumVolume;
 	private String cutnum;
 	private String certificatenum;
 	private double number;
 	private String company;
-	private String cutsite;
+	private String cutaddess;
 	private String sizhi;
 	private String gpsinfo;
 	private String treeorigin;
@@ -48,10 +48,10 @@ public class cutnumCheck {
 	public void setCutnumid(double cutnumid) {
 		this.cutnumid = cutnumid;
 	}
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public double getCutnumVolume() {
@@ -83,12 +83,6 @@ public class cutnumCheck {
 	}
 	public void setCompany(String company) {
 		this.company=company;
-	}
-	public String getcutsite() {
-		return cutsite;
-	}
-	public void setcutsite(String cutsite) {
-		this.cutsite=cutsite;
 	}
 	public String getSizhi() {
 		return sizhi;
@@ -260,6 +254,12 @@ public class cutnumCheck {
 	}
 	public void setCheckfileT(String checkfileT) {
 		this.checkfileT = checkfileT;
+	}
+	public String getCutaddess() {
+		return cutaddess;
+	}
+	public void setCutaddess(String cutaddess) {
+		this.cutaddess = cutaddess;
 	}
 	
     

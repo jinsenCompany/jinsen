@@ -1,6 +1,7 @@
 package jinshen.bean;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -53,7 +54,7 @@ public class managesdatecard {//木材生产施工方管理资料卡
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getBorndate() {
 		return borndate;
 	}
@@ -144,7 +145,7 @@ public class managesdatecard {//木材生产施工方管理资料卡
 	public void setAreapiece(int areapiece) {
 		this.areapiece = areapiece;
 	}
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getSigningtime() {
 		return signingtime;
 	}

@@ -19,30 +19,6 @@
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-<script src="js/excanvas.min.js"></script> 
-<script src="js/jquery.min.js"></script> 
-<script src="js/jquery.ui.custom.js"></script> 
-<script src="js/bootstrap.min.js"></script> 
-<script src="js/jquery.flot.min.js"></script> 
-<script src="js/jquery.flot.resize.min.js"></script> 
-<script src="js/jquery.peity.min.js"></script> 
-<script src="js/fullcalendar.min.js"></script> 
-<script src="js/matrix.js"></script> 
-<script src="js/matrix.dashboard.js"></script> 
-<script src="js/jquery.gritter.min.js"></script> 
-<script src="js/matrix.interface.js"></script> 
-<script src="js/matrix.chat.js"></script> 
-<script src="js/jquery.validate.js"></script> 
-<script src="js/matrix.form_validation.js"></script> 
-<script src="js/jquery.wizard.js"></script> 
-<script src="js/jquery.uniform.js"></script> 
-<script src="js/select2.min.js"></script> 
-<script src="js/matrix.popover.js"></script> 
-<script src="js/jquery.dataTables.min.js"></script> 
-<script src="js/matrix.tables.js"></script>
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/jQuery.print.js"></script>
-<script src="js/jquery.PrintArea.js" type="text/JavaScript"></script>
     <style>
 #h li{float: left; }
 #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
@@ -77,7 +53,7 @@
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -92,7 +68,13 @@
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li><%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+ </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -109,9 +91,10 @@
     <li> <a href="#"><i class="icon icon-home"></i><span>结算其他费用</span></a></li>
   </ul>-->
   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">1</span></a>
+  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="salaryContract.jsp">创建合同</a></li>
+        <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
@@ -120,19 +103,34 @@
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li><a href="saleCalloutOrder.jsp"><i class="icon icon-home"></i><span>录入销售调令</span></a>
-    <li><a href="saleCalloutOrdersee.jsp"><i class="icon icon-th-list"></i> <span>查看调令材料</span></a></li>
-    <li><a href="saleCalloutOrderShenheModer.jsp"><i class="icon icon-th-list"></i> <span>查看调令审核</span></a></li>
-     <li><a href="outyardCostS.jsp"><i class="icon icon-home"></i><span>结算检尺费</span></a></li>
-    <li><a href="salaryContractList.jsp"><i class="icon icon-home"></i> <span>合同进度</span></a></li>
-    <li><a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
+     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
+        <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
+        <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <ul>
+        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+        <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
+        <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
+      </ul>
+     </li>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
+        <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
+      </ul>
+     </li>
   </ul>
 </div>
 <!--sidebar-menu-->
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
   </div>
 <!--End-breadcrumbs-->
 
@@ -269,7 +267,7 @@
     }
 
     </script>
-  <script src="js/jquery.js"></script>
+<script src="js/jquery.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <script src="js/bstable/js/bootstrap.min.js"></script>
 <script src="js/bstable/js/bootstrap-table.js"></script>
@@ -281,5 +279,16 @@
 <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
 <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
 <script src="js/matrix.js"></script> 
-<script src="js/matrix.dashboard.js"></script>   
+<script src="js/matrix.dashboard.js"></script> 
+<script src="js/jquery.gritter.min.js"></script> 
+<script src="js/matrix.interface.js"></script> 
+<script src="js/matrix.chat.js"></script> 
+<script src="js/jquery.validate.js"></script> 
+<script src="js/matrix.form_validation.js"></script> 
+<script src="js/jquery.wizard.js"></script> 
+<script src="js/jquery.uniform.js"></script> 
+<script src="js/select2.min.js"></script> 
+<script src="js/matrix.popover.js"></script> 
+<script src="js/jquery.dataTables.min.js"></script> 
+<script src="js/matrix.tables.js"></script>  
 </html>

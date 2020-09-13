@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ page import="jinshen.bean.*"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.sql.Statement"%>
+<%@ page import="java.sql.PreparedStatement"%>
+<%@ page import="java.sql.ResultSet"%>
+<%@ page import="java.sql.Connection"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -36,7 +43,7 @@ pageEncoding="UTF-8"%>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -51,8 +58,14 @@ pageEncoding="UTF-8"%>
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
-    <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -65,37 +78,37 @@ pageEncoding="UTF-8"%>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>管理部门</span> <span class="label label-important">3</span></a>
+  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>管理部门</span> <span class="label label-important">1</span></a>
        <ul>
         <li><a href="managerP.jsp">管理部操作员</a></li>
-        <li><a href="managePassis.jsp">管理部副经理</a></li>
-        <li><a href="managePdirector.jsp">管理部经理</a></li>
+        <!--  <li><a href="managePassis.jsp">管理部副经理</a></li>
+        <li><a href="managePdirector.jsp">管理部经理</a></li>-->
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产系统</span> <span class="label label-important">3</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产系统</span> <span class="label label-important">1</span></a>
        <ul>
-        <li><a href="forestManager.jsp">生产部副经理</a></li>
-        <li><a href="forestP.jsp">伐区管理员</a></li>
-        <li><a href="planteam.jsp">规划队</a></li>
+        <!--<li><a href="forestManager.jsp">生产部副经理</a></li>-->
+        <li><a href="forestP.jsp">生产部操作员</a></li>
+        <!--  <li><a href="planteam.jsp">规划队</a></li>-->
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>销售系统</span> <span class="label label-important">5</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>销售系统</span> <span class="label label-important">1</span></a>
        <ul>
         <li><a href="salaryper.jsp">销售部门操作员</a></li>
-        <li><a href="salesdirector.jsp">销售经理</a></li>
+        <!--  <li><a href="salesdirector.jsp">销售经理</a></li>
         <li><a href="salesmanOne.jsp">销售合同操作员</a></li>
         <li><a href="salesmanTwo.jsp">销售调令操作员</a></li>
-        <li><a href="salesmanThree.jsp">销售结算操作员</a></li>
+        <li><a href="salesmanThree.jsp">销售结算操作员</a></li>-->
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场管理系统</span> <span class="label label-important">6</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场管理系统</span> <span class="label label-important">2</span></a>
       <ul>
-        <li><a href="yardmanager.jsp">货场管理员</a></li>
+        <!--  <li><a href="yardmanager.jsp">货场管理员</a></li>-->
         <li><a href="yardDirector.jsp">货场经理</a></li>
         <li><a href="Surveyor.jsp">检尺中心</a></li>
-        <li><a href="yardstaffA.jsp">货场制表员A</a></li>
+        <!--<li><a href="yardstaffA.jsp">货场制表员A</a></li>
         <li><a href="yardstaffB.jsp">货场制表员B</a></li>
-        <li><a href="yardstaffC.jsp">货场制表员C</a></li>
+        <li><a href="yardstaffC.jsp">货场制表员C</a></li>-->
       </ul>
     </li>
     <li><a href="infoCenter.jsp"><i class="icon icon-tint"></i> <span>信息中心</span></a></li>
@@ -123,10 +136,10 @@ pageEncoding="UTF-8"%>
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
         <li class="bg_lb"> <a href="managerP.jsp"> <i class="icon-dashboard"></i>管理系统 </a> </li>
-        <li class="bg_lg span3"> <a href="forestP.jsp"><i class="icon-signal"></i> <span>产销系统</span> <span class="label label-important">2</span></a></li>
-        <li class="bg_ly"> <a href="salaryper.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span> 销售管理系统 </a> </li>
-        <li class="bg_lo"> <a href="planteam.jsp"> <i class="icon-th"></i>规划队</a> </li>
-        <li class="bg_ls"> <a href="Surveyor.jsp"> <i class="icon-fullscreen"></i> <span class="label label-important">3</span>伐区管理系统</a> </li>
+        <li class="bg_lg span3"> <a href="forestP.jsp"><i class="icon-signal"></i> <span>生产管理</span></a></li>
+        <li class="bg_ly"> <a href="salaryper.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span>销售管理 </a> </li>
+        <!--<li class="bg_lo"> <a href="planteam.jsp"> <i class="icon-th"></i>规划队</a> </li>-->
+        <li class="bg_ls span3"> <a href="Surveyor.jsp"> <i class="icon-fullscreen"></i> <span class="label label-important"></span>检尺员</a> </li>
         <li class="bg_lo span3"> <a href="infoCenter.jsp"> <i class="icon-th-list"></i> 信息中心</a> </li>
         <li class="bg_ls"> <a href="treeoutTable.jsp"> <i class="icon-tint"></i>木材销售报表</a> </li>
         <li class="bg_lb"> <a href="managerindex.jsp"> <i class="icon-pencil"></i>人员信息管理</a> </li>

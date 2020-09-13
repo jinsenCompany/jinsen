@@ -1,4 +1,9 @@
 package jinshen.bean;
+
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 //砍伐木材进场表格
 public class producetree {
 	private double workid;
@@ -18,6 +23,8 @@ public class producetree {
 	private String surveyor;
 	private String forester;
 	private String woodmanage;
+	
+	private Date cutdate;
    
 	public double getWorkid() {
 		return workid;
@@ -126,6 +133,13 @@ public class producetree {
 	}
 	public void setDayt(double dayt) {
 		this.dayt = dayt;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	public Date getCutdate() {
+		return cutdate;
+	}
+	public void setCutdate(Date cutdate) {
+		this.cutdate = cutdate;
 	}
     
 

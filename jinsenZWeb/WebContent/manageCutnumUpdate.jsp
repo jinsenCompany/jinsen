@@ -159,8 +159,10 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>   
+    <li><a href="manageCutnum.jsp"><i class="icon icon-inbox"></i><span>录入采伐证材料</span></a></li>
+    <li class="active"><a href="manageCutnumsee.jsp"><i class="icon icon-th"></i><span>查看采伐证材料</span></a></li>
+    <li><a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>查看退证采伐证</span></a></li>
+    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>    
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   
@@ -195,50 +197,50 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
 			<caption class="book_h01">查看采伐证材料详情</caption>
 			<tr>
 				<td >林权单位</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 230px;" type="text" id="company" name="company" value="<%=c.getCompany()%>"/></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;text-align:center;width: 230px;" type="text" id="company" name="company" value="<%=c.getCompany()%>"/></td>
 				<td>采伐证号</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="<%=c.getCertificatenum()%>"/></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;text-align:center;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="<%=c.getCertificatenum()%>"/></td>
 			</tr>
 			<tr>
 			 <td>林权证号</td>
-			 <td colspan="2"><input  style="border:0px;background-color: transparent;width: 400px;" type="text" id="forestid" name="forestid" value="<%=c.getForestid()%>"></td>
+			 <td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;width: 400px;" type="text" id="forestid" name="forestid" value="<%=c.getForestid()%>"></td>
 			 <td>采伐证编号</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutnum" name="cutnum" value="<%=c.getCutnum()%>"></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutnum" name="cutnum" value="<%=c.getCutnum()%>"></td>
 			</tr>
 			<tr>
 				<td>采伐地点</td>
 				<td colspan="5" >
-				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="cutaddress" name="cutaddress" value="<%=c.getCutaddress()%>">乡镇，     
-				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="cutvillage" name="cutvillage" value="<%=c.getCutvillage()%>">村，
-				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="quartel" name="quartel" value="<%=c.getQuartel()%>">林班，
-				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="largeblock" name="largeblock" value="<%=c.getLargeblock()%>">大班，
-				<input  style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="smallblock" name="smallblock" value="<%=c.getSmallblock()%>">小班
+				<input readonly="readonly" style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="cutaddress" name="cutaddress" value="<%=c.getCutaddress()%>">乡镇，     
+				<input readonly="readonly" style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="cutvillage" name="cutvillage" value="<%=c.getCutvillage()%>">村，
+				<input readonly="readonly" style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="quartel" name="quartel" value="<%=c.getQuartel()%>">林班，
+				<input readonly="readonly" style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="largeblock" name="largeblock" value="<%=c.getLargeblock()%>">大班，
+				<input readonly="readonly" style="border:0px;text-align:right;background-color: transparent;width: 150px;" type="text" id="smallblock" name="smallblock" value="<%=c.getSmallblock()%>">小班
 				</td>
 			</tr>	
 			<tr>
 				<td>采伐类型</td>
-				<td colspan="2"><input style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cuttype" id="cuttype" value="<%=c.getCuttype()%>"></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cuttype" id="cuttype" value="<%=c.getCuttype()%>"></td>
 				<td>采伐方式</td>
-				<td colspan="2"><input style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cutmethod" id="cutmethod" value="<%=c.getCutmethod()%>"> </td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cutmethod" id="cutmethod" value="<%=c.getCutmethod()%>"> </td>
 			</tr>
 			<tr>
 			    <td>采伐强度(%)</td>
-				<td colspan="2"><input style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutqiang" name="cutqiang" value="<%=c.getCutqiang() %>"></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutqiang" name="cutqiang" value="<%=c.getCutqiang() %>"></td>
 				<td>采伐面积(公顷)</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;"type="text" id="cutarea" name="cutarea" value="<%=c.getCutarea()%>"></td>		   
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;width: 300px;"type="text" id="cutarea" name="cutarea" value="<%=c.getCutarea()%>"></td>		   
 			</tr>
 			
 			<tr>
 				<td>采伐开始时间</td>
-				<td colspan="2"><input style="width: 300px;" type="date" name="starttime" id="starttime" value="<%=c.getStarttime()%>"></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;width: 300px;" type="text" name="starttime" id="starttime" value="<%=c.getStarttime()%>"></td>
 				<td >采伐截止时间</td>
-				<td colspan="2"><input style="width: 300px;" type="date" name="endtime" id="endtime" value="<%=c.getEndtime()%>"></td>
+				<td colspan="2"><input readonly="readonly" style="border:0px;background-color: transparent;width: 300px;" type="text" name="endtime" id="endtime" value="<%=c.getEndtime()%>"></td>
 			</tr>	
 		    <tr>
 				<td>下载附件:</td>
 				<!-- <td id="b"><input class="filepath" onchange="changepic(this)"
 				type="file" id="cutnumfile" name="cutnumfile"></td>-->
-				<td>${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
+				<td colspan="5">${cutnumfile}<a href="DownfileServlet?action=cutnumfile&filename=<%=c.getCutnumfile() %>">下载</a></td>
 			</tr> 
 			</table>
 			
@@ -263,7 +265,7 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
 		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='sizewood' id='size<%=i%>' value="${b.getSizewood()}"></td>
 		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='smalltimber' id='small<%=i%>' value="${b.getSmalltimber()}"></td>
 		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='shorttimber' id='short<%=i%>' value="${b.getShorttimber()}"></td>
-		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='firewood' id='fire<%=i%>' value="${b.getFirewood()}"></td></tr>
+		     <td><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type='text' name='firewood' id='fire<%=i%>' value="${b.getFirewood()}"></td>
 		     </tr>     
         <%i++; %>
              </c:forEach>
@@ -280,8 +282,9 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
 		  <br>
 				</div>
 				<div style="text-align:center">
-				<!-- 	<button class="btn" type="submit" id="mybutton" value="更新工单">更新工单</button> -->
-					<button class="btn" type="button" id="btnPrint" value="打印">打印</button>
+				<!--  <button class="btn" type="submit" id="mybutton" value="更新采伐证">更新采伐证</button>
+				<button class="but_save" type="button" value="返回" onclick="javascrtpt:window.location.href='manageCutnumsee.jsp'">返回采伐证信息列表</button>-->
+				<button class="btn" type="button" id="btnPrint" value="打印">打印</button>
 				</div>
 				
 				<div style="clear: both; padding-bottom: 40px"></div>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>审核采伐材料</title>
+<title>工程包审核</title>
 <link rel="stylesheet" href="css/tableall.css"/>
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -76,7 +76,7 @@
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -91,7 +91,15 @@
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <%--  <li><%String staff_id = request.getSession().getAttribute("staff_id").toString();%>您好，<%=staff_id %>欢迎登录</li>--%>
+   <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -104,40 +112,72 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="workpageAddManager.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
+  	 <!-- <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="CutnumProjectpackageManager.jsp">创建工程包</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+         <li><a href="CutnumProjectpackageTableManager.jsp"><i class="label label-important"></i><span>工程包台账</span></a></li>
         <li><a href="cutareaAllotManager.jsp">伐区拨交</a></li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheckManager.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li><a href="productPriceManager.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTableManager.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
-     <ul>
-        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
-        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
+       <ul>
+        <li><a href="workpageAddManager.jsp">输入工单</a></li>
+        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
       </ul>
      </li>
+    <li> <a href="manageCutnumCheckManager.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li><a href="productPriceManager.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li> -->
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+       <ul>
+      
+        <li><a href="workpageAdd.jsp">野账录入</a></li>
+        <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+      </ul>
+     </li>
+    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+       <ul>
+        <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
+        <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
+      </ul>
+     </li>
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>         
   </ul>
 </div>
 <!--sidebar-menu-->
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="forestManager.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+    <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
 <div class="find-top">
-     <p class="p-tail"><i class="i-tail"></i> 该页面是采伐证材料审核查看修改界面</p>
+     <p class="p-tail"><i class="i-tail"></i> 该页面是工程包审核界面</p>
 </div>
  <div class="table-con">
         <table id="table1" class="table-style"></table>
@@ -174,30 +214,56 @@
                     "halign":"center",
                     "align":"center",
                     "valign": "middle",
-                    "colspan": 5
+                    "colspan": 10
                 }],
                 [
                 	{
                         checkbox: "true",
                         field: 'check',
+                        width:200,
                         align: 'center',
                         valign: 'middle'
                     },
-                	{
-                    title: "工程包",
-                    field: 'projectPackageid',
+                    {
+                        title: "工程包名称",
+                        field: 'projectPackageName',
+                        width:200,
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: "工程包创建时间",
+                        field: 'projpackageStarttime',
+                        width:200,
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                	
+                {
+                    title: '合同编号',
+                    field: 'contractNum',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '管理人员姓名',
-                    field: 'projectPackagename',
+                    title: '施工方',
+                    field: 'contractionSide',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '管理人员电话',
-                    field: 'managerPhone',
+                    title: '采伐工期',
+                    field: 'cuttime',
+                    width:200,
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '伐区管理员',
+                    field: 'forester',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
@@ -208,7 +274,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="cutnumServlet?action=watchpackage&projectPackageid=\''+ row.projectPackageid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="cutnumServlet?action=watchpackage&projectPackageName=\''+ row.projectPackageName + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
                         return  d;
                     }
                 },

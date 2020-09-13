@@ -39,7 +39,7 @@
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 <style>
-.table1{width:80%; height:500px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+.table1{width:80%; height:auto;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 .table2{width:80%; height:auto;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 .table1 input{vertical-align:middle;margin-top:10px;border:0px;background-color: transparent}
 .table1 td,th{text-align:center;vertical-align:middle;margin-top:10px;}
@@ -118,7 +118,7 @@ function cutnumtreeAdd()
     	    group[5]=document.getElementById("fire"+id+"").value;
     	    if(group[0]==""|| group[1]==""|| group[2]=="" || group[3]==""|| group[4]==""|| group[5]=="")
     	    	{
-    	    	//alert("请将信息填写完整！");
+    	    	alert("请将信息填写完整！");
     	    	}
     	    else{
                map[id-1]=group;
@@ -177,10 +177,12 @@ function addcutnum()
         	//alert(data);
         	if(data>0)
         		{
-        	        alert("上传文件成功！");
+        	        alert("保存成功！");
+        	        window.location.href = 'manageCutnum.jsp';
         		}
         	else{
-        		 alert("上传文件失败");
+        		 alert("保存失败");
+        		 //window.location.href = 'manageCutnum.jsp';
         	}
         }
     })
@@ -266,7 +268,7 @@ window.onload = function () {
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -281,7 +283,14 @@ window.onload = function () {
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+  <li>
+  <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+  </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -297,8 +306,10 @@ window.onload = function () {
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>   
+    <li  class="active"> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
+    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i> <span>查看退证采伐证</span></a></li>
+    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>         
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   
@@ -333,11 +344,11 @@ window.onload = function () {
 					<option>万森林业采育有限公司</option>
 					</select></td>
 				<td>采伐证号</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="将国采字[   ]  号" /></td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="将政林证字()第  号" /></td>
 			</tr>
 			<tr>
 			 <td>林权证号</td>
-			 <td colspan="2"><input  style="border:0px;background-color: transparent;width: 400px;" type="text" id="forestid" name="forestid" value="将政林证字（）第  号" /></td>
+			 <td colspan="2"><input  style="border:0px;background-color: transparent;width: 400px;" type="text" id="forestid" name="forestid" value="闽（）将乐县不动产权第（）号" /></td>
 			 <td>采伐证编号</td>
 				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutnum" name="cutnum" value="闽" /></td>
 			</tr>
@@ -365,8 +376,12 @@ window.onload = function () {
 				<td colspan="2"><select style="border:0px;background-color: transparent;text-align:center;width: 230px;" name="cutmethod" id="cutmethod"> 
 					<option>--请选择采伐方式--</option>
 					<option>择伐</option>
-					<option>间伐</option> 
-					<option>皆伐</option> 
+					<option>皆伐</option>
+					<option>渐伐</option> 
+					<option>透光伐</option> 
+					<option>疏伐</option> 
+					<option>生长伐</option>
+					<option>卫生伐</option>    
 				</select></td>
 			</tr>
 			
@@ -398,48 +413,48 @@ window.onload = function () {
 		    </tr>
 		    <tr id="1">
 		    <th><input style="border:0px;background-color: transparent" type="text" name="treetype" id='tree1'  value="杉木"></th>
-		    <td><input style="border:0px;background-color: transparent" type="text" name="total" id='tot1'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewood" id='size1'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimber" id='small1'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimber" id='short1' oninput='total1()' onclick='locationInput'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewood" id='fire1'></td>
+		    <td><input style="border:0px;background-color: transparent" type="text" name="total" id='tot1' readonly="readonly" value=0 ></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewood" id='size1' oninput='sizeTall()&total1()&tvolume()' onclick='locationInput'  value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimber" id='small1' oninput='smallTall()&total1()&tvolume()' onclick='locationInput'   value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimber" id='short1' oninput='shortTall()&total1()&tvolume()' onclick='locationInput'  value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewood" id='fire1' oninput='fireTall()' onclick='locationInput'  value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
 		    </tr>
 		    <tr id="2">
 		    <th><input style="border:0px;background-color: transparent"  type="text" name="treetype" id='tree2'  value="松木"></th>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="total" id='tot2'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewood" id='size2'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimber" id='small2'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimber" id='short2' oninput='total2()' onclick='locationInput'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewood" id='fire2'></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="total" id='tot2' readonly="readonly" value=0></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewood" id='size2' oninput='sizeTall()&total2()&tvolume()' onclick='locationInput'  value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimber" id='small2' oninput='smallTall()&total2()&tvolume()' onclick='locationInput'  value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimber" id='short2' oninput='shortTall()&total2()&tvolume()' onclick='locationInput'  value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewood" id='fire2'oninput='fireTall()' onclick='locationInput'   value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
 		    </tr>
 		    <tr id="3">
 		    <th><input style="border:0px;background-color: transparent"  type="text" name="treetype" id='tree3'  value="阔叶林"></th>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="total" id='tot3'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewood" id='size3' oninput='sizeTall()' onclick='locationInput'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimber" id='small3' oninput='smallTall()' onclick='locationInput'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimber" id='short3' oninput='total3()' onclick='locationInput'></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewood" id='fire3' oninput='fireTall()' onclick='locationInput'></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="total" id='tot3' readonly="readonly"value=0></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewood" id='size3' oninput='sizeTall()&total3()&tvolume()' onclick='locationInput'onclick='locationInput' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimber" id='small3' oninput='smallTall()&total3()&tvolume()' onclick='locationInput' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimber" id='short3' oninput='shortTall()&total3()&tvolume()' onclick='locationInput' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewood" id='fire3' oninput='fireTall()' onclick='locationInput' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" /></td>
 		    </tr>
 		    <tr>   <!--，此行为出材量、总计 -->
 		    <th><input style="border:0px;background-color: transparent"  type="text" name="chucai" id='chucai' value="合计(出材量)"></th>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="volume" id='volume' onclick="tvolume()"></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewoodAll" id='size4' onclick="sizeTall()"></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimberAll" id='small4' onclick="sizeTall()"></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimberAll" id='short4' onclick="shortTall()"></td>
-		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewoodAll" id='fire4' onclick="fireTall()"></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="volume" id='volume' onclick="tvolume()" readonly="readonly" value=0></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="sizewoodAll" id='size4' onclick="sizeTall()" readonly="readonly" value=0></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="smalltimberAll" id='small4' onclick="sizeTall()" readonly="readonly" value=0></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="shorttimberAll" id='short4' onclick="shortTall()" readonly="readonly" value=0></td>
+		    <td><input style="border:0px;background-color: transparent"  type="text" name="firewoodAll" id='fire4' onclick="fireTall()" readonly="readonly" value=0></td>
 		    </tr>
 		    <tr>
 		   <td >上传附件</td>
-		  <td colspan="3" ><input style="width: 900px;" class="filepath"  type="file" multiple="multiple" id="cutnumfile" name="cutnumfile"></td>
+		  <td colspan="5" ><input style="width: 900px;" class="filepath"  type="file" multiple="multiple" id="cutnumfile" name="cutnumfile"></td>
 		  <!--  <td colspan="2"><button class="btn" type="submit" id="mybutton" value="上传附件">上传附件</button></td>-->
-		  <td colspan="2"><button class="btn" type="button" onclick="addcutnum()" value="上传附件">上传附件</button></td>
+		  <!--  <td colspan="2"><button class="btn" type="button" onclick="addcutnum()" value="上传附件">上传附件</button></td>-->
 		   </tr>
 		</table>
 		</div>
 		<br>
     <div class="1" style="text-align:center">
-		    <button style="width:200px" class="btn" type="button" onclick="cutnumtreeAdd()" value="保存采伐证材料">保存采伐证材料</button>
-		     <span><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
+		    <button style="width:200px" class="btn" type="button" onclick="addcutnum()" value="保存采伐证材料">保存采伐证材料</button>
+		     <!--  <span><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> -->
 		 </div>
                 <div style="clear: both;padding-bottom: 40px"></div>
     </form>

@@ -93,7 +93,7 @@ public class salaryServlet extends HttpServlet {
         		sql="select s.provider,s.demander,o.contractnum,o.sale_callout_orderid,o.yard,o.yarddate,o.carNumber,o.surveyor from outyard o join sale_contract s on o.contractnum=s.contractnum where workid="+workid+"";
         		list =sd.findSaleList(sql);
         		System.out.println("...." + list + "...");
-        		sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from treeout a join outyard b on a.workid=b.workid where b.workid="+workid+" group by treetype";
+        		sql="select treetype,tlong,tradius,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from treeout a join outyard b on a.workid=b.workid where b.workid="+workid+" group by treetype,tlong,tradius,unitprice";
         		List<worktree> worktree=sd.findworktree(sql);
         		map.put("salesman", list);
         		map.put("tree", worktree);
@@ -110,7 +110,8 @@ public class salaryServlet extends HttpServlet {
             	list.add(s);            	
             	//str+=each;
             	//str+=")";
-            	sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from treeout a join outyard b on a.workid=b.workid where b.workid="+workid+" group by treetype";
+            	//sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from treeout a join outyard b on a.workid=b.workid where b.workid="+workid+" group by treetype,unitprice";
+            	sql="select treetype,tlong,tradius,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from treeout a join outyard b on a.workid=b.workid where b.workid="+workid+" group by treetype,tlong,tradius,unitprice";
             	List<worktree> worktree=sd.findworktree(sql);
             	map.put("salesman", list);
         		map.put("tree", worktree);
@@ -133,10 +134,10 @@ public class salaryServlet extends HttpServlet {
         	int flag=sd.addWork(cp);
         		out.print("flag"); 
         }*/
-        //保存销售treePrice.jsp页面数据到数据库saleman中
+        //保存销售treeSalaryYezhang.jsp页面数据到数据库saleman中
         else if(action.equals("savesaleman")) {
         	String rebate = request.getParameter("newtree");
-        	System.out.println("...." + rebate + "...");
+        	//System.out.println("...." + rebate + "...");
         	int id=Integer.parseInt(request.getParameter("id"));
         	JSONObject jb = JSONObject.fromObject(rebate);            	
         	double workid=Double.parseDouble(request.getParameter("workid"));
@@ -251,13 +252,13 @@ public class salaryServlet extends HttpServlet {
     		sql="select count(*) from inyard where cutnum="+cutnum+"";
     		int flag=sd.findMaxid(sql);
     		if(flag>0) {
-    			sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum="+cutnum+" group by treetype";
+    			sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum="+cutnum+" group by treetype,unitprice";
         		List<worktree> worktree=sd.findworktree(sql);
         		map.put("tree", worktree);
         		mapper.writeValue(response.getWriter(), map);
     		}
     		else {
-    			sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum="+cutnum+" group by treetype";
+    			sql="select treetype,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum="+cutnum+" group by treetype,unitprice";
         		List<worktree> worktree=sd.findworktree(sql);
         		map.put("tree", worktree);
         		mapper.writeValue(response.getWriter(), map);
@@ -270,17 +271,20 @@ public class salaryServlet extends HttpServlet {
         	System.out.println("...." + id + "...");
         	JSONObject jb = JSONObject.fromObject(rebate);            	
         	String cutnum=request.getParameter("cutnum");
-        	double projectPackageid=Double.parseDouble(request.getParameter("projectPackageid"));
+        	String projectPackageName=request.getParameter("projectPackageName");
         	String person=request.getParameter("person");
         	String forperson=request.getParameter("forperson");
         	String manageUnit=request.getParameter("manageUnit");
         	double ttvolume=Double.parseDouble(request.getParameter("ttvolume"));
         	double tprice=Double.parseDouble(request.getParameter("tprice"));
+        	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String createtime = format1.format(new Date());
+			Timestamp Time = Timestamp.valueOf(createtime);//创建时间
         	for(int i=0;i<id;i++) {
         		JSONArray s=jb.getJSONArray(String.valueOf(i));
         		Laowu cp = new Laowu();
             	cp.setCutnum(cutnum);
-            	cp.setProjectPackageid(projectPackageid);
+            	cp.setProjectPackageName(projectPackageName);
             	cp.setForperson(forperson);
             	cp.setManageUnit(manageUnit);
             	cp.setTreetype(s.getString(0));
@@ -288,8 +292,62 @@ public class salaryServlet extends HttpServlet {
             	cp.setprice(Double.parseDouble(s.getString(2)));
             	cp.setPerson(person);
             	cp.setttvolume(ttvolume);
-            	cp.settprice(tprice);
+            	cp.setTprice(tprice);
+            	cp.setCreatTime(Time);
             	int flag=sd.addProduce(cp);
+            	out.print(flag);
+        	}
+        }
+        //
+        else if(action.equals("saveLaowuAll")) {
+        	String rebate = request.getParameter("newtree");
+        	int id=Integer.parseInt(request.getParameter("id"));
+        	System.out.println("...." + id + "...");
+        	JSONObject jb = JSONObject.fromObject(rebate);            	
+        	String cutnum=request.getParameter("cutnum");
+        	String projectPackageName=request.getParameter("projectPackageName");
+        	String person=request.getParameter("person");
+        	String forperson=request.getParameter("forperson");
+        	String manageUnit=request.getParameter("manageUnit");
+        	String remarks=request.getParameter("remarks");
+        	String freightNum=request.getParameter("freightNum");
+        	String unitfreight=request.getParameter("unitfreight");
+        	String freight=request.getParameter("freight");
+        	String toprice=request.getParameter("toprice");
+        	String premiumNum=request.getParameter("premiumNum");
+        	String unitpremium=request.getParameter("unitpremium");
+        	String premium=request.getParameter("premium");
+        	String taxationNum=request.getParameter("taxationNum");
+        	String taxation=request.getParameter("taxation");
+        	String totalAll=request.getParameter("totalAll");
+        	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String createtime = format1.format(new Date());
+			Timestamp Time = Timestamp.valueOf(createtime);//创建时间
+        	for(int i=0;i<id;i++) {
+        		JSONArray s=jb.getJSONArray(String.valueOf(i));
+        		Laowu cp = new Laowu();
+            	cp.setCutnum(cutnum);
+            	cp.setProjectPackageName(projectPackageName);
+            	cp.setForperson(forperson);
+            	cp.setManageUnit(manageUnit);
+            	cp.setFreightNum(freightNum);
+            	cp.setUnitfreight(unitfreight);
+            	cp.setFreight(freight);
+            	cp.setRemarks(remarks);
+            	cp.setToprice(toprice);
+            	cp.setPremiumNum(premiumNum);
+            	cp.setUnitpremium(unitpremium);
+            	cp.setPremium(premium);
+            	cp.setTaxationNum(taxationNum);
+            	cp.setTaxation(taxation);
+            	cp.setTotalAll(totalAll);
+            	cp.setPerson(person);
+            	cp.setCreatTime(Time);
+            	cp.setTreetype(s.getString(0));
+            	cp.setTvolume(s.getString(1));
+            	cp.setUnitprice(Double.parseDouble(s.getString(2)));
+            	cp.setprice(Double.parseDouble(s.getString(3)));
+            	int flag=sd.addProduceLaowu(cp);
             	out.print(flag);
         	}
         }
@@ -304,7 +362,7 @@ public class salaryServlet extends HttpServlet {
         	JSONArray json=JSONArray.fromObject(mygroup); 
         	if(flag>0 && json.length()==0)
         	{
-        		sql="select c.proj_package_id,m.ownername,c.company from cutnum c JOIN managesdatecard m on c.cutnum=m.cutnum WHERE c.cutnum='"+cutnum+"'";
+        		sql="select c.proj_package_Name,m.ownername,c.company from cutnum c JOIN managesdatecard m on c.cutnum=m.cutnum WHERE c.cutnum='"+cutnum+"'";
         		List<singleworkid> project=sd.findProjectp(sql);//显示工程包信息
         		sql="select a.workid from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by workid";
         		list=sd.findworkid(sql);
@@ -331,6 +389,199 @@ public class salaryServlet extends HttpServlet {
         		mapper.writeValue(response.getWriter(), map);
         	}
         }
+        //生产工资以及其他劳务结算
+        else if(action.equals("savew1")) {
+        	String cutnum=request.getParameter("cutnum");
+        	String timeStart=request.getParameter("timeStart");
+        	String timeEnd=request.getParameter("timeEnd");
+        	//System.out.print(timeStart);
+        	Map map=new HashMap();
+        	sql="SELECT company,proj_package_Name from cutnum WHERE cutnum='"+cutnum+"'";
+        	List<cutnum> cutCompack=sd.findcutnumPackid(sql);
+        	//sql="select (case treetype WHEN '杉木' THEN '生产工资(衫杂木)' WHEN '杂木' then '生产工资(衫杂木)' WHEN '松木'  THEN '生产工资(松木)' WHEN '杉薪材' then '生产工资薪材' WHEN '松薪材' then '生产工资薪材' WHEN '杂薪材' THEN  '生产工资薪材' else '其他' END) as treetype1,sum(tvolume) as tvolume,unitprice,(sum(tvolume)*unitprice) as totalprice from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"'  GROUP BY treetype1,unitprice";
+        	sql="select (case treetype WHEN '杉木' THEN '生产工资(衫杂木)' WHEN '杂木' then '生产工资(衫杂木)' WHEN '松木'  THEN '生产工资(松木)' WHEN '杉薪材' then '生产工资薪材' WHEN '松薪材' then '生产工资薪材' WHEN '杂薪材' THEN  '生产工资薪材' else '其他' END) as treetype1,sum(DISTINCT tvolume) as tvolume,unitprice,(sum(DISTINCT tvolume)*unitprice) as totalprice from tree a join inyard b join workpage w\r\n" + 
+        			" on a.workid=b.workid and b.workid=w.workid where b.cutNum='"+cutnum+"' and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"'   GROUP BY treetype1,unitprice";
+        	List<worktree> worktree=sd.findworktreeSum(sql);
+        	//int projpackageid=cutCompack.get(0).getProjectid();
+        	for(int i=0;i<cutCompack.size();i++)
+        	{
+        		String propackName=cutCompack.get(i).getProjectPackageName();
+        		//int projpackageid=cutCompack.get(i).getProjectid();
+        		//sql="SELECT contractionSide FROM proj_package WHERE proj_package_id='"+projpackageid+"'";
+            	sql="SELECT contractionSide FROM proj_package WHERE proj_package_Name='"+propackName+"'";
+        		List<projectpackage> contractionSide=sd.findContractionSide(sql);
+            		map.put("cutCompack", cutCompack);
+            		map.put("contractionSide", contractionSide);
+            		map.put("worktree", worktree);
+            		mapper.writeValue(response.getWriter(), map);
+        	}
+        	
+        }
+        //生产工资结算
+        else if(action.equals("savew2")) {
+        	String cutnum=request.getParameter("cutnum");
+        	String timeStart=request.getParameter("timeStart");
+        	String timeEnd=request.getParameter("timeEnd");
+        	Map map=new HashMap();
+    		/*List<singleworkid> list=new ArrayList<singleworkid>();
+    		sql="select count(*) from inyard where cutnum='"+cutnum+"'";
+    		int flag=sd.findMaxid(sql);
+    		String mygroup = request.getParameter("mygroup");
+        	JSONArray json=JSONArray.fromObject(mygroup); */
+        	sql="SELECT company,proj_package_Name,cutaddress,cutvillage,quartel,largeblock,smallblock from cutnum WHERE cutnum='"+cutnum+"'";
+        	List<cutnum> cutCompack=sd.findcutnumPackidLin(sql);
+        	//int projpackageid=cutCompack.get(0).getProjectid();
+        	
+    		//sql="select a.workid from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by workid";
+    		sql="select a.workid from tree a join inyard b join workpage w\r\n" + 
+    				"on a.workid=b.workid and b.workid=w.workid where b.cutNum='"+cutnum+"'and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"' group by workid";
+        	List<singleworkid> workid=sd.findworkid(sql);//显示工程包信息
+    		//sql="select treetype,tlong,tradius,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by treetype,tlong,tradius,unitprice";
+    		sql="select treetype,tlong,tradius,sum(DISTINCT tvolume) as total,unitprice,(sum(DISTINCT tvolume)*unitprice) as totalprice  from tree a join inyard b join workpage w\r\n" + 
+    				"on a.workid=b.workid and b.workid=w.workid where b.cutNum='"+cutnum+"' and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"' group by treetype,tlong,tradius,unitprice";
+        	//sql="select workid,treetype,tlong,(case  WHEN  tradius>0 and tradius<3 THEN '1-2' WHEN  tradius>=3 and tradius<8 THEN '3-7' WHEN tradius>=8 and tradius<10 THEN '8-9'  WHEN tradius>=10 and tradius<13 THEN '10-12' WHEN tradius>=14 and tradius<19 THEN '14-18' WHEN tradius>=20 and tradius<25 THEN '20-24' else '26以上' END) as tradius1,sum(num),sum(tvolume) from tree GROUP BY treetype,tradius1";//按径级分类
+    		List<worktree> worktree=sd.findworktree(sql);
+        	for(int i=0;i<cutCompack.size();i++)
+        	{
+        		String projpackageName=cutCompack.get(i).getProjectPackageName();
+        		sql="SELECT contractionSide FROM proj_package WHERE proj_package_Name='"+projpackageName+"'";
+            	List<projectpackage> contractionSide=sd.findContractionSide(sql);
+            		map.put("cutCompack", cutCompack);
+            		map.put("contractionSide", contractionSide);
+            		map.put("workid", workid);
+            		map.put("worktree",worktree);
+            		mapper.writeValue(response.getWriter(), map);
+        	}
+        	
+        }
+      //生产工资按照径级结算
+        else if(action.equals("savew23")) {
+        	String cutnum=request.getParameter("cutnum");
+        	String timeStart=request.getParameter("timeStart");
+        	String timeEnd=request.getParameter("timeEnd");
+        	Map map=new HashMap();
+    		/*List<singleworkid> list=new ArrayList<singleworkid>();
+    		sql="select count(*) from inyard where cutnum='"+cutnum+"'";
+    		int flag=sd.findMaxid(sql);
+    		String mygroup = request.getParameter("mygroup");
+        	JSONArray json=JSONArray.fromObject(mygroup); */
+        	sql="SELECT company,proj_package_Name,cutaddress,cutvillage,quartel,largeblock,smallblock from cutnum WHERE cutnum='"+cutnum+"'";
+        	List<cutnum> cutCompack=sd.findcutnumPackidLin(sql);
+        	//int projpackageid=cutCompack.get(0).getProjectid();
+        	
+    		//sql="select a.workid from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by workid";
+        	sql="select a.workid from tree a join inyard b join workpage w\r\n" + 
+    				"on a.workid=b.workid and b.workid=w.workid where b.cutNum='"+cutnum+"'and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"' group by workid";
+        	List<singleworkid> workid=sd.findworkid(sql);//显示工程包信息
+    		//sql="select treetype,tlong,tradius,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by treetype,tradius";
+    		sql="select (case WHEN treeid='1' THEN '杉小径' WHEN treeid='2' THEN '杉原木' WHEN treeid='3' THEN '松小径' WHEN treeid='4' THEN '松原木' WHEN treeid='5' THEN '杂小径' WHEN treeid='6' THEN '杂原木' else treetype END) as treetype1,\r\n" + 
+    				"tlong,(case  WHEN  tradius>0 and tradius<3 THEN '1-2' WHEN  tradius>=3 and tradius<8 THEN '3-7' WHEN tradius>=8 and tradius<10 THEN '8-9'  WHEN tradius>=10 and tradius<13 THEN '10-12' WHEN tradius>=14 and tradius<19 THEN '14-18' WHEN tradius>=20 and tradius<25 THEN '20-24' else '26以上' END) as tradius1,sum(DISTINCT tvolume) as ttvolume,"
+    				+ "unitprice,(sum(DISTINCT tvolume)*unitprice) as totalprice  from tree a join inyard b join workpage w\r\n" + 
+    				"    				on a.workid=b.workid and b.workid=w.workid where b.cutNum='"+cutnum+"' and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"' GROUP BY treetype1,tlong,tradius1,unitprice";//按径级分类
+    		List<worktree> worktree=sd.findworktree(sql);
+        	for(int i=0;i<cutCompack.size();i++)
+        	{
+        		String projpackageName=cutCompack.get(i).getProjectPackageName();
+        		sql="SELECT contractionSide FROM proj_package WHERE proj_package_Name='"+projpackageName+"'";
+            	List<projectpackage> contractionSide=sd.findContractionSide(sql);
+            		map.put("cutCompack", cutCompack);
+            		map.put("contractionSide", contractionSide);
+            		map.put("workid", workid);
+            		map.put("worktree",worktree);
+            		mapper.writeValue(response.getWriter(), map);
+        	}
+        	
+        }
+        //生产部门木材销售结算单
+        else if(action.equals("fiTreeSalary")) {
+        	String cutnum=request.getParameter("cutnum");
+        	String timeStart=request.getParameter("timeStart");
+        	String timeEnd=request.getParameter("timeEnd");
+        	Map map=new HashMap();
+        	sql="SELECT company,proj_package_Name,cutaddress,cutvillage,quartel,largeblock,smallblock from cutnum WHERE cutnum='"+cutnum+"'";
+        	List<cutnum> cutCompack=sd.findcutnumPackidLin(sql);
+    		sql="select a.workid,b.yard from tree a join inyard b join workpage w join workpage_status s\r\n" + 
+    				"on a.workid=b.workid and b.workid=w.workid and w.workid=s.workid where b.cutNum='"+cutnum+"' and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"' and s.workid_status<23 group by workid";
+    		List<singleworkid> workid=sd.findworkidYard(sql);//显示工程包信息
+    		//sql="select treetype,tlong,tradius,num,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by treetype,tradius";
+    		sql="select (case WHEN treeid='1' THEN '杉小径' WHEN treeid='2' THEN '杉原木' WHEN treeid='3' THEN '松小径' WHEN treeid='4' THEN '松原木' WHEN treeid='5' THEN '杂小径' WHEN treeid='6' THEN '杂原木' else treetype END) as treetype1,\r\n" + 
+    				"tlong,(case  WHEN  tradius>0 and tradius<3 THEN '1-2' WHEN  tradius>=3 and tradius<8 THEN '3-7' WHEN tradius>=8 and tradius<10 THEN '8-9'  WHEN tradius>=10 and tradius<13 THEN '10-12' WHEN tradius>=14 and tradius<19 THEN '14-18' WHEN tradius>=20 and tradius<25 THEN '20-24' else '26以上' END) as tradius1,sum(DISTINCT num) as tnum,sum(DISTINCT tvolume) as ttvolume,unitprice,(sum(DISTINCT tvolume)*unitprice) as totalprice  from tree a join inyard b join workpage w join workpage_status s\r\n" + 
+    				"on a.workid=b.workid and b.workid=w.workid and w.workid=s.workid where b.cutNum='"+cutnum+"' and w.cutdate>='"+timeStart+"' and w.cutdate<='"+timeEnd+"' and s.workid_status<23 GROUP BY treetype1,tlong,tradius1,unitprice";
+    		List<worktree> worktree=sd.findworktreeSalary(sql);
+            		map.put("cutCompack", cutCompack);
+            		map.put("workid", workid);
+            		map.put("worktree",worktree);
+            		mapper.writeValue(response.getWriter(), map);
+        }
+        //生产部门=保存木材销售结算单
+        else if(action.equals("saveTreePrice")) {
+        	String rebate = request.getParameter("newtree");
+        	int id=Integer.parseInt(request.getParameter("id"));
+        	JSONObject jb = JSONObject.fromObject(rebate); 
+        	String cutnum=request.getParameter("cutnum");
+        	String consignee = request.getParameter("consignee");
+        	String company = request.getParameter("company");
+        	String yard = request.getParameter("yard");
+        	String contractnum=request.getParameter("contractnum");
+        	String saleCalloutOrder=request.getParameter("saleCalloutOrder");
+        	String person=request.getParameter("person");
+        	String tnum = request.getParameter("tnum");
+        	double  ttvolume=Double.parseDouble(request.getParameter("ttvolume"));
+        	double  tprice=Double.parseDouble(request.getParameter("tprice"));
+        	String tworkid = request.getParameter("tworkid");
+        	String[] sw = tworkid.split(",");
+        	int wlen=sw.length;
+        	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String createtime = format1.format(new Date());
+			Timestamp Time = Timestamp.valueOf(createtime);//创建时间
+			int flag=0;
+			for(int i=0;i<id;i++) {
+        		JSONArray s=jb.getJSONArray(String.valueOf(i));
+        		Laowu cp = new Laowu();
+        		cp.setCutnum(cutnum);
+        		cp.setConsignee(consignee);
+        		cp.setCompany(company);
+        		cp.setYard(yard);
+        		cp.setContractnum(contractnum);
+        		cp.setSaleCalloutOrder(saleCalloutOrder);
+        		cp.setTnum(tnum);
+        		cp.setttvolume(ttvolume);
+        		cp.setTprice(tprice);
+        		cp.setTworkid(tworkid);
+        		cp.setPerson(person);
+        		cp.setTreetype(s.getString(0));
+        		cp.setTlong(s.getString(1));
+        		cp.setTradius(s.getString(2));
+        		cp.setNum(s.getString(3));
+        		cp.setTvolume(s.getString(4));
+        		cp.setUnitprice(s.getDouble(5));
+        		cp.setprice(s.getDouble(6));
+        		cp.setCreatTime(Time);
+        		flag=sd.addProduceTreesalary(cp);
+            	//out.print(flag);
+			}
+			if(flag>0) {
+				workpageStatus w=new workpageStatus();
+				for(int j=0;j<wlen;j++) {
+					String workid1=sw[j];
+					double workid=Double.parseDouble(workid1);
+					w.setWorkidstatus(23);//生产部结算木材销售单
+					int flagw=wpd.updateWorkpagestatus(workid, w);
+					out.print(flagw);
+				}
+			}
+			else {
+				out.print(flag);
+			}
+        }
+        //打印木材销售结算台账
+        else if("printTreesalary".equals(action)) {
+        	//sql="SELECT c.proj_package_Name,p.cutnum,r.contractionSide,p.company,p.yard,p.treetype,p.tlong,p.tradius,p.tnum,p.tvolume,p.unitprice,p.price,p.creatTime from produce_tree_salary as p join cutnum as c join proj_package as r on p.cutnum=c.cutnum and r.proj_package_Name=c.proj_package_Name";
+        	sql="SELECT p.creatTime,c.proj_package_Name,p.cutnum,r.contractionSide,p.company,p.yard,p.tnum,p.tprice,p.tvolume from produce_tree_salary as p join cutnum as c join proj_package as r on p.cutnum=c.cutnum and r.proj_package_Name=c.proj_package_Name GROUP BY p.creatTime,c.proj_package_Name,p.cutnum,r.contractionSide,p.company,p.yard,p.tnum,p.tprice,p.tvolume ORDER BY p.creatTime DESC,c.proj_package_Name";
+        	List<Laowu> ct=sd.printTreeSalary(sql);
+        	mapper.writeValue(response.getWriter(),ct);
+        }
+        
         //保存销售合同
         else if("addcontract".equals(action)) {
         	String contractnum=request.getParameter("contractnum");
@@ -529,7 +780,7 @@ public class salaryServlet extends HttpServlet {
     					// 解决普通输入项的数据的中文乱码问题
     					String value = item.getString("UTF-8");
     					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
-    					//System.out.println(name + "=" + value);
+    					System.out.println(name + "=" + value);
     				} else {// 如果fileitem中封装的是上传文件
     						// 得到上传的文件名称，
     					String filename = item.getName();
@@ -580,11 +831,17 @@ public class salaryServlet extends HttpServlet {
             salecontract idd=sd.findsalecontractid(sql);
             int contractid=idd.getContractid();
             int flags=0;
+            //System.out.print(trad);
             for (int i=0;i<Tret.size();i++) {
             	 sc.setContractid(contractid);
                 sc.setTreetype(Tret.get(i));
                 sc.setTlong(tl.get(i));
-                sc.setTradius(trad.get(i));
+                if(trad.get(i).isEmpty()) {
+                	sc.setTradius("");
+                }
+                else {
+                	sc.setTradius(trad.get(i));
+                }
                 sc.setUnitprice(unitp.get(i));
                 flags=sd.addContractTree(sc);
 			}
@@ -606,7 +863,7 @@ public class salaryServlet extends HttpServlet {
         	salecontract salecontract=sd.findcontract(sql);
         	String contractfile=salecontract.getContractfile();
         	contractfile = contractfile.substring(contractfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
-        	sql="SELECT treetype,tlong,tradius,unitprice from sale_contract_tree WHERE sale_contract_id="+number+"";
+        	sql="SELECT treetype,tlong,tradius,unitprice from sale_contract_tree WHERE sale_contract_id="+number+" and unitprice <> 0";
         	List<salecontract> salecontractTree=sd.fincontractTree(sql);
         	sql="SELECT sum(o.tolstere) as tolstere,s.treenumber from outyard as o join sale_contract as s on o.contractnum=s.contractnum WHERE s.sale_contract_id="+number+"";
         	contractProgress contractProgress=sd.findconProgress(sql);
@@ -644,13 +901,13 @@ public class salaryServlet extends HttpServlet {
         	request.getRequestDispatcher("salaryContractUpdate.jsp").forward(request, response);
         }
         //暂时没用
-        else if("treeAdd".equals(action)) {
+        else if("treeAddcon".equals(action)) {
         	String rebate = request.getParameter("newtree");
         	int id=Integer.parseInt(request.getParameter("id"));
         	JSONObject jb = JSONObject.fromObject(rebate);
         	String contractnum = request.getParameter("contractnum");
         	double treenumber=Double.parseDouble(request.getParameter("treenumber"));
-        	sql="select sale_contract_id from sale_contract WHERE contractnum like '%"+contractnum+"%' and treenumber="+treenumber+"";
+        	sql="select sale_contract_id from sale_contract WHERE contractnum='"+contractnum+"' and treenumber='"+treenumber+"'";
             salecontract cid=sd.findsalecontractid(sql);//获取合同单号
             int contractid=cid.getContractid();
         	for(int i=0;i<id;i++)
@@ -678,7 +935,7 @@ public class salaryServlet extends HttpServlet {
     	    String section = request.getParameter("section");//去掉票据
     	    String paymentamount = request.getParameter("Paymentamount");//货款金额
     	    String signer = request.getParameter("Signer");
-    	    int totalnum = Integer.parseInt(request.getParameter("totalnum"));
+    	    String totalnum = request.getParameter("totalnum");
     	    String callidtime = request.getParameter("callidtime");//调运时间
     	    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     	    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -746,18 +1003,19 @@ public class salaryServlet extends HttpServlet {
         }
         //第一次审核调令
         else if("salecallupdate".equals(action)) {
-        	String str=request.getParameter("saleCallid");
+        	String str=request.getParameter("saleCalloutOrder");
         	str=str.replace("'", "");
-        	double number=Double.parseDouble(str);
-        	//System.out.println("...."+number + "...");
-        	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime,creattime from sale_callout_orderid WHERE sale_order_id="+number+"";
+        	sql="SELECT  sale_order_id from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
+	    	saleCalloutOrder fsd=sd.findsaleorderid(sql);//调令号
+            int saleCallid=fsd.getSaleCallid();
+        	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime,creattime from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
         	saleCalloutOrder saleCalloutOrder=sd.findsaleorder(sql);
         	Date sss=saleCalloutOrder.getCallidtime();
         	String yardname=saleCalloutOrder.getYard();
         	sql="select yardmanager from yardmanage WHERE yardname='"+yardname+"'";
         	yardManage ya=wpd.findyardmanager(sql);//管理人员姓名
         	String yardmanager=ya.getYardmanager();
-        	sql="SELECT treetype,tlong,tradius from sale_callout_orderid_tree WHERE sale_order_id="+number+"";
+        	sql="SELECT treetype,tlong,tradius from sale_callout_orderid_tree WHERE sale_order_id="+saleCallid+"";
         	List<saleCalloutOrder> saleOrdertree=sd.findsaletree(sql);
         	System.out.print(sss);
         	sql="SELECT * from surveyor_info";
@@ -770,20 +1028,23 @@ public class salaryServlet extends HttpServlet {
         }
       //已完成调令
         else if("salecallupdateM".equals(action)) {
-        	String str=request.getParameter("saleCallid");
+        	String str=request.getParameter("saleCalloutOrder");
         	str=str.replace("'", "");
-        	double number=Double.parseDouble(str);
-        	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime,creattime from sale_callout_orderid WHERE sale_order_id="+number+"";
+        	//double number=Double.parseDouble(str);
+        	sql="SELECT  sale_order_id from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
+	    	saleCalloutOrder fsd=sd.findsaleorderid(sql);//调令号
+            int saleCallid=fsd.getSaleCallid();
+        	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime,creattime from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
         	saleCalloutOrder saleCalloutOrder=sd.findsaleorder(sql);
         	Date sss=saleCalloutOrder.getCallidtime();
         	String yardname=saleCalloutOrder.getYard();
         	sql="select yardmanager from yardmanage WHERE yardname='"+yardname+"'";
         	yardManage ya=wpd.findyardmanager(sql);//管理人员姓名
         	String yardmanager=ya.getYardmanager();
-        	sql="SELECT treetype,tlong,tradius from sale_callout_orderid_tree WHERE sale_order_id="+number+"";
+        	sql="SELECT treetype,tlong,tradius from sale_callout_orderid_tree WHERE sale_order_id="+saleCallid+"";
         	List<saleCalloutOrder> saleOrdertree=sd.findsaletree(sql);
         	System.out.print(sss);
-        	sql="SELECT * from sale_callout_orderid_surveyor";
+        	sql="SELECT * from sale_callout_orderid_surveyor WHERE sale_order_id="+saleCallid+"";
     		List<surveyor> surv=wpd.findSurveyor(sql);
     		request.setAttribute("surveyor", surv);
         	request.setAttribute("saleCalloutOrder", saleCalloutOrder);
@@ -793,13 +1054,15 @@ public class salaryServlet extends HttpServlet {
         }
       //修改调令
         else if("salecallupdateF".equals(action)) {
-        	String str=request.getParameter("saleCallid");
+        	String str=request.getParameter("saleCalloutOrder");
         	str=str.replace("'", "");
-        	double number=Double.parseDouble(str);
-        	//System.out.println("...."+number + "...");
-        	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime from sale_callout_orderid WHERE sale_order_id="+number+"";
+        	//double number=Double.parseDouble(str);
+        	sql="SELECT  sale_order_id from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
+	    	saleCalloutOrder fsd=sd.findsaleorderid(sql);//调令号
+            int saleCallid=fsd.getSaleCallid();
+        	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime from sale_callout_orderid WHERE sale_order_id="+str+"";
         	saleCalloutOrder saleCalloutOrder=sd.findsaleorder(sql);
-        	sql="SELECT treetype,tlong,tradius from sale_callout_orderid_tree WHERE sale_order_id="+number+"";
+        	sql="SELECT treetype,tlong,tradius from sale_callout_orderid_tree WHERE sale_order_id="+saleCallid+"";
         	List<saleCalloutOrder> saleOrdertree=sd.findsaletree(sql);
         	//System.out.print(saleOrdertree);
         	request.setAttribute("saleCalloutOrder", saleCalloutOrder);
@@ -852,17 +1115,22 @@ public class salaryServlet extends HttpServlet {
             	mapper.writeValue(response.getWriter(), work);
         	}
         }
-        	//删除内容从数据库中
+        	//删除内容销售调令从数据库中
         	else if("alldelete".equals(action))
             {
-            	String mygroup = request.getParameter("saleCallid");
+            	String mygroup = request.getParameter("alldelete");
             	//workpage ac=new workpage();
-            	sql="delete from sale_callout_orderid join sale_callout_orderid_tree where workid="+mygroup+"";
+            	sql="delete from sale_callout_orderid where sale_callout_order_id='"+mygroup+"'";
             	int i=sd.delWorkPage(sql);
+            	sql="SELECT  sale_order_id from sale_callout_orderid WHERE sale_callout_order_id='"+mygroup+"'";
+    	    	saleCalloutOrder fsd=sd.findsaleorderid(sql);//调令号
+                int saleCallid=fsd.getSaleCallid();
+                sql="delete from sale_callout_orderid_tree where sale_order_id='"+saleCallid+"'";
+            	int i1=sd.delWorkPage(sql);
             	//System.out.println("...." +i + "...");
             	ObjectMapper mapper1=new ObjectMapper();
-        		mapper1.writeValue(response.getWriter(),i);
-        		out.print(i);	
+        		mapper1.writeValue(response.getWriter(),i1);
+        		out.print(i1);	
             }
         //销售部门审核销售调令
         	else if("worksaleyesorno".equals(action)) {
@@ -914,7 +1182,7 @@ public class salaryServlet extends HttpServlet {
          	    String section = request.getParameter("section");//去掉票据
          	    String paymentamount = request.getParameter("Paymentamount");//货款金额
          	    String signer = request.getParameter("Signer");
-         	    int totalnum = Integer.parseInt(request.getParameter("totalnum"));
+         	    String totalnum = request.getParameter("totalnum");
          	    String callidtime = request.getParameter("callidtime");//货款金额
          	    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
              	Date d = null;
@@ -1031,6 +1299,154 @@ public class salaryServlet extends HttpServlet {
         			out.print("调令完成");
         			}
         	}
+        //伐区管理
+        	else if("findCutarea".equals(action)) {
+        		String cutnum=request.getParameter("cutnum");
+            	Map map=new HashMap();
+            	sql="select cutnumid,company,certificatenum,forestid,cutnum,cutaddress,cutvillage,quartel,largeblock,smallblock,cuttype,cutmethod,cutqiang,cutarea,starttime,endtime from cutnum where cutnum='"+cutnum+"'";
+            	List<cutnum> cutCompack=sd.findById(sql);
+            	//System.out.print(cutCompack);
+                map.put("cutCompack", cutCompack);
+                mapper.writeValue(response.getWriter(), map);
+        	}
+        	else if(action.equals("findContracynum")) {
+            	String contractnum=request.getParameter("contractnum");
+            	Map map=new HashMap();
+            	sql="SELECT t.treetype,t.tlong,t.tradius,a.demander from sale_contract as a JOIN sale_contract_tree as t ON a.sale_contract_id=t.sale_contract_id WHERE a.contractnum='"+contractnum+"' and t.unitprice<>0 ";
+            	List<salecontract> tree=sd.fincontractnum(sql);
+            	//System.out.print(tree.size());
+                map.put("tree", tree);
+                mapper.writeValue(response.getWriter(), map);
+            }
+        //销售部门木材结算单
+        	 else if(action.equals("fiTreeoutSalary")) {
+             	String saleCalloutOrder=request.getParameter("saleCalloutOrder");
+             	String timeStart=request.getParameter("timeStart");
+            	String timeEnd=request.getParameter("timeEnd");
+             	Map map=new HashMap();
+             	sql="SELECT s.sale_callout_order_id,s.contractnum,s.demander,c.provider,s.yard from sale_callout_orderid as s join sale_contract as c on s.contractnum=c.contractnum WHERE s.sale_callout_order_id='"+saleCalloutOrder+"'";
+             	List<treeoutSalary> treeotS=sd.findtreesalaOrder(sql);
+             	//sql="select a.workid,b.yard from treeout a join outyard b on a.workid=b.workid WHERE sale_callout_orderid='"+saleCalloutOrder+"' group by workid";
+        		sql="select a.workid,b.yard from treeout a join outyard b join treeout_status s on a.workid=b.workid and b.workid=s.workid \r\n" + 
+        				"WHERE sale_callout_orderid='"+saleCalloutOrder+"' and b.yarddate>='"+timeStart+"' and b.yarddate<='"+timeEnd+"' and s.outStatus=0 group by a.workid,b.yard";
+             	List<singleworkid> workid=sd.findworkidYard(sql);//显示工程包信息
+         		//sql="select treetype,tlong,tradius,num,sum(tvolume) as total,unitprice,(sum(tvolume)*unitprice) as totalprice  from tree a join inyard b on a.workid=b.workid where b.cutNum='"+cutnum+"' group by treetype,tradius";
+         		sql="select (case WHEN treeid='1' THEN '杉小径' WHEN treeid='2' THEN '杉原木' WHEN treeid='3' THEN '松小径' WHEN treeid='4' THEN '松原木' WHEN treeid='5' THEN '杂小径' WHEN treeid='6' THEN '杂原木' else treetype END) as treetype1,\r\n" + 
+         				"tlong,(case  WHEN  tradius>0 and tradius<3 THEN '1-2' WHEN  tradius>=3 and tradius<8 THEN '3-7' WHEN tradius>=8 and tradius<10 THEN '8-9'  WHEN tradius>=10 and tradius<13 THEN '10-12' WHEN tradius>=14 and tradius<19 THEN '14-18' WHEN tradius>=20 and tradius<25 THEN '20-24' else '26以上' END) as tradius1,\r\n" + 
+         				"sum(DISTINCT num) as tnum,sum(DISTINCT tvolume) as ttvolume,unitprice,(sum(DISTINCT tvolume)*unitprice) as totalprice  from treeout a join outyard b join treeout_status s on a.workid=b.workid and b.workid=s.workid where b.sale_callout_orderid='"+saleCalloutOrder+"'and b.yarddate>='"+timeStart+"' and b.yarddate<='"+timeEnd+"' and s.outStatus=0 GROUP BY treetype1,tlong,tradius1,unitprice";
+         		List<worktree> worktree=sd.findworktreeSalary(sql);
+                 		map.put("treeotS", treeotS);
+                 		map.put("workid", workid);
+                 		map.put("worktree",worktree);
+                 		mapper.writeValue(response.getWriter(), map);
+             }
+        //销售部门=保存木材销售结算单
+             else if(action.equals("saveTreeoutPrice")) {
+             	String rebate = request.getParameter("newtree");
+             	int id=Integer.parseInt(request.getParameter("id"));
+             	JSONObject jb = JSONObject.fromObject(rebate); 
+             	String cutnum=request.getParameter("cutnum");
+             	String consignee = request.getParameter("consignee");
+             	String company = request.getParameter("company");
+             	String yard = request.getParameter("yard");
+             	String contractnum=request.getParameter("contractnum");
+             	String saleCalloutOrder=request.getParameter("saleCalloutOrder");
+             	String person=request.getParameter("person");
+             	String tnum = request.getParameter("tnum");
+             	double  ttvolume=Double.parseDouble(request.getParameter("ttvolume"));
+             	double  tprice=Double.parseDouble(request.getParameter("tprice"));
+             	String tworkid = request.getParameter("tworkid");
+             	System.out.print(tworkid);
+             	String[] as = tworkid.split(",");
+             	int ttl=as.length;
+             	int flag=0;
+             	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+     			String createtime = format1.format(new Date());
+     			Timestamp Time = Timestamp.valueOf(createtime);//创建时间
+     			for(int i=0;i<id;i++) {
+             		JSONArray s=jb.getJSONArray(String.valueOf(i));
+             		Laowu cp = new Laowu();
+             		cp.setCutnum(cutnum);
+             		cp.setConsignee(consignee);
+             		cp.setCompany(company);
+             		cp.setYard(yard);
+             		cp.setContractnum(contractnum);
+             		cp.setSaleCalloutOrder(saleCalloutOrder);
+             		cp.setTnum(tnum);
+             		cp.setttvolume(ttvolume);
+             		cp.setTprice(tprice);
+             		cp.setTworkid(tworkid);
+             		cp.setPerson(person);
+             		cp.setTreetype(s.getString(0));
+             		cp.setTlong(s.getString(1));
+             		cp.setTradius(s.getString(2));
+             		cp.setNum(s.getString(3));
+             		cp.setTvolume(s.getString(4));
+             		cp.setUnitprice(s.getDouble(5));
+             		cp.setprice(s.getDouble(6));
+             		cp.setCreatTime(Time);
+             		flag=sd.addProduceTreeoutsalary(cp);
+                 	//out.print(flag);
+     			}
+     			if(flag>0) {
+         			outyard o = new outyard();
+         			for(int j=0;j<ttl;j++) {
+         				String workid1=as[j];
+         				double workid=Double.parseDouble(workid1);
+         				o.setOutStatus(1);//已结算
+         				int flagh=trd.updateTreeoutStatus(o, workid);
+         				out.print(flagh);
+         			}
+         		}
+     			else {
+     				out.print(flag);
+     			}
+             }
+        //销售部生产结算台账
+             else if("printTreeoutsalary".equals(action)) {
+            	 Map map=new HashMap();
+            	 sql="SELECT contractnum,saleCalloutOrder,consignee,company,yard,tnum,tvolume,tprice,creatTime FROM produce_treeout_salary GROUP BY contractnum,saleCalloutOrder,consignee,company,yard,tnum,tvolume,tprice,creatTime ORDER BY creatTime desc,contractnum";
+            	 List<Laowu> tpd=sd.findtreeoutPridce(sql);
+            	 map.put("tpd", tpd);
+                 mapper.writeValue(response.getWriter(), tpd);
+             }
+        //查看销售部门生产结算结算详细
+             else if("watchTreeoutPrice".equals(action))
+             {
+            	String contractnum1=request.getParameter("contractnum");
+              	String saleCalloutOrder1 = request.getParameter("saleCalloutOrder");
+              	String creatTime1 = request.getParameter("creatTime");
+              	String contractnum=contractnum1.replace("'", "");
+              	String saleCalloutOrder=saleCalloutOrder1.replace("'", "");
+              	String creatTime=creatTime1.replace("'", "");
+              	sql="SELECT * from produce_treeout_salary WHERE contractnum='"+contractnum+"' and saleCalloutOrder='"+saleCalloutOrder+"' and creatTime='"+creatTime+"'";
+              	List<Laowu> treeout=sd.findtreeoutPridceDet(sql);
+              	String wokleng=treeout.get(0).getTworkid();
+              	String[] as = wokleng.split(",");
+              	int worklength=as.length;
+              	request.setAttribute("worklength", worklength);
+            	request.setAttribute("treeout", treeout);
+            	request.getRequestDispatcher("treeoutPriceDet.jsp").forward(request, response);
+             }
+      //查看生产部们生产结算结算详细
+             else if("watchProducePrice".equals(action))
+             {
+            	String cutnum1=request.getParameter("cutnum");
+              	String projectPackageName1 = request.getParameter("projectPackageName");
+              	String creatTime1 = request.getParameter("creatTime");
+              	String cutnum=cutnum1.replace("'", "");
+              	String projectPackageName=projectPackageName1.replace("'", "");
+              	String creatTime=creatTime1.replace("'", "");
+              	sql="SELECT c.proj_package_Name,p.cutnum,p.consignee,p.company,p.yard,p.contractnum,p.saleCalloutOrder,p.tnum,p.tvolume,p.tprice,p.tworkid,p.person,p.treetype,p.tlong,p.tradius,p.num,p.volume,p.unitprice,p.price,p.creatTime\r\n" + 
+              			" from produce_tree_salary as p JOIN cutnum as c ON p.cutnum=c.cutnum WHERE p.creatTime='"+creatTime+"' and p.cutnum='"+cutnum+"' and c.proj_package_Name='"+projectPackageName+"'";
+              	List<Laowu> treein=sd.findProducePDet(sql);
+              	String wokleng=treein.get(0).getTworkid();
+              	String[] as = wokleng.split(",");
+              	int worklength=as.length;
+              	request.setAttribute("worklength", worklength);
+            	request.setAttribute("treein", treein);
+            	request.getRequestDispatcher("productTreePriceDet.jsp").forward(request, response);
+             }
 
 	}
 

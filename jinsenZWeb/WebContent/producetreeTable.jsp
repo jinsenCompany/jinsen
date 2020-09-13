@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@page import="java.util.*"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,6 +34,25 @@ color: #fff;
 background-color: #3195f1;
 border-color: #0d7adf;
 }
+.bar1 {background: #A3D0C3;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+        .bar1 input {
+            border: 2px solid #7BA7AB;
+            border-radius: 5px;
+            background: #F9F0DA;
+            color: #9E9C9C;
+        }
+        .bar1 button {
+            top: 0;
+            right: 0;
+            background: #7BA7AB;
+            border-radius: 0 5px 5px 0;
+        }
+        .bar1 button:before {
+            content: "\f002";
+            font-family: FontAwesome;
+            font-size: 16px;
+            color: #F9F0DA;
+        }
 </style>
     <script type="text/javascript">
     function submit_year()
@@ -62,7 +83,7 @@ border-color: #0d7adf;
             url: "chartServlet",
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -76,23 +97,26 @@ border-color: #0d7adf;
             exportTypes:['excel','xlsx','csv','pdf'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
             exportOptions:{
                 // ignoreColumn: [0,1],  //忽略某一列的索引
-                fileName: "砍伐木材情况表",  //文件名称设置
+                fileName: "采伐木材情况表",  //文件名称设置
                 worksheetName: 'sheet1',  //表格工作区名称
-                tableName: "砍伐木材情况表",
+                tableName: "采伐木材情况表",
                 excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
             },
             queryParams:function queryParams(params){
                 var temp = {
-						action:"producetree",
-						year:document.getElementById("sa_year").value,
-						month:document.getElementById("sa_month").value
+						action:"producetree1",
+						timeStart:document.getElementById("timeStart").value,
+						timeEnd:document.getElementById("timeEnd").value,
+						yard:document.getElementById("yard").value,
+						treetype:document.getElementById("treetype").value,
+						tradius:document.getElementById("tradius").value
 				};     
                 return temp;
             },
             columns: [
             	[
                     {
-                        "title": "砍伐木材情况表",
+                        "title": "采伐木材情况表",
                         "font-size":"100px",
                         "halign":"center",
                         "align":"center",
@@ -101,27 +125,9 @@ border-color: #0d7adf;
                     }
                 ],
             	[ 
-            		{
-                        title: "年",
-                        field: '',
-                        formatter:function(value,row,index){
-                     	   return document.getElementById("sa_year").value;
-                        },
-                        align: 'center',
-                        valign: 'middle'
-                    },
                      {
-                      	title: '月',
-                       field: 'month',
-                       /*formatter:function(value,row,index){
-                     	   return document.getElementById("sa_month").value;
-                        },*/
-                       align: 'center',
-                       valign: 'middle'
-                     },
-                     {
-                    	 title: "月",
-                         field: 'dayt',
+                    	 title: "日期",
+                         field: 'cutdate',
                          align: 'center',
                          valign: 'middle' 
                      },
@@ -131,26 +137,8 @@ border-color: #0d7adf;
                     align: 'center',
                     valign: 'middle'
                 },
-                {
-                    title: '砍伐地点）',
-                    field: 'cutSite',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '检验地点',
-                    field: 'checkSite',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '运输车牌号',
-                    field: 'carNumber',
-                    align: 'center',
-                    valign: 'middle'
-                },
                  {
-                 	title: '货厂地点',
+                 	title: '货场地点',
                    field: 'yard',
                    align: 'center',
                    valign: 'middle'
@@ -162,7 +150,7 @@ border-color: #0d7adf;
                    valign: 'middle'
                  },
                  {
-                	 title:'检尺厂',
+                	 title:'检尺长',
                 	 field: 'tlong',
                      align: 'center',
                      valign: 'middle'
@@ -192,11 +180,130 @@ border-color: #0d7adf;
                      valign: 'middle'   
                 },
                  {
-                   	title: '林务员',
+                   	title: '伐区管理员',
                      field: 'forester',
                      align: 'center',
                      valign: 'middle'   
                 },
+            ]
+            	]
+        });
+    }
+    
+    function totaltree()
+    {
+    	$('#myModal_monthtree').modal('hide');
+    	$('#table1').bootstrapTable('destroy');
+    	$('#table1').bootstrapTable({
+            method: "post",
+            striped: false,
+            singleSelect: false,
+            cache: false,//缓存
+            url: "chartServlet",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 15,
+            pageNumber: 1,
+            search:true, //显示搜索框
+            showColumns: true,                  //是否显示所有的列
+            showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            showRefresh: true,                  //是否显示刷新按钮
+            contentType: "application/x-www-form-urlencoded",
+            exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
+            showExport: true,  //是否显示导出按钮    
+            buttonsAlign:"right",  //按钮位置    
+            exportTypes:['excel','xlsx','csv','pdf'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
+            exportOptions:{
+                // ignoreColumn: [0,1],  //忽略某一列的索引
+                fileName: "进仓木材统计表",  //文件名称设置
+                worksheetName: 'sheet1',  //表格工作区名称
+                tableName: "进仓木材统计表",
+                excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
+            },
+            queryParams:function queryParams(params){
+                var temp = {
+						action:"totalproduce",
+						timeStart:document.getElementById("timeStart").value,
+						timeEnd:document.getElementById("timeEnd").value,
+						yard:document.getElementById("yard").value,
+						treetype:document.getElementById("treetype").value,
+						tradius:document.getElementById("tradius").value
+				};     
+                return temp;
+            },
+            columns: [
+            	[
+                    {
+                        "title": "进仓木材统计表",
+                        "font-size":"100px",
+                        "halign":"center",
+                        "align":"center",
+                        "valign": "middle",
+                        "colspan": 15
+                    }
+                ],
+            	[ 
+//                      {
+//                     	 title: "日期",
+//                          field: 'cutdate',
+//                          align: 'center',
+//                          valign: 'middle' 
+//                      },
+//             		{
+//                     title: "采伐证号",
+//                     field: 'cutNum',
+//                     align: 'center',
+//                     valign: 'middle'
+//                 },
+                 {
+                 	title: '货场地点',
+                   field: 'yard',
+                   align: 'center',
+                   valign: 'middle'
+                 },
+                 {
+                  	title: '树的类型',
+                   field: 'treetype',
+                   align: 'center',
+                   valign: 'middle'
+                 },
+//                  {
+//                 	 title:'检尺长',
+//                 	 field: 'tlong',
+//                      align: 'center',
+//                      valign: 'middle'
+//                  },
+//                  {
+//                 	 title:'检尺径',
+//                 	 field: 'tradius',
+//                      align: 'center',
+//                      valign: 'middle'
+//                  },
+                 {
+                	 title:'根数',
+                	 field: 'num',
+                     align: 'center',
+                     valign: 'middle'
+                 },
+                 {
+                	 title:'材积',
+                	 field: 'tvolume',
+                     align: 'center',
+                     valign: 'middle'
+                 },
+//                  {
+//                    	title: '检尺员',
+//                      field: 'surveyor',
+//                      align: 'center',
+//                      valign: 'middle'   
+//                 },
+//                  {
+//                    	title: '伐区管理员',
+//                      field: 'forester',
+//                      align: 'center',
+//                      valign: 'middle'   
+//                 },
             ]
             	]
         });
@@ -207,6 +314,11 @@ border-color: #0d7adf;
 
     
 <body onload="submit_year()">
+<% Date d = new Date();
+
+SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+String now = df.format(d); %>
 <div id="header">
   <h1><a href="dashboard.html">超级管理员平台</a></h1>
 </div>
@@ -257,15 +369,33 @@ border-color: #0d7adf;
            <p class="p-tail"><i class="i-tail"></i> 该页面是生产木材信息报表打印界面</p>
           </div>
            <div class="find-top1">
-            <table class="top-table">
-           <tr><td class="top-table-label">年份：</td><td><select id="sa_year" name="sa_year" onChange="change_year()" readonly unselectable="on"></select></tr>
-           <tr><td class="top-table-label">月份：</td><td><select id="sa_month" name="sa_month"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>1-12</option><option>1-3</option><option>4-6</option><option>7-9</option><option>10-12</option></select></td></tr>
-           <tr><td colspan="15" style="text-align: center"><button class="add-but" onclick="producetree()"><i class="glyphicon glyphicon-edit"></i>查询砍伐木材情况表</button></td></tr>
+            <table class="bar1">
+           <!--  <tr><td class="top-table-label">年份：</td><td><select id="sa_year" name="sa_year" onChange="change_year()" readonly unselectable="on"></select></tr>
+           <tr><td class="top-table-label">月份：</td><td><select id="sa_month" name="sa_month"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>1-12</option><option>1-3</option><option>4-6</option><option>7-9</option><option>10-12</option></select></td></tr>-->
+           <tr>
+           <td width="200">选择开始日期：<input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01"></td>
+           <td width="200">选择结束日期：<input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
+           </tr>
+           <tr></tr>
+           <tr>
+           <td width="400">
+            <span>货场：</span><input  type="text" name="yard" id="yard"></td>
+           
+           <td width="400">
+            <span>树种：</span><input  type="text" name="treetype" id="treetype"></td>
+           
+           <td width="400">
+            <span>口径：</span><input  type="text" name="tradius" id="tradius"></td>
+           </tr>
+           <tr>
+           <td colspan="8" style="text-align: center"><button  onclick="totaltree()">查询进仓木材总库存情况</button>
+           <button  onclick="producetree()">查询采伐木材情况表</button></td>
+           </tr>
             </table>
            </div>
            <div class="table-con">
         <table id="table1" class="table-style"></table>
-    </div>
+        </div>
           
         </div> 
 

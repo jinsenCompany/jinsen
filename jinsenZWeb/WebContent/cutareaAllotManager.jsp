@@ -104,28 +104,28 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="workpageAddManager.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
+  	 <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="CutnumProjectpackageManager.jsp">创建工程包</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+         <li><a href="CutnumProjectpackageTableManager.jsp"><i class="label label-important"></i><span>工程包台账</span></a></li>
         <li><a href="cutareaAllotManager.jsp">伐区拨交</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
+       <ul>
+        <li><a href="workpageAddManager.jsp">输入工单</a></li>
+        <li><a href="workpageShenheFaquManager.jsp">审核工单</a></li>
       </ul>
      </li>
     <li> <a href="manageCutnumCheckManager.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
     <li><a href="productPriceManager.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTableManager.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
-     <ul>
-        <li><a href="managesdatecardManager.jsp">录入施工方资料</a></li>
-        <li><a href="managersdatecardSeeManager.jsp">施工方台账</a></li>
-      </ul>
-     </li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -174,7 +174,7 @@
                     "halign":"center",
                     "align":"center",
                     "valign": "middle",
-                    "colspan": 5
+                    "colspan": 10
                 }],
                 [
                 	{
@@ -183,21 +183,40 @@
                         align: 'center',
                         valign: 'middle'
                     },
-                	{
-                    title: "工程包",
-                    field: 'projectPackageid',
+                    {
+                        title: "工程包",
+                        field: 'projectPackageid',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: "工程包创建时间",
+                        field: 'projpackageStarttime',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                	
+                {
+                    title: '合同编号',
+                    field: 'contractNum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '管理人员姓名',
-                    field: 'projectPackagename',
+                    title: '施工方',
+                    field: 'contractionSide',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '管理人员电话',
-                    field: 'managerPhone',
+                    title: '采伐工期',
+                    field: 'cuttime',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '伐区管理员',
+                    field: 'forester',
                     align: 'center',
                     valign: 'middle'
                 },

@@ -62,7 +62,7 @@
 	cursor: pointer;
 	width:120px;height:40px; 
 	}
-.btna,.btnb,.btnc,.btnd{ 	
+.btna,.btnb,.btnc,.btnd,.btnred{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
 	font-size: 40px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
@@ -80,6 +80,7 @@
 .btnb {background-color: #F08080;}
 .btnc {background-color: #F4A460}
 .btnd {background-color: #CC99FF}
+.btnred {background-color: red;}
     </style>
 </head>
 <body>
@@ -283,14 +284,8 @@ function treeAdd()
     	    group[3]=document.getElementById("n"+id+"").value;
     	    group[4]=document.getElementById("tv"+id+"").value;
     	    //System.out.println("...." + group[4] + "...");
-    	    if(group[0]==""|| group[1]==""|| group[2]=="" || group[3]==""|| group[4]=="")
-    	    	{
-    	    	//alert("请将信息填写完整！");
-    	    	}
-    	      else{
                map[i]=group;
                kk=Number(i)+Number(1);
-    	    }
     });
     $("input[type='checkbox']:not(:checked)").each(function(j){
     	var group=[];
@@ -338,7 +333,6 @@ function treeAdd()
         		}
         	else{
         		 alert("保存失败");
-        		 window.location.href = 'passworkpage.jsp';
         	}
         }
     })
@@ -450,12 +444,12 @@ String now = df.format(d); %>
     <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进仓木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>-->
-     <li class="active"><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进场木材数据</span></a></li>
+     <li class="active"><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
     <li><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
   </ul>
 </div>
@@ -467,7 +461,7 @@ String now = df.format(d); %>
   </div>
     <article>
         <div>
-            <h1 class="book_h01">录入进场木材信息</h1>
+            <h1 class="book_h01">录入进仓木材信息</h1>
             <!--  <form  onSubmit="return inputNull(this)" action="treeServlet?action=inyard" method="POST" >-->
             <form>
             <div id="divprint">
@@ -477,38 +471,38 @@ String now = df.format(d); %>
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>" />
+                          <input readonly="readonly" name="workid" type="text" maxlength="32" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>" />
                           <%--  <input type="text" name="workid" id="wworkid" value="<%=c.getWorkid() %>">--%>
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
-                          <input type="text" name="cutnum" id="ccutnum" value="<%=c.getCutNum() %>">
+                          <input readonly="readonly" type="text" name="cutnum" id="ccutnum" value="<%=c.getCutNum() %>">
                            </td>
                            <td>采伐地点<span></span></td>
                           <td>
-                          <input type="text" name="cutsite" id="ccutsite" value="<%=c.getCutSite() %>">
+                          <input readonly="readonly" type="text" name="cutsite" id="ccutsite" value="<%=c.getCutSite() %>">
                            </td>
                            <td>货场地点<span></span></td>
                               <td>
-                              <input type="text" name="yard" id="yyard" value="<%=c.getCheckSite() %>">
+                              <input readonly="readonly" type="text" name="yard" id="yyard" value="<%=c.getCheckSite() %>">
                               </td>
                            </tr>
                            <tr>
                               <td>车牌号<span></span></td>
                               <td>
-                              <input type="text" name="carnumber" id="ccarnumber" value="<%=c.getCarNumber() %>">
+                              <input readonly="readonly" type="text" name="carnumber" id="ccarnumber" value="<%=c.getCarNumber() %>">
                               </td>
                               <td>采伐时间<span></span></td>
                               <td>
-                              <input  name="cutdate" id="cutdate" value="<%=c.getCutdate() %>">
+                              <input readonly="readonly" name="cutdate" id="cutdate" value="<%=c.getCutdate() %>">
                               </td>
                               <td>进场时间<span></span></td>
                               <td>
-                              <input  name="yarddate" id="yyarddate" value="<%=now%>">
+                              <input readonly="readonly" name="yarddate" id="yyarddate" value="<%=now%>">
                               </td>
                               <td>伐区监管员<span></span></td>
                               <td>
-                              <input type="text" name="forester" id="forester" value="<%=c.getForester() %>">
+                              <input readonly="readonly" type="text" name="forester" id="forester" value="<%=c.getForester() %>">
                               </td>
                            </tr>
                         </table>
@@ -518,7 +512,9 @@ String now = df.format(d); %>
                         <button  class="btnb" type="button"  value="松木" onclick="toggle('table6');"><span style="font-size:40px">松木</span></button>
                         <button  class="btnc" type="button"  value="杂木" onclick="toggle('table7');"><span style="font-size:40px">杂木</span></button>
                         <button  class="btnd" type="button"  value="其他木材" onclick="toggle('table8');"><span style="font-size:40px">其他木材</span></button>
+                        <button class="btnred" type="button"  onclick="deleteAll()" value="清空"><span style="font-size:40px">清空</span></button>
                         </div>
+                        <br>
                         <table class="table" id="table5" style="width:100%;height:auto;display: none">
                            <tbody id="ttt5">
                                 
@@ -528,7 +524,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加杉木">添加杉木</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                             <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
                             </div>
                             </td>
                             </tr>
@@ -542,7 +538,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad1()" value="添加松木">添加松木</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                             <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
                             </div>
                             </td>
                             </tr>
@@ -556,7 +552,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad2()" value="添加杂木">添加杂木</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                             <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
                             </div>
                             </td>
                             </tr>
@@ -570,7 +566,7 @@ String now = df.format(d); %>
                             <div>
                             <button class="btn btn-warning" type="button"  onclick="aaad3()" value="添加木材">添加木材</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
-                            <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>
+                            <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
                             </div>
                             </td>
                             </tr>

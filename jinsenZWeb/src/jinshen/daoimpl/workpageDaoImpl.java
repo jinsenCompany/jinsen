@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import jinshen.bean.CancellingStockTable;
 import jinshen.bean.codejson;
 import jinshen.bean.compareTree;
+import jinshen.bean.cutnum;
 import jinshen.bean.goodsYardCost;
 import jinshen.bean.managesdatecard;
+import jinshen.bean.projectpackage;
 import jinshen.bean.surveyor;
 import jinshen.bean.tree;
 import jinshen.bean.workpage;
@@ -184,7 +186,7 @@ public class workpageDaoImpl implements workpageDao {
 				codejson w=new codejson();
 				w.setWorkid(rs.getDouble(1));
 				w.setCutnum(rs.getString(2));
-				w.setCutdate(rs.getDate(3));
+				w.setCutdate(rs.getTimestamp(3));
                 w.setCutsite(rs.getString(4));
                 w.setForester(rs.getString(5));
 				work.add(w);	
@@ -259,7 +261,7 @@ public class workpageDaoImpl implements workpageDao {
 	public int updateWorkpagestatus(double workid,workpageStatus ws) {
 		int res=0;
 		try {
-			String sql="update workpage_status set workid_status=? where workid="+workid+"";
+			String sql="update workpage_status set workid_status=? where workid='"+workid+"'";
 		    res=dbc.doUpdate(sql, new Object[] {ws.getWorkidstatus()});
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -426,13 +428,13 @@ public class workpageDaoImpl implements workpageDao {
 
 	@Override
 	public int addmanagesdatecard(managesdatecard cp) {
-		String sql = "insert into managesdatecard values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into managesdatecard values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		int res=0;
 		try {
 			res=dbc.doUpdate(sql, new Object[] {cp.getCardid(),cp.getOwnername(),cp.getSex(),cp.getBorndate(),cp.getIdnumber(),
 					cp.getBornplace(),cp.getEnterprisename(),cp.getBusinesslicense(),cp.getAddress(),cp.getContact(),
-					cp.getEngineeringbag(),cp.getCutnum(),cp.getQuartel(),cp.getLargeblock(),cp.getSmallblock(),
-					cp.getAllarea(),cp.getTotaloutwood(),cp.getAreapiece(),cp.getSigningtime(),cp.getCooperationyear(),cp.getTeam(),cp.getYeji(),cp.getManagepath()});
+					
+					cp.getAllarea(),cp.getTotaloutwood(),cp.getManagepath(),cp.getSigningtime()});
 		}
 		catch (Exception e) 
 		{
@@ -453,26 +455,9 @@ public class workpageDaoImpl implements workpageDao {
 				managesdatecard addr=new managesdatecard();
 				addr.setCardid(rs.getInt(1));
 				addr.setOwnername(rs.getString(2));
-				addr.setSex(rs.getString(3));
-				addr.setBorndate(rs.getDate(4));
-				addr.setIdnumber(rs.getString(5));
-				addr.setBornplace(rs.getString(6));
-				addr.setEnterprisename(rs.getString(7));
-				addr.setBusinesslicense(rs.getString(8));
-				addr.setAddress(rs.getString(9));
-				addr.setContact(rs.getString(10));
-				addr.setEngineeringbag(rs.getString(11));
-				addr.setCutnum(rs.getString(12));
-				addr.setQuartel(rs.getString(13));
-				addr.setLargeblock(rs.getString(14));
-				addr.setSmallblock(rs.getString(15));
-				addr.setAllarea(rs.getDouble(16));
-				addr.setTotaloutwood(rs.getDouble(17));
-				addr.setAreapiece(rs.getInt(18));
-				addr.setSigningtime(rs.getDate(19));
-				addr.setCooperationyear(rs.getString(20));
-				addr.setTeam(rs.getString(21));
-				addr.setYeji(rs.getString(22));
+				addr.setContact(rs.getString(3));
+				addr.setAllarea(rs.getDouble(4));
+				addr.setTotaloutwood(rs.getDouble(5));
 				addrList.add(addr);
 			}
 		}catch(Exception e) {
@@ -584,7 +569,7 @@ public class workpageDaoImpl implements workpageDao {
 				workpage addr=new workpage();
 				addr.setWorkid(rs.getDouble(1));
 				addr.setCutNum(rs.getString(2));
-				addr.setCutdate(rs.getDate(3));
+				addr.setCutdate(rs.getTimestamp(3));
 				addr.setCutSite(rs.getString(4));
 				addr.setCheckSite(rs.getString(5));
 				addr.setCarNumber(rs.getString(6));
@@ -740,6 +725,126 @@ public class workpageDaoImpl implements workpageDao {
 			dbc.close();
 		}
 		return a;
+	}
+
+	@Override
+	public List<projectpackage> seachProject(String sql) {
+		List<projectpackage> addrList=new ArrayList<projectpackage>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				projectpackage p=new projectpackage();
+				p.setProjpackageStarttime(rs.getTimestamp(1));
+				p.setProjectPackageName(rs.getString(2));
+				addrList.add(p);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return addrList;
+	}
+
+	@Override
+	public cutnum searchVolume(String sql) {
+		cutnum c = new cutnum();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			if(rs.next()) {
+			c.setCutarea(rs.getString(1));
+			c.setVolume(rs.getDouble(2));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return c;
+	}
+
+	@Override
+	public managesdatecard findmanagecardAll(String sql) {
+		managesdatecard m = new managesdatecard();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			if(rs.next()) {
+				m.setCardid(rs.getInt(1));
+				m.setOwnername(rs.getString(2));
+				m.setSex(rs.getString(3));
+				m.setBorndate(rs.getDate(4));
+				m.setIdnumber(rs.getString(5));
+				m.setBornplace(rs.getString(6));
+				m.setEnterprisename(rs.getString(7));
+				m.setBusinesslicense(rs.getString(8));
+				m.setAddress(rs.getString(9));
+				m.setContact(rs.getString(10));
+				m.setAllarea(rs.getDouble(11));
+				m.setTotaloutwood(rs.getDouble(12));
+				m.setManagepath(rs.getString(13));
+				m.setSigningtime(rs.getDate(14));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return m;
+	}
+
+	@Override
+	public managesdatecard findmanagecardId(String sql) {
+		managesdatecard m = new managesdatecard();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			if(rs.next()) {
+				m.setCardid(rs.getInt(1));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return m;
+	}
+
+	@Override
+	public int Updatemanagesdatecard(managesdatecard cp, int id) {
+		int res=0;
+		try {
+			String sql="update managesdatecard set ownername=?,sex=?,borndate=?,idnumber=?,bornplace=?,enterprisename=?,businesslicense=?,address=?,contact=?,allarea=?,totaloutwood=?,cutpath=?,signingtime=? where cardid='"+id+"'";
+		    res=dbc.doUpdate(sql, new Object[] {cp.getOwnername(),cp.getSex(),cp.getBorndate(),cp.getIdnumber(),cp.getBornplace(),
+		    		cp.getEnterprisename(),cp.getBusinesslicense(),cp.getAddress(),cp.getContact(),cp.getAllarea(),cp.getTotaloutwood(),cp.getManagepath(),cp.getSigningtime()});
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
+	}
+
+	@Override
+	public List<goodsYardCost> findgoodsYardDet(String sql) {
+		List<goodsYardCost> addrList=new ArrayList<goodsYardCost>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()) {
+				goodsYardCost a=new goodsYardCost();
+				a.setYard(rs.getString(1));
+				a.setTyeart(rs.getString(2));
+				a.setTmonth(rs.getString(3));
+				a.setFeetype(rs.getString(4));
+				a.setNum(rs.getInt(5));
+				a.setPrice(rs.getDouble(6));
+				a.setLuruperson(rs.getString(7));
+				addrList.add(a);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return addrList;
 	}
 	
 }

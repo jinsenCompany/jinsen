@@ -51,7 +51,7 @@
 					alert("用户名或密码错误");
 					window.location.href = 'login.jsp';
 				} else if (data == "supermanager") {
-					//alert("超级管理员登录成功");
+					alert("超级管理员登录成功");
 					window.location.href = 'superManage.jsp';
 				} else if (data == "manager") {
 					//alert("管理部操作员登录成功");
@@ -93,7 +93,7 @@
 					window.location.href = 'yardDirector.jsp';
 				}
 				else if (data == "YardtableA") {
-					//alert("货场制表员A登录成功");
+					a//lert("货场制表员A登录成功");
 					window.location.href = 'yardstaffA.jsp';
 				}
 				else if (data == "YardtableB") {
@@ -108,25 +108,17 @@
 					//alert("货场管理员登录成功");
 					window.location.href = 'yardmanager.jsp';
 				} else if (data == "Cutmanager") {
-					//alert("伐区监管员登录成功");
+					//alert("生产部门登录成功");
 					window.location.href = 'forestP.jsp';
 				}else if (data == "Surveyor") {
-					//alert("检尺员登陆成功");
-					window.location.href = 'Surveyor.jsp';
-				} 
-				else if (data == "forestManager") {
-					//alert("生产部副经理");
-					window.location.href = 'forestManager.jsp';
-				} 
-				else if (data == "Surveyor") {
 					//alert("检尺员登陆成功");
 					window.location.href = 'Surveyor.jsp';
 				} else if (data == "InfoCenter") {
 					//alert("信息中心登陆成功");
 					window.location.href = 'infoCenter.jsp';
 				} else if (data == "验证码错误") {
-					//alert("验证码错误");
-					window.location.href = 'login.jsp';
+					alert("验证码错误");
+					onload=fresh();
 				}
 			},
 			error : function(e) {
@@ -135,6 +127,16 @@
 		})
 	}
 </script>
+<script type="text/javascript">
+function fresh() {
+	console.log("调用了方法！");
+	 var getimagecode = document.getElementById("img");
+	 var i = Math.random();
+     getimagecode.src = "./CheckCodeServlet?id="+i;
+    
+}
+</script>
+
 <script src="js/jquery.js"></script>
 <script src="js/jquery.singlePageNav.min.js"></script>
 <script src="js/bstable/js/bootstrap.min.js"></script>
@@ -162,19 +164,19 @@
 					<!-- Loging form -->
 
 					<div class="form-group">
-						<input type="text" class="form-control" id="staff_id"
-							placeholder="请输入员工号" style="width: 500px; height: 20px;">
+						<input type="text" class="form-control" id="staff_id" value="2"
+							placeholder="请输入员工号"  style="width: 500px; height: 20px;">
 					</div>
 					<div class="form-group">
-						<input type="password" class="form-control" id="password"
-							placeholder="请输入密码" style="width: 500px; height: 20px;">
+						<input type="password" class="form-control" id="password" value="${requestScope.password}"
+							placeholder="请输入密码"  style="width: 500px; height: 20px;">
 					</div>
 					
 					<div class="form-group">
-						<input type="text" class="form-control" id="v_code0"
+						<input type="text" class="form-control" id="v_code0" 
 							placeholder="请输入验证码" style="width: 500px; height: 20px;">
-						<img src="/jinsenZWeb/CheckCodeServlet" id="img" /> <a
-							href="" id="a">看不清？点击换一张</a>
+						<img src="./CheckCodeServlet" id="img" /> <a
+							href="javascript:fresh()" id="a">看不清？点击换一张</a>
 					</div>
 
 					<div class="form-check">

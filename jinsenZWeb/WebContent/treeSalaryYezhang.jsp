@@ -100,9 +100,9 @@ function mycreate()
                   +"<td class='top-table-label'>金额：</td></tr>";
         	for(var i=0;i<tree.length;i++){
         		var j=tree[i];
-        	str+="<tr id='"+(i+1)+"'><td><select id='treetype"+(i+1)+"' ><option>"+j.type+"</option></select></td>"
+        	str+="<tr id='"+(i+1)+"'><td><input type=text id='treetype"+(i+1)+"' value='"+j.type+"'></td>"
                   +"<td><input type=text disabled=disabled value='"+j.tvolume+"' id='volume"+(i+1)+"'></td>"
-                   +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"'></td>"
+                   +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"' oninput='priceCount("+(i+1)+")' onclick='locationInput'></td>"
                   +"<td><input type='text' id='price"+(i+1)+"' onclick='priceCount("+(i+1)+")' value='"+j.price+"'></td></tr>"
         	}
         	ttt.innerHTML=str;
@@ -120,6 +120,7 @@ function mysave()
 	var salesman=document.getElementById("salesman").value;
 		var length=$("#ttt tr").length;
 		length=length-2;
+		//alert(length)
     	for(var id=1;id<=length;id++){
     		var group=[];
     	    group[0]=document.getElementById("treetype"+id+"").value;
@@ -147,11 +148,16 @@ function mysave()
         type: "POST",
         dataType:"html",
         success: function (data) {
-        	alert(data);
+        	//alert(data);
         	if(data>0)
     		{
     	        alert("添加成功！");
+    	        window.location.href = 'outyardCostS.jsp';
     		}
+        	else{
+       		 alert("保存失败");
+       		 //window.location.href = 'manageCutnum.jsp';
+       	}
         }
     })
   }
@@ -161,7 +167,9 @@ function priceCount(id)
 	
 	var volume=document.getElementById("volume"+id+"").value;
 	var unitprice=document.getElementById("unitprice"+id+"").value;
-	document.getElementById("price"+id+"").value=(volume*unitprice);
+	price=Number(volume*unitprice);
+	ttprice=price.toFixed(2);
+	document.getElementById("price"+id+"").value=(ttprice);
 }
 function treeAdd()
 {
@@ -200,6 +208,10 @@ function treeAdd()
         	alert(data);
         }
     })
+}
+window.onload = function () {
+    locationInput = function () {
+    };
 }
 </script>
 </head>
@@ -242,9 +254,10 @@ function treeAdd()
     <li class="active"> <a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
   </ul>-->
   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">1</span></a>
+  <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="salaryContract.jsp">创建合同</a></li>
+        <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
@@ -257,8 +270,9 @@ function treeAdd()
     <li><a href="saleCalloutOrdersee.jsp"><i class="icon icon-th-list"></i> <span>查看调令材料</span></a></li>
     <li><a href="saleCalloutOrderShenheModer.jsp"><i class="icon icon-th-list"></i> <span>查看调令审核</span></a></li>
      <li><a href="outyardCostS.jsp"><i class="icon icon-home"></i><span>结算检尺费</span></a></li>
-    <li><a href="salaryContractList.jsp"><i class="icon icon-home"></i> <span>合同进度</span></a></li>
-    <li class="active"><a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
+    <!--  <li><a href="salaryContractList.jsp"><i class="icon icon-home"></i> <span>合同进度</span></a></li>-->
+    <li><a href="treeSalaryYezhang.jsp"><i class="icon icon-th-list"></i> <span>木材销售工单数据</span></a></li>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -277,9 +291,7 @@ function treeAdd()
             </tr>
             <tr>
                 <td class="top-table-label" >销售工单号：</td>
-                <td><input type="text" id="workid" value=""></td>
-                <td colspan="" style="margin-top: 10px;margin-bottom: 10px">
-        <button class="add-but" onclick="mycreate()"><i class="glyphicon glyphicon-edit"></i>生成</button></td>
+                <td><input type="text" id="workid" value="" oninput='mycreate()' onclick='locationInput'></td>
             </tr>
         </table>
         <div id="mysomething">
@@ -319,32 +331,25 @@ function treeAdd()
               <td class="top-table-label">金额：</td>
           </tr>
           <tr>
-              <td><select id="treetype"><option value="">材种选择</option>
-              <option value="shan">杉原木</option>
-              <option value="song">松原木</option>
-              <option value="xiao">杉小径</option>
-              <option value="songxiao">松小径</option>
-              <option value="za">杂原木</option>
-              <option value="zaxiao">杂小径</option>
-              </select></td>
-              <td><input type="text" disabled="disabled" id="tvolume"></td>
-              <td><input type="text" disabled="disabled" id="unitprice"></td>
-              <td><input type="text" disabled="disabled" id="price"></td>
+              <td><input type="text" id="treetype" readonly="readonly"></td>
+              <td><input type="text" readonly="readonly" id="tvolume"></td>
+              <td><input type="text" readonly="readonly" id="unitprice"></td>
+              <td><input type="text" readonly="readonly" id="price"></td>
           </tr>
       </table>
      <table>
-      <tr>
-      <div>
+      <!-- <tr>
+       <div>
          <button style="width:160px" class="btn btn-default" type="button"  onclick="treeAdd()">提交木材信息</button>
          </div>
-       </tr>
+       </tr>-->
        </table>   
         <table class="table" >
             <tbody>
             <p class="table_p"><span>销售人员</span></p>
             <tr>
                 <td>检验员:</td>
-                <td><input type="text" disabled="disabled"></td>
+                <td><input type="text" style="border:0px;text-align:right;background-color: transparent;width: 150px;"></td>
                 <td>记码员:</td>
                 <td><input type="text" disabled="disabled"></td>
                 <td>货场管理员:</td>
@@ -353,7 +358,7 @@ function treeAdd()
                 <td><input type="text" name="salesman" id="salesman"></td>
             </tr>
             <tr><td colspan="6" style="text-align: center">
-                <button class="add-but"><i class="glyphicon glyphicon-edit" onclick="mysave()"></i> 提交 </button>
+                <button class="add-but" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i> 提交 </button>
                 <input style="float:center;" type="button" id="btnPrint" value="打印"/> 
             </tbody>
         </table>

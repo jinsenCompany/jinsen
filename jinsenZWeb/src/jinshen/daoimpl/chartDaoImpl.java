@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jinshen.bean.producetree;
+import jinshen.bean.projectPackTable;
 import jinshen.bean.salemansql;
 import jinshen.bean.treeChart;
 import jinshen.bean.treeoutChart;
@@ -113,7 +114,9 @@ public class chartDaoImpl implements chartDao{
     
     @Override
     public List<producetree> findProduce(){
-    	String sql="select year(w.cutdate) as yeart,month(w.cutdate) as montht,day(w.cutdate) as dayt,w.cutNum,w.cutSite,w.checkSite,w.carNumber,i.yard,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,i.surveyor,w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid";
+    	String sql="select year(w.cutdate) as yeart,month(w.cutdate) as montht,day(w.cutdate) as dayt,w.cutNum,"
+    			+ "w.cutSite,w.checkSite,w.carNumber,i.yard,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,i.surveyor,w.forester"
+    			+ " from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid";
     	 ResultSet rs = null;
  	    List<producetree> ts = new ArrayList<producetree>();
  	   try {
@@ -261,42 +264,29 @@ public class chartDaoImpl implements chartDao{
     }
     
     @Override
-    public List<treeoutPrint> findTreeout() {
-    	String sql="select w.workid,year(w.yarddate) as yeart,month(w.yarddate) as montht,w.carNumber,w.yard,w.section,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,t.unitprice,t.totalnum,w.surveyor, s.salesman from outyard as w JOIN treeout as t join saleman as s on w.workid=t.workid=s.workid";
-    	ResultSet rs = null;
+    public List<treeoutPrint> findTreeout(String sql) {
     	List<treeoutPrint> ts = new ArrayList<treeoutPrint>();
     	try {
-	        connection = DBcon.getConnection();
-	        pStatement = connection.prepareStatement(sql);
-	        rs = pStatement.executeQuery();
-	        while (rs.next()) {
+    		ResultSet rs=db.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
 	        	treeoutPrint s=new treeoutPrint();
-	        	s.setWorkid(rs.getDouble(1));
-	        	s.setYear(rs.getDouble(2));
-	        	s.setMonth(rs.getDouble(3));
-	        	s.setCarNumber(rs.getString(4));
-	        	s.setYard(rs.getString(5));
-	        	s.setSection(rs.getString(6));
-	        	s.setTreetype(rs.getString(7));
-	        	s.setTlong(rs.getDouble(8));
-	        	s.setTradius(rs.getDouble(9));
-	        	s.setNum(rs.getDouble(10));
-	        	s.setTvolume(rs.getDouble(11));
-	        	s.setUnitprice(rs.getDouble(12));
-	        	s.setPrice(rs.getDouble(13));
-	        	s.setSurveyor(rs.getString(14));
-	        	s.setSaleman(rs.getString(15));
+	        	s.setYarddate(rs.getTimestamp(1));
+	        	s.setContractnum(rs.getString(2));
+	        	s.setSaleCalloutOrder(rs.getString(3));
+	        	s.setYard(rs.getString(4));
+	        	s.setTreetype(rs.getString(5));
+	        	s.setTlong(rs.getDouble(6));
+	        	s.setTradius(rs.getDouble(7));
+	        	s.setNum(rs.getDouble(8));
+	        	s.setTvolume(rs.getDouble(9));
 	        	ts.add(s);
 	        }
-	        return ts;
-        }catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-        	DBcon.closeResultSet(rs);
-        	DBcon.closePreparedStatement(pStatement);
-        	DBcon.closeConnection(connection);	
-       }
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return ts;
     }
     
      @Override
@@ -461,5 +451,78 @@ public class chartDaoImpl implements chartDao{
         	DBcon.closeConnection(connection);	
            }
     }
+
+	@Override
+	public List<producetree> findProduceDet(String sql) {
+		List<producetree> ptp = new ArrayList<producetree>();
+    	try {
+    		ResultSet rs=db.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			producetree  pd= new producetree();
+    			pd.setCutdate(rs.getTimestamp(1));
+    			pd.setCutNum(rs.getString(2));
+    			pd.setYard(rs.getString(3));
+    			pd.setTreetype(rs.getString(4));
+    			pd.setTlong(rs.getDouble(5));
+    			pd.setTradius(rs.getDouble(6));
+    			pd.setNum(rs.getDouble(7));
+    			pd.setTvolume(rs.getDouble(8));
+    			pd.setForester(rs.getString(9));
+    			pd.setSurveyor(rs.getString(10));
+    			ptp.add(pd);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return ptp;
+	}
+
+	@Override
+	public List<producetree> findProduceTol(String sql) {
+		List<producetree> ptp = new ArrayList<producetree>();
+    	try {
+    		ResultSet rs=db.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			producetree  pd= new producetree();
+    			pd.setYard(rs.getString(1));
+    			pd.setTreetype(rs.getString(2));
+//    			pd.setTlong(rs.getDouble(3));
+//    			pd.setTradius(rs.getDouble(4));
+    			pd.setNum(rs.getDouble(3));
+    			pd.setTvolume(rs.getDouble(4));
+    			ptp.add(pd);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return ptp;
+	}
+
+	@Override
+	public List<treeoutPrint> findTreeoutDet(String sql) {
+		List<treeoutPrint> ts = new ArrayList<treeoutPrint>();
+    	try {
+    		ResultSet rs=db.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+	        	treeoutPrint s=new treeoutPrint();
+	        	s.setYard(rs.getString(1));
+	        	s.setTreetype(rs.getString(2));
+	        	s.setTlong(rs.getDouble(3));
+	        	s.setTradius(rs.getDouble(4));
+	        	s.setNum(rs.getDouble(5));
+	        	s.setTvolume(rs.getDouble(6));
+	        	ts.add(s);
+	        }
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return ts;
+	}
 
 }

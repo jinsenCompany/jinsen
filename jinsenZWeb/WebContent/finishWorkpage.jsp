@@ -173,7 +173,7 @@ t=(List<tree>)request.getAttribute("tree");
                             <table class="table1">
                             <tr><!--  <td colspan="5"><img  width="400" height="600" id="pic" name="pic" src="./img/3.jpg"></td>-->
                             <td>&nbsp;&nbsp;&nbsp;</td>
-                           <td colspan="5">货场拍照：<img src="DownfileServlet?action=comparePic&filename=<%=m.getPic() %>" alt="150"  width="300" height="400" /></td></tr>
+                           <td colspan="5">货场拍照：<img src="DownfileServlet?action=comparePic&filename=<%=m.getPic() %>" alt="150"  width="400" height="300" /></td></tr>
                             </table>
                             <div class=" but_p">
                             <button style="width:200px" class="but_save" type="button"  onclick="window.location.href='map.jsp'" value="显示地图">显示地图</button>

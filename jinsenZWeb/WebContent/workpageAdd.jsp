@@ -31,7 +31,7 @@
          
 input{margin-top:5px;margin-bottom:-2px;}
          
-.table1{width:80%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+.table1{width:80%; height:auto;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 td,th{text-align:center;vertical-align:middle}
 tr{text-align:center}
 	.btn{ 	
@@ -87,28 +87,76 @@ function inputNull(form){
     }
     </script>
     <script type="text/javascript">
-function load()
+
+function mycreate()
 {
+	//var length=$("#codetable tr").length;
+	var cutnum=document.getElementById("cccutnum").value;
+	length=(length-1)*2;
+	var group=[];
 	$.ajax({
-        url:"salaryServlet",//要发送的地址
+        url:"workpageSevrlet",
         data:{
-            "action":"loadyardinfo"
+            "action":"searchWorkpageCut",
+            "cutnum":cutnum
         },
         type: "POST",
         dataType:"json",
         success: function (data) {
-            for(i = 0;i<data.length;i++)
-            {
-            	str = "<option>"+data[i].yardname+"</option>";
-            	
-            	$("#checksite").show().append(str);
-            }
-        }
+        	if(data==null)
+        		{
+        		alert("您所需要输入的采伐证信息有误，请重新核对");
+        		}
+        	else{
+        	var cutnum=data["cutnum"];
+        	//var Cutarea=data["Cutarea"];
+        	//alert(cutnum)
+        	var projectpackage=data["projectpackage"];
+        	//alert(projectpackage)
+        	var company=null;
+        	var cutSite=null;
+        	for(var i=0;i<cutnum.length;i++)
+    		{
+        		var j=cutnum[i];
+        		company=j.company;
+        		cutaddress=j.cutaddress;
+        		cutvillage=j.cutvillage;
+        		quartel=j.quartel;
+        		largeblock=j.largeblock;
+        		smallblock=j.smallblock;
+        		
+    		}
+        	for(var i=0;i<projectpackage.length;i++)
+    		{
+        		var j1=projectpackage[i];
+        		contractNum=j1.contractNum;
+        		projectPackageName=j1.projectPackageName;
+        		contractionSide=j1.contractionSide;
+        		//quartel=j.quartel;
+        		//largeblock=j.largeblock;
+        		//smallblock=j.smallblock;
+        		
+    		}
+        	document.getElementById("company").value=company;
+        	document.getElementById("cutsite").value=cutaddress;
+        	document.getElementById("cutvillage").value=cutvillage;
+        	document.getElementById("quartel").value=quartel;
+        	document.getElementById("largeblock").value=largeblock;
+        	document.getElementById("smallblock").value=smallblock;
+        	document.getElementById("contractNum").value=contractNum;
+        	document.getElementById("projectPackageName").value=projectPackageName;
+        	document.getElementById("contractionSide").value=contractionSide;
+        	
+        }}
     })
+}
+window.onload = function () {
+    locationInput = function () {
+    };
 }
 </script>
 </head>
-<body onload="load()">
+<body>
 <% Date d = new Date();
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -129,7 +177,7 @@ String now = df.format(d); %>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -144,7 +192,14 @@ String now = df.format(d); %>
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -152,27 +207,38 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="workpageAdd.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaqu.jsp">审核工单</a></li>
-      </ul>
-     </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">2</span></a>
-     <ul>
-        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
-      </ul>
-     </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTable.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+       <ul>
+        <li><a href="workpageAdd.jsp">野账录入</a></li>
+        <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+      </ul>
+     </li>
+    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+   <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+       <ul>
+        <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
+        <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
+      </ul>
+     </li>
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+      <li><a href="workpageUnlock.jsp"><i class="icon icon-inbox"></i> <span>采伐证解锁</span></a></li>         
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -184,22 +250,67 @@ String now = df.format(d); %>
     <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
-<article class="artlce">
-        <div class="book_con01">
-    <form  onSubmit="return inputNull(this)" action="workpageSevrlet?action=addWorkpage" method="POST" >
+<article>
+<div style="border:1px solid #3383da;font-size:18px">
+<h3 style="font-style: italic;color: red;">使用说明：请先输入采伐证号。工单号、工程包、施工方等信息自动填充，再手动输入检验地点（货场）、车牌号、伐区监管员签名</h3>
+</div>
+        <div>
+    <form action="workpageSevrlet?action=addWorkpage1" method="POST" >
                 <div class="top" id="divprint">
 
-                        <div class="top_out">
-                          <table class="table1"  border="1">
-                           <caption class="book_h01">伐区生产工单</caption>
-                           <tr>
+                <div class="top_out">
+                   <table class="table1"  border="1">
+                  <caption class="book_h01">木材检验野账</caption>
+                  <tr>
+                  <td style="width:200px">工单号</td>
+                  <td colspan="7" style="text-align:left;vertical-align:left">
+                       <input style="width:200px;border:0px;" type="text" name="workid" id="wworkid" onclick="funworkid()" >
+                  </td>
+                  </tr>
+                    <tr>
+                     <td style="width:200px">发货单位：</td>
+    	            <td><input type='text' style="border:0px;background-color: transparent;width:100%" id='company' readonly="readonly" ></td>
+        			<td style="width:200px">合同号：</td>
+        	        <td><input type='text' style="border:0px;background-color: transparent;" id='contractNum'  readonly="readonly"></td>
+        	        <td style="width:100px">工程包：</td>
+                    <td><input type='text' style="border:0px;background-color: transparent;" id='projectPackageName'  readonly="readonly"></td>
+                    <td style="width:200px">施工方：</td>
+                    <td><input type='text' id='contractionSide' style="border:0px;background-color: transparent;" readonly="readonly"></td></tr>
+                    <tr>
+                    <td style="width:200px">收货单位：</td>
+    	            <td><input type='text' style="border:0px;background-color: transparent;width:200px;" value='将乐县金森贸易有限公司' readonly="readonly"></td>
+        			<td style="width:200px">检验地点（货场）：</td>
+        	        <td><input type='text' id='checksite' name='checksite' value=''></td>
+        	        <td style="width:100px">分区：</td>
+                    <td><input type='text' id='section' style="border:0px;background-color: transparent;" readonly="readonly"></td>
+                    <td class='top-table-label'>运输起讫：</td>
+                    <td><input type='text' id='cutSite' style="border:0px;background-color: transparent;" readonly="readonly"></td></tr>
+                    <tr>
+					<td colspan="1">有效时间</td>
+					<td colspan="2"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" readonly="readonly" type="text" name="cutdate" id="ccutdate" value="<%=now%>"/></td>
+					<td>车号</td>
+					<td><input style="font-size:20px;text-align:center" type="text" id="carnumber" name="carnumber" value="" /></td>
+					<td>调令通知单</td>
+					<td colspan="2"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type="text" id="" name="" value="" /></td>
+				  </tr>
+				  <tr>
+					<td>采伐证号</td>
+					<td><input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" oninput='mycreate()&funworkid()' onclick='locationInput'/></td>
+					<td colspan="6">乡镇:<input style="width:100px;border:0px;background-color: transparent;font-size:20px;text-align:center" type="text" id="cutsite" name="cutsite" />
+					村:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" name="cutvillage" id="cutvillage" />
+					林班:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" name="quartel" id="quartel"/>
+					大班:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" name="largeblock" id="largeblock"/>
+					小班:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" readonly="readonly" name="smallblock" id="smallblock"  /></td>
+					
+				</tr>
+                     <%--  <tr>
                            <th colspan="2">采伐证号</th>
                            <th colspan="2">工单号</th>
                           <th colspan="2">时间</th>
                            </tr>
                            <tr>
                            <td colspan="2">
-                             <input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" >
+                             <input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" oninput='mycreate()' onclick='locationInput'>
                            </td>
                            <td colspan="2">
                               <input style="width:80%;border:0px;" type="text" name="workid" id="wworkid" onclick="funworkid()" >
@@ -218,111 +329,121 @@ String now = df.format(d); %>
                               <input style="width:80%;border:0px;" type="text" name="cutsite" id="ccutsite ">
                            </td>
                            <td colspan="2">
-                           <select style="width:80%;border:0px;" name="checksite" id="checksite"><option selected="selected">选择</option></select>
+                              <input style="width:80%;border:0px;" type="text" name="checksite" id="ccchecksite" >
                            </td>
                            <td colspan="2">
                               <input style="width:80%;border:0px;" type="text" name="carnumber" id="ccarnumber" >
                            </td>
-                           </tr>
-                           
+                           </tr>--%>
                               <tr>
                                  <th scope="col">序号</th>
-                                 <th scope="col">树材种</th>
+                                 <th scope="col" colspan="2">树材种</th>
                                   <th scope="col">检  尺  长</th>
                                   <th scope="col">检  尺  径</th>
                                   <th scope="col">根  数</th>
-                                  <th scope="col">材  积</th>
+                                  <th scope="col" colspan="2">材  积</th>
                               </tr>
                               <tr>
                                  <td>1</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                               <tr>
                                  <td>2</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                 <tr>
                                 <td>3</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                 <tr>
-                                 <td>5</td>
-                                 <td>&nbsp; </td>
+                                 <td>4</td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                  <tr>
+                                 <td>5</td>
+                                 <td colspan="2">&nbsp; </td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp;</td>
+                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp;</td>
+                              </tr>
+                               <tr>
                                  <td>6</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                <tr>
                                  <td>7</td>
-                                 <td>&nbsp; </td>
+                                <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                <tr>
                                  <td>8</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                <tr>
                                  <td>9</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                <tr>
                                  <td>10</td>
-                                 <td>&nbsp; </td>
+                                 <td colspan="2">&nbsp; </td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp;</td>
                                  <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td colspan="2">&nbsp;</td>
                               </tr>
                                <tr>
-                                 <td>总计</td>
-                                 <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
-                                 <td>&nbsp;</td>
-                                 <td>&nbsp; </td>
-                                 <td>&nbsp;</td>
+                                 <td rowspan="2">合计(大写)</td>
+      <td colspan="4"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" name="toltree1" id="toltree1" value="">根（块、件）</td>
+      
+      <td rowspan="2">合计(小写)</td>
+      <td colspan="4"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" name="toltree" id="toltree" value="">根（块、件）</td>
                               </tr>
+                              <tr>
+      <td colspan="4"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" name="tolstere1" id="tolstere1">立方米吨、根</td> 
+      <td colspan="4"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" name="tolstere" id="tolstere" value="">立方米吨、根</td> 
+      </tr>
                              <tr>
                                 <td colspan="2">货场管理员：</td>
                                 <td colspan="2">检尺员：</td>
-                                <td colspan="2">伐区监管员：</td>
+                                <td colspan="4">伐区监管员：</td>
                              </tr>
                              
                              <tr>
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
-                                <td colspan="2"><input style="width:80%;border:0px;" type="text" name="forester" id="fforester" ></td>
+                                <td colspan="4"><input style="width:80%;border:0px;" type="text" name="forester" id="fforester" ></td>
                              </tr>
                             </table>
                         </div>

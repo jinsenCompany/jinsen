@@ -1,9 +1,15 @@
 package jinshen.bean;
+
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 //用于木材销售表格打印
 public class treeoutPrint {
 	private double workid;
 	private double yeart;
 	private double montht;
+	private Date yarddate;
 	private String carNumber;
 	private String yard;
 	private String batchNum;//检尺标准
@@ -17,6 +23,9 @@ public class treeoutPrint {
 	private double price;
 	private String surveyor;
 	private String saleman;
+	
+	private String contractnum;//销售合同
+	private String saleCalloutOrder;//销售调令
 	public double getWorkid() {
 		return workid;
 	}
@@ -112,6 +121,25 @@ public class treeoutPrint {
 	}
 	public void setSection(String section) {
 		this.section = section;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	public Date getYarddate() {
+		return yarddate;
+	}
+	public void setYarddate(Date yarddate) {
+		this.yarddate = yarddate;
+	}
+	public String getContractnum() {
+		return contractnum;
+	}
+	public void setContractnum(String contractnum) {
+		this.contractnum = contractnum;
+	}
+	public String getSaleCalloutOrder() {
+		return saleCalloutOrder;
+	}
+	public void setSaleCalloutOrder(String saleCalloutOrder) {
+		this.saleCalloutOrder = saleCalloutOrder;
 	}
     
 

@@ -44,7 +44,7 @@ td,th{text-align:center;vertical-align:middle}
          tr{text-align:center}
     .p-tail {
     padding: 10px;
-    font-size: 12px;
+    font-size: 18px;
     color: #8a6d3b;
 }
 .i-tail {
@@ -65,16 +65,16 @@ function addproject(){
 	var map={};
 	var group=[];
 	//var projectPackageid=$("#projectPackageid").val();
-	var projectPackageid=document.getElementById("projectPackageid").value;
-	var projectPackagename=document.getElementById("projectPackagename").value;
-	var managerPhone=document.getElementById("managerPhone").value;
+	var projectPackageName=document.getElementById("projectPackageName").value;
+	var contractNum=document.getElementById("contractNum").value;
+	var contractionSide=document.getElementById("contractionSide").value;
 	var str=$("#table2").bootstrapTable('getSelections');
 	if(str.length<1) {
 		alert("无选中记录！");
 	}
 	else{
 		
-	    if(projectPackageid=="")
+	    if(projectPackageName=="")
 	   {
 	    alert("请先输入工程包号！");
 	    }
@@ -89,14 +89,14 @@ $.ajax({
     data:{
         "action":"updateproject",
         "project":mymap,
-        "projectPackageid":projectPackageid,
-        "projectPackagename":projectPackagename,
-        "managerPhone":managerPhone
+        "projectPackageName":projectPackageName,
+        "contractNum":contractNum,
+        "contractionSide":contractionSide
     },
     type: "POST",
     dataType:"html",
     success: function (data) {
-    	alert(data);
+    	//alert(data);
     	if(data>0)
     		{
     	        alert("添加成功！");
@@ -127,14 +127,14 @@ function overtimedelete(cutnum)
         success: function (data) {
         	if(data)
         		{
-        		alert("hh删除成功！");
+        		alert("删除成功！");
         		$("#table1").bootstrapTable('refresh');
         		$("#table2").bootstrapTable('refresh');
         		
         		}
         		
         	else
-        		alert("hh删除失败！");
+        		alert("删除失败！");
         }
     })
 }
@@ -194,29 +194,70 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
+  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+     <ul>
+        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+       <ul>
+      
+        <li><a href="workpageAdd.jsp">野账录入</a></li>
+        <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+      </ul>
+     </li>
+    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+       <ul>
+        <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
+        <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
+      </ul>
+     </li>
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>   
   </ul>
 </div>
 <!--sidebar-menu-->
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
   </div>
 <!--End-breadcrumbs-->
 <main>
     <div class="find-top">
         <p class="p-tail"><i
-         class="i-tail"></i> 该页面主要是创建采伐证工程包</p>
+         class="i-tail"></i> 该页面主要是：移除和添加新的采伐证号</p>
     </div>
     <div class="find-top1">
-    <h1 class="book_h01" align="top">编辑工程包</h1>
+    <h1 class="book_h01" align="top">编辑工程包（新增和移除采伐证）</h1>
     <div class="top" id="divprint">
-    <p class="htv"><span>请输入工程包信息:</span></p>
+    <p class="htv"><span>工程包信息（不可修改）:</span></p>
     <table style="margin:auto">
        <tr>
-       <td>工程包</td><td><input type="text" name="projectPackageid" id="projectPackageid" value="<%=c.getprojectPackageid() %>"></td>
-       <td>工程包管理人员</td><td><input type="text" name="projectPackagename" id="projectPackagename" value="<%=c.getprojectPackagename() %>"></td>
-       <td>管理人员电话</td><td><input type="text" name="managerPhone" id="managerPhone" value="<%=c.getmanagerPhone() %>"></td>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包创建时间:</td><td><input type="text" name="projpackageStarttime" id="projpackageStarttime" value="<%=c.getProjpackageStarttime() %>" readonly="readonly"></td>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包名称:</td><td><input type="text" name="projectPackageName" id="projectPackageName" value="<%=c.getProjectPackageName() %>" readonly="readonly"></td>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;合同编号:</td><td><input type="text" name="contractNum" id="contractNum" value="<%=c.getContractNum() %>" readonly="readonly"></td>
+       </tr>
+       <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;施工方:</td><td><input type="text" name="contractionSide" id="contractionSide" value="<%=c.getContractionSide() %>" readonly="readonly"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;采伐工期:</td><td><input type="text" name="cuttime" id="cuttime" value="<%=c.getCuttime() %>" readonly="readonly"></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;伐区管理员:</td><td><input type="text" name="forester" id="forester" value="<%=c.getForester() %>" readonly="readonly"></td>   
+       </tr>
+       <tr>
+       <td>&nbsp;&nbsp;&nbsp;&nbsp;合同文件:</td>
+       <td>${projectfile}<a href="DownfileServlet?action=projectfile&filename=<%=c.getAccessory() %>">下载</a></td>
        </tr>
     </table>
     <!-- 显示最近新增的采伐证号 -->
@@ -224,13 +265,13 @@ function inputNull(form){
     <div class="table-con">
         <table id="table1" class="table-style"></table>
     </div>
-    <div class="htv" style="font-size:20px"><span>未添加采伐证号:</span></div>
+    <div class="htv" style="font-size:20px"><span>未添加采伐证号:（工程包新增采伐证信息，请勾线以下未添加采伐证）</span></div>
     <div class="table-con">
         <table id="table2" class="table-style"></table>
     </div>
     </div>
     <div class=" but_p" style="float:center;">
-    <button class="but_save" type="button" onclick="addproject()" value="更新工程包">更新工程包</button>
+    <button class="but_save" type="button" onclick="addproject()" value="新增采伐证">新增采伐证</button>
     <button class="but_save" type="submit" id="mybutton" value="返回添加工程包" onclick="javascrtpt:window.location.href='cutnumProjectpackage.jsp'">返回添加工程包</button></div>
    </div>
 </main>
@@ -314,52 +355,53 @@ $(function(){
                         align: 'center',
                         valign: 'middle'
                     },
+                    {
+                        title: '采伐证号',
+                        field: 'certificatenum',
+                        width:200,
+                        align: 'center',
+                        valign: 'middle'
+                    },
                 	{
-                    title: "采伐证号",
+                    title: "采伐证编号",
                     field: 'cutnum',
-                    //width:'auto',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
-                {
-                    title: '采法许可证编号',
-                    field: 'number',
-                    width:'auto',
-                    align: 'center',
-                    valign: 'middle'
-                },
+                
                 {
                     title: '采法许开始时间',
                     field: 'starttime',
-                    //width:'auto',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采法许结束时间',
                     field: 'endtime',
-                    //width:'auto',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '采伐公司',
+                    title: '林权单位',
                     field: 'company',
-                    width:'200px',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐面积',
                     field: 'cutarea',
-                    //width:'40px',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐蓄积',
                     field: 'cutstore',
-                    //width:'40px',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
@@ -391,7 +433,7 @@ $(function(){
                 queryParams:function queryParams(params){
                     var temp = {
     						//action:"cutnumproject",
-    						projectPackageid:document.getElementById("projectPackageid").value,
+    						projectPackageName:document.getElementById("projectPackageName").value,
     				};     
                     return temp;
                 },
@@ -412,35 +454,37 @@ $(function(){
                         valign: 'middle'
                     },
                 	{
-                    title: "采伐证编号号",
+                        title: '采伐证号',
+                        field: 'certificatenum',
+                        width:200,
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                	
+                	{
+                    title: "采伐证编号",
                     field: 'cutnum',
-                    //width:'auto',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
-                {
-                    title: '采法许号',
-                    field: 'certificatenum',
-                    width:'auto',
-                    align: 'center',
-                    valign: 'middle'
-                },
+                
                 {
                     title: '采法许开始时间',
                     field: 'starttime',
-                    //width:'auto',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采法许结束时间',
                     field: 'endtime',
-                    //width:'auto',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '采伐公司',
+                    title: '林权单位',
                     field: 'company',
                     width:'200px',
                     align: 'center',
@@ -449,14 +493,14 @@ $(function(){
                 {
                     title: '采伐面积',
                     field: 'cutarea',
-                    //width:'40px',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐蓄积',
                     field: 'volume',
-                    //width:'40px',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },

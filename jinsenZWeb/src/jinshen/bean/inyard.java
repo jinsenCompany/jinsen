@@ -1,6 +1,8 @@
 package jinshen.bean;
 //用于木材进场数据保存至数据库
-import java.sql.Date;
+
+
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -29,7 +31,7 @@ public class inyard {
     public void setCutNum(String cutNum) {
     	this.cutNum = cutNum;
     }
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getYarddate() {
     	return yarddate;
     }

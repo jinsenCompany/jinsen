@@ -111,7 +111,7 @@ su=(List<surveyor>)request.getAttribute("surveyor");%>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
  <ul>
-    <li class="active"> <a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li>
+<!--     <li class="active"> <a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li> -->
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -146,7 +146,7 @@ su=(List<surveyor>)request.getAttribute("surveyor");%>
        </tr>
        <tr>
         <td>调令号:</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="saleCalloutOrder" id="saleCalloutOrder" value="<%=s.getSaleCalloutOrder() %>"></td> 
-        <td>货款金额:</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="Paymentamount" id="Paymentamount" value="<%=s.getPaymentamount() %>"></td> 
+        <%-- <td>货款金额:</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="Paymentamount" id="Paymentamount" value="<%=s.getPaymentamount() %>"></td> --%>
         <td>合计数量</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="totalnum" id="totalnum" onclick="makecount()" value="<%=s.getTotalnum() %>"></td>
       <td>通知签发人</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="Signer" id="Signer" value="<%=s.getSigner() %>"></td>
        </tr>

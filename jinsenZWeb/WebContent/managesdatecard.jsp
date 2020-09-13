@@ -82,6 +82,17 @@ td,th{text-align:center;vertical-align:middle}
 	background-color: #3383da; 	
 	cursor: pointer; 
 	}
+		.sgf{
+				text-align: center;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse;
+			}
+			.sgf input{
+				width: 150px;
+				border: 0;
+				text-align:center;vertical-align:middle;
+				margin-top:10px;
+			}
+			.sgf td{align:center;}
+			.wrap{ width:100px; position:relative; overflow:hidden; margin-right:4px; display:inline-block; padding:4px 10px; line-height:18px; text-align:center; vertical-align:middle; cursor:pointer; background:rgb(217,237,247); border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px; margin-top: 10px; float:left; } .wrap span{ color:black; font-size: 16px; } #fileupload{ height: 20px; } .wrap .file{ position:absolute; top:0; right:0; margin:0; border:solid transparent; opacity:0; filter:alpha(opacity=0); cursor: pointer; } 
 </style>
 <script type="text/javascript">
 function inputNull(form){
@@ -94,6 +105,115 @@ function inputNull(form){
 		}
 	}
 	}
+//利用fromdata保存文件
+function addmmmmm()
+{
+	//var formData = new FormData($('#myform'));
+	//formData.append('file', $('#file'));
+	//formData.append('cutnum', $('#cutnum'));
+	//alert(formData);
+    $.ajax({
+        url:"workpageSevrlet?action=managesdateCard1",
+        /*data:{
+            "action":"cutnumtreeAdd",
+            "newtree":mymap,
+            "id":kk,
+            "cutnum":cutnum 
+        },*/
+        type: "POST",
+        cache: false,
+        data: new FormData($('#myform')[0]), 
+        processData: false,
+        contentType: false,
+        dataType:"html",
+        success: function (data) {
+        	//alert(data);
+        	if(data>0)
+        		{
+        	        alert("保存成功！");
+        	        window.location.href = 'managesdatecard.jsp';
+        		}
+        	else{
+        		 alert("保存失败");
+        	}
+        }
+    })
+}
+</script>
+<script type="text/javascript"> 
+function preview(file){ var div = $(file).parent().next(); 
+if(file.files&&file.files[0]){
+	var reader=new FileReader(); 
+	reader.onload=function(managepath){ 
+		div.html('<img src="'+managepath.target.result+'"  alt="150"  width="350" height="250"/>'); }
+	reader.readAsDataURL(file.files[0]); }
+	else{ prevDiv.innerHTML='<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader">'; } } 
+	</script>
+<script type="text/javascript">
+
+function mycreate()
+{
+	//var length=$("#codetable tr").length;
+	var ownername=document.getElementById("ownername").value;
+	length=(length-1)*2;
+	var group=[];
+	$.ajax({
+        url:"workpageSevrlet",
+        data:{
+            "action":"searchMnage",
+            "ownername":ownername
+        },
+        type: "POST",
+        dataType:"json",
+        success: function (data) {
+        	if(data==null)
+        		{
+        		alert("您所需要生成的信息有误，请重新核对");
+        		}
+        	else{
+        	var Volume=data["Volume"];
+        	var Cutarea=data["Cutarea"];
+        	var projectpackage=data["projectpackage"];
+        	//alert(Volume);
+        	var vvv=0;
+        	var area=0;
+        	for(var i=0;i<Volume.length;i++)
+    		{
+        		
+        		vvv+=Number(Volume[i]);
+    		}
+        	document.getElementById("totaloutwood").value=Number(vvv);
+        	for(var i=0;i<Cutarea.length;i++)
+    		{
+        		area+=Number(Cutarea[i]);
+    		}
+        	var areall=area.toFixed(2);
+        	document.getElementById("allarea").value=Number(areall);
+        	$("#myproject").empty();
+        	for(var i=0;i<projectpackage.length;i++)
+    		{
+        		var j=projectpackage[i];
+        		var j1=Volume[i];
+        		var j2=Cutarea[i];
+        		//alert(j2)
+        		var str3="<table class='top-table'>"
+        			+"<tr><td class='top-table-label' >签订工程包时间：</td>"
+    	            +"<td><input type='text' disabled='disabled' id='projpackageStarttime' value='"+j.projpackageStarttime+"'></td>"
+        			+"<td class='top-table-label'>工程包号：</td>"
+        	        +"<td><input type='text' id='projectPackageName' disabled='disabled' value='"+j.projectPackageName+"''></td>"
+        	        +"<td class='top-table-label'>出材量：</td>"
+                    +"<td><input type='text' id='volume' disabled='disabled' value='"+Volume[i]+"'></td>"
+                    +"<td class='top-table-label'>面积：</td>"
+                    +"<td><input type='text' id='cutarea' disabled='disabled' value='"+Cutarea[i]+"'></td></tr></table>";
+        		$("#myproject").append(str3); 
+    		}
+        }}
+    })
+}
+window.onload = function () {
+    locationInput = function () {
+    };
+}
 </script>
 </head>
 <body>
@@ -111,7 +231,7 @@ function inputNull(form){
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -126,7 +246,14 @@ function inputNull(form){
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -139,27 +266,39 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工单管理</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="workpageAdd.jsp">输入工单</a></li>
-        <li><a href="workpageShenheFaqu.jsp">审核工单</a></li>
-      </ul>
-     </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">2</span></a>
-     <ul>
-        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
-      </ul>
-     </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li>
-    <li><a href="CutnumProjectpackageTable.jsp"><i class="icon icon-inbox"></i><span>工程包台账</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
+     <ul>
+        <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
+        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+      </ul>
+     </li>
+    
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+       <ul>
+      
+        <li><a href="workpageAdd.jsp">野账录入</a></li>
+        <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+      </ul>
+     </li>
+    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
+   <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+       <ul>
+        <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
+        <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
+      </ul>
+     </li>
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>         
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -172,41 +311,74 @@ function inputNull(form){
 <main>
     <div class="find-top">
         <p class="p-tail"><i
-         class="i-tail"></i> 该页面主要是木材生产施工方管理资料卡</p>
+         class="i-tail"></i> 该页面主要是木材生产施工方管理资料卡<br>操做提醒:输入施工方姓名：网页上自动关联工程包，填充总面积、总出材量、施工方业绩（不可更改）</p>
     </div>
     <div class="find-top1">
-    <form id="myform" onSubmit="return inputNull(this)" action="workpageSevrlet?action=managesdateCard1" method="POST" enctype="multipart/form-data">
+    <form id="myform" action="workpageSevrlet?action=managesdateCard1" method="POST" enctype="multipart/form-data">
     <div class="top" id="divprint">
-    <table class="biao">
-    <caption class="book_h01">录入施工方资料</caption>
-       <tr><td id="a">业主姓名</td><td id="b"><input type="text" name="ownername" id="ownername"></td>
-        <td id="a">性别</td><td id="b">
-		    <select name="sex" id="sex">
-		    <option>------请选择性别------</option>
-		    <option value="男">男</option>
-			<option value="女">女</option>
-			</select>
-			</td></tr>
-		    <tr><td id="a">出生年月</td><td id="b"><input type="date" name="borndate" id="borndate"></td><td id="a">身份证号</td><td id="b"><input type="text" name="idnumber" id="idnumber"></td></tr>
-		    <tr><td id="a">籍贯</td><td id="b"><input type="text" name="bornplace" id="bornplace"></td><td id="a">企业名称</td><td id="b"><input type="text" name="enterprisename" id="enterprisename"></td></tr>
-		    <tr><td id="a">企业营业执照</td><td id="b"><input type="text" name="businesslicense" id="businesslicense"></td><td id="a">家庭住址</td><td id="b"><input type="text" name="address" id="address"></td></tr>
-		    <tr><td id="a">联系方式</td><td id="b"><input type="text" name="contact" id="contact"></td><td id="a">工程包</td><td id="b"><input type="text" name="engineeringbag" id="engineeringbag"></td></tr>
-		    <tr><td id="a">采伐证号</td><td id="b"><input type="text" name="cutnum" id="cutnum"></td><td id="a">林班</td><td id="b"><input type="text" name="quartel" id="quartel"></td></tr>		    
-		    <tr><td id="a">大班</td><td id="b"><input type="text" name="largeblock" id="largeblock"></td><td id="a">小班</td><td id="b"><input type="text" name="smallblock" id="smallblock"></td></tr>
-		    <tr><td id="a">总面积</td><td id="b"><input type="text" name="allarea" id="allarea"></td><td id="a">总出材</td><td id="b"><input type="text" name="totaloutwood" id="totaloutwood"></td></tr>
-		    <tr><td id="a">伐区片数</td><td id="b"><input type="text" name="areapiece" id="areapiece"></td><td id="a">与金森合作年份</td><td id="b"><input type="text" name="cooperationyear" id="cooperationyear"></td></tr>
-		    <tr><td id="a">施工队伍</td><td id="b" colspan="4"><input style="width:744px;"  type="text" name="team" id="team"></td></tr>
-		    <tr><td id="a">施工业绩</td><td id="b" colspan="4"><input style="width:744px;"  type="text" name="yeji" id="yeji" ></td></tr>
-			<tr><td id="a">上传附件</td><td id="b"><input type="file" name="managepath" id="managepath"></td><td id="a">合同签订时间</td><td><input style="width: 172px;" type="date" name="signingtime" id="signingtime"></td></tr>
-	
-		</table>
+			<table border="" cellspacing="" cellpadding="" class="sgf">
+			<caption class="book_h01">录入施工方资料</caption>
+				<tr>
+					<td>施工方</td>
+					<td><input style="border:0px;background-color: transparent;" type="text" id="ownername" name="ownername" oninput='mycreate()' onclick='locationInput' /></td>
+					<td>性别</td>
+					<td><select style="border:0px;background-color: transparent;" name="sex" id="sex">
+						<option value="男">男</option>
+						<option value ="女">女</option>
+					</select></td>
+					<td>出生年月</td>
+					<td><input style="border:0px;background-color: transparent;" type="date" id="borndate" name="borndate" value="" /></td>
+					<td rowspan="2"><div class="wrap" >
+                        	   选择照片
+                           
+                <input id="fileupload" class="file" type="file" name="managepath" id="managepath" onChange="preview(this)"/></div> <div id="preview"></div></td>
+				</tr> 
+				<tr>
+					<td>身份证号</td>
+					<td colspan="3"><input style="width: 220px;border:0px;background-color: transparent;" type="text" id="idnumber" name="idnumber" value="" /></td>
+					
+					<td>籍贯</td>
+					<td><input style="border:0px;background-color: transparent;" type="text" id="bornplace" name="bornplace" value="" /></td>
+				<!-- 	<td></td> -->
+				</tr>
+				<tr>
+					<td>企业名称</td>
+					<td colspan="3"><input style="width: 220px;border:0px;background-color: transparent;" type="text" id="enterprisename" name="enterprisename" value="" /></td>
+					<td>企业营业执照</td>
+					<td colspan="2"><input style="width: 300px;border:0px;background-color: transparent;" type="text" id="businesslicense" name="businesslicense" value="" /></td>
+				</tr>
+				<tr>
+					<td>家庭住址</td>
+					<td colspan="3"><input style="width: 220px;border:0px;background-color: transparent;" type="text" id="address" name="address" value="" /></td>
+					<td>联系方式</td>
+					<td colspan="2"><input style="width: 300px;border:0px;background-color: transparent;" type="text" id="contact" name="contact" value="" /></td>
+				</tr>
+				<tr>
+					<td>总面积(亩)</td>
+					<td colspan="3"><input style="width: 220px;border:0px;background-color: transparent;" type="text" id="allarea" name="allarea" value="" readonly="readonly" /></td>
+					<td>总出材量</td>
+					<td colspan="2"><input style="width: 300px;border:0px;background-color: transparent;" type="text" id="totaloutwood" name="totaloutwood" value="" readonly="readonly" /></td>
+				</tr>
+				<tr>
+					<td>施工业绩</td>
+					<!--  <td colspan="1"><input style="height:200px;width:600px;word-break:break-all;border:0px;background-color: transparent;" onclick="mycreate()"></td>-->
+					<td colspan="6"><div id="myproject">
+					
+					</div></td>
+				</tr>
+				
+			</table>
+			
 		</div>
-		<div class="1" style="text-align:center">
+		
+		<div class="1" style="text-align:center;margin-top:20px">
 
-		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存">保存</button></span>
+		    <span  style="text-align: center;"><button class="btn" type="button" onclick="addmmmmm()" value="保存">保存</button></span>
 		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
 		 </div>
 						<div style="clear: both;padding-bottom: 40px"></div>
+						
+               
 	</form> 
 		
 	</div>

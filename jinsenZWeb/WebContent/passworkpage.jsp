@@ -47,7 +47,7 @@
 #h a:hover{color:white;background: green}
 .p-tail {
     padding: 10px;
-    font-size: 12px;
+    font-size: 18px;
     color: #8a6d3b;
 }
 .i-tail {
@@ -76,7 +76,7 @@
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -91,7 +91,14 @@
       </ul>
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -103,12 +110,12 @@
     <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpage.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpage.jsp">录入进仓木材数据</a></li>
         <li><a href="treeout.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>-->
-     <li class="active"><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进场木材数据</span></a></li>
+     <li class="active"><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
     <li><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
   </ul>
 </div>
@@ -170,6 +177,7 @@
                 {
                     title: "工单号",
                     field: 'workid',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
@@ -190,23 +198,27 @@
                 {
                     title: '采伐地点',
                     field: 'cutSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '货场地点',
                     field: 'checkSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '车牌号',
                     field: 'carNumber',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '伐区监管员',
+                    width:200,
                     field: 'forester',
                     align: 'center'
                 },
@@ -217,7 +229,7 @@
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
-                        var  d = '<a href="workpageSevrlet?action=finishworkP&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="workpageSevrlet?action=finishworkP&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看与录入检尺数据</button></a>';
                         //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }

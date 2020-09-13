@@ -396,7 +396,7 @@ String now = df.format(d); %>
     <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进仓木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>
@@ -414,7 +414,7 @@ String now = df.format(d); %>
   </div>
     <article>
         <div>
-            <h1 class="book_h01">录入进场木材信息</h1>
+            <h1 class="book_h01">录入进仓木材信息</h1>
             <!--  <form  onSubmit="return inputNull(this)" action="treeServlet?action=inyard" method="POST" >-->
             <form>
             <div id="divprint">

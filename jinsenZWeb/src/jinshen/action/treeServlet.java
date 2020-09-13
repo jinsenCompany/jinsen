@@ -1,5 +1,5 @@
 package jinshen.action;
-/*录入进场木材信息和出场木材信息*/
+/*录入进仓木材信息和出场木材信息*/
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -147,6 +147,7 @@ public class treeServlet extends HttpServlet {
         }
         //录入销售输出木材，并保存都数据库木材输出表treeout中
         else if("treeAddout".equals(action)) {
+        	double workid=Double.parseDouble(request.getParameter("workid"));
         	String yarddate=request.getParameter("yarddate");
         	String carNumber=request.getParameter("carnumber");
         	String yard=request.getParameter("yard");
@@ -170,6 +171,7 @@ public class treeServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
         	outyard cp = new outyard();
+        	cp.setWorkid(workid);
 			cp.setYarddate(yardtime);
 			cp.setCarNumber(carNumber);
 			cp.setYard(yard);
@@ -181,9 +183,10 @@ public class treeServlet extends HttpServlet {
 			cp.setSaleCalloutorderid(saleCalloutOrder);
 			cp.setSection(section);
 			int flag=trd.addOutyard(cp);
-			sql="SELECT workid from outyard WHERE contractnum='"+contractnum+"' and sale_callout_orderid='"+saleCalloutOrder+"' and yarddate='"+yarddate+"' and carNumber='"+carNumber+"'";
-			outyard w=trd.findworkid(sql);
-			double workid=w.getWorkid();
+//			sql="SELECT workid from outyard WHERE contractnum='"+contractnum+"' and sale_callout_orderid='"+saleCalloutOrder+"' and yarddate='"+yarddate+"' and carNumber='"+carNumber+"'";
+//			outyard w=trd.findworkid(sql);
+//			double workid=w.getWorkid();
+			int flagt=0;
 			if(flag>0) {
 				int i=0;
 				if(jb.has("0"))
@@ -200,9 +203,20 @@ public class treeServlet extends HttpServlet {
 				else if(jb.has("3")) {
 					i=3;
 				}
+				JSONArray s=null;
         	for(int j=i;j<id;j++)
-        	{
-        		JSONArray s=jb.getJSONArray(String.valueOf(j));
+        	{ 
+        		if(jb.has(String.valueOf(j))) {
+		        	//System.out.println(String.valueOf(j));
+		        	s=jb.getJSONArray(String.valueOf(j));
+		        }
+		        else if(jb.has(String.valueOf(j+1))) {
+		        	s=jb.getJSONArray(String.valueOf(j+1));
+		        }
+		        else {
+		        	s=jb.getJSONArray(String.valueOf(j+2));
+		        }
+        		//JSONArray s=jb.getJSONArray(String.valueOf(j));
         		tree t=new tree();
         		t.setWorkid(workid);
         		t.setTreetype(s.getString(0));
@@ -213,9 +227,47 @@ public class treeServlet extends HttpServlet {
             	//材积单价还没有
             	t.setUnitprice(1);
             	t.setTotalnum(1);
-            	int flagt=trd.addTreeout(t);
-            	out.print(flagt);
+            	String treetype=s.getString(0);
+            	double tradius=Double.parseDouble(s.getString(2));
+            	if(treetype.equals("杉木") && tradius>0 && tradius<13)
+	            {
+	            	t.setTreeid(1);//衫小径
+	            }
+	            else if (treetype.equals("杉木") && tradius>13)
+	            {
+	            	t.setTreeid(2);//衫原木
+	            }
+	            else if (treetype.equals("松木") && tradius>0 && tradius<13)
+	            {
+	            	t.setTreeid(3);//松小径
+	            }
+	            else if (treetype.equals("松木") && tradius>13)
+	            {
+	            	t.setTreeid(4);//松原木
+	            }
+	            else if (treetype.equals("杂木") && tradius>0 && tradius<13)
+	            {
+	            	t.setTreeid(5);//杂小径
+	            }
+	            else if (treetype.equals("杂木") && tradius>13)
+	            {
+	            	t.setTreeid(6);//杂原木
+	            }
+	            else {
+	            	t.setTreeid(7);//其他
+	            }
+            	flagt=trd.addTreeout(t);
+            	//out.print(flagt);
         		}
+        	if(flagt>0) {
+        		outyard cpS = new outyard();
+        		cpS.setWorkid(workid);
+        		cpS.setOutStatus(0);
+        		int flagto=trd.addTreeoutStatus(cpS);
+        		out.print(flagto);
+        	}
+        	else 
+        		{out.print(flagt);}
 			}
 	}
         //把输入木材信息页面的信息存到数据库表inyard中
@@ -563,17 +615,19 @@ public class treeServlet extends HttpServlet {
         	String surveyor=request.getParameter("surveyor");
         	double toltree=Double.parseDouble(request.getParameter("toltree"));
         	double tolstere=Double.parseDouble(request.getParameter("tolstere"));
-        	//System.out.println(tolstere);
-        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        	Date d = null;
-			try {
-				d = format.parse(yarddate);
-			} catch (ParseException e) {
+        	//System.out.println(jb);
+        	//System.out.println(id);
+        	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        	Date yardtime=null;
+        	try {
+        		yardtime = new java.sql.Timestamp(format.parse(yarddate).getTime());
+			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-			java.sql.Date yardtime = new java.sql.Date(d.getTime());
-				//保存材积
+				e1.printStackTrace();
+			}
+        	String treetype="";
+        	double tradius=0;
+		   //保存材积
 			int flagt=0;
 			int i=0;
 			if(jb.has("0"))
@@ -590,24 +644,67 @@ public class treeServlet extends HttpServlet {
 			else if(jb.has("3")) {
 				i=3;
 			}
+			else if(jb.has("4")) {
+				i=4;
+			}
+			else if(jb.has("5")) {
+				i=5;
+			}
+			JSONArray s=null;
+			
     	   for(int j=i;j<id;j++)
-		        {
-		        	JSONArray s=jb.getJSONArray(String.valueOf(j));
+		        {  
+    		        if(jb.has(String.valueOf(j))) {
+    		        	//System.out.println(String.valueOf(j));
+    		        	s=jb.getJSONArray(String.valueOf(j));
+    		        }
+    		        else if(jb.has(String.valueOf(j+1))) {
+    		        	s=jb.getJSONArray(String.valueOf(j+1));
+    		        }
+    		        else {
+    		        	s=jb.getJSONArray(String.valueOf(j+2));
+    		        }
+		        	//JSONArray s=jb.getJSONArray(String.valueOf(j));
+		        	//System.out.println(String.valueOf(j));
 		        	tree t=new tree();
 		        	t.setWorkid(workid);
 		        	t.setTreetype(s.getString(0));
+		        	treetype=s.getString(0);
 		            t.setTlong(Double.parseDouble(s.getString(1)));
 		            t.setTradius(Double.parseDouble(s.getString(2)));
 		            t.setNum(Double.parseDouble(s.getString(3)));
-		            sql="select * from volume where tlong ="+Double.parseDouble(s.getString(1))+" and tradius="+Double.parseDouble(s.getString(2));
-		            volume vll=vl.findVolumeSingle(sql);
-		            float tvolume = 0.00f; 
-		    		//tvolume=(float)vll.getMvolume();
-		            //t.setTvolume(tvolume*t.getNum());
 		            t.setTvolume(Double.parseDouble(s.getString(4)));
-		            System.out.println(Double.parseDouble(s.getString(4)));
+		            System.out.println(treetype);
 		            t.setUnitprice(1);//默认单价为1
 		            t.setTotalnum(1);
+		            tradius=Double.parseDouble(s.getString(2));
+		            if(treetype.equals("杉木") && tradius>0 && tradius<13)
+		            {
+		            	t.setTreeid(1);//衫小径
+		            }
+		            else if (treetype.equals("杉木") && tradius>13)
+		            {
+		            	t.setTreeid(2);//衫原木
+		            }
+		            else if (treetype.equals("松木") && tradius>0 && tradius<13)
+		            {
+		            	t.setTreeid(3);//松小径
+		            }
+		            else if (treetype.equals("松木") && tradius>13)
+		            {
+		            	t.setTreeid(4);//松原木
+		            }
+		            else if (treetype.equals("杂木") && tradius>0 && tradius<13)
+		            {
+		            	t.setTreeid(5);//杂小径
+		            }
+		            else if (treetype.equals("杂木") && tradius>13)
+		            {
+		            	t.setTreeid(6);//杂原木
+		            }
+		            else {
+		            	t.setTreeid(7);//其他
+		            }
 		            flagt=trd.addTree(t);//添加木材信息到数据库中
 		        }
 				//保存进场信息
@@ -626,7 +723,7 @@ public class treeServlet extends HttpServlet {
 			sql = "select count(*) from inyard where workid="+cp.getWorkid()+"";
 			double f=trd.findcount(sql);
 			int flag=trd.addInyard(cp);
-			System.out.println(flag);
+			//System.out.println(flag);
 			if(flag>0)
 			{
 				workpageStatus ws=new workpageStatus();
@@ -1263,7 +1360,7 @@ public class treeServlet extends HttpServlet {
         //库存盘点
         else if("findhcpd".equals(action)) {
         	String yeart=request.getParameter("year");
-            sql="SELECT YEAR(outyard.yarddate) as yeart,outyard.yard from outyard join inyard on outyard.yard=inyard.yard WHERE YEAR(outyard.yarddate)="+yeart+" GROUP BY outyard.yard";
+            sql="SELECT YEAR(outyard.yarddate) as yeart,outyard.yard from outyard join inyard on outyard.yard=inyard.yard WHERE YEAR(outyard.yarddate)="+yeart+" GROUP BY outyard.yard,yeart";
             List<yardInventory> cw=trd.findhyard(sql);
         	//System.out.println("...."+cw.size() + "...");
         	mapper.writeValue(response.getWriter(), cw);
@@ -1273,11 +1370,11 @@ public class treeServlet extends HttpServlet {
         	String yeart=request.getParameter("yeart");
         	yardname=yardname.replace("'", "");
         	yeart=yeart.replace("'", "");
-    		sql="SELECT yard,year(yarddate) as yeart,month(yarddate) as montht,sum(tolstere) as tolstere from inyard where yard='"+yardname+"' and  year(yarddate)='"+yeart+"' GROUP BY month(yarddate)";
+    		sql="SELECT yard,year(yarddate) as yeart,month(yarddate) as montht,sum(tolstere) as tolstere from inyard where yard='"+yardname+"' and  year(yarddate)='"+yeart+"' GROUP BY yard,yeart,montht";
     		List<yardInventory> inyardT=trd.findyardList(sql);
-    		sql="SELECT yard,year(yarddate) as yeart,month(yarddate) as montht,sum(tolstere) as tolstere from outyard where yard='"+yardname+"' and  year(yarddate)='"+yeart+"' GROUP BY month(yarddate)";
+    		sql="SELECT yard,year(yarddate) as yeart,month(yarddate) as montht,sum(tolstere) as tolstere from outyard where yard='"+yardname+"' and  year(yarddate)='"+yeart+"' GROUP BY yard,yeart,montht";
     		List<yardInventory> outyardT=trd.findyardList(sql);
-    		sql="SELECT yard,year(yarddate) as yeart from inyard where yard='"+yardname+"' and  year(yarddate)='"+yeart+"' GROUP BY month(yarddate)";
+    		sql="SELECT yard,year(yarddate) as yeart from inyard where yard='"+yardname+"' and  year(yarddate)='"+yeart+"' GROUP BY yard,yeart";
     		yardInventory yardyear=trd.findhcpd(sql);
     		//System.out.print(outyardT);
     		request.setAttribute("inyardT", inyardT);
@@ -1340,15 +1437,48 @@ public class treeServlet extends HttpServlet {
          }
         //显示在salesmanThree。jsp页面检尺费表格
          else if(action.equals("surveyorFeeList")) {
-        	 sql="SELECT s.workid,s.unitprice,o.tolstere,s.surveyorFee FROM surveyor_fee as s JOIN outyard as o WHERE s.workid=o.workid GROUP BY s.workid";
+        	 sql="SELECT s.workid,s.unitprice,o.tolstere,s.surveyorFee FROM surveyor_fee as s JOIN outyard as o WHERE s.workid=o.workid GROUP BY s.workid,s.unitprice,o.tolstere,s.surveyorFee";
         	 List<surveyorFee> cw=trd.findSurveyorFeeList(sql);
           	mapper.writeValue(response.getWriter(), cw);
          }
-        //查看采伐证信息
+        //录入出仓坚持数据保存后跳转至详情页面
          else if("seetreeout".equals(action)) {
         	 String str=request.getParameter("saleCalloutOrder");
-        	 String yarddate=request.getParameter("yarddate");
+        	 double workid=Double.parseDouble(request.getParameter("workid"));
          	str=str.replace("'", "");
+         	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime,creattime from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
+         	saleCalloutOrder saleCalloutOrder=sd.findsaleorder(sql);
+         	String contractnum=saleCalloutOrder.getContractnum();
+         	sql="SELECT provider,marknumber from sale_contract WHERE contractnum='"+contractnum+"'";
+         	salecontract contractPrivoder=sd.findcontractPrivode(sql);
+         	sql="SELECT company,shipaddress from customer WHERE contractnum='"+contractnum+"'";
+         	customer compShip=sd.findcutnumAddres(sql);
+         	sql="select * from outyard where sale_callout_orderid='"+str+"' and workid='"+workid+"'";
+			outyard outyard=trd.findOutSingle(sql);
+			//double workid=outyard.getWorkid();
+			sql="select * from treeout where workid='"+workid+"'";
+			List<tree> tree=trd.findTree(sql);
+			request.setAttribute("workid", workid);
+			request.setAttribute("outyard", outyard);
+			request.setAttribute("tree", tree);
+         	request.setAttribute("saleCalloutOrder", saleCalloutOrder);
+         	request.setAttribute("contractPrivoder", contractPrivoder);
+         	request.setAttribute("compShip", compShip);
+         	request.getRequestDispatcher("treeout3.jsp").forward(request, response);
+         }
+        //选择已录入检尺数据的输出工单
+         else if("treeoutCodepage".equals(action)) {
+        	 sql="SELECT o.yarddate,o.workid,s.provider,s.demander,o.contractnum,o.sale_callout_orderid,o.yard,o.toltree,o.tolstere FROM outyard as o join sale_contract as s on o.contractnum=s.contractnum ORDER BY o.yarddate desc";
+        	 List<outyard> cw=trd.findtreeoutCode(sql);
+           	mapper.writeValue(response.getWriter(), cw);
+         }
+      //打印销售码单
+         else if("seetreeout1".equals(action)) {
+        	 String str=request.getParameter("saleCalloutorderid");
+        	 String yarddate=request.getParameter("yarddate");
+        	 System.out.print(yarddate);
+         	str=str.replace("'", "");
+         	yarddate=yarddate.replace("'", "");
          	sql="select sale_callout_order_id,contractnum,yard,section,demander,Paymentamount,totalnum,Signer,callidtime,creattime from sale_callout_orderid WHERE sale_callout_order_id='"+str+"'";
          	saleCalloutOrder saleCalloutOrder=sd.findsaleorder(sql);
          	String contractnum=saleCalloutOrder.getContractnum();
@@ -1361,12 +1491,13 @@ public class treeServlet extends HttpServlet {
 			double workid=outyard.getWorkid();
 			sql="select * from treeout where workid="+workid+"";
 			List<tree> tree=trd.findTree(sql);
+			request.setAttribute("workid", workid);
 			request.setAttribute("outyard", outyard);
 			request.setAttribute("tree", tree);
          	request.setAttribute("saleCalloutOrder", saleCalloutOrder);
          	request.setAttribute("contractPrivoder", contractPrivoder);
          	request.setAttribute("compShip", compShip);
-         	request.getRequestDispatcher("treeout3.jsp").forward(request, response);
+         	request.getRequestDispatcher("treeoutPrint.jsp").forward(request, response);
          }
 
 	}

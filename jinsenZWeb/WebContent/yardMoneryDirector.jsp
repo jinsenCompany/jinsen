@@ -220,7 +220,7 @@ $(function(){
     <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
     <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
        <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
+        <li><a href="passworkpageDirector.jsp">录入进仓木材数据</a></li>
         <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
       </ul>
      </li>-->
@@ -239,8 +239,8 @@ $(function(){
   <div id="content-header">
     <div id="breadcrumb"> <a href="yardDirector.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
-<main class="all">
-    <article class="artlce">
+<main>
+    <article>
     <div>
     <div class="find-top">
         <p class="p-tail"><i class="i-tail"></i> 本页面是货场费用台账。</p>
