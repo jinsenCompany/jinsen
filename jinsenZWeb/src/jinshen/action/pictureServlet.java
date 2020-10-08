@@ -396,6 +396,16 @@ public class pictureServlet extends HttpServlet {
     		request.setAttribute("picpath", picpath);
 		    request.getRequestDispatcher("compareTreeUpdate.jsp").forward(request, response);
     	}
+		//删除木材装车照片
+    	else if("alldelete1".equals(action))
+        {
+        	String mygroup = request.getParameter("workid");
+        	//workpage ac=new workpage();
+        	sql="delete from comparetree where workid='"+mygroup+"'";
+        	int i=wpd.delWorkPage(sql);
+        	ObjectMapper mapper1=new ObjectMapper();
+    		mapper1.writeValue(response.getWriter(),i);
+        }
 	}
 
 }

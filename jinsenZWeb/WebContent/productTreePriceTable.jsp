@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/tableall.css">
     <link rel="stylesheet" href="js/jQueryCalendar/calendar.css">
     <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
     <!-- font-awesome icons CSS -->
     <link href="css/font-awesome.css" rel="stylesheet">
@@ -38,9 +39,53 @@
 #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
 #h a:hover{color:white;background: green}
 .table1{width:90%; height:auto;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
-    </style>
+.bar1 {background: #A3D0C3;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+        .bar1 input,select {
+            border: 2px solid #7BA7AB;
+            border-radius: 5px;
+            background: #F9F0DA;
+            color: #9E9C9C;
+        }
+        .bar1 button {
+            top: 0;
+            right: 0;
+            background: #7BA7AB;
+            border-radius: 0 5px 5px 0;
+        }
+        .bar1 button:before {
+            content: "\f002";
+            font-family: FontAwesome;
+            font-size: 16px;
+            color: #F9F0DA;
+        }    
+</style>
+<script type="text/javascript">
+window.onload = function () {
+    locationInput = function () {
+    };
+}
+function load()
+{
+	$.ajax({
+        url:"salaryServlet",//要发送的地址
+        data:{
+            "action":"loadyardinfo"
+        },
+        type: "POST",
+        dataType:"json",
+        success: function (data) {
+            for(i = 0;i<data.length;i++)
+            {
+            	str = "<option>"+data[i].yardname+"</option>";
+            	
+            	$("#yard").show().append(str);
+            }
+        }
+    })
+}
+</script>
 </head>
-<body>
+<body onload="load()">
 <div id="header">
   <h1><a href="dashboard.html">销售管理平台</a></h1>
 </div>
@@ -83,18 +128,17 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
@@ -102,19 +146,27 @@
       
         <li><a href="workpageAdd.jsp">野账录入</a></li>
         <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
-        <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>       
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>       
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -122,6 +174,27 @@
   <div id="content-header">
     <div id="breadcrumb"> <a href="forestP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
+  <div class="find-top1">
+            <table class="bar1">
+           <tr>
+           <td width="200">选择开始日期：<input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01" oninput='printCutnum()' onclick='locationInput'></td>
+           <td width="200">选择结束日期：<input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01" oninput='printCutnum()' onclick='locationInput'></td>
+           <td width="200"> 工程包名称：<input  type="text" name="projectPackageName" id="projectPackageName" oninput='printCutnum()' onclick='locationInput'></td>
+           <td width="200">采伐证编号：<input  type="text" name="cutnum" id="cutnum" oninput='printCutnum()' onclick='locationInput'></td>
+           <td width="200">货场：<select name="yard" id="yard" oninput='printCutnum()' onclick='locationInput'><option selected="selected"></option></select></td>
+           <td width="200">货场分区：<select id="section" name="section"  oninput='printCutnum()' onclick='locationInput'>
+                <option selected></option>
+                <option>A区</option>
+                <option>B区</option>
+                <option>C区</option>
+                <option>D区</option>
+                <option>E区</option>
+                <option>F区</option>
+                <option>无固定分区</option>
+                </select></td>
+           </tr>
+            </table>
+           </div>
   <div class="table-con">
         <table id="table1" class="table-style"></table>
 </div>
@@ -144,7 +217,8 @@ $(function(){
             method: "post",
             striped: true,
             singleSelect: false,
-            url: "salaryServlet?action=printTreesalary",
+            //url: "salaryServlet?action=printTreesalary",
+            url: "salaryServlet",
             //data:{},
             dataType: "json",
             pagination: true, //分页
@@ -177,6 +251,18 @@ $(function(){
 //                 mergeCells(data, "yard", 1, $('#table1'));
              
 //             },
+            queryParams:function queryParams(params){
+                var temp = {
+						action:"printTreesalary",
+						timeStart:document.getElementById("timeStart").value,
+						timeEnd:document.getElementById("timeEnd").value,
+						projectPackageName:document.getElementById("projectPackageName").value,
+						cutnum:document.getElementById("cutnum").value,
+						section:document.getElementById("section").value,
+						yard:document.getElementById("yard").value,
+				};     
+                return temp;
+            },
             columns: [[
             	{
             		"title": "木材销售货款结算台账",
@@ -223,6 +309,20 @@ $(function(){
                         align: 'center',
                         valign: 'middle'
                     },
+                    {
+                        title: '查询开始时间',
+                        width: 180,
+                        field: 'timeStart',
+                        align: 'center',
+                        valign: 'middle'
+                    },
+                    {
+                        title: '查询结束时间',
+                        width: 180,
+                        field: 'timeEnd',
+                        align: 'center',
+                        valign: 'middle'
+                    },
                 {
                     title: '供货单位',
                     field: 'company',
@@ -259,7 +359,12 @@ $(function(){
                     align: 'center',
                     valign: 'middle'
                 },
-                
+                {
+               	 title:'供货分区',
+               	 field: 'section',
+                    align: 'center',
+                    valign: 'middle'
+                },
                 {
                     title: '查看',
                     field: 'opr',

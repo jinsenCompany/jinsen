@@ -46,7 +46,7 @@
 			},
 			dataType : "text",
 			success : function(data) {
-				alert(data);
+				//alert(data);
 				if (data == "fail") {
 					alert("用户名或密码错误");
 					window.location.href = 'login.jsp';
@@ -107,7 +107,7 @@
 				else if (data == "Yardmanager") {
 					//alert("货场管理员登录成功");
 					window.location.href = 'yardmanager.jsp';
-				} else if (data == "Cutmanager") {
+				} else if (data == "foresp") {
 					//alert("生产部门登录成功");
 					window.location.href = 'forestP.jsp';
 				}else if (data == "Surveyor") {
@@ -165,16 +165,16 @@ function fresh() {
 
 					<div class="form-group">
 						<input type="text" class="form-control" id="staff_id" value="2"
-							placeholder="请输入员工号"  style="width: 500px; height: 20px;">
+							placeholder="请输入员工号"  style="width: 500px; height: 20px">
 					</div>
 					<div class="form-group">
 						<input type="password" class="form-control" id="password" value="${requestScope.password}"
-							placeholder="请输入密码"  style="width: 500px; height: 20px;">
+							placeholder="请输入密码"  style="width: 500px; height: 20px">
 					</div>
 					
 					<div class="form-group">
 						<input type="text" class="form-control" id="v_code0" 
-							placeholder="请输入验证码" style="width: 500px; height: 20px;">
+							placeholder="请输入验证码" style="width: 500px; height: 20px">
 						<img src="./CheckCodeServlet" id="img" /> <a
 							href="javascript:fresh()" id="a">看不清？点击换一张</a>
 					</div>

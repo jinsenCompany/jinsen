@@ -37,6 +37,11 @@ public class projectPackTable {
 	private String shanTreeImplement;//工程包执行出材量杉木
 	private String songTreeImplement;//工程包执行松木出材量
 	private String zaiTreeImplement;//工程包执行杂木出材量
+	
+	private String totalProduced;//合计已生产量
+	private String shamu;//杉木
+	private String songmu;//松木
+	private String zamu;//杂木
 	public int getProjectPackageid() {
 		return projectPackageid;
 	}
@@ -218,6 +223,30 @@ public class projectPackTable {
 	}
 	public void setProjpackageStarttime(String projpackageStarttime) {
 		this.projpackageStarttime = projpackageStarttime;
+	}
+	public String getTotalProduced() {
+		return totalProduced;
+	}
+	public void setTotalProduced(String totalProduced) {
+		this.totalProduced = totalProduced;
+	}
+	public String getShamu() {
+		return shamu;
+	}
+	public void setShamu(String shamu) {
+		this.shamu = shamu;
+	}
+	public String getSongmu() {
+		return songmu;
+	}
+	public void setSongmu(String songmu) {
+		this.songmu = songmu;
+	}
+	public String getZamu() {
+		return zamu;
+	}
+	public void setZamu(String zamu) {
+		this.zamu = zamu;
 	}
 	
 

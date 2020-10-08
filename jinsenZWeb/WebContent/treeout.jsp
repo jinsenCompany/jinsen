@@ -88,9 +88,10 @@ $(function(){
 function aaad()
 {
  	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
- 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='杉木'>"
-        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' value='4'>检尺径(厘米)<span></span>"
-          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+ 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='杉木'  readonly='readonly'>"
+        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' value='4' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>检尺径(厘米)<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
+          +"根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
              +"材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt5").append(str); 
@@ -102,9 +103,10 @@ $(function(){
 function aaad1()
 {
  	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
- 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='松木'>"
-        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'  value='4'>检尺径(厘米)<span></span>"
-          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+ 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='松木'  readonly='readonly'>"
+        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' value='4' oninput='vvvolume("+k+")' onclick='locationInput'>检尺径(厘米)<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
+          +"根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
              +"材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt6").append(str); 
@@ -116,9 +118,10 @@ $(function(){
 function aaad2()
 {
  	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
- 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='杂木'>"
-        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'  value='4'>检尺径(厘米)<span></span>"
-          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+ 	+"树材种<span></span><input type='text' style='width: 180px' name='treetype' id='sss"+k+"' value='杂木'  readonly='readonly'>"
+        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' value='4' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>检尺径(厘米)<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
+          +"根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
              +"材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt7").append(str); 
@@ -140,8 +143,9 @@ function aaad3()
           +"<option value='杉直柄'>--杉直柄--</option>"
           +"<option value='特种材'>--特种材--</option>"
           +"<option value='其他'>--其他--</option></select>"
-          +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' value='4'>检尺径(厘米)<span></span>"
-          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+          +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' value='4' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>检尺径(厘米)<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
+          +"根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")&setTimeout(makecount, 100)' onclick='locationInput'>"
              +"材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt8").append(str); 
@@ -461,6 +465,7 @@ String now = df.format(d); %>
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>-->
      <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
+     <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>进仓木材数据审核</span></a></li>
     <li class="active"><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
   </ul>
 </div>
@@ -480,7 +485,7 @@ String now = df.format(d); %>
     <tr>
     <td style="width:200px">供货单位</td><td><input readonly="readonly" style="border:0;background-color: transparent" name="provider" id="provider" value="<%=w.getProvider() %>"></td>
     <td>合同号</td><td><input readonly="readonly" style="border:0;background-color: transparent" name="contractnum" id="contractnum" value="<%=s.getContractnum() %>"></td>
-    <td style="width:100px">采伐证号</td><td><input style="text-align:center" name="cutnum" id="cutnum"></td>
+    <td style="width:100px">采伐证号</td><td><input style="text-align:center" name="cutnum" id="cutnum" value="<%=s.getCutnum() %>"></td>
     <td colspan="2">调运通知单号</td><td colspan="2"><input readonly="readonly" style="border:0;background-color: transparent" name="saleCalloutOrder" id="saleCalloutOrder" value="<%=s.getSaleCalloutOrder() %>"></td>
     </tr>
     <tr>

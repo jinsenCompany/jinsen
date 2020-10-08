@@ -2,8 +2,11 @@ package jinshen.action;
 /*画超级管理员页面折线图，柱形图。木材报表导出*/
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +17,9 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jinshen.bean.cutnum;
 import jinshen.bean.producetree;
+import jinshen.bean.projectPackTable;
 import jinshen.bean.salemansql;
 import jinshen.bean.treeChart;
 import jinshen.bean.treeoutChart;
@@ -22,6 +27,7 @@ import jinshen.bean.treeoutPrint;
 import jinshen.bean.treetypeChart;
 import jinshen.dao.chartDao;
 import jinshen.daoimpl.chartDaoImpl;
+import net.sf.json.JSONArray;
 
 /**
  * Servlet implementation class chartServlet
@@ -444,101 +450,207 @@ public class chartServlet extends HttpServlet {
         	ObjectMapper map = new ObjectMapper();
 			map.writeValue(response.getWriter(), dplist);
         }
+        //木材生产详细台账
+        /*else if(action.equals("producetree1")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	System.out.println("...." +treetype + "...");
+        	String sql="";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
+        	{
+        	sql="select i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        			"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        			"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'  GROUP BY i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,i.surveyor,w.forester ORDER BY i.yarddate DESC";
+        	List<producetree> dp = cd.findProduceDet(sql);
+        	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' and i.yard='"+yard+"' GROUP BY i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,i.surveyor,w.forester ORDER BY i.yarddate DESC";
+        		List<producetree> dp = cd.findProduceDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
+        	{
+        		sql="select i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' GROUP BY i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,i.surveyor,w.forester ORDER BY i.yarddate DESC";
+        		List<producetree> dp = cd.findProduceDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
+        	{
+        		sql="select i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"' GROUP BY w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,i.surveyor,w.forester ORDER BY i.yarddate DESC";
+        		List<producetree> dp = cd.findProduceDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
+        	}
+        	
+        }*/
+        
         else if(action.equals("producetree1")) {
         	String timeStart = request.getParameter("timeStart");
         	String timeEnd = request.getParameter("timeEnd");
         	String treetype = request.getParameter("treetype");
         	String tradius = request.getParameter("tradius");
         	String yard = request.getParameter("yard");
-        	//System.out.println("...." +month + "...");
+        	String cutnum = request.getParameter("cutnum");
+        	String tlong = request.getParameter("tlong");
+        	String projectPackageName = request.getParameter("projectPackageName");
+        	String contractionSide = request.getParameter("contractionSide");
+        	//System.out.println("...." +yard + "...");
+        	String sql="";
+        	sql="select i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
+        			"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
+        			"w.forester,c.proj_package_Name,p.contractionSide from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid\r\n" + 
+        			"JOIN cutnum c on w.cutNum=c.cutnum JOIN proj_package p on c.proj_package_Name=p.proj_package_Name where 1=1";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+        		sql=sql+" and i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+        	}
+        	if(!treetype.isEmpty()) {
+        		sql=sql+" and t.treetype='"+treetype+"'";
+        	}
+        	if(!tradius.isEmpty())
+        	{
+        		sql=sql+" and t.tradius='"+tradius+"'";
+        	}
+        	if(!tlong.isEmpty())
+        	{
+        		sql=sql+" and t.tlong='"+tlong+"'";
+        	}
+        	if(!yard.isEmpty())
+        	{
+        		sql=sql+" and i.yard='"+yard+"'";
+        	}
+        	if(!cutnum.isEmpty())
+        	{
+        		sql=sql+" and w.cutNum='"+cutnum+"'";
+        	}
+        	if(!contractionSide.isEmpty())
+        	{
+        		sql=sql+" and p.contractionSide='"+contractionSide+"'";
+        	}
+        	if(!projectPackageName.isEmpty())
+        	{
+        		sql=sql+" and c.proj_package_Name='"+projectPackageName+"'";
+        	}
+        	///System.out.print(sql);
+        	sql=sql+" GROUP BY i.yarddate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,i.surveyor,w.forester,c.proj_package_Name,p.contractionSide ORDER BY i.yarddate DESC,w.cutNum";
+        	List<producetree> dp = cd.findProduceDet(sql);
+        	mapper.writeValue(response.getWriter(), dp);	
+        }
+        
+        //木材产出库存详细
+        /*else if("totalproduce".equals(action)) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	System.out.println("...." +treetype + "...");
         	String sql="";
         	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
         	{
-        	sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
-        			"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
-        			"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"'  GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
-        	List<producetree> dp = cd.findProduceDet(sql);
+        	sql="select i.yard,t.treetype,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume\r\n" + 
+        			" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        	List<producetree> dp = cd.findProduceTol(sql);
         	mapper.writeValue(response.getWriter(), dp);
         	}
         	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
         	{
-        		sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
-        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
-        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
-        		List<producetree> dp = cd.findProduceDet(sql);
+        		sql="select i.yard,t.treetype,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume\r\n" + 
+        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' and i.yard='"+yard+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		List<producetree> dp = cd.findProduceTol(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
         	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
         	{
-        		sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
-        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
-        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
-        		List<producetree> dp = cd.findProduceDet(sql);
+        		sql="select i.yard,t.treetype,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume\r\n" + 
+        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		List<producetree> dp = cd.findProduceTol(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
         	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
         	{
-        		sql="select w.cutdate,w.cutNum,i.yard,t.treetype,t.tlong,t.tradius,\r\n" + 
-        				"sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume,i.surveyor,\r\n" + 
-        				"w.forester from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"' GROUP BY w.cutNum,i.yard,t.treetype,t.tlong,t.tradius ORDER BY w.cutdate DESC";
-        		List<producetree> dp = cd.findProduceDet(sql);
+        		sql="select i.yard,t.treetype,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume\r\n" + 
+        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		List<producetree> dp = cd.findProduceTol(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
-        	
-        }
-        //木材产出库存详细
+        }*/
+      //木材产出库存总
         else if("totalproduce".equals(action)) {
         	String timeStart = request.getParameter("timeStart");
         	String timeEnd = request.getParameter("timeEnd");
         	String treetype = request.getParameter("treetype");
         	String tradius = request.getParameter("tradius");
         	String yard = request.getParameter("yard");
-        	//System.out.println("...." +month + "...");
+        	String cutnum = request.getParameter("cutnum");
+        	String tlong = request.getParameter("tlong");
+        	String projectPackageName = request.getParameter("projectPackageName");
+        	String contractionSide = request.getParameter("contractionSide");
+        	//System.out.println("...." +treetype + "...");
         	String sql="";
-        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
+        	sql="select i.yard,t.treetype,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume\r\n" + 
+        			"from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid \r\n" + 
+        			"JOIN cutnum c on w.cutNum=c.cutnum JOIN proj_package p on c.proj_package_Name=p.proj_package_Name where 1=1";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+        		sql=sql+" and i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+        	}
+        	if(!treetype.isEmpty()) {
+        		sql=sql+" and t.treetype='"+treetype+"'";
+        	}
+        	if(!tradius.isEmpty())
         	{
-        	sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
-        			" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
+        		sql=sql+" and t.tradius='"+tradius+"'";
+        	}
+        	if(!tlong.isEmpty())
+        	{
+        		sql=sql+" and t.tlong='"+tlong+"'";
+        	}
+        	if(!yard.isEmpty())
+        	{
+        		sql=sql+" and i.yard='"+yard+"'";
+        	}
+        	if(!cutnum.isEmpty())
+        	{
+        		sql=sql+" and w.cutNum='"+cutnum+"'";
+        	}
+        	if(!contractionSide.isEmpty())
+        	{
+        		sql=sql+" and p.contractionSide='"+contractionSide+"'";
+        	}
+        	if(!projectPackageName.isEmpty())
+        	{
+        		sql=sql+" and c.proj_package_Name='"+projectPackageName+"'";
+        	}
+        	//System.out.print(sql);
+        	sql=sql+" GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
         	List<producetree> dp = cd.findProduceTol(sql);
         	mapper.writeValue(response.getWriter(), dp);
-        	}
-        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
-        	{
-        		sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
-        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
-        		List<producetree> dp = cd.findProduceTol(sql);
-            	mapper.writeValue(response.getWriter(), dp);
-        	}
-        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
-        	{
-        		sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
-        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
-        		List<producetree> dp = cd.findProduceTol(sql);
-            	mapper.writeValue(response.getWriter(), dp);
-        	}
-        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
-        	{
-        		sql="select i.yard,t.treetype,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume)as ttvolume\r\n" + 
-        				" from workpage as w JOIN tree as t on w.workid=t.workid join inyard as i on w.workid=i.workid WHERE w.cutdate>='"+timeStart+"' AND w.cutdate<='"+timeEnd+"' and i.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"' GROUP BY i.yard,t.treetype ORDER BY i.yard,t.treetype";
-        		List<producetree> dp = cd.findProduceTol(sql);
-            	mapper.writeValue(response.getWriter(), dp);
-        	}
         }
+        
         //木材销售台账
-        else if(action.equals("treeoutTable")) {
+        /*else if(action.equals("treeoutTable")) {
         	String timeStart = request.getParameter("timeStart");
         	String timeEnd = request.getParameter("timeEnd");
         	String treetype = request.getParameter("treetype");
         	String tradius = request.getParameter("tradius");
         	String yard = request.getParameter("yard");
-        	//System.out.println("...." +month + "...");
+        	//System.out.println("...." +timeEnd + "...");
         	String sql="";
         	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
         	{
             //sql="select w.workid,year(w.yarddate) as yeart,month(w.yarddate) as montht,w.carNumber,w.yard,w.section,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,t.unitprice,t.totalnum,w.surveyor, s.salesman from outyard as w JOIN treeout as t join saleman as s on w.workid=t.workid=s.workid";
         	sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         			"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"'\r\n" + 
-        			"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        			"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yarddate DESC,w.contractnum";
         	List<treeoutPrint> dp = cd.findTreeout(sql);
         	mapper.writeValue(response.getWriter(), dp);
         	}
@@ -546,7 +658,7 @@ public class chartServlet extends HttpServlet {
         	{
         		sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"'\r\n" + 
-        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yarddate DESC,w.contractnum";
         		List<treeoutPrint> dp = cd.findTreeout(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
@@ -554,7 +666,7 @@ public class chartServlet extends HttpServlet {
         	{
         		sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"'\r\n" + 
-        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yarddate DESC,w.contractnum";
         		List<treeoutPrint> dp = cd.findTreeout(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
@@ -562,13 +674,62 @@ public class chartServlet extends HttpServlet {
         	{
         		sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"'\r\n" + 
-        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,tlong ORDER BY w.yarddate DESC,w.contractnum";
+        				"GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yarddate DESC,w.contractnum";
         		List<treeoutPrint> dp = cd.findTreeout(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
+        }*/
+        else if(action.equals("treeoutTable")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	String cutnum = request.getParameter("cutnum");
+        	String tlong = request.getParameter("tlong");
+        	String contractnum = request.getParameter("contractnum");
+        	String demander = request.getParameter("demander");
+        	//System.out.println("...." +contractnum + "...");
+        	String sql="";
+        	sql="select w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume,s.demander,w.cutnum \r\n" + 
+        			"from outyard as w JOIN treeout as t  on w.workid=t.workid JOIN sale_contract s on w.contractnum=s.contractnum WHERE 1=1";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+        		sql=sql+" and w.yarddate>='"+timeStart+"' AND w.yarddate<='"+timeEnd+"'";
+        	}
+        	if(!treetype.isEmpty()) {
+        		sql=sql+" and t.treetype='"+treetype+"'";
+        	}
+        	if(!tradius.isEmpty())
+        	{
+        		sql=sql+" and t.tradius='"+tradius+"'";
+        	}
+        	if(!tlong.isEmpty())
+        	{
+        		sql=sql+" and t.tlong='"+tlong+"'";
+        	}
+        	if(!yard.isEmpty())
+        	{
+        		sql=sql+" and w.yard='"+yard+"'";
+        	}
+        	if(!cutnum.isEmpty())
+        	{
+        		sql=sql+" and w.cutnum'"+cutnum+"'";
+        	}
+        	if(!contractnum.isEmpty())
+        	{
+        		sql=sql+" and w.contractnum='"+contractnum+"'";
+        	}
+        	if(!demander.isEmpty())
+        	{
+        		sql=sql+" and s.demander='"+demander+"'";
+        	}
+        	//System.out.println("...." +sql + "...");
+        	sql=sql+" GROUP BY w.yarddate,w.contractnum,w.sale_callout_orderid,w.yard,t.treetype,t.tlong,t.tradius,s.demander,w.cutnum  ORDER BY w.yarddate DESC,w.contractnum";
+        		List<treeoutPrint> dp = cd.findTreeout(sql);
+            	mapper.writeValue(response.getWriter(), dp);
         }
       //木材销售总的材积台账
-        else if(action.equals("treeoutDetTable")) {
+        /*else if(action.equals("treeoutDetTable")) {
         	String timeStart = request.getParameter("timeStart");
         	String timeEnd = request.getParameter("timeEnd");
         	String treetype = request.getParameter("treetype");
@@ -579,7 +740,7 @@ public class chartServlet extends HttpServlet {
         	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty()) 
         	{
             //sql="select w.workid,year(w.yarddate) as yeart,month(w.yarddate) as montht,w.carNumber,w.yard,w.section,t.treetype,t.tlong,t.tradius,t.num,t.tvolume,t.unitprice,t.totalnum,w.surveyor, s.salesman from outyard as w JOIN treeout as t join saleman as s on w.workid=t.workid=s.workid";
-        	sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        	sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         			"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"'\r\n" + 
         			"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
         	List<treeoutPrint> dp = cd.findTreeoutDet(sql);
@@ -587,7 +748,7 @@ public class chartServlet extends HttpServlet {
         	}
         	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && treetype.isEmpty() && tradius.isEmpty())
         	{
-        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"'\r\n" + 
         				"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
         		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
@@ -595,7 +756,7 @@ public class chartServlet extends HttpServlet {
         	}
         	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && tradius.isEmpty())
         	{
-        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"'\r\n" + 
         				"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
         		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
@@ -603,14 +764,140 @@ public class chartServlet extends HttpServlet {
         	}
         	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !treetype.isEmpty() && !tradius.isEmpty())
         	{
-        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(DISTINCT t.num) as tnum,sum(DISTINCT t.tvolume) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
+        		sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid \r\n" + 
         				"WHERE w.yarddate>='"+timeStart+"' and w.yarddate<='"+timeEnd+"' and w.yard='"+yard+"' and t.treetype='"+treetype+"' and t.tradius='"+tradius+"'\r\n" + 
         				"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
         		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
             	mapper.writeValue(response.getWriter(), dp);
         	}
+        }*/
+      //木材销售总的材积台账
+        else if(action.equals("treeoutDetTable")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String treetype = request.getParameter("treetype");
+        	String tradius = request.getParameter("tradius");
+        	String yard = request.getParameter("yard");
+        	String cutnum = request.getParameter("cutnum");
+        	String tlong = request.getParameter("tlong");
+        	String contractnum = request.getParameter("contractnum");
+        	String demander = request.getParameter("demander");
+        	//System.out.println("...." +month + "...");
+        	String sql="";
+        	sql="select w.yard,t.treetype,t.tlong,t.tradius,sum(t.num) as tnum,round(sum(t.tvolume),4) as ttvolume from outyard as w JOIN treeout as t  on w.workid=t.workid\r\n" + 
+        			"JOIN sale_contract s on w.contractnum=s.contractnum WHERE 1=1";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+        		sql=sql+" and w.yarddate>='"+timeStart+"' AND w.yarddate<='"+timeEnd+"'";
+        	}
+        	if(!treetype.isEmpty()) {
+        		sql=sql+" and t.treetype='"+treetype+"'";
+        	}
+        	if(!tradius.isEmpty())
+        	{
+        		sql=sql+" and t.tradius='"+tradius+"'";
+        	}
+        	if(!tlong.isEmpty())
+        	{
+        		sql=sql+" and t.tlong='"+tlong+"'";
+        	}
+        	if(!yard.isEmpty())
+        	{
+        		sql=sql+" and w.yard='"+yard+"'";
+        	}
+        	if(!cutnum.isEmpty())
+        	{
+        		sql=sql+" and w.cutnum'"+cutnum+"'";
+        	}
+        	if(!contractnum.isEmpty())
+        	{
+        		sql=sql+" and w.contractnum='"+contractnum+"'";
+        	}
+        	if(!demander.isEmpty())
+        	{
+        		sql=sql+" and s.demander='"+demander+"'";
+        	}
+        	sql=sql+"GROUP BY w.yard,t.treetype,t.tlong,t.tradius ORDER BY w.yard,t.treetype";
+        		List<treeoutPrint> dp = cd.findTreeoutDet(sql);
+            	mapper.writeValue(response.getWriter(), dp);
         }
-        
+        //货场库存柱状图表
+    	else if("yardStock".equals(action))
+    	{
+//    		List<treeoutChart> ty = new ArrayList<treeoutChart>();
+//        	ty=cd.treeoutChart();
+        	ObjectMapper map = new ObjectMapper();
+        	treetypeChart tp = new treetypeChart();
+        	JSONArray list = new JSONArray();
+        	String sql="SELECT ROUND(sum(i.tolstere),4) as tvolume,i.yard from tree t join inyard i on t.workid=i.workid GROUP BY i.yard";
+        	List<treetypeChart> yardin=cd.findyardStock(sql);
+//        	String sql1="SELECT ROUND(sum(i.tolstere),4) as tvolume,i.yard from treeout t join outyard i on t.workid=i.workid GROUP BY i.yard";
+//        	List<treetypeChart> yardout=cd.findyardStock(sql1);
+//        	String sql2="SELECT ROUND(sum(tvolume),4),cancellingStocksSite FROM cancellingstockstable GROUP BY cancellingStocksSite";
+//        	List<treetypeChart> cancelStock=cd.findyardStock(sql2);
+        	String inyard="";
+        	String intvo="";
+        	String outyard="";
+        	String outtvo="";
+        	String outtvo1="";
+        	String cancelyard="";
+        	String canceltvo="";
+        	String canceltvo1="";
+        	String stockyard="";
+        	double stocktvo1=0;
+        	String stocktvo="";
+        	DecimalFormat df = new DecimalFormat("#.00");
+        	if(yardin.size()>0) {
+        		for(int i=0;i<yardin.size();i++) {
+        			inyard=yardin.get(i).getYard();
+        			intvo=yardin.get(i).getTvolume();
+        			//出仓
+        			String sql1="SELECT ROUND(sum(i.tolstere),4) as tvolume,i.yard from treeout t join outyard i on t.workid=i.workid where i.yard='"+inyard+"' GROUP BY i.yard";
+                	treetypeChart yardout=cd.findyardStock2(sql1);
+                	outtvo1=yardout.getTvolume();
+                	if(String.valueOf(outtvo1).isEmpty() || String.valueOf(outtvo1)=="null")
+                	{
+                		outtvo="0";
+                	}
+                	else
+                	{
+                		outtvo=outtvo1;
+                	}
+                	//报损
+                	String sql2="SELECT ROUND(sum(tvolume),4),cancellingStocksSite FROM cancellingstockstable where cancellingStocksSite='"+inyard+"' GROUP BY cancellingStocksSite";
+                	treetypeChart cancelStock=cd.findyardStock2(sql2);
+                	canceltvo1=cancelStock.getTvolume();
+                	if(String.valueOf(canceltvo1).isEmpty() || String.valueOf(canceltvo1)=="null")
+                	{
+                		canceltvo="0";
+                	}
+                	else
+                	{
+                		canceltvo=canceltvo1;
+                	}
+                	stocktvo1=Double.parseDouble(intvo)-Double.parseDouble(outtvo)-Double.parseDouble(canceltvo);
+                	stocktvo=df.format(stocktvo1);//库存量
+                	tp.setYard(inyard);
+                	tp.setTvolume(stocktvo);
+                	list.put(tp);
+        		}
+        		//list.put(tp);
+        		out.print(list);
+//        		System.out.print(list);
+//        		String json=map.writeValueAsString(list);
+//        		System.out.print(json);
+//            	response.getWriter().write(json);
+        	}
+        	
+    	}
+        //画管理部门主页柱状图
+    	else if("barManage".equals(action)) {
+    		List<cutnum> ty = new ArrayList<cutnum>();
+        	ty=cd.cutnumChart();
+        	ObjectMapper map = new ObjectMapper();
+        	String json=map.writeValueAsString(ty);
+        	//System.out.print(json);
+        	response.getWriter().write(json);
+    	}
 	}
 
 }

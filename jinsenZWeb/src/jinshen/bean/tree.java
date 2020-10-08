@@ -11,6 +11,7 @@ public class tree {
 	private double unitprice;
 	private double totalnum;
 	private int treeid;
+	private int tid;
 	public String getTreetype() {
 		return treetype;
 	}
@@ -64,6 +65,12 @@ public class tree {
 	}
 	public void setTreeid(int treeid) {
 		this.treeid = treeid;
+	}
+	public int getTid() {
+		return tid;
+	}
+	public void setTid(int tid) {
+		this.tid = tid;
 	}
 	
 }

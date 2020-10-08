@@ -39,6 +39,7 @@
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/fselect.css" />
 <style>
 .table1{width:70%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 .table2{width:80%;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
@@ -134,7 +135,8 @@ function treeAdd()
 	var yardname=$("#yardname").val();
 	var demander=$("#demander").val();
 	//alert(demander)
-	var section=$("#section").val();
+	var section1=$("#section").val();
+	var section=section1.join(",");
 	var Paymentamount=$("#Paymentamount").val();
 	var totalnum=$("#totalnum").val();
 	var Signer=$("#Signer").val();
@@ -284,7 +286,7 @@ function mycreate()
         		}
         	else{
         	//var cutCompack=data["cutCompack"];
-        	//var contractionSide=data["contractionSide"];
+        	var measurestardL=data["measurestard"];
         	var tree=data["tree"];
         	var demander=tree[0].demander;
         	$("#ttt").empty();
@@ -293,11 +295,16 @@ function mycreate()
         	      var str="<tr id='"+(i+1)+"'><td style='width:50px'><input type='checkbox' style='width:20px;height:20px;display:none' value="+(i+1)+"></td>"
         	      +"<td>树材种：<span></span><input type=text  readonly='readonly' id='treetype"+(i+1)+"' value='"+j.treetype+"'></td>"
                   +"<td>长度(米)：<span></span><input type=text  readonly='readonly' value='"+j.tlong+"' id='tlong"+(i+1)+"'></td>"
-                   +"<td>口径(厘米)：<span></span><input type='text' id='tradius"+(i+1)+"' value='"+j.tradius+"'readonly='readonly'></td></tr>"
+                   +"<td>口径(厘米)：<span></span><input type='text' id='tradius"+(i+1)+"' value='"+j.tradius+"' readonly='readonly'></td></tr>"
                   $("#ttt").append(str); 
+        	}
+        	for(var i=0;i<measurestardL.length;i++){
+        		var j=measurestardL[i];
+        		var measurestard=j.measurestard;//检尺标准
         	}
         	//ttt.innerHTML=str;
         	document.getElementById("demander").value=demander;
+        	document.getElementById("measurestard").value=measurestard;
         }}
     })
 }
@@ -407,28 +414,28 @@ function load()
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -451,21 +458,22 @@ function load()
     <div class="find-top1">
     <form>
     <div class="top" id="divprint">
+    <p class="table_p"><span>调令信息</span></p>
     <table class="table3">
     <caption class="book_h01">木材销售调令</caption>
     <tbody>
        <tr>
-       <td>调运时间:</td><td><input type="datetime-local" name="callidtime" id="callidtime" style="border:0px;font-size:20pt;"></td>
+       <td>调运时间:</td><td><input type="datetime-local" name="callidtime" id="callidtime" style="border:0px;font-size:20pt;width:400px"></td>
        </tr>
        <tr>
-       <td>合同编号:</td><td><input type="text" name="contractnum" id="contractnum" oninput='mycreate()' onclick='locationInput'></td>
-       <td>购货人:</td><td><input type="text" name="demander" id="demander" readonly='readonly'></td>
+       <td>合同编号:</td><td><input type="text" name="contractnum" id="contractnum" oninput='mycreate()' onclick='locationInput' style="width:400px"></td>
+       <td>购货人:</td><td><input type="text" name="demander" id="demander" readonly='readonly' style="width:400px"></td>
        <!--  <td>供货地点</td><td><input type="text" name="yard" id="yard"></td>-->
        </tr>
        <tr>
        <td>供货地点:</td>
-       <td><select name="yardname" id="yardname"><option selected="selected">选择</option></select></td>
-       <td>供货分区:</td><td><select name="section" id="section">
+       <td><select name="yardname" id="yardname" style="width:400px"><option selected="selected">选择</option></select></td>
+       <td>供货分区:</td><td><select name="section" id="section" style="width:400px" multiple="multiple">
        <option selected='selected'>无固定分区</option>
        <option>A</option>
        <option>B</option>
@@ -476,8 +484,9 @@ function load()
        </select></td>
        </tr>
        <tr>
-        <td>调令号:</td><td><input type="text" name="saleCalloutOrder" id="saleCalloutOrder"></td> 
+        <td>调令号:</td><td><input type="text" name="saleCalloutOrder" id="saleCalloutOrder" style="width:400px"></td> 
         <td style="display:none">货款金额(元):</td><td style="display:none"><input type="text" name="Paymentamount" id="Paymentamount" value="0"></td> 
+        <td>检尺标准:</td><td><input type="text" name="measurestard" id="measurestard" style="width:400px" readonly='readonly'></td> 
        </tr>
        </tbody>
     </table>
@@ -514,8 +523,8 @@ function load()
       <br>
       <table class="table3">
       <tr>
-      <td>数量(立方米/吨):</td><td><input type="text" name="totalnum" id="totalnum"></td>
-      <td>通知签发人:</td><td><input type="text" name="Signer" id="Signer"></td>
+      <td>数量(立方米/吨):</td><td><input type="text" name="totalnum" id="totalnum" style="width:400px"></td>
+      <td>通知签发人:</td><td><input type="text" name="Signer" id="Signer" style="width:400px"></td>
       </tr>
       </table>
     </div>
@@ -559,6 +568,23 @@ function load()
 <script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/jQuery.print.js"></script>
 <script src="js/jquery.PrintArea.js" type="text/JavaScript"></script>
+<script src="js/fselect.js" type="text/javascript" charset="utf-8"></script>
+ <script type="text/javascript">
+        //js 初始化
+        $('#section').fSelect({
+            showSearch:false //关闭搜索
+        });
+        //取值文字
+        $('.fs-label').text()
+ 
+        $("button").click(function(){
+            //取值 value
+        var value = [].map.call($('.fs-option.selected'), function(el) {
+            return el.dataset.value
+        })
+            console.log(value);
+        })
+    </script>
 <script type="text/javascript">
 $(function(){
     $("#btnPrint").click(function(){ $("#divprint").printArea(); });

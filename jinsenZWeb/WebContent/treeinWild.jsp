@@ -82,9 +82,16 @@ t=(List<tree>)request.getAttribute("tree");
 <% workpage w=(workpage)request.getAttribute("workpage");%>
 <% cutnum c=(cutnum)request.getAttribute("cutnum");%>
 <% projectpackage p=(projectpackage)request.getAttribute("projectpackage");%>
+<% treefile f=(treefile)request.getAttribute("treef");%>
 <body>
       <div id="divprint">
              <h2 style="font-size:24px;text-align:center">木材检尺野账</h2>
+             <table>
+             <tr>
+   <td style="color:red">下载检尺野账附件：</td>
+   <td>${tfile}<a href="DownfileServlet?action=treeinfile&filename=<%=f.getTreefile() %>"><button  id="add" data-id="98" class="btn btn-xs btn-primary">下载附件</button></a></td>
+   </tr>
+             </table>
             <table class="mcjc">
 					<tr>
 						<td colspan="1" style="font-size:24px">检验单位(印章)</td>
@@ -177,6 +184,7 @@ t=(List<tree>)request.getAttribute("tree");
    <td>施工方:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
    <td>驾驶人:</td>
    </tr>
+   
    </table>
    </div>
    <div style="text-align:center">      

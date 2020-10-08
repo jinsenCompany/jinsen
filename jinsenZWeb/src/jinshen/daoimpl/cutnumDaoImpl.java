@@ -1037,22 +1037,22 @@ public class cutnumDaoImpl implements cutnumDao{
     			cn.setQuartel(rs.getString(6));
     			cn.setLargeblock(rs.getString(7));
     			cn.setSmallblock(rs.getString(8));
-    			cn.setCreatcutDate(rs.getTimestamp(9));   
+    			cn.setCreatcutDate(rs.getString(9));   
    			
     			cn.setTotalDesign(rs.getString(10));
 				cn.setShanTreeDesign(rs.getString(11));
 				cn.setSongTreeDesign(rs.getString(12));
 				cn.setZaTreeDesign(rs.getString(13));
-				
+	           /*			
 				cn.setTotalProduced(rs.getString(14)); 
 				cn.setShamu(rs.getString(15));
 				cn.setSongmu(rs.getString(16)); 
 				cn.setZamu(rs.getString(17));
-				
-				cn.setTotalActual(rs.getString(18));
-				cn.setShanTreeActual(rs.getString(19));
-				cn.setSongTreeActual(rs.getString(20));
-				cn.setZaTreeActual(rs.getString(21));
+				*/
+				cn.setTotalActual(rs.getString(14));
+				cn.setShanTreeActual(rs.getString(15));
+				cn.setSongTreeActual(rs.getString(16));
+				cn.setZaTreeActual(rs.getString(17));
 				cnw.add(cn);
     		}
     	}catch(Exception e) {
@@ -1105,6 +1105,63 @@ public class cutnumDaoImpl implements cutnumDao{
 			dbc.close();
 		}
 		return cnw;
+	}
+
+	@Override
+	public List<cutnum> findCutnumTotal(String sql) {
+		List<cutnum> cnw =new ArrayList<cutnum>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			cutnum cn = new cutnum();	
+    			cn.setCutarea(rs.getString(1));
+    			cn.setVolume(rs.getDouble(2));
+    			cn.setTreetype(rs.getString(3));
+    			cn.setTotal(rs.getString(4));
+    			cn.setProjectid(rs.getInt(5));//采伐证数量
+				cnw.add(cn);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return cnw;
+	}
+
+	@Override
+	public List<projectPackTable> findDaotree(String sql) {
+		List<projectPackTable> ptp = new ArrayList<projectPackTable>();
+    	try {
+    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			projectPackTable  pt= new projectPackTable();
+    			pt.setTotalProduced(rs.getString(1)); 
+				pt.setShamu(rs.getString(2));
+				pt.setSongmu(rs.getString(3)); 
+				pt.setZamu(rs.getString(4));
+    			ptp.add(pt);
+    		}
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return ptp;
+	}
+
+	@Override
+	public int deletCutProjec(cutnum cp, double cutnumid) {
+		int res=0;
+    	try {
+    		String sql="update cutnum set proj_package_Name=? WHERE cutnumid='"+cutnumid+"'";
+    		res=dbc.doUpdate(sql, new Object[] {cp.getProjectPackageName()});
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return res;
 	}
 
 

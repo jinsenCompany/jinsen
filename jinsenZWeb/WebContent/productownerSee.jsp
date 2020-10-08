@@ -10,6 +10,7 @@
 <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/matrix-style.css" />
 <link rel="stylesheet" href="css/matrix-media.css" />
@@ -70,7 +71,7 @@ function inputNull(form){
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -90,92 +91,127 @@ function inputNull(form){
                 excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
             },
             columns: [
-            	{
-                    checkbox: "true",
-                    field: 'check',
+            	[
+            		{title: "客户信息汇总",
                     align: 'center',
-                    valign: 'middle'
-                },
+                    valign: 'middle',
+                    "colspan": 16
+            		}
+            	],
+            	[{						
+						title: '序号',
+						width: 100,
+                    align: 'center',
+						formatter: function (value, row, index) {
+							return index+1;
+						}
+	                },//该列显示序号，分页不是从1开始
                 {
                     title: "建卡日期",
                     field: 'creatdate',
                     align: 'center',
+                    width:160,
                     valign: 'middle'
                 },
                 {
-                    title: "客户编号",
+                    title: "客户/公司名称",
                     field: 'customernum',
                     align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: "客户编号",
-                    field: 'customernum',
-                    align: 'center',
+                    width:160,
                     valign: 'middle'
                 },
                 {
                     title: "客户姓名",
                     field: 'kname',
                     align: 'center',
+                    width:160,
                     valign: 'middle'
                 },
                 {
-                    title: '公司名称',
+                    title: '组织机构代码',
                     field: 'company',
                     align: 'center',
+                    width:160,
                     valign: 'middle'
                 },
                 {
                     title: '地址',
                     field: 'address',
-                    align: 'center'
+                    width:160,
+                    align: 'center',
+                    valign: 'middle'
                 },
                 {
                     title: '身份证号',
                     field: 'iDCard',
-                    align: 'center'
+                    width:160,
+                    align: 'center',
+                    valign: 'middle'
                 },
                 {
                     title: '联系电话',
                     field: 'telephone',
-                    align: 'center'
+                    width:160,
+                    align: 'center',
+                    valign: 'middle'
                 },
                 {
                     title: '客户类型',
                     field: 'customertype',
-                    align: 'center'
+                    width:160,
+                    align: 'center',
+                    valign: 'middle'
                 },
                 {
                     title: '签定合同号',
                     field: 'contractnum',
                     align: 'center',
+                    width:160,
                     valign: 'middle'
                 },
                 {
                     title: '签订合同木材数量',
                     field: 'treenumber',
                     align: 'center',
+                    width:160,
                     valign: 'middle'
                 },
                 {
                     title: '调运数量累计',
                     field: 'totaltree',
+                    width:160,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '发货地址',
                     field: 'shipaddress',
-                    align: 'center'
+                    width:160,
+                    align: 'center',
+                    valign: 'middle'
                 }
                 ,
                 {
                     title: '违约历史记录',
                     field: 'breakcontract',
-                    align: 'center'
-                }
+                    width:160,
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '查看',
+                    field: 'opr',
+                    width: 100,
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="salaryServlet?action=seeProductDet&creatdate=\''+ row.creatdate + '\'&kname=\''+ row.kname + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                        return  d;
+                    }
+                },
             ]
+            	]
         });
     }
   </script>
@@ -250,28 +286,28 @@ function inputNull(form){
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -296,7 +332,6 @@ function inputNull(form){
     </div>
 </div>
 <!--end-Footer-part-->
-<script src="js/jquery.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <script src="js/bstable/js/bootstrap.min.js"></script>
 <script src="js/bstable/js/bootstrap-table.js"></script>

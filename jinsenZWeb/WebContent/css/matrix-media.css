@@ -1,10 +1,14 @@
 body {
-	background:green;/* 页面背景 */
+	/*background:green;/* 页面背景 *#2b7dad/*/
+	background-image:url('../img/bg-image6.jpg');
+	
 }
 
 #header {
-	background-color: green;/* 标头背景 */
-   margin-top:10px;
+	background-color: #1f262d;/* 标头背景 */
+   margin-top: -20px;
+   /*opacity: 0.3*//*透明度*/
+   
 }
 #search input[type=text], #search button {
 	background-color: #28b779;

@@ -2,6 +2,7 @@ package jinshen.dao;
 
 import java.util.List;
 
+import jinshen.bean.cutnum;
 import jinshen.bean.producetree;
 import jinshen.bean.salemansql;
 import jinshen.bean.treeChart;
@@ -33,4 +34,11 @@ public interface chartDao {
  	 
  	public List<producetree> findProduceDet(String sql);//木材生产表格
  	public List<producetree> findProduceTol(String sql);//木材总进仓
+ 	
+ 	//货场库存
+ 	public List<treetypeChart> findyardStock(String sql);//货场库存
+ 	public treetypeChart findyardStock2(String sql);//货场库存
+ 	
+ 	//管理部门主页柱状图
+ 	public List<cutnum> cutnumChart();
 }

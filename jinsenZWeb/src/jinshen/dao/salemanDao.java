@@ -18,8 +18,11 @@ public interface salemanDao {
 	public List<customer> findCustomer(String sql);//显示发现生产业主
 	public int addCustomer(customer cp);//添加生产业主到数据库
 	public customer findcutnumAddres(String sql);//根据合同号搜索客户公司和地址
-    
+	public customer findcutnumDet(String sql);//显示详细信息
+	public customer findcutnumTreenum(String sql);//显示调运数量
+	
 	public int addProduce(Laowu cp);//将劳务插入到laowu数据库中
+	public int addProduceRad(Laowu cp);//按照径级插入到laowu数据库中
 	public List<singleworkid> findworkid(String sql);//显示工单信息
 	public List<singleworkid> findProjectp(String sql);//在劳务结算页面显示工程包信息
 	public int addProduceLaowu(Laowu cp);//劳务结算和生产结算
@@ -44,6 +47,7 @@ public interface salemanDao {
 	public int addCalloutOrderTree(saleCalloutOrder cp);//将调令木材信息保存到调令木材表里
 	public saleCalloutOrder findsaleorderid(String sql);//通过查询调令查找调令编号
 	public saleCalloutOrder findsaleorder(String sql);//
+	public saleCalloutOrder findsaleorderCutnum(String sql);//
 	public List<saleCalloutOrder> findsaletree(String sql);//查找销售凋零中树的信息
 	public int delWorkPage(String sql);//删除选中的内容
 	public int updateSaleCallorder(saleCalloutOrder cp,String sa);//更新销售调令状态
@@ -55,6 +59,9 @@ public interface salemanDao {
 	public List<saleCalloutOrder> findsaleCallpass(String sql);//搜素已通过审核的调令信息显示在treeoutCover.jsp页面
 	
 	public List<saleCalloutOrder> findsaleCallid(String sql);//显示搜索的调令
+	public List<saleCalloutOrder> findsaleCallout(String sql);//显示调令信息和检尺标准
+	public saleCalloutOrder findsaleSurveyor(String sql);//显示检尺员
+	
 	public List<yardManage> findyardname(String sql);//搜索货场和信货场分区
 	public List<yardManage> findyardSec(String sql);//搜索货场和信货场分区
 	
@@ -67,4 +74,16 @@ public interface salemanDao {
 	public int addProduceTreeoutsalary(Laowu cp);//保存销售部门木材销售结算单
 	public List<Laowu> findtreeoutPridce(String sql);//销售部门生产结算台账
 	public List<Laowu> findtreeoutPridceDet(String sql);//销售部门生产结算详细
+	
+	public List<Laowu> printProductpriceT(String sql);//生产工资及其它费用结算清单台账
+	public List<Laowu> seeProductpriceT(String sql);//生产工资及其它费用结算清查看详情
+	
+	public List<Laowu> printProduct2priceT(String sql);//生产工资结算清查看台账
+	
+	public List<Laowu> seeProduct23priceT(String sql);//生产工资结算清查看台账
+	
+	public salecontract findUseTreenum(String sql);//已经使用的出仓的树材的信息
+	public int updateContractStatus(salecontract ac,int status);//更新合同中状态
+	public List<salecontract> findMeasurestard(String sql);//查找检尺标准
+	
 }

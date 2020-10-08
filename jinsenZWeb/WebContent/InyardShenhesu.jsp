@@ -180,15 +180,18 @@ function alldo()
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-     <li><a href="workpageTreeBuy.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="passworkpage.jsp">录入进仓木材数据</a></li>
-        <li><a href="treeout.jsp">录入出场木材数据</a></li>
-      </ul>
-     </li>
-     <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
+<!--      <li><a href="workpageTreeBuy.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li> -->
+<!--     <li><a href="compareTreeList.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li> -->
+<!--     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a> -->
+<!--        <ul> -->
+<!--         <li><a href="passworkpage.jsp">录入进仓木材数据</a></li> -->
+<!--         <li><a href="treeout.jsp">录入出场木材数据</a></li> -->
+<!--       </ul> -->
+<!--      </li> -->
+<!--      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li> -->
+    <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
+    <li class="active"><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>进仓木材数据审核</span></a></li>
+    <li><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -241,7 +244,7 @@ function table1(){
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 8,
+            pageSize: 15,
             pageNumber: 1,
             search: true, //显示搜索框
             contentType: "application/x-www-form-urlencoded",
@@ -258,47 +261,57 @@ function table1(){
                 {
                     title: "工单号",
                     field: 'workid',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutNum',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '进场时间',
                     field: 'yarddate',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '车牌号',
                     field: 'carNumber',
-                    align: 'center'
+                    align: 'center',
+                    valign: 'middle',
+                    width:100
                 },
                 {
                     title: '货场',
                     field: 'yard',
                     align: 'center',
+                    width:100,
                     valign: 'middle'
                 },
                 {
                     title: '检尺员',
                     field: 'surveyor',
+                    width:100,
                     align: 'center'
                 },
                 {
                     title: '货场分区',
                     field: 'section',
-                    align: 'center'
+                    align: 'center',
+                    width:100,
+                    valign: 'middle'
                 },
                 {
                     title: '操作',
@@ -360,47 +373,57 @@ function table1(){
                 {
                     title: "工单号",
                     field: 'workid',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutNum',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '进场时间',
                     field: 'yarddate',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '车牌号',
                     field: 'carNumber',
-                    align: 'center'
+                    align: 'center',
+                    valign: 'middle',
+                    width:100
                 },
                 {
                     title: '货场',
                     field: 'yard',
                     align: 'center',
+                    width:100,
                     valign: 'middle'
                 },
                 {
                     title: '检尺员',
                     field: 'surveyor',
+                    width:100,
                     align: 'center'
                 },
                 {
                     title: '货场分区',
                     field: 'section',
-                    align: 'center'
+                    align: 'center',
+                    width:100,
+                    valign: 'middle'
                 },
                 {
                     title: '操作',
@@ -463,47 +486,57 @@ function table1(){
                 {
                     title: "工单号",
                     field: 'workid',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutNum',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '进场时间',
                     field: 'yarddate',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '车牌号',
                     field: 'carNumber',
-                    align: 'center'
+                    align: 'center',
+                    valign: 'middle',
+                    width:100
                 },
                 {
                     title: '货场',
                     field: 'yard',
                     align: 'center',
+                    width:100,
                     valign: 'middle'
                 },
                 {
                     title: '检尺员',
                     field: 'surveyor',
+                    width:100,
                     align: 'center'
                 },
                 {
                     title: '货场分区',
                     field: 'section',
-                    align: 'center'
+                    align: 'center',
+                    width:100,
+                    valign: 'middle'
                 },
                 {
                     title: '操作',
@@ -565,47 +598,57 @@ function table1(){
                 {
                     title: "工单号",
                     field: 'workid',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutNum',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '进场时间',
                     field: 'yarddate',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '车牌号',
                     field: 'carNumber',
-                    align: 'center'
+                    align: 'center',
+                    valign: 'middle',
+                    width:100
                 },
                 {
                     title: '货场',
                     field: 'yard',
                     align: 'center',
+                    width:100,
                     valign: 'middle'
                 },
                 {
                     title: '检尺员',
                     field: 'surveyor',
+                    width:100,
                     align: 'center'
                 },
                 {
                     title: '货场分区',
                     field: 'section',
-                    align: 'center'
+                    align: 'center',
+                    width:100,
+                    valign: 'middle'
                 },
                 {
                     title: '操作',
@@ -665,47 +708,57 @@ function table1(){
                 {
                     title: "工单号",
                     field: 'workid',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutNum',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '进场时间',
                     field: 'yarddate',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutSite',
+                    width:200,
                     align: 'center',
                     valign: 'middle'
                 },
                 {
                     title: '车牌号',
                     field: 'carNumber',
-                    align: 'center'
+                    align: 'center',
+                    valign: 'middle',
+                    width:100
                 },
                 {
                     title: '货场',
                     field: 'yard',
                     align: 'center',
+                    width:100,
                     valign: 'middle'
                 },
                 {
                     title: '检尺员',
                     field: 'surveyor',
+                    width:100,
                     align: 'center'
                 },
                 {
                     title: '货场分区',
                     field: 'section',
-                    align: 'center'
+                    align: 'center',
+                    width:100,
+                    valign: 'middle'
                 },
                 {
                     title: '操作',

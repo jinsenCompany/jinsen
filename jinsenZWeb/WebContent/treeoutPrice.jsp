@@ -48,6 +48,7 @@
 function mycreate()
 {
 	//var length=$("#codetable tr").length;
+	var contractnum=document.getElementById("contractnum").value;
 	var saleCalloutOrder=document.getElementById("saleCalloutOrder").value;
 	var timeStart=document.getElementById("timeStart").value;
 	var timeEnd=document.getElementById("timeEnd").value;
@@ -59,7 +60,8 @@ function mycreate()
             "action":"fiTreeoutSalary",
             "saleCalloutOrder":saleCalloutOrder,
             "timeStart":timeStart,
-            "timeEnd":timeEnd
+            "timeEnd":timeEnd,
+            "contractnum":contractnum
         },
         type: "POST",
         dataType:"json",
@@ -99,6 +101,8 @@ function mycreate()
         		var demander=j.demander;
         		var yard=j.yard;
         		var provider=j.provider;
+        		var section=j.section;
+        		var cutnum=j.cutnum;
     		}
 //         	for(var i=0;i<workidlist.length;i++)
 //     		{
@@ -119,11 +123,13 @@ function mycreate()
                 $("#ttt").append(str); 
         	}
       	//ttt.innerHTML=str;
-        	document.getElementById("contractnum").value=contractnum;
+        	//document.getElementById("contractnum").value=contractnum;
         	document.getElementById("yard").value=yard;
         	document.getElementById("consignee").value=demander;
         	document.getElementById("company").value=provider;
         	document.getElementById("bworkid").value=bworkid;
+        	document.getElementById("cutnum").value=cutnum;
+        	document.getElementById("section").value=section;
         }}
     })
 }
@@ -290,28 +296,28 @@ String now = df.format(d); %>
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -336,8 +342,10 @@ String now = df.format(d); %>
             <tr>
                <td class="top-table-label">选择开始日期：</td><td><input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01"></td>
                <td class="top-table-label">选择结束日期：</td><td><input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
-                <td class="top-table-label" colspan="1">调令号：</td>
-                <td colspan="1"><input type="text" id="saleCalloutOrder" name="saleCalloutOrder" value="" oninput='mycreate()' onclick='locationInput'></td>
+               <td class="top-table-label" colspan="1">合同号：</td>
+               <td colspan="1"><input type="text" id="contractnum" name="contractnum" value="" oninput='mycreate()' onclick='locationInput'></td>
+               <td class="top-table-label" colspan="1">调令号：</td>
+               <td colspan="1"><input type="text" id="saleCalloutOrder" name="saleCalloutOrder" value="" oninput='mycreate()' onclick='locationInput'></td>
             </tr>
     </table>
     <br>
@@ -345,20 +353,23 @@ String now = df.format(d); %>
             <tr>
             <td style="width:320px" colspan="1">结算时间</td>
             <td colspan="2"><input  type="text" style="border:0px;background-color: transparent;" readonly="readonly" value="<%=now%>"></td>
-            <td colspan="2">合同号</td>
-            <td colspan="2"><input style="border:0px;background-color: transparent;" type="text" name="contractnum" id="contractnum" value=""></td> 
+            <td style="width:320px" colspan="1">采伐证编号</td>
+            <td colspan="3"><input style="border:0px;background-color: transparent;" type="text" id="cutnum" value="" name="cutnum"></td>
+<!--             <td colspan="2">合同号</td> -->
+<!--             <td colspan="2"><input style="border:0px;background-color: transparent;" type="text" name="contractnum" id="contractnum" value=""></td>  -->
             </tr>
             <tr>
-                <td style="width:320px" colspan="1">采伐证编号</td>
-                <td colspan="2"><input type="text" id="cutnum" value="" name="cutnum"></td>
-                <td colspan="2">收货单位</td>
+                <td colspan="1">收货单位</td>
                 <td colspan="2"><input style="border:0px;background-color: transparent;" readonly="readonly" type="text" name="consignee" id="consignee"></td>
+                <td style="width:320px" colspan="1">发货单位</td>
+                <td colspan="3"><input style="border:0px;background-color: transparent;" readonly="readonly" type="text" name="company" id="company" value=""></td>
             </tr>
             <tr>
-            <td style="width:320px" colspan="1">发货单位</td>
-                <td colspan="2"><input style="border:0px;background-color: transparent;" readonly="readonly" type="text" name="company" id="company" value=""></td>
-                <td colspan="2">供货地点</td>
+            
+                <td colspan="1">供货地点</td>
                 <td colspan="2"><input style="border:0px;background-color: transparent;" readonly="readonly" type="text" name="yard" id="yard" value=""></td>
+                <td colspan="3">供货分区</td>
+                <td><input style="border:0px;background-color: transparent;" readonly="readonly" type="text" name="section" id="section" value=""></td>
             </tr>
             
             <tr>
@@ -397,11 +408,11 @@ String now = df.format(d); %>
         <table class="table1" >
             <tbody>
             <tr>
-                <td style="margin-left:65px;">生产经营部（公章）:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td style="margin-left:65px;">公章:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td style="margin-left:65px;">负责人:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td style="margin-left:65px;">复核:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td style="margin-left:65px;">制单:</td>
-                <td><input type="text" name="person" id="person"></td>
+                <td><input type="text" name="person" id="person" style="border:0px;background-color: transparent;" readonly="readonly" value="<%=staff_name %>"></td>
             </tr>
             </tbody>
         </table>

@@ -14,6 +14,7 @@ import jinshen.bean.outyard;
 import jinshen.bean.surveyorFee;
 import jinshen.bean.tree;
 import jinshen.bean.treebuy;
+import jinshen.bean.treefile;
 import jinshen.bean.yardInventory;
 import jinshen.dao.treeDao;
 import jinshen.db.DBcon;
@@ -50,10 +51,10 @@ public class treeDaoImpl implements treeDao {
 
 	@Override
 	public int addTree(tree c) {
-		String sql="insert into tree values(?,?,?,?,?,?,?,?,?)";
+		String sql="insert into tree values(?,?,?,?,?,?,?,?,?,?)";
 		int res=0;
 		try {
-			res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getTreetype(),c.getTlong(),c.getTradius(),c.getNum(),c.getTvolume(),c.getUnitprice(),c.getTotalnum(),c.getTreeid()});
+			res=dbc.doUpdate(sql, new Object[] {c.getTid(),c.getWorkid(),c.getTreetype(),c.getTlong(),c.getTradius(),c.getNum(),c.getTvolume(),c.getUnitprice(),c.getTotalnum(),c.getTreeid()});
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -686,6 +687,20 @@ public class treeDaoImpl implements treeDao {
 				try {
 					String sql="update treeout_status set outStatus=? where workid='"+workid+"'";
 					res=dbc.doUpdate(sql, new Object[] {cp.getOutStatus()});
+				}catch(Exception e) {
+					e.printStackTrace();
+				}finally {
+					dbc.close();
+				}
+				return res;
+			}
+
+			@Override
+			public int addTreefile(treefile c) {
+				String sql="insert into treein_file values(?,?)";
+				int res=0;
+				try {
+					res=dbc.doUpdate(sql, new Object[] {c.getWorkid(),c.getTreefile()});
 				}catch(Exception e) {
 					e.printStackTrace();
 				}finally {

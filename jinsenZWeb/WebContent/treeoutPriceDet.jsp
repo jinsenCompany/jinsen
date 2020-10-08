@@ -44,6 +44,19 @@
 #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
 #h a:hover{color:white;background: green}
 .table1{width:90%; height:auto;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 20px!important; 	height: 40px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
     </style>
 <script src="js/bstable/js/bootstrap.min.js"></script>  
 
@@ -105,28 +118,28 @@ String now = df.format(d); %>
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -224,8 +237,9 @@ String now = df.format(d); %>
     </div>
     <br>
     <div style="text-align: center">
-    <button class="add-but" style="color:red;margin-right:65px;" type="button" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i>保存</button>
-    <button class="add-but" id="btnPrint"><i class="glyphicon glyphicon-edit"></i> 打印</button>
+<!--     <button class="add-but" style="color:red;margin-right:65px;" type="button" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i>保存</button> -->
+<!--     <button class="add-but" id="btnPrint"><i class="glyphicon glyphicon-edit"></i> 打印</button> -->
+<a href="DownfileServlet?action=outPriceExcel"><button type="button" style="width:150px;height:50px;" class="btn">下载</button></a>
     </div>
     <div class="table-con">
         <table id="table1" class="table-style"></table>

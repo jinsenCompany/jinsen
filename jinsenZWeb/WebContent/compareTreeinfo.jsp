@@ -180,9 +180,9 @@ function alldo()
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li><a href="workpageShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核进场工单</span></a></li>
-    <li class="active"><a href="compareTreeinfo.jsp"><i class="icon icon-home"></i><span>审核装车照片</span></a></li>
-    <li><a href="InyardShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核木材数据</span></a> </li>
+    <li><a href="workpageShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核伐区工单</span></a> </li>
+    <li  class="active"><a href="compareTreeinfo.jsp"><i class="icon icon-signal"></i><span>审核装车照片</span></a></li>
+    <li><a href="InyardShenheinfo.jsp"><i class="icon icon-th"></i> <span>审核野账数据</span></a> </li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -237,7 +237,7 @@ function alldo()
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 8,
+            pageSize: 15,
             pageNumber: 1,
             search: true, //显示搜索框
             contentType: "application/x-www-form-urlencoded",
@@ -255,36 +255,41 @@ function alldo()
                     title: "工单号",
                     field: 'workid',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutnum',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐时间',
                     field: 'cutdate',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutsite',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '伐区监管员',
                     field: 'forester',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '操作',
                     field: 'opr',
-                    width: 180,
+                    width: 250,
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
@@ -334,13 +339,13 @@ function alldo()
             success: function (data) {
             	if(data)
             		{
-            		alert("hh删除成功！");
+            		alert("删除成功！");
             		$("#table1").bootstrapTable('refresh');
             		
             		}
             		
             	else
-            		alert("hh删除失败！");
+            		alert("删除失败！");
             }
         })
     }
@@ -469,12 +474,14 @@ function alldo()
                     title: "工单号",
                     field: 'workid',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutnum',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
@@ -487,18 +494,20 @@ function alldo()
                     title: '采伐地点',
                     field: 'cutsite',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '伐区监管员',
                     field: 'forester',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '操作',
                     field: 'opr',
-                    width: 180,
+                    width: 250,
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
@@ -557,36 +566,41 @@ function alldo()
                     title: "工单号",
                     field: 'workid',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutnum',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐时间',
                     field: 'cutdate',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutsite',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '伐区监管员',
                     field: 'forester',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '操作',
                     field: 'opr',
-                    width: 180,
+                    width: 250,
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
@@ -644,36 +658,41 @@ function alldo()
                     title: "工单号",
                     field: 'workid',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐证号',
                     field: 'cutnum',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐时间',
                     field: 'cutdate',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '采伐地点',
                     field: 'cutsite',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '伐区监管员',
                     field: 'forester',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '操作',
                     field: 'opr',
-                    width: 180,
+                    width: 250,
                     align: 'center',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';

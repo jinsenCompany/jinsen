@@ -23,7 +23,7 @@ pageEncoding="UTF-8"%>
         <table class="top-table" >
             <tr><td class="top-table-label">管理员员工号：</td><td><input type="text" id="staff_id"></td><td class="top-table-label">管理员姓名：</td><td><input type="text"id="staff_name"></td><td class="top-table-label">管理员密码：</td><td><input type="text" id="password"></td></tr>
             <tr><td class="top-table-label">管理员权限：</td><td><select id="power_type"><option>管理部操作员</option><option>管理部副经理</option><option>管理部经理</option><option>超级管理员</option><option>规划队</option><option>销售部操作员</option><option>销售部经理</option>
-                    <option>销售合同操作员</option><option>销售调令操作员</option><option>销售结算操作员</option><option>销售合同操作员</option><option>生产部副经理</option>
+                    <option>销售合同操作员</option><option>销售调令操作员</option><option>销售结算操作员</option><option>销售合同操作员</option><option>生产部副经理</option><option>生产部操作员</option>
                     <option>货场管理员</option><option>货场经理</option><option>伐区管理员</option><option>检尺员</option><option>货场制表员A</option><option>货场制表员B</option><option>货场制表员C</option>
                     <option>信息中心</option></select></td><td class="top-table-label">备份记录：</td><td><input type="text" id="backups"></tr>
             <tr><td colspan="6" style="text-align: center"> <button class="add-but" onclick="add_manager()"><i class="glyphicon glyphicon-edit"></i> 提交</button> <button class="add-del"><i class="glyphicon glyphicon-remove"></i> 取消</button></td></tr>

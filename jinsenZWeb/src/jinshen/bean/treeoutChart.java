@@ -4,6 +4,7 @@ public class treeoutChart {
 		private String treetype;
 		private double num;
 		private double price;
+		private double tvolume;
 		public String getTreetype() {
 			return treetype;
 		}
@@ -22,5 +23,12 @@ public class treeoutChart {
 		public void setPrice(double price) {
 			this.price = price;
 		}
+		public double getTvolume() {
+			return tvolume;
+		}
+		public void setTvolume(double tvolume) {
+			this.tvolume = tvolume;
+		}
+		
 
 }

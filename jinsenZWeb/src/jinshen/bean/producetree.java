@@ -24,6 +24,9 @@ public class producetree {
 	private String forester;
 	private String woodmanage;
 	
+	private String projectPackageName;//工程包
+	private String contractionSide;//施工方
+	
 	private Date cutdate;
    
 	public double getWorkid() {
@@ -140,6 +143,18 @@ public class producetree {
 	}
 	public void setCutdate(Date cutdate) {
 		this.cutdate = cutdate;
+	}
+	public String getProjectPackageName() {
+		return projectPackageName;
+	}
+	public void setProjectPackageName(String projectPackageName) {
+		this.projectPackageName = projectPackageName;
+	}
+	public String getContractionSide() {
+		return contractionSide;
+	}
+	public void setContractionSide(String contractionSide) {
+		this.contractionSide = contractionSide;
 	}
     
 

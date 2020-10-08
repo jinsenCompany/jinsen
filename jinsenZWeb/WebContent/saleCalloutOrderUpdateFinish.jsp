@@ -127,14 +127,15 @@ su=(List<surveyor>)request.getAttribute("surveyor");%>
          class="i-tail"></i> 该页面主要是查看已通过审批调令页面</p>
     </div>
     <div class="find-top1">
-    <form onSubmit="return inputNull(this)" action="salaryServlet?action=addcontract" method="POST">
+    <form>
     <div class="top" id="divprint">
     <table style="margin-left:auto; margin-right:auto" border="1">
     <caption class="book_h01">木材销售调令</caption>
     <tbody>
        <tr >
        <td>调运时间:</td><td colspan="3"><fmt:formatDate value="<%=s.getCallidtime() %>" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-       <td>创建调令时间:</td><td colspan="3"><input  name="creattime" id="creattime" style="border:0px;background-color: transparent;font-size:20px;" value="<%=s.getCreattime() %>" pattern = "yyyy-MM-dd HH:mm:ss"></td>
+<%--         <td>调运时间:</td><td colspan="3"><input value="<%=s.getCallidtime() %>"></td> --%>
+       <td>创建调令时间:</td><td colspan="3"><input  name="creattime" id="creattime" style="border:0px;background-color: transparent;font-size:20px;" value="<%=s.getCreattime() %>"></td>
        </tr>
        <tr>
        <td>合同编号</td><td><input style="border:0px;background-color: transparent;font-size:20px;" type="text" name="contractnum" id="contractnum" value="<%=s.getContractnum() %>"></td>
@@ -181,7 +182,10 @@ su=(List<surveyor>)request.getAttribute("surveyor");%>
         </table>
     </div>
     <div class="but_p" style="float:center;">
-     <button style="width:150px;height:50px" class="but_save" type="button"  id="btnPrint" value="打印">打印</button></div>
+<!--      <button style="width:150px;height:50px" class="but_save" type="button"  id="btnPrint" value="打印">打印</button> -->
+<!--      <a href="DownfileServlet?action=saleCalloutExcel"><button  style="width:150px;height:50px" data-id="98" class="btn btn-xs btn-primary">打印</button></a> -->
+      <a href="DownfileServlet?action=saleCalloutExcel"><button type="button" style="width:150px;height:50px;" class="btn">下载</button></a>
+     </div>
     </form>
     </div>
 

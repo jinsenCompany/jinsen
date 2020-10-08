@@ -1,7 +1,14 @@
 package jinshen.action;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 /*录入进仓木材信息和出场木材信息*/
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,26 +23,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jinshen.bean.codejson;
 import jinshen.bean.compareVolume;
 import jinshen.bean.customer;
+import jinshen.bean.cutnum;
 import jinshen.bean.inyard;
 import jinshen.bean.inyardStatus;
+import jinshen.bean.managesdatecard;
 import jinshen.bean.outyard;
 import jinshen.bean.saleCalloutOrder;
 import jinshen.bean.salecontract;
 import jinshen.bean.surveyorFee;
 import jinshen.bean.tree;
+import jinshen.bean.treefile;
 import jinshen.bean.volume;
 import jinshen.bean.workpage;
 import jinshen.bean.workpageStatus;
 import jinshen.bean.yardInventory;
+import jinshen.dao.cutnumDao;
 import jinshen.dao.salemanDao;
 import jinshen.dao.treeDao;
 import jinshen.dao.volumeDao;
 import jinshen.dao.workpageDao;
+import jinshen.daoimpl.cutnumDaoImpl;
 import jinshen.daoimpl.salemanDaoImpl;
 import jinshen.daoimpl.treeDaoImpl;
 import jinshen.daoimpl.volumeDaoImpl;
@@ -79,6 +99,7 @@ public class treeServlet extends HttpServlet {
         volumeDao vl=new volumeDaoImpl();
         workpageDao wpd=new workpageDaoImpl();
         salemanDao sd=new salemanDaoImpl();
+        cutnumDao cnd=new cutnumDaoImpl();
         ObjectMapper mapper = new ObjectMapper();
         //选择材积
         if("volume".equals(action))
@@ -189,7 +210,7 @@ public class treeServlet extends HttpServlet {
 			int flagt=0;
 			if(flag>0) {
 				int i=0;
-				if(jb.has("0"))
+				/*if(jb.has("0"))
 				{
 					i=0;
 				}
@@ -202,7 +223,7 @@ public class treeServlet extends HttpServlet {
 				}
 				else if(jb.has("3")) {
 					i=3;
-				}
+				}*/
 				JSONArray s=null;
         	for(int j=i;j<id;j++)
         	{ 
@@ -210,11 +231,12 @@ public class treeServlet extends HttpServlet {
 		        	//System.out.println(String.valueOf(j));
 		        	s=jb.getJSONArray(String.valueOf(j));
 		        }
-		        else if(jb.has(String.valueOf(j+1))) {
-		        	s=jb.getJSONArray(String.valueOf(j+1));
+		        else if(!jb.has(String.valueOf(j)) && jb.has(String.valueOf(j+1))) {
+		        	continue;
 		        }
-		        else {
-		        	s=jb.getJSONArray(String.valueOf(j+2));
+		        else if(!jb.has(String.valueOf(j))) {
+		        	//s=jb.getJSONArray(String.valueOf(j+2));
+		        	continue;
 		        }
         		//JSONArray s=jb.getJSONArray(String.valueOf(j));
         		tree t=new tree();
@@ -229,6 +251,7 @@ public class treeServlet extends HttpServlet {
             	t.setTotalnum(1);
             	String treetype=s.getString(0);
             	double tradius=Double.parseDouble(s.getString(2));
+            	//double tlong=Double.parseDouble(s.getString(1));
             	if(treetype.equals("杉木") && tradius>0 && tradius<13)
 	            {
 	            	t.setTreeid(1);//衫小径
@@ -615,8 +638,8 @@ public class treeServlet extends HttpServlet {
         	String surveyor=request.getParameter("surveyor");
         	double toltree=Double.parseDouble(request.getParameter("toltree"));
         	double tolstere=Double.parseDouble(request.getParameter("tolstere"));
-        	//System.out.println(jb);
-        	//System.out.println(id);
+        	System.out.println("jb:"+jb);
+        	System.out.println("id:"+id);
         	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         	Date yardtime=null;
         	try {
@@ -630,7 +653,7 @@ public class treeServlet extends HttpServlet {
 		   //保存材积
 			int flagt=0;
 			int i=0;
-			if(jb.has("0"))
+			/*if(jb.has("0"))
 			{
 				i=0;
 			}
@@ -649,13 +672,13 @@ public class treeServlet extends HttpServlet {
 			}
 			else if(jb.has("5")) {
 				i=5;
-			}
+			}*/
 			JSONArray s=null;
 			
     	   for(int j=i;j<id;j++)
 		        {  
-    		        if(jb.has(String.valueOf(j))) {
-    		        	//System.out.println(String.valueOf(j));
+    		        /*if(jb.has(String.valueOf(j))) {
+    		        	System.out.println("j:"+String.valueOf(j));
     		        	s=jb.getJSONArray(String.valueOf(j));
     		        }
     		        else if(jb.has(String.valueOf(j+1))) {
@@ -663,28 +686,50 @@ public class treeServlet extends HttpServlet {
     		        }
     		        else {
     		        	s=jb.getJSONArray(String.valueOf(j+2));
-    		        }
-		        	//JSONArray s=jb.getJSONArray(String.valueOf(j));
+    		        	System.out.println("j=2:"+String.valueOf(j+2));
+    		        }*/
+    		       if(jb.has(String.valueOf(j))) {
+		        	//System.out.println("j:"+String.valueOf(j));
+		        	s=jb.getJSONArray(String.valueOf(j));
+		           }
+		           else if(!jb.has(String.valueOf(j)) && jb.has(String.valueOf(j+1))) {
+		        	//s=jb.getJSONArray(String.valueOf(j+1));
+		        	   continue;
+		        	//System.out.println("j=2:"+String.valueOf(j+2));
+		           }
+		           else if(!jb.has(String.valueOf(j))){
+		        	//s=jb.getJSONArray(String.valueOf(j+2));
+		        	//System.out.println("j=2:"+String.valueOf(j+2));
+		        	   continue;
+		           }
+		        	//s=jb.getJSONArray(String.valueOf(j));
 		        	//System.out.println(String.valueOf(j));
 		        	tree t=new tree();
 		        	t.setWorkid(workid);
 		        	t.setTreetype(s.getString(0));
 		        	treetype=s.getString(0);
+		        	//System.out.println(s.getString(0));
+		        	
 		            t.setTlong(Double.parseDouble(s.getString(1)));
 		            t.setTradius(Double.parseDouble(s.getString(2)));
 		            t.setNum(Double.parseDouble(s.getString(3)));
 		            t.setTvolume(Double.parseDouble(s.getString(4)));
-		            System.out.println(treetype);
+		            
 		            t.setUnitprice(1);//默认单价为1
 		            t.setTotalnum(1);
 		            tradius=Double.parseDouble(s.getString(2));
-		            if(treetype.equals("杉木") && tradius>0 && tradius<13)
+		            double tlong=Double.parseDouble(s.getString(1));
+		            if(treetype.equals("杉木") && tlong>=1.5 && tradius>0 && tradius<13)
 		            {
-		            	t.setTreeid(1);//衫小径
+		            	t.setTreeid(1);//杉小径
 		            }
-		            else if (treetype.equals("杉木") && tradius>13)
+		            else if (treetype.equals("杉木") && tlong>=1.5 && tradius>13)
 		            {
-		            	t.setTreeid(2);//衫原木
+		            	t.setTreeid(2);//杉原木
+		            }
+		            else if (treetype.equals("杉木") && tlong<1.5)
+		            {
+		            	t.setTreeid(8);//杉短材
 		            }
 		            else if (treetype.equals("松木") && tradius>0 && tradius<13)
 		            {
@@ -705,7 +750,7 @@ public class treeServlet extends HttpServlet {
 		            else {
 		            	t.setTreeid(7);//其他
 		            }
-		            flagt=trd.addTree(t);//添加木材信息到数据库中
+		           flagt=trd.addTree(t);//添加木材信息到数据库中
 		        }
 				//保存进场信息
 			inyard cp = new inyard();
@@ -740,7 +785,7 @@ public class treeServlet extends HttpServlet {
 			}
 			else {
 				out.print(flag);	
-			}	
+			}
         }
         //更新进场表
         else if("inyardupdate2".equals(action)) {
@@ -770,9 +815,19 @@ public class treeServlet extends HttpServlet {
 			java.sql.Date yardtime = new java.sql.Date(d.getTime());			
 				//保存材积
 				int flagt=0;
+				String treetype="";
+	        	double tradius=0;
+	        	sql = "select count(*) from tree where workid='"+workid+"'";
+				double ff=trd.findcount(sql);
+				if(ff>=1) {
+					sql="DELETE from tree WHERE workid='"+workid+"'";
+					int j=wpd.delWorkPage(sql);//删除工单数据
+					if(j>0)
+					{
 				for(int i=0;i<id;i++)
 		        {
 		        	JSONArray s=jb.getJSONArray(String.valueOf(i));
+		        	System.out.println(s);
 		        	tree t=new tree();
 		        	t.setWorkid(workid);
 		        	t.setTreetype(s.getString(0));
@@ -780,25 +835,99 @@ public class treeServlet extends HttpServlet {
 		            t.setTradius(Double.parseDouble(s.getString(2)));
 		            t.setNum(Double.parseDouble(s.getString(3)));
 		            t.setTvolume(Double.parseDouble(s.getString(4)));
-		            //sql="select * from volume where tlong ="+Double.parseDouble(s.getString(1))+" and tradius="+Double.parseDouble(s.getString(2));
-		            //volume vll=vl.findVolumeSingle(sql);
-		            //float tvolume = 0.00f; 
-		    		//tvolume=(float)vll.getMvolume();
-		            //t.setTvolume(tvolume*t.getNum());
-		            System.out.println(s.getString(0));
-		            t.setUnitprice(1);//默认单价为1
+		            
+		            t.setUnitprice(1);
 		            t.setTotalnum(1);
-		            sql = "select count(*) from tree where workid="+t.getWorkid()+"";
-					double ff=trd.findcount(sql);
-					if(ff>=1) {
-						//flagt=trd.updateTree1(t,workid);耿欣工单
-						flagt=trd.addTree(t);//耿欣工单
-					}
-					else
-						{
-						flagt=trd.addTree(t);//添加木材信息到数据库中
-						}
+		            tradius=Double.parseDouble(s.getString(2));
+		            double tlong=Double.parseDouble(s.getString(1));
+		            if(treetype.equals("杉木") && tlong>=1.5 && tradius>0 && tradius<13)
+		            {
+		            	t.setTreeid(1);//杉小径
+		            }
+		            else if (treetype.equals("杉木") && tlong>=1.5 && tradius>13)
+		            {
+		            	t.setTreeid(2);//杉原木
+		            }
+		            else if (treetype.equals("杉木") && tlong<1.5)
+		            {
+		            	t.setTreeid(8);//杉短材
+		            }
+		            else if (treetype.equals("松木") && tradius>0 && tradius<13)
+		            {
+		            	t.setTreeid(3);//松小径
+		            }
+		            else if (treetype.equals("松木") && tradius>13)
+		            {
+		            	t.setTreeid(4);//松原木
+		            }
+		            else if (treetype.equals("杂木") && tradius>0 && tradius<13)
+		            {
+		            	t.setTreeid(5);//杂小径
+		            }
+		            else if (treetype.equals("杂木") && tradius>13)
+		            {
+		            	t.setTreeid(6);//杂原木
+		            }
+		            else {
+		            	t.setTreeid(7);//其他
+		            }
+		            flagt=trd.addTree(t);//更新检尺数据
 		        }
+		     }
+				}
+					else
+					{
+						for(int i=0;i<id;i++)
+				        {
+				        	JSONArray s=jb.getJSONArray(String.valueOf(i));
+				        	System.out.println(s);
+				        	tree t=new tree();
+				        	t.setWorkid(workid);
+				        	t.setTreetype(s.getString(0));
+				            t.setTlong(Double.parseDouble(s.getString(1)));
+				            t.setTradius(Double.parseDouble(s.getString(2)));
+				            t.setNum(Double.parseDouble(s.getString(3)));
+				            t.setTvolume(Double.parseDouble(s.getString(4)));
+				            
+				            t.setUnitprice(1);
+				            t.setTotalnum(1);
+				            tradius=Double.parseDouble(s.getString(2));
+				            double tlong=Double.parseDouble(s.getString(1));
+				            if(treetype.equals("杉木") && tlong>=1.5 && tradius>0 && tradius<13)
+				            {
+				            	t.setTreeid(1);//杉小径
+				            }
+				            else if (treetype.equals("杉木") && tlong>=1.5 && tradius>13)
+				            {
+				            	t.setTreeid(2);//杉原木
+				            }
+				            else if (treetype.equals("杉木") && tlong<1.5)
+				            {
+				            	t.setTreeid(8);//杉短材
+				            }
+				            else if (treetype.equals("松木") && tradius>0 && tradius<13)
+				            {
+				            	t.setTreeid(3);//松小径
+				            }
+				            else if (treetype.equals("松木") && tradius>13)
+				            {
+				            	t.setTreeid(4);//松原木
+				            }
+				            else if (treetype.equals("杂木") && tradius>0 && tradius<13)
+				            {
+				            	t.setTreeid(5);//杂小径
+				            }
+				            else if (treetype.equals("杂木") && tradius>13)
+				            {
+				            	t.setTreeid(6);//杂原木
+				            }
+				            else {
+				            	t.setTreeid(7);//其他
+				            }
+				            flagt=trd.addTree(t);//添加木材信息到数据库中
+					}
+					
+					}
 				//保存进场信息
 			inyard cp = new inyard();
 			cp.setWorkid(workid);
@@ -1177,6 +1306,20 @@ public class treeServlet extends HttpServlet {
 			List<tree> tree=trd.findTree(sql);
 			sql="select * from workpage where workid="+workid+"";
        		workpage workpage=wpd.findCodeSingle(sql);
+       		sql="SELECT treein_file from treein_file WHERE workid='"+str+"'";
+        	treefile treef=wpd.findtreefile(sql);
+        	String tfile=String.valueOf(treef.getTreefile());
+        	System.out.print(tfile);
+        	if(!tfile.equals("null"))
+        	{
+        		tfile = tfile.substring(tfile.lastIndexOf("/") + 1);
+        	}
+        	else
+        	{
+        		tfile="";
+        	}
+        	request.setAttribute("treef", treef);
+    		request.setAttribute("tfile", tfile);
        		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
@@ -1194,6 +1337,20 @@ public class treeServlet extends HttpServlet {
 			List<tree> tree=trd.findTree(sql);
 			sql="select * from workpage where workid="+workid+"";
        		workpage workpage=wpd.findCodeSingle(sql);
+       		sql="SELECT treein_file from treein_file WHERE workid='"+str+"'";
+        	treefile treef=wpd.findtreefile(sql);
+        	String tfile=String.valueOf(treef.getTreefile());
+        	System.out.print(tfile);
+        	if(!tfile.equals("null"))
+        	{
+        		tfile = tfile.substring(tfile.lastIndexOf("/") + 1);
+        	}
+        	else
+        	{
+        		tfile="";
+        	}
+        	request.setAttribute("treef", treef);
+    		request.setAttribute("tfile", tfile);
        		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
@@ -1329,6 +1486,20 @@ public class treeServlet extends HttpServlet {
     		workpageStatus workpageStatus=wpd.findWapStatus(sql);
     		sql="select * from workpage where workid="+workid+"";
        		workpage workpage=wpd.findCodeSingle(sql);
+       		sql="SELECT treein_file from treein_file WHERE workid='"+str+"'";
+        	treefile treef=wpd.findtreefile(sql);
+        	String tfile=String.valueOf(treef.getTreefile());
+        	//System.out.print(tfile);
+        	if(!tfile.equals("null"))
+        	{
+        		tfile = tfile.substring(tfile.lastIndexOf("/") + 1);
+        	}
+        	else
+        	{
+        		tfile="";
+        	}
+        	request.setAttribute("treef", treef);
+    		request.setAttribute("tfile", tfile);
        		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
@@ -1350,6 +1521,21 @@ public class treeServlet extends HttpServlet {
     		workpageStatus workpageStatus=wpd.findWapStatus(sql);
     		sql="select * from workpage where workid="+workid+"";
        		workpage workpage=wpd.findCodeSingle(sql);
+       		
+       		sql="SELECT treein_file from treein_file WHERE workid='"+str+"'";
+        	treefile treef=wpd.findtreefile(sql);
+        	String tfile=String.valueOf(treef.getTreefile());
+        	System.out.print(tfile);
+        	if(!tfile.equals("null"))
+        	{
+        		tfile = tfile.substring(tfile.lastIndexOf("/") + 1);
+        	}
+        	else
+        	{
+        		tfile="";
+        	}
+        	request.setAttribute("treef", treef);
+    		request.setAttribute("tfile", tfile);
        		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
 			request.setAttribute("tree", tree);
@@ -1456,6 +1642,9 @@ public class treeServlet extends HttpServlet {
          	sql="select * from outyard where sale_callout_orderid='"+str+"' and workid='"+workid+"'";
 			outyard outyard=trd.findOutSingle(sql);
 			//double workid=outyard.getWorkid();
+			String cutnum=String.valueOf(outyard.getCutnum());
+			sql="SELECT * from cutnum WHERE cutnum='"+cutnum+"'";
+        	cutnum cutn = cnd.findCodeSingle(sql);
 			sql="select * from treeout where workid='"+workid+"'";
 			List<tree> tree=trd.findTree(sql);
 			request.setAttribute("workid", workid);
@@ -1465,6 +1654,156 @@ public class treeServlet extends HttpServlet {
          	request.setAttribute("contractPrivoder", contractPrivoder);
          	request.setAttribute("compShip", compShip);
          	request.getRequestDispatcher("treeout3.jsp").forward(request, response);
+			BigDecimal bigDecimal = new BigDecimal(workid);  //不显示科学计数法
+	        String result = bigDecimal.toString();
+			System.out.print("workid:"+result);
+         	Date d1 = null;
+			try {
+				d1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(outyard.getYarddate()));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}//定义起始日期
+        	SimpleDateFormat sdf0 = new SimpleDateFormat("yyyy");
+        	SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
+        	SimpleDateFormat sdf2= new SimpleDateFormat("dd");
+        	SimpleDateFormat sdf3= new SimpleDateFormat("HH");
+        	String str0 = sdf0.format(d1);//年
+        	String str1 = sdf1.format(d1);//月
+        	String str2 = sdf2.format(d1);//日
+        	String str3 = sdf3.format(d1);//时
+         	
+         	//FileInputStream file = new FileInputStream(new File("f:\\treeoutYe.xls"));
+        	FileInputStream file = new FileInputStream(new File("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZ\\WEB-INF\\PrintOutTree\\saleCallout.xls"));
+			HSSFWorkbook workbook =new HSSFWorkbook(file);
+      //   	HSSFSheet sheet = workbook.createSheet("Sample sheet445");
+ 	        HSSFSheet sheet = workbook.getSheet("Sheet1");       	
+ 	        int a=sheet.getFirstRowNum()+80;//从80列开始
+ 	        int b=sheet.getLastRowNum();
+        	try {
+        				System.out.print("已经创建好文件，进入到sheet1");
+        				System.out.print(b);
+                        Row row = sheet.getRow(80);//获取第80行
+//        				// 这个判断很必要  确保下面cell操作顺利执行
+        		          if(row == null){
+        		              row = sheet.createRow(80);
+        		          }
+        				 for (int j=a;j<b;j++)
+        				 {
+        					 if(sheet.getRow(j)!=null)
+        					 {
+        					 sheet.removeRow(sheet.getRow(j));
+        					 //sheet.setSelected(true);
+        					 sheet.setActive(true);
+        					 }
+        				 }
+        				    //Row row = sheet.createRow(80);
+        	                Cell cell = row.createCell(16);//第16列
+        	                cell.setCellValue((String)saleCalloutOrder.getSaleCalloutOrder());//调令
+        	                
+							Cell cell1 = row.createCell(17);
+							cell1.setCellValue((String)saleCalloutOrder.getContractnum());
+							
+						
+							Cell cell2 = row.createCell(18);
+							cell2.setCellValue((String)saleCalloutOrder.getDemander());
+							
+							  Cell cell3 = row.createCell(19);
+							  cell3.setCellValue((String)contractPrivoder.getProvider());
+							
+							  
+							  Cell cell4 = row.createCell(20);
+							  cell4.setCellValue((String)outyard.getYard());
+							 
+							 Cell cell5 = row.createCell(21);
+							  cell5.setCellValue((String)compShip.getShipaddress());//地址
+							
+							  Cell cell6 = row.createCell(22);
+							  cell6.setCellValue(String.valueOf(outyard.getYarddate()));//时间
+							  //System.out.print(treeout.getCallidtime());
+							  
+							  Cell cell7 = row.createCell(23);
+							  cell7.setCellValue(outyard.getCarNumber());
+//							  
+							  Cell cell8 = row.createCell(24);
+							  cell8.setCellValue(outyard.getToltree());
+						
+							  Cell cell9 = row.createCell(25);
+							  cell9.setCellValue(outyard.getTolstere());
+//							  
+							  Cell cell10 = row.createCell(26);
+							  cell10.setCellValue(result);
+							  
+							  Cell cell11 = row.createCell(27);
+							  cell11.setCellValue(str0);
+							  
+							  Cell cell12 = row.createCell(28);
+							  cell12.setCellValue(str1);
+						
+							  Cell cell13 = row.createCell(29);
+							  cell13.setCellValue(str2);
+							  
+							  Cell cell14 = row.createCell(30);
+							  cell14.setCellValue(str3);
+							  
+							  Cell cell15 = row.createCell(31);
+							  cell15.setCellValue(outyard.getSurveyor());
+//							  
+							  Cell cell16 = row.createCell(32);
+							  cell16.setCellValue(String.valueOf(cutn.getProjectPackageName()));
+							  
+							  Cell cell17 = row.createCell(33);
+							  cell17.setCellValue(String.valueOf(cutn.getCutaddress()));
+							  
+							  Cell cell18 = row.createCell(34);
+							  cell18.setCellValue(String.valueOf(cutn.getCutvillage()));
+							  
+							  Cell cell19 = row.createCell(35);
+							  cell19.setCellValue(String.valueOf(cutn.getQuartel()));
+							  
+							  Cell cell20 = row.createCell(36);
+							  cell20.setCellValue(String.valueOf(cutn.getLargeblock()));//大班
+							  
+							  Cell cell21 = row.createCell(37);
+							  cell21.setCellValue(String.valueOf(cutn.getSmallblock()));//小班
+							  
+							  Cell cell22 = row.createCell(38);
+							  cell22.setCellValue(String.valueOf(cutnum));//采伐证
+							  
+								 for (int i=0;i<tree.size();i++) {  
+									Row rowx = sheet.createRow(i+82);//从82行开始
+				        	            Cell cella = rowx.createCell(16);//第16列
+				        	            cella.setCellValue((String) tree.get(i).getTreetype());
+				        	            Cell cellb = rowx.createCell(17);
+				        	            cellb.setCellValue((double)tree.get(i).getTlong());
+				        	            Cell cellc = rowx.createCell(18);
+				        	            cellc.setCellValue((double) tree.get(i).getTradius());
+				        	            Cell   celld = rowx.createCell(19);
+				        	            celld.setCellValue((double) tree.get(i).getNum());
+				        	            Cell celle = rowx.createCell(20);
+				        	            celle.setCellValue((double) tree.get(i).getTvolume());
+								 }
+								 sheet.setForceFormulaRecalculation(true);
+        	     file.close();
+        		
+        	    //FileOutputStream out1=new FileOutputStream(new File("f:\\treeoutYe.xls"));
+        	    FileOutputStream out1=new FileOutputStream(new File("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZ\\WEB-INF\\PrintOutTree\\treeoutYe.xls"));
+        	    workbook.write(out1);
+				/*
+				 * sheet = workbook.getSheetAt(0); Iterator<Row> rowIte = sheet.iterator();
+				 * while(rowIte.hasNext()){ rowIte.next(); rowIte.remove(); }
+				 * System.out.println("已删除完毕");
+				 */
+        	    file.close();
+        	    out1.close();
+        	    workbook.close();
+        	    System.out.println("Excel written successfully..");
+        	   
+        	} catch (FileNotFoundException e) {
+        	    e.printStackTrace();
+        	} catch (IOException e) {
+        	    e.printStackTrace();
+        	}
          }
         //选择已录入检尺数据的输出工单
          else if("treeoutCodepage".equals(action)) {
@@ -1488,7 +1827,14 @@ public class treeServlet extends HttpServlet {
          	customer compShip=sd.findcutnumAddres(sql);
          	sql="select * from outyard where sale_callout_orderid='"+str+"' and yarddate='"+yarddate+"'";
 			outyard outyard=trd.findOutSingle(sql);
-			double workid=outyard.getWorkid();
+			String workid=String.valueOf(outyard.getWorkid());
+			BigDecimal bigDecimal = new BigDecimal(workid);  //不显示科学计数法
+	        String result = bigDecimal.toString();
+			System.out.print("workid:"+result);
+			String cutnum=String.valueOf(outyard.getCutnum());
+			sql="SELECT * from cutnum WHERE cutnum='"+cutnum+"'";
+        	cutnum cutn = cnd.findCodeSingle(sql);
+			
 			sql="select * from treeout where workid="+workid+"";
 			List<tree> tree=trd.findTree(sql);
 			request.setAttribute("workid", workid);
@@ -1498,7 +1844,390 @@ public class treeServlet extends HttpServlet {
          	request.setAttribute("contractPrivoder", contractPrivoder);
          	request.setAttribute("compShip", compShip);
          	request.getRequestDispatcher("treeoutPrint.jsp").forward(request, response);
+         	
+         	Date d1 = null;
+			try {
+				d1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(String.valueOf(outyard.getYarddate()));
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}//定义起始日期
+        	SimpleDateFormat sdf0 = new SimpleDateFormat("yyyy");
+        	SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
+        	SimpleDateFormat sdf2= new SimpleDateFormat("dd");
+        	SimpleDateFormat sdf3= new SimpleDateFormat("HH");
+        	String str0 = sdf0.format(d1);//年
+        	String str1 = sdf1.format(d1);//月
+        	String str2 = sdf2.format(d1);//日
+        	String str3 = sdf3.format(d1);//时
+         	
+         	FileInputStream file = new FileInputStream(new File("f:\\treeoutYe.xls"));
+        	//FileInputStream file = new FileInputStream(new File("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZWeb\\WEB-INF\\PrintOutTree\\treeoutYe.xls"));
+			HSSFWorkbook workbook =new HSSFWorkbook(file);
+      //   	HSSFSheet sheet = workbook.createSheet("Sample sheet445");
+ 	        HSSFSheet sheet = workbook.getSheet("Sheet1");       	
+ 	        int a=sheet.getFirstRowNum()+80;//从80列开始
+ 	        int b=sheet.getLastRowNum();
+        	try {
+        				System.out.print("已经创建好文件，进入到sheet1");
+        				System.out.print(b);
+                        Row row = sheet.getRow(80);//获取第80行
+//        				// 这个判断很必要  确保下面cell操作顺利执行
+        		          if(row == null){
+        		              row = sheet.createRow(80);
+        		          }
+        				 for (int j=a;j<b;j++)
+        				 {
+        					 if(sheet.getRow(j)!=null)
+        					 {
+        					 sheet.removeRow(sheet.getRow(j));
+        					 //sheet.setSelected(true);
+        					 sheet.setActive(true);
+        					 }
+        				 }
+        				    //Row row = sheet.createRow(80);
+        	                Cell cell = row.createCell(16);//第16列
+        	                cell.setCellValue((String)saleCalloutOrder.getSaleCalloutOrder());//调令
+        	                
+							Cell cell1 = row.createCell(17);
+							cell1.setCellValue((String)saleCalloutOrder.getContractnum());
+							
+						
+							Cell cell2 = row.createCell(18);
+							cell2.setCellValue((String)saleCalloutOrder.getDemander());
+							
+							  Cell cell3 = row.createCell(19);
+							  cell3.setCellValue((String)contractPrivoder.getProvider());
+							
+							  
+							  Cell cell4 = row.createCell(20);
+							  cell4.setCellValue((String)outyard.getYard());
+							 
+							 Cell cell5 = row.createCell(21);
+							  cell5.setCellValue((String)compShip.getShipaddress());//地址
+							
+							  Cell cell6 = row.createCell(22);
+							  cell6.setCellValue(String.valueOf(outyard.getYarddate()));//时间
+							  //System.out.print(treeout.getCallidtime());
+							  
+							  Cell cell7 = row.createCell(23);
+							  cell7.setCellValue(outyard.getCarNumber());
+//							  
+							  Cell cell8 = row.createCell(24);
+							  cell8.setCellValue(outyard.getToltree());
+						
+							  Cell cell9 = row.createCell(25);
+							  cell9.setCellValue(outyard.getTolstere());
+//							  
+							  Cell cell10 = row.createCell(26);
+							  cell10.setCellValue(result);
+							 // System.out.print(workid);
+							  
+							  Cell cell11 = row.createCell(27);
+							  cell11.setCellValue(str0);
+							  
+							  Cell cell12 = row.createCell(28);
+							  cell12.setCellValue(str1);
+						
+							  Cell cell13 = row.createCell(29);
+							  cell13.setCellValue(str2);
+							  
+							  Cell cell14 = row.createCell(30);
+							  cell14.setCellValue(str3);
+							  
+							  Cell cell15 = row.createCell(31);
+							  cell15.setCellValue(outyard.getSurveyor());
+//							  
+							  Cell cell16 = row.createCell(32);
+							  cell16.setCellValue(String.valueOf(cutn.getProjectPackageName()));
+							  
+							  Cell cell17 = row.createCell(33);
+							  cell17.setCellValue(String.valueOf(cutn.getCutaddress()));
+							  
+							  Cell cell18 = row.createCell(34);
+							  cell18.setCellValue(String.valueOf(cutn.getCutvillage()));
+							  
+							  Cell cell19 = row.createCell(35);
+							  cell19.setCellValue(String.valueOf(cutn.getQuartel()));
+							  
+							  Cell cell20 = row.createCell(36);
+							  cell20.setCellValue(String.valueOf(cutn.getLargeblock()));//大班
+							  
+							  Cell cell21 = row.createCell(37);
+							  cell21.setCellValue(String.valueOf(cutn.getSmallblock()));//小班
+							  
+							  Cell cell22 = row.createCell(38);
+							  cell22.setCellValue(String.valueOf(cutnum));//采伐证
+							  
+								 for (int i=0;i<tree.size();i++) {  
+									Row rowx = sheet.createRow(i+82);//从82行开始
+				        	            Cell cella = rowx.createCell(16);//第16列
+				        	            cella.setCellValue((String) tree.get(i).getTreetype());
+				        	            Cell cellb = rowx.createCell(17);
+				        	            cellb.setCellValue((double)tree.get(i).getTlong());
+				        	            Cell cellc = rowx.createCell(18);
+				        	            cellc.setCellValue((double) tree.get(i).getTradius());
+				        	            Cell   celld = rowx.createCell(19);
+				        	            celld.setCellValue((double) tree.get(i).getNum());
+				        	            Cell celle = rowx.createCell(20);
+				        	            celle.setCellValue((double) tree.get(i).getTvolume());
+								 }
+								 sheet.setForceFormulaRecalculation(true);
+        	     file.close();
+        		
+        	    FileOutputStream out1=new FileOutputStream(new File("f:\\treeoutYe.xls"));
+        	     //FileOutputStream out1=new FileOutputStream(new File("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZWeb\\WEB-INF\\PrintOutTree\\treeoutYe.xls"));
+        	    workbook.write(out1);
+				/*
+				 * sheet = workbook.getSheetAt(0); Iterator<Row> rowIte = sheet.iterator();
+				 * while(rowIte.hasNext()){ rowIte.next(); rowIte.remove(); }
+				 * System.out.println("已删除完毕");
+				 */
+        	    file.close();
+        	    out1.close();
+        	    workbook.close();
+        	    System.out.println("Excel written successfully..");
+        	   
+        	} catch (FileNotFoundException e) {
+        	    e.printStackTrace();
+        	} catch (IOException e) {
+        	    e.printStackTrace();
+        	}
          }
+      //货场费用结算
+         else if("yardmoneyS".equals(action)) {
+         	String yeart=request.getParameter("year");
+         	String staffname=request.getParameter("staff_name");
+             //sql="SELECT year(luRuDate) as yeart,yard from goodyard_cost WHERE year(luRuDate)='"+yeart+"' and luruperson='"+staffname+"' GROUP BY year(luRuDate),yard";
+         	sql="SELECT year(luRuDate) as yeart,yard from goodyard_cost WHERE year(luRuDate)='"+yeart+"' GROUP BY year(luRuDate),yard";
+             List<yardInventory> cw=trd.findhyard(sql);
+         	//System.out.println("...."+cw.size() + "...");
+         	mapper.writeValue(response.getWriter(), cw);
+         }
+        //删除野账数据
+         else if("alldelete1".equals(action))
+         {
+         	String mygroup = request.getParameter("workid");
+         	//workpage ac=new workpage();
+         	sql="delete from workpage where workid='"+mygroup+"'";
+         	int i=wpd.delWorkPage(sql);
+         	sql="delete from inyard where workid='"+mygroup+"'";
+         	int ii=wpd.delWorkPage(sql);
+         	sql="delete from tree where workid='"+mygroup+"'";
+         	int iii=wpd.delWorkPage(sql);
+         	int iiii=0;
+         	if(i>0 && ii>0 && iii>0)
+         	{
+         		iiii=1;
+         	}
+         	//System.out.println("...." +i + "...");
+         	ObjectMapper mapper1=new ObjectMapper();
+     		mapper1.writeValue(response.getWriter(),iiii);
+     		int flag=0;
+     		if(i<0)
+      		{
+     		sql="update codestatus set status='delete' where workid="+mygroup+"";
+         	flag=wpd.updateWork(sql);
+      		}
+      		else {
+     		 sql="insert into codestatus values("+mygroup+",'delete')";
+     		 flag=wpd.addCodeStatus(sql);
+      		}
+         }
+        
+        //
+         else if(action.equals("addTreeYezhang")) {
+     		treefile cp = new treefile();//采伐证信息
+         	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+     		String savePath = this.getServletContext().getRealPath("/WEB-INF/treeinfile");//施工方资料
+     		//得到文件访问的相对路径
+     		String readPath = "../WEB-INF/treeinfile/";
+     		File file = new File(savePath);
+     		// 判断上传文件的保存目录是否存在
+     		if (!file.exists() || !file.isDirectory()) {
+     			System.out.println(savePath + "目录不存在，需要创建");
+     			// 创建目录
+     			file.mkdir();
+     		}
+     		// 消息提示
+     		String message = "";
+     		try {
+     			// 使用Apache文件上传组件处理文件上传步骤：
+     			// 1、创建一个DiskFileItemFactory工厂
+     			DiskFileItemFactory factory = new DiskFileItemFactory();
+     			// 2、创建一个文件上传解析器
+     			ServletFileUpload upload = new ServletFileUpload(factory);
+     			// 解决上传文件名的中文乱码
+     			upload.setHeaderEncoding("UTF-8");
+     			// 3、判断提交上来的数据是否是上传表单的数据
+     			if (!ServletFileUpload.isMultipartContent(request)) {
+     				// 按照传统方式获取数据
+     				return;
+     			}
+     			// 4、使用ServletFileUpload解析器解析上传数据，解析结果返回的是一个List<FileItem>集合，每一个FileItem对应一个Form表单的输入项
+     			List<FileItem> list = upload.parseRequest(request);
+     			System.out.println(list.size());
+     			for (FileItem item : list) {
+     				// 如果fileitem中封装的是普通输入项的数据
+     				if (item.isFormField()) {
+     					String name = item.getFieldName();//普通输入项username
+     					if("workid".equals(name)) {
+     						cp.setWorkid(item.getString());
+     					}
+     					// 解决普通输入项的数据的中文乱码问题
+     					String value = item.getString("UTF-8");
+     					// value = new String(value.getBytes("iso8859-1"),"UTF-8");
+     					System.out.println(name + "=" + value);
+     				} else {// 如果fileitem中封装的是上传文件
+     						// 得到上传的文件名称，
+     					String filename = item.getName();
+     					System.out.println(filename);
+     					if (filename == null || filename.trim().equals("")) {
+     						continue;
+     					}
+     					// 注意：不同的浏览器提交的文件名是不一样的，有些浏览器提交上来的文件名是带有路径的，如： c:\a\b\1.txt，而有些只是单纯的文件名，如：1.txt
+     					// 处理获取到的上传文件的文件名的路径部分，只保留文件名部分
+     					filename = filename.substring(filename.lastIndexOf("\\") + 1);
+     					//request.setAttribute("filename", filename);
+     					// 获取item中的上传文件的输入流
+     					InputStream in = item.getInputStream();
+     					// 创建一个文件输出流
+     					FileOutputStream outt = new FileOutputStream(savePath + "\\" + filename);
+     					//输出文件保存路径
+     					System.out.println("savePath:" + savePath + "\\" +filename);
+     					//显示文件读取的相对路径
+     					readPath = readPath+ filename;
+     					cp.setTreefile(readPath);
+     					System.out.println("readPath :"+ readPath);
+     					// 创建一个缓冲区
+     					byte buffer[] = new byte[1024];
+     					// 判断输入流中的数据是否已经读完的标识
+     					int len = 0;
+     					// 循环将输入流读入到缓冲区当中，(len=in.read(buffer))>0就表示in里面还有数据
+     					while ((len = in.read(buffer)) > 0) {
+     						// 使用FileOutputStream输出流将缓冲区的数据写入到指定的目录(savePath + "\\" + filename)当中
+     						outt.write(buffer, 0, len);
+     					}
+     					// 关闭输入流
+     					in.close();
+     					// 关闭输出流
+     					outt.close();
+     					// 删除处理文件上传时生成的临时文件
+     					item.delete();
+     					message = "文件上传成功！";
+     				}
+     			}
+     		} catch (Exception e) {
+     			message = "文件上传失败！";
+     			e.printStackTrace();
+     		}
+     		int flag=trd.addTreefile(cp);
+     		//out.print(flag);
+         	if(flag>0) {
+         		//out.print("添加成功");
+         		out.print("上传附件成功,3秒后返回录入界面<script>setTimeout(\"window.location.href ='passworkpage.jsp';\", 3000);</script>");
+         	}
+         	else {
+         		out.print("添加失败");
+         	}
+     	}
+      //审核进场工单(全部信息) 
+         else if(action.equals("printall")) {
+         	String timeStart = request.getParameter("timeStart");
+         	String timeEnd = request.getParameter("timeEnd");
+         	String yard = request.getParameter("yard");
+         	String section = request.getParameter("section");
+         	//System.out.println("...." +timeStart + "...");
+         	//System.out.println("...." +yard + "...");       	
+     		sql="select i.workid,i.cutNum,i.yarddate,i.cutSite,i.carNumber,i.yard,i.surveyor,i.section from inyard as i where 1=1";
+         	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+         		sql=sql+" and i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+         	}
+         	if(!yard.isEmpty()) {
+         		sql=sql+" and i.yard='"+yard+"'";
+         	}
+         	if(!section.isEmpty())
+         	{
+         		sql=sql+" and i.section='"+section+"'";
+         	}
+         	
+         	///System.out.print(sql);
+     		List<inyard> work=trd.findinyards(sql);
+         	mapper.writeValue(response.getWriter(), work);
+         }        
+         //审核进场工单(未审核) 
+         else if(action.equals("printNotShenHe")) {
+         	String timeStart = request.getParameter("timeStart");
+         	String timeEnd = request.getParameter("timeEnd");
+         	String yard = request.getParameter("yard");
+         	String section = request.getParameter("section");
+         	//System.out.println("...." +timeStart + "...");
+         	//System.out.println("...." +yard + "...");       	
+     		sql="select i.workid,i.cutNum,i.yarddate,i.cutSite,i.carNumber,i.yard,i.surveyor,i.section from inyard as i join workpage_status as w on i.workid=w.workid where w.workid_status=7";
+         	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+         		sql=sql+" and i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+         	}
+         	if(!yard.isEmpty()) {
+         		sql=sql+" and i.yard='"+yard+"'";
+         	}
+         	if(!section.isEmpty())
+         	{
+         		sql=sql+" and i.section='"+section+"'";
+         	}
+         	
+         	///System.out.print(sql);
+     		List<inyard> work=trd.findinyards(sql);
+         	mapper.writeValue(response.getWriter(), work);
+         }        
+         //审核进场工单(已通过) 
+         else if(action.equals("printPass")) {
+         	String timeStart = request.getParameter("timeStart");
+         	String timeEnd = request.getParameter("timeEnd");
+         	String yard = request.getParameter("yard");
+         	String section = request.getParameter("section");
+         	//System.out.println("...." +timeStart + "...");
+         	//System.out.println("...." +yard + "...");       	
+     		sql="select i.workid,i.cutNum,i.yarddate,i.cutSite,i.carNumber,i.yard,i.surveyor,i.section from inyard as i join workpage_status as w on i.workid=w.workid where w.workid_status=8";
+         	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+         		sql=sql+" and i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+         	}
+         	if(!yard.isEmpty()) {
+         		sql=sql+" and i.yard='"+yard+"'";
+         	}
+         	if(!section.isEmpty())
+         	{
+         		sql=sql+" and i.section='"+section+"'";
+         	}
+         	
+         	///System.out.print(sql);
+     		List<inyard> work=trd.findinyards(sql);
+         	mapper.writeValue(response.getWriter(), work);
+         }        
+         //审核进场工单(未通过) 
+         else if(action.equals("printNotPass")) {
+         	String timeStart = request.getParameter("timeStart");
+         	String timeEnd = request.getParameter("timeEnd");
+         	String yard = request.getParameter("yard");
+         	String section = request.getParameter("section");
+         	//System.out.println("...." +timeStart + "...");
+         	//System.out.println("...." +yard + "...");       	
+     		sql="select i.workid,i.cutNum,i.yarddate,i.cutSite,i.carNumber,i.yard,i.surveyor,i.section from inyard as i join workpage_status as w on i.workid=w.workid where w.workid_status=9";
+         	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+         		sql=sql+" and i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+         	}
+         	if(!yard.isEmpty()) {
+         		sql=sql+" and i.yard='"+yard+"'";
+         	}
+         	if(!section.isEmpty())
+         	{
+         		sql=sql+" and i.section='"+section+"'";
+         	}
+         	
+         	///System.out.print(sql);
+     		List<inyard> work=trd.findinyards(sql);
+         	mapper.writeValue(response.getWriter(), work);
+         }
+
 
 	}
 

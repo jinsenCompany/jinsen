@@ -52,6 +52,20 @@
     display: inline-block;
     top: 1px;
 }
+#to{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 24px!important; 	height: 40px; width:200px;	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer; 
+	}
+
 </style>
 </head>
 <body>
@@ -85,7 +99,7 @@
     </li>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
-    <li>
+<li>
     <%
 	String staff_id = request.getSession().getAttribute("staff_id").toString();
 				%> <%
@@ -104,22 +118,20 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
-    
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
        <ul>
       
         <li><a href="workpageAdd.jsp">野账录入</a></li>
@@ -127,16 +139,24 @@
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-   <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>         
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>      
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -148,8 +168,12 @@
 <!--End-breadcrumbs-->
 
 <div class="find-top">
+
      <p class="p-tail"><i class="i-tail"></i>该页面是生产施工方资料汇总表界面</p>
+     
 </div>
+<input type="button" onclick="to()" id="to" value="新增施工方资料">
+
  <div class="table-con">
         <table id="table1" class="table-style"></table>
 </div>
@@ -159,6 +183,12 @@
 <script src="js/bstable/js/bootstrap-table.js"></script>
 <script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
 <script>
+	function to(){
+		window.location='managesdatecard.jsp';
+	}
+	
+	
+	
     $(function(){
     	table1();
     })
@@ -226,7 +256,7 @@
                         width: 200,
                         align: 'center'
                     },
-                    {
+                   /*  {
                     	title: '面积',
                         field: 'allarea',
                         width: 200,
@@ -238,7 +268,7 @@
                         width: 200,
                         align: 'center',
                         valign:'middle',
-                    },
+                    }, */
                     {
                         title: '修改',
                         field: 'opr',
@@ -270,5 +300,7 @@
 <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
 <script src="js/matrix.js"></script> 
 <script src="js/matrix.dashboard.js"></script> 
+
 </body>
+
 </html>

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@page import="java.util.*"%>
 <%@page import="java.text.SimpleDateFormat"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +35,25 @@ color: #fff;
 background-color: #3195f1;
 border-color: #0d7adf;
 }
+.bar1 {background: #A3D0C3;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+        .bar1 input {
+            border: 2px solid #7BA7AB;
+            border-radius: 5px;
+            background: #F9F0DA;
+            color: #9E9C9C;
+        }
+        .bar1 button {
+            top: 0;
+            right: 0;
+            background: #7BA7AB;
+            border-radius: 0 5px 5px 0;
+        }
+        .bar1 button:before {
+            content: "\f002";
+            font-family: FontAwesome;
+            font-size: 16px;
+            color: #F9F0DA;
+        }
 </style>
     <script type="text/javascript">
     function submit_year()
@@ -249,18 +269,18 @@ border-color: #0d7adf;
                    align: 'center',
                    valign: 'middle'
                  },
-                 {
-                	 title:'检尺长',
-                	 field: 'tlong',
-                     align: 'center',
-                     valign: 'middle'
-                 },
-                 {
-                	 title:'检尺径',
-                	 field: 'tradius',
-                     align: 'center',
-                     valign: 'middle'
-                 },
+//                  {
+//                 	 title:'检尺长',
+//                 	 field: 'tlong',
+//                      align: 'center',
+//                      valign: 'middle'
+//                  },
+//                  {
+//                 	 title:'检尺径',
+//                 	 field: 'tradius',
+//                      align: 'center',
+//                      valign: 'middle'
+//                  },
                  {
                 	 title:'根数',
                 	 field: 'num',
@@ -350,27 +370,28 @@ String now = df.format(d); %>
            <p class="p-tail"><i class="i-tail"></i> 该页面是生产木材信息报表打印界面</p>
           </div>
            <div class="find-top1">
-            <table>
+            <table class="bar1">
            <!--  <tr><td class="top-table-label">年份：</td><td><select id="sa_year" name="sa_year" onChange="change_year()" readonly unselectable="on"></select></tr>
            <tr><td class="top-table-label">月份：</td><td><select id="sa_month" name="sa_month"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>1-12</option><option>1-3</option><option>4-6</option><option>7-9</option><option>10-12</option></select></td></tr>-->
            <tr>
-           <td width="200">选择开始日期：<input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01"></td>
-           <td width="200">选择结束日期：<input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
+           <td width="400px"><span>选择开始日期：</span><input  type="datetime-local" name="timeStart" id="timeStart"  value="2020-01-01T00:00"></td>
+<!--            <td width="400">选择开始日期：<input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01"></td> -->
+           <td width="400px"><span>选择结束日期：</span><input  type="datetime-local" name="timeEnd" id="timeEnd" value="2020-12-01T23:59"></td>
            </tr>
            <tr></tr>
            <tr>
-           <td width="400"><input type="checkbox" width="80" height="50">
+           <td width="400">
             <span>货场：</span><input  type="text" name="yard" id="yard"></td>
            
-           <td width="400"><input type="checkbox" width="80" height="50">
+           <td width="400">
             <span>树种：</span><input  type="text" name="treetype" id="treetype"></td>
            
-           <td width="400"><input type="checkbox" width="80" height="50">
+           <td width="400">
             <span>口径：</span><input  type="text" name="tradius" id="tradius"></td>
            </tr>
            <tr>
-           <td colspan="8" style="text-align: center"><button class="add-but" onclick="totaltree()"><i class="glyphicon glyphicon-edit"></i>查询进仓木材总库存情况</button>
-           <button class="add-but" onclick="producetree()"><i class="glyphicon glyphicon-edit"></i>查询采伐木材情况表</button></td>
+           <td colspan="8" style="text-align: center"><button  onclick="totaltree()">查询进仓木材总库存情况</button>
+           <button  onclick="producetree()">查询采伐木材情况表</button></td>
            </tr>
             </table>
            </div>

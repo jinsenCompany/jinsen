@@ -23,7 +23,9 @@ import javax.servlet.http.HttpSession;
 	"/treeoutCodepage.jsp","/producetreeTableSalaryper.jsp","/treeoutTableSalayper.jsp",
 	"/managesdatecard.jsp","/managersdatecardSee.jsp","/CutnumProjectpackage.jsp","/cutareaAllot.jsp",
 	"/cutnumProjectpackageShenhe.jsp","/CutnumProjectpackageTable.jsp","/productPrice.jsp","/productPrice2.jsp","/productTreePrice.jsp",
-	"/productPrice23.jsp","/productTreePriceTable.jsp","/manageCutnumProduced.jsp"})
+	"/productPrice23.jsp","/productTreePriceTable.jsp","/yardDirector.jsp","/goodsYardCost.jsp","/yardInventoryBootstrapDirector.jsp",
+	"/workpageTreeBuyDirector.jsp","/compareTreeListDirector.jsp","/InyardShenhesuDirector.jsp","/yardinfo.jsp","/SurveyorAddinfo.jsp",
+	"/cancellingStocksTable.jsp","/yardMoneryDirector.jsp","/saleCalloutOrderShenhe.jsp","/yardMonerySettle.jsp"})
 public class MyFilter implements Filter {
 
 	@Override

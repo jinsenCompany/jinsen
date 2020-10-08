@@ -146,7 +146,7 @@ function cutnumtreeAdd()
         		}
         	else{
         		 alert("保存失败");
-        		 window.location.href = 'manageCutnum.jsp';
+        		// window.location.href = 'manageCutnum.jsp';
         	}
         }
     })
@@ -264,7 +264,7 @@ window.onload = function () {
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
@@ -282,13 +282,14 @@ window.onload = function () {
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">修改密码</span></a></li>
     <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
   <li>
   <%
 	String staff_id = request.getSession().getAttribute("staff_id").toString();
 				%> <%
  	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
  %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
   </li>
   </ul>
@@ -306,10 +307,10 @@ window.onload = function () {
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li  class="active"> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
-    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i> <span>查看退证采伐证</span></a></li>
-    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>         
+    <li class="active"><a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证</span></a></li>
+    <li><a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>采伐证汇总</span></a></li>
+    <li><a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>采伐证退证</span></a></li>
+    <li><a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>采伐证使用情况</span></a></li>           
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   
@@ -342,9 +343,10 @@ window.onload = function () {
 					<option>常青分公司</option> 
 					<option>青溪林业有限公司</option>
 					<option>万森林业采育有限公司</option>
+					<option>金森公司</option>
 					</select></td>
 				<td>采伐证号</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="将政林证字()第  号" /></td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="将政林证字【】第  号" /></td>
 			</tr>
 			<tr>
 			 <td>林权证号</td>

@@ -386,10 +386,10 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li  class="active"> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>   
-    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i> <span>查看退证采伐证</span></a></li>
-    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li> 
+    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证</span></a></li>
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>采伐证汇总</span></a></li>
+    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>采伐证退证</span></a></li>
+    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>采伐证使用情况</span></a></li>   
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -422,13 +422,13 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
 				<td >林权单位</td>
 				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 230px;" type="text" id="company" name="company" value="<%=c.getCompany()%>"/></td>
 				<td>采伐证号</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 300px;" type="text" id="certificatenum" name="certificatenum" value="<%=c.getCertificatenum()%>"/></td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;text-align:center;width: 300px;" type="text" readonly="readonly" id="certificatenum" name="certificatenum" value="<%=c.getCertificatenum()%>"/></td>
 			</tr>
 			<tr>
 			 <td>林权证号</td>
 			 <td colspan="2"><input  style="border:0px;background-color: transparent;width: 400px;" type="text" id="forestid" name="forestid" value="<%=c.getForestid()%>"></td>
 			 <td>采伐证编号</td>
-				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutnum" name="cutnum" value="<%=c.getCutnum()%>"></td>
+				<td colspan="2"><input  style="border:0px;background-color: transparent;width: 300px;" type="text" id="cutnum" readonly="readonly" name="cutnum" value="<%=c.getCutnum()%>"></td>
 			</tr>
 			<tr>
 				<td>采伐地点</td>

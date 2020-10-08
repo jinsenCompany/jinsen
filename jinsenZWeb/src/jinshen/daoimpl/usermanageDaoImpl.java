@@ -421,7 +421,7 @@ public class usermanageDaoImpl implements usermanageDao
 			{
 				System.out.println("sss");
 //				/*s.setStaff_id(rs.getString("staff_id"));
-//            	s.setStaff_name(rs.getString("staff_name"));
+            	s.setStaff_name(rs.getString("staff_name"));
 //            	s.setPassword(rs.getString("password"));
 //            	s.setCreatetime(rs.getDate("createtime"));
 //            	s.setBackups(rs.getString("backups"));*/
@@ -629,5 +629,34 @@ public class usermanageDaoImpl implements usermanageDao
 			db.closeConnection(conn);
 			db.closePreparedStatement(pstmt);
 		}
+	}
+	
+	@Override
+	public boolean changePassword(usermanage s) 
+	{
+		String sql="update usermanage set password=? where staff_id=?";
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		System.out.println("id="+s.getStaff_id());
+		try 
+		{
+			conn=db.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, s.getPassword());
+			pstmt.setString(2,s.getStaff_id());
+			int count=pstmt.executeUpdate();
+			return count>0 ? true : false;
+		} 
+		catch (Exception e) 
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+		finally
+		{
+			db.closePreparedStatement(pstmt);
+			db.closeConnection(conn);
+		} 
 	}
 }

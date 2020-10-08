@@ -58,5 +58,9 @@ public interface workpageDao {
 	 
 	 public int addSurveyor(surveyor cp);//添加检尺员信息
 	 public List<surveyor> findSurveyor(String sql);//显示检尺员信息
+	 
+	 public List<yezhangPrint> findyezhangPrint(String sql);//检尺野账打印界面
+	 
+	 public treefile findtreefile(String sql);//查询检尺野账文件
 
 }

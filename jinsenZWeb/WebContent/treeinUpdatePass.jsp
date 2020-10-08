@@ -222,6 +222,7 @@ List<tree> t=null;
 t=(List<tree>)request.getAttribute("tree");
 %>
 <% workpage w=(workpage)request.getAttribute("workpage");%>
+<% treefile f=(treefile)request.getAttribute("treef");%>
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
 </div>
@@ -268,7 +269,6 @@ t=(List<tree>)request.getAttribute("tree");
     <article>
         <div>
             <h1 class="book_h01">进场木材信息</h1>
-            <form  onSubmit="return inputNull(this)" action="treeServlet?action=updateTreein" method="POST" >
             <div id="divprint">
                 <div class="top">
                       <p class="table_p"><span>采伐工单信息</span></p>
@@ -311,13 +311,13 @@ t=(List<tree>)request.getAttribute("tree");
                            </tr>
                         </table>
                         <p class="table_p"><span>树材信息</span></p>
-                        <table class="table" id="table5" style="width:1500px;height:auto">
+                        <table class="table1" id="table5" style="width:1500px;height:auto">
                            <tbody id="ttt5">
                                 <% int i=1;%>
                                 <c:forEach items="${tree}" var="b">      
                             <tr id="<%=i%>" display:block;><td style='font-size:20px;'>
                            <input type="checkbox" style='width:20px;height:20px;' value="<%=i%>">树材种<span></span>
-                           <input style="width: 180px" name="treetype" id="sss<%=i%>" value="${b.getTreetype()}">                      
+                           <input type='text'  style="width: 180px" name="treetype" id="sss<%=i%>" value="${b.getTreetype()}">                      
                                                                                             检尺长(米)<input type='text' style='width: 180px' name='tdouble' id='td<%=i%>' value="${b.getTlong()}">
                                                                                             检尺径(厘米)<span></span><input type='text' style='width: 180px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}">
                                                                                             根数<span></span><input type='text' style='width: 180px' name='num' id='n<%=i%>' value="${b.getNum()}">
@@ -341,12 +341,17 @@ t=(List<tree>)request.getAttribute("tree");
                                 </tr>
                                 </tbody>
                             </table>
+                            <table>
+                      <tr>
+                        <td style="color:red">下载检尺野账附件：</td>
+                        <td>${tfile}<a href="DownfileServlet?action=treeinfile&filename=<%=f.getTreefile() %>"><button class="btn btn-xs btn-primary">下载附件</button></a></td>
+                    </tr>
+                </table>
                         </div>
                     </div>
                   <div class=" but_p" style="float:center;">
                   <button class="but_save" id="btnPrint" type="button" value="打印">打印</button></div> 
                 <div style="clear: both;padding-bottom: 40px"></div>
-            </form>
         </div>
     </article>
     </div>

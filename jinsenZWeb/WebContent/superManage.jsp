@@ -60,10 +60,9 @@ pageEncoding="UTF-8"%>
     <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
     <li>
-    <%
-	String staff_id = request.getSession().getAttribute("staff_id").toString();
-				%> <%
- 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+    <% String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%>
+<% String staff_name = request.getSession().getAttribute("staff_name").toString();
  %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
     </li>
   </ul>
@@ -78,41 +77,48 @@ pageEncoding="UTF-8"%>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>管理部门</span> <span class="label label-important">1</span></a>
-       <ul>
-        <li><a href="managerP.jsp">管理部操作员</a></li>
-        <!--  <li><a href="managePassis.jsp">管理部副经理</a></li>
-        <li><a href="managePdirector.jsp">管理部经理</a></li>-->
-      </ul>
-     </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产系统</span> <span class="label label-important">1</span></a>
-       <ul>
-        <!--<li><a href="forestManager.jsp">生产部副经理</a></li>-->
-        <li><a href="forestP.jsp">生产部操作员</a></li>
-        <!--  <li><a href="planteam.jsp">规划队</a></li>-->
-      </ul>
-     </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>销售系统</span> <span class="label label-important">1</span></a>
-       <ul>
-        <li><a href="salaryper.jsp">销售部门操作员</a></li>
-        <!--  <li><a href="salesdirector.jsp">销售经理</a></li>
-        <li><a href="salesmanOne.jsp">销售合同操作员</a></li>
-        <li><a href="salesmanTwo.jsp">销售调令操作员</a></li>
-        <li><a href="salesmanThree.jsp">销售结算操作员</a></li>-->
-      </ul>
-     </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场管理系统</span> <span class="label label-important">2</span></a>
-      <ul>
-        <!--  <li><a href="yardmanager.jsp">货场管理员</a></li>-->
-        <li><a href="yardDirector.jsp">货场经理</a></li>
-        <li><a href="Surveyor.jsp">检尺中心</a></li>
-        <!--<li><a href="yardstaffA.jsp">货场制表员A</a></li>
-        <li><a href="yardstaffB.jsp">货场制表员B</a></li>
-        <li><a href="yardstaffC.jsp">货场制表员C</a></li>-->
-      </ul>
-    </li>
-    <li><a href="infoCenter.jsp"><i class="icon icon-tint"></i> <span>信息中心</span></a></li>
-    <li class="submenu"><a href="#"><i class="icon icon-pencil"></i> <span>超级管理员</span><span class="label label-important">3</span></a>
+  <li><a href="managerP.jsp"><i class="icon icon-home"></i> <span>采伐证管理系统</span></a></li>
+  <li><a href="forestP.jsp"><i class="icon icon-signal"></i> <span>生产管理系统</span></a></li>
+  <li><a href="yardDirector.jsp"><i class="icon icon-inbox"></i> <span>货场管理系统</span></a></li>
+  <li><a href="salaryper.jsp"><i class="icon icon-tint"></i> <span>销售管理系统</span></a></li>
+  <li><a href="Surveyor.jsp"><i class="icon icon-th-list"></i> <span>检尺中心</span></a></li>
+  <li><a href="infoCenter.jsp"><i class="icon icon-pencil"></i> <span>信息中心</span></a></li>
+<%--<!--   <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>采伐证管理系统</span></a> -->
+<!--        <ul> -->
+<!--         <li><a href="managerP.jsp">管理部操作员</a></li> -->
+<!--          <li><a href="managePassis.jsp">管理部副经理</a></li>
+<!--         <li><a href="managePdirector.jsp">管理部经理</a></li> --> -->
+<!--       </ul> -->
+<!--      </li> -->
+<!--     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产管理系统</span> <span class="label label-important">1</span></a> -->
+<!--        <ul> -->
+<!--         <li><a href="forestManager.jsp">生产部副经理</a></li> -->
+<!--         <li><a href="forestP.jsp">生产部操作员</a></li> -->
+<!--          <li><a href="planteam.jsp">规划队</a></li> -->
+<!--       </ul> -->
+<!--      </li> -->
+<!--      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场管理系统</span> <span class="label label-important">2</span></a> -->
+<!--       <ul> -->
+<!--          <li><a href="yardmanager.jsp">货场管理员</a></li> -->
+<!--         <li><a href="yardDirector.jsp">货场经理</a></li> -->
+<!--         <li><a href="Surveyor.jsp">检尺中心</a></li> -->
+<!--         <li><a href="yardstaffA.jsp">货场制表员A</a></li>
+<!--         <li><a href="yardstaffB.jsp">货场制表员B</a></li> -->
+<!--         <li><a href="yardstaffC.jsp">货场制表员C</a></li> --> -->
+<!--       </ul> -->
+<!--     </li> -->
+<!--      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>销售管理系统</span> <span class="label label-important">1</span></a> -->
+<!--        <ul> -->
+<!--         <li><a href="salaryper.jsp">销售部门操作员</a></li> -->
+<!--          <li><a href="salesdirector.jsp">销售经理</a></li>
+<!--         <li><a href="salesmanOne.jsp">销售合同操作员</a></li> -->
+<!--         <li><a href="salesmanTwo.jsp">销售调令操作员</a></li> -->
+<!--         <li><a href="salesmanThree.jsp">销售结算操作员</a></li> --> -->
+<!--       </ul> -->
+<!--      </li> -->
+     
+<!--     <li><a href="infoCenter.jsp"><i class="icon icon-tint"></i> <span>信息中心</span></a></li>--%>
+    <li class="submenu"><a href="#"><i class="icon icon-file"></i> <span>系统管理</span><span class="label label-important">3</span></a>
           <ul>
         <li><a href="managerindex.jsp">人员信息管理</a></li>
         <li><a href="treeoutTable.jsp">木材销售报表</a>
@@ -229,7 +235,7 @@ var option={
 			name : '销量',
 			type : 'bar',
 			color: 'green',
-            smooth: true,
+            //smooth: true,
            // data:[]
 		}
 		]
@@ -241,9 +247,10 @@ var option={
      </script>
           </div> 
           <div class="span3">
-              <div id="tab1" class="tab-pane active">             
-              <img src="img/森林.jpg" alt="demo-image"/>
-               <p>金森林业有限公司木材产销软件超级管理员平台</p>
+              <div id="tab1" class="tab-pane active" style="text-align:center">   
+                 <p>木材产销软件管理员平台</p>       
+              <img src="img/main.jpg" alt="demo-image" width="500" height="400"/>
+               
               </div>
             </div>
           </div>
@@ -256,7 +263,7 @@ var option={
     <div class="row-fluid">
       <div class="widget-box">
         <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
-          <h5>木材库存分析</h5>
+          <h5>木材进仓分析</h5>
         </div>
         <div class="widget-content" >
           <div class="row-fluid">
@@ -279,8 +286,10 @@ var option={
             		    			 //alert(result[i].yarddate);
             		               }
             		    		  option.series[0].data=[];
+            		    		  option.series[1].data=[];
             		               for(var i=0;i<result.length;i++){
             		            	   option.series[0].data.push(result[i].num);
+            		            	   option.series[1].data.push(result[i].tvolume);
             		            	   //price.push(result[i].price);
             		            	   //alert(result[i].price);
             		               }
@@ -307,7 +316,7 @@ var option={
             		            containLabel: true
             		        },
             				legend:{
-            					data:['数量']
+            					data:['数量','材积']
             				
             				},
             				xAxis:[{
@@ -319,14 +328,30 @@ var option={
             					axisLabel: {
             				        formatter: '{value} 根'
             				        },
-            				} ],
+            				},
+            				{
+            					type : 'value',
+            					name:'材积',
+            					axisLabel: {
+            				        formatter: '{value} 立方米'
+            				        },
+            				}
+            				],
             				series : [ {
             					name : '数量',
+            					type : 'line',
+            					color: 'blue',
+            		            //smooth: true,
+            		           // data:[]
+            				},
+            				{
+            					name : '材积',
             					type : 'bar',
             					color: 'red',
-            		            smooth: true,
+            					yAxisIndex: 1,
             		           // data:[]
-            				} ]
+            				}
+            				]
             		};
             		//加载数据到option
             		loadDate(option);
@@ -355,7 +380,7 @@ var option={
             		    		  option.series[0].data=[];
             		    		  option.series[1].data=[];
             		               for(var i=0;i<result.length;i++){
-            		            	   option.series[0].data.push(result[i].num);
+            		            	   option.series[0].data.push(result[i].tvolume);
             		            	   option.series[1].data.push(result[i].price)
             		            	   //price.push(result[i].price);
             		            	   //alert(result[i].price);
@@ -383,7 +408,7 @@ var option={
             		            containLabel: true
             		        },
             				legend:{
-            					data:['数量','销售']
+            					data:['材积','销售']
             		            
             				
             				},
@@ -394,7 +419,7 @@ var option={
             				yAxis : [ {
             					type : 'value',
             					axisLabel: {
-            				        formatter: '{value} 根'
+            				        formatter: '{value} 立方米'
             				        },
             				},
             				{
@@ -407,10 +432,10 @@ var option={
             				
             				],
             				series : [ {
-            					name : '数量',
+            					name : '材积',
             					type : 'bar',
             					color: 'blue',
-            		            smooth: true,
+            		            //smooth: true,
             		           // data:[]
             				},
             					{

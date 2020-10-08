@@ -20,10 +20,13 @@ public class saleCalloutOrder {
 	private String tlong;
 	private String tradius;
 	private int tnum;
-	private int salestatus;//销售调令状态
+	private int salestatus;//销售调令状态销售调令状态，0：表示添加未审核，1：审核通过，2审核未通过，3：审核未通过补交材料，4：调令完成
 	private Date callidtime;//调运时间
 	private Date creattime;//开调令时间
 	private String surveyor;//检尺员
+	
+	private String cutnum;//采伐证号
+	private String useTime;//无实际意义，只是用来在botstrap显示时间
 	public int getSaleCallid() {
 		return saleCallid;
 	}
@@ -134,6 +137,18 @@ public class saleCalloutOrder {
 	}
 	public void setSurveyor(String surveyor) {
 		this.surveyor = surveyor;
+	}
+	public String getUseTime() {
+		return useTime;
+	}
+	public void setUseTime(String useTime) {
+		this.useTime = useTime;
+	}
+	public String getCutnum() {
+		return cutnum;
+	}
+	public void setCutnum(String cutnum) {
+		this.cutnum = cutnum;
 	}
 	
 	

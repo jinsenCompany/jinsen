@@ -138,11 +138,11 @@ t=(List<tree>)request.getAttribute("tree");
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -156,8 +156,16 @@ t=(List<tree>)request.getAttribute("tree");
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -170,6 +178,21 @@ t=(List<tree>)request.getAttribute("tree");
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">6</span></a>
+       <ul>
+        <li ><a href="goodsYardCost.jsp">货场费用录入</a></li>
+        <li ><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li ><a href="yardMonerySettle.jsp">货场管理费用</a></li>
+        <li><a href="yardMoneryDirector.jsp">货场管理费用台账</a></li>
+        <li><a href="workpageTreeBuyDirector.jsp">木材收购单</a></li>
+        <li ><a href="cancellingStocksTable.jsp">货场报损</a> </li>       
+      </ul>
+     </li>
+    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-home"></i> <span>木材装车对比</span></a></li>
+    <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-home"></i> <span>查看进场木材反馈</span></a></li>
+    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>货场信息管理</span></a></li>
+    <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>检尺员管理</span></a></li>
+    <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-home"></i> <span>审批调令</span></a></li>
   </ul>
 </div>
 
@@ -194,45 +217,37 @@ t=(List<tree>)request.getAttribute("tree");
     <table class="table1"  >
     <caption class="book_h01">木材收购单</caption>
 				<tr>
-				    <td  >发货单位</td>
-					<td><input type="text" name="fahuodanwei" id="fahuodanwei" ></td>
-					<td  >工单号</td>
+				    <td>发货单位</td>
+					<td><input type="text" name="fahuodanwei" id="fahuodanwei" value="<%=c.getCheckSite() %>" readonly="readonly"></td>
+					<td>工单号</td>
 					<td><input  type="text" name="workid" id="workid" maxlength="32" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>"></td>
-					<td >采伐证号</td>
-					<td><input type="text" name="cutNum" id="cutNum" value="<%=c.getCutNum()%>"></td>
+					<td>采伐证号</td>
+					<td><input type="text" name="cutNum" id="cutNum" value="<%=c.getCutNum()%>" readonly="readonly"></td>
 
 					  </tr>
 					  <tr>
 					<td>收货单位</td>
-					<td><input type="text" name="shouhuodanwei" id="shouhuodanwei" ></td>
+					<td><input type="text" name="shouhuodanwei" id="shouhuodanwei" value='将乐县金森贸易有限公司' readonly="readonly"></td>
 			
 				   <td >时间</td>
-		    		<td><input type="text" name="cutdate" id="cutdate" value="<%=c.getCutdate()%>"></td>
+		    		<td><input type="text" name="cutdate" id="cutdate" value="<%=c.getCutdate()%>" readonly="readonly"></td>
 				   <td >采伐地点</td>
-				   <td><input type="text" name="cutsite" id="cutsite" value="<%=c.getCutSite()%>"></td>
+				   <td><input type="text" name="cutsite" id="cutsite" value="<%=c.getCutSite()%>" readonly="readonly"></td>
 			   </tr>
 			   </table>
 				
 			<p class="table_p"><span>树材信息</span></p>
-			<table  border="1" class="table2" id="table5" style="width:1500px;height:auto">
+			<table class="table2" id="table5" style="width:1500px;height:auto">
                            <tbody id="ttt5">
                                 <% int i=1;%>
                                 <c:forEach items="${tree}" var="b">      
                             <tr id="<%=i%>" display:block>
                             <td style='font-size:20px;'>
-                           <input type="checkbox" style='width:20px;height:20px;' value="<%=i%>">树材种<span></span>
-                           <select style="width: 180px" name="treetype" id="sss<%=i%>">
-                           <option value='杉原木' <c:if test="${b.getTreetype()eq'杉原木'}">selected='selected'</c:if> >--杉原木--</option>
-                           <option value='杉小径' <c:if test="${b.getTreetype()eq'杉小径'}">selected='selected'</c:if> >--杉小径--</option>
-                           <option value='松原木' <c:if test="${b.getTreetype()eq'松原木'}">selected='selected'</c:if> >--松原木--</option>
-                           <option value='松小径' <c:if test="${b.getTreetype()eq'松小径'}">selected='selected'</c:if> >--松小径--</option>
-                           <option value='杂原木' <c:if test="${b.getTreetype()eq'杂原木'}">selected='selected'</c:if> >--杂原木--</option>
-                           <option value='杂小径' <c:if test="${b.getTreetype()eq'杂小径'}">selected='selected'</c:if> >--杂小径--</option>
-                            </select>                     
-                                                                                            检尺长(m)<input type='text' style='width: 180px' name='tdouble' id='td<%=i%>' value="${b.getTlong()}">
-                                                                                            检尺径<span></span><input type='text' style='width: 180px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}">
-                                                                                            根数<span></span><input type='text' style='width: 180px' name='num' id='n<%=i%>' value="${b.getNum()}">
-                                                                                            材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv<%=i%>' value="${b.getTvolume()}"></td></tr>
+                                                                              树材种<span></span><input type='text' style="width: 180px" name="treetype" id="sss<%=i%>" value="${b.getTreetype()}" readonly="readonly">                    
+                                                                                            检尺长(m)<input type='text' style='width: 180px' name='tdouble' id='td<%=i%>' value="${b.getTlong()}" readonly="readonly">
+                                                                                            检尺径<span></span><input type='text' style='width: 180px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}" readonly="readonly">
+                                                                                            根数<span></span><input type='text' style='width: 180px' name='num' id='n<%=i%>' value="${b.getNum()}" readonly="readonly">
+                                                                                            材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv<%=i%>' value="${b.getTvolume()}" readonly="readonly"></td></tr>
                          <%i++; %>
                          </c:forEach>
                         
@@ -244,7 +259,8 @@ t=(List<tree>)request.getAttribute("tree");
           <div style=text-align:center; >
                
                  <span class="but_p" >
-                <button style="width:150px;height:50px" class="but_save"  type="button" id="btnPrint" value="打印">打印</button>
+<!--                 <button style="width:150px;height:50px" class="but_save"  type="button" id="btnPrint" value="打印">打印</button> -->
+                  <a href="DownfileServlet?action=TreeBuyTableExcel"><button type="button" style="width:150px;height:50px;" class="btn">下载</button></a>
                   </span>
                   <div style="clear: both;padding-bottom: 40px"></div>
                 </div>

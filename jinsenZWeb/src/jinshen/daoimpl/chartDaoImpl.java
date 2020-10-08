@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import jinshen.bean.cutnum;
 import jinshen.bean.producetree;
 import jinshen.bean.projectPackTable;
 import jinshen.bean.salemansql;
@@ -54,7 +55,8 @@ public class chartDaoImpl implements chartDao{
     	Connection connection = null;
         PreparedStatement pStatement = null;
         ResultSet rs = null;
-        String sql="SELECT treetype,sum(num) as num FROM tree group BY treetype";
+        //String sql="SELECT treetype,sum(num) as num FROM tree group BY treetype";
+        String sql="SELECT treetype,sum(num) as num,round(sum(tvolume),4) as tvolume FROM tree t join inyard i on t.workid=i.workid group BY treetype";
         List<treetypeChart> addrlist = new ArrayList<treetypeChart>();
         try {
    		 connection = DBcon.getConnection();
@@ -64,6 +66,7 @@ public class chartDaoImpl implements chartDao{
    			treetypeChart addr=new treetypeChart();
    			addr.setTreetype(rs.getString("treetype"));
    			addr.setNum(rs.getDouble("num"));
+   			addr.setTvolume(rs.getString("tvolume"));
    			addrlist.add(addr);
    		 }
    		 }catch (Exception e) {
@@ -85,7 +88,7 @@ public class chartDaoImpl implements chartDao{
     	Connection connection = null;
         PreparedStatement pStatement = null;
         ResultSet rs = null;
-        String sql="SELECT treetype,sum(num) as num ,sum(tvolume*unitprice) as price FROM treeout group BY treetype";
+        String sql="SELECT treetype,ROUND(sum(tvolume),4) as tvolume,ROUND(sum(tvolume*unitprice),2) as price FROM treeout group BY treetype";
         List<treeoutChart> addrlist = new ArrayList<treeoutChart>();
         try {
    		 connection = DBcon.getConnection();
@@ -94,7 +97,8 @@ public class chartDaoImpl implements chartDao{
    		 while (rs.next()) {
    			treeoutChart addr=new treeoutChart();
    			addr.setTreetype(rs.getString("treetype"));
-   			addr.setNum(rs.getDouble("num"));
+   			//addr.setNum(rs.getDouble("num"));
+   			addr.setTvolume(rs.getDouble("tvolume"));
    			addr.setPrice(rs.getDouble("price"));
    			addrlist.add(addr);
    		 }
@@ -279,6 +283,8 @@ public class chartDaoImpl implements chartDao{
 	        	s.setTradius(rs.getDouble(7));
 	        	s.setNum(rs.getDouble(8));
 	        	s.setTvolume(rs.getDouble(9));
+	        	s.setDemander(rs.getString(10));
+	        	s.setCutnum(rs.getString(11));
 	        	ts.add(s);
 	        }
     	}catch(Exception e) {
@@ -469,6 +475,8 @@ public class chartDaoImpl implements chartDao{
     			pd.setTvolume(rs.getDouble(8));
     			pd.setForester(rs.getString(9));
     			pd.setSurveyor(rs.getString(10));
+    			pd.setProjectPackageName(rs.getString(11));
+    			pd.setContractionSide(rs.getString(12));
     			ptp.add(pd);
     		}
     	}catch(Exception e) {
@@ -523,6 +531,73 @@ public class chartDaoImpl implements chartDao{
 			db.close();
 		}
 		return ts;
+	}
+
+	@Override
+	public List<treetypeChart> findyardStock(String sql) {
+		List<treetypeChart> ts = new ArrayList<treetypeChart>();
+    	try {
+    		ResultSet rs=db.doQuery(sql, new Object[] {});
+    		while(rs.next()) {
+    			treetypeChart s=new treetypeChart();
+	        	s.setTvolume(rs.getString(1));
+	        	s.setYard(rs.getString(2));
+	        	ts.add(s);
+	        }
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return ts;
+	}
+
+	@Override
+	public treetypeChart findyardStock2(String sql) {
+		treetypeChart s=new treetypeChart();
+    	try {
+    		ResultSet rs=db.doQuery(sql, new Object[] {});
+    		if(rs.next()) {
+	        	s.setTvolume(rs.getString(1));
+	        	s.setYard(rs.getString(2));
+	        }
+    	}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			db.close();
+		}
+		return s;
+	}
+
+	@Override
+	public List<cutnum> cutnumChart() {
+		Connection connection = null;
+        PreparedStatement pStatement = null;
+        ResultSet rs = null;
+    	String sql="SELECT COUNT(cutnum) as num,starttime,ROUND(sum(volume),2) as tvolume from cutnum GROUP BY starttime";
+    	List<cutnum> addrlist=new ArrayList<cutnum>();
+    	try {
+    		 connection = DBcon.getConnection();
+    		 pStatement = connection.prepareStatement(sql);
+    		 rs = pStatement.executeQuery();
+    		 while (rs.next()) {
+    			 cutnum addr=new cutnum();
+    			 addr.setNumber(rs.getDouble(1));
+    			 addr.setStarttime(rs.getDate(2));;
+    			 addr.setVolume(rs.getDouble(3));
+    			 addrlist.add(addr);
+    		 }
+    		 }catch (Exception e) {
+    	            e.printStackTrace();
+    	            return null;
+    	        } 
+    	        finally 
+    	        {
+    	        	db.closeConnection(connection);
+    	        	db.closePreparedStatement(pStatement);
+    	        	
+    	        }
+    	return addrlist;
 	}
 
 }

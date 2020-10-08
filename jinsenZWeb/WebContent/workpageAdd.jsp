@@ -36,7 +36,7 @@ td,th{text-align:center;vertical-align:middle}
 tr{text-align:center}
 	.btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
-	font-size: 13px!important; 	height: 30px; 	
+	font-size: 20px!important; 	height: 40px; 	
 	line-height: 18px!important; 	
 	padding: 3px 18px; 	
 	display: inline-block; 	vertical-align: middle; 	
@@ -154,9 +154,28 @@ window.onload = function () {
     locationInput = function () {
     };
 }
+function load()
+{
+	$.ajax({
+        url:"salaryServlet",//要发送的地址
+        data:{
+            "action":"loadyardinfo"
+        },
+        type: "POST",
+        dataType:"json",
+        success: function (data) {
+            for(i = 0;i<data.length;i++)
+            {
+            	str = "<option>"+data[i].yardname+"</option>";
+            	
+            	$("#checksite").show().append(str);
+            }
+        }
+    })
+}
 </script>
 </head>
-<body>
+<body onload="load()">
 <% Date d = new Date();
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -207,38 +226,45 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
        <ul>
+      
         <li><a href="workpageAdd.jsp">野账录入</a></li>
         <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-   <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
      <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
-      <li><a href="workpageUnlock.jsp"><i class="icon icon-inbox"></i> <span>采伐证解锁</span></a></li>         
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>        
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -255,7 +281,7 @@ String now = df.format(d); %>
 <h3 style="font-style: italic;color: red;">使用说明：请先输入采伐证号。工单号、工程包、施工方等信息自动填充，再手动输入检验地点（货场）、车牌号、伐区监管员签名</h3>
 </div>
         <div>
-    <form action="workpageSevrlet?action=addWorkpage1" method="POST" >
+    <form action="workpageSevrlet?action=addWorkpage" method="POST" >
                 <div class="top" id="divprint">
 
                 <div class="top_out">
@@ -279,23 +305,23 @@ String now = df.format(d); %>
                     <tr>
                     <td style="width:200px">收货单位：</td>
     	            <td><input type='text' style="border:0px;background-color: transparent;width:200px;" value='将乐县金森贸易有限公司' readonly="readonly"></td>
-        			<td style="width:200px">检验地点（货场）：</td>
-        	        <td><input type='text' id='checksite' name='checksite' value=''></td>
+        			<td style="width:200px"><font color=red>*</font>检验地点（货场）：</td>
+        	        <td><select  style="width:230px" name="checksite" id="checksite"><option value='' selected="selected"></option></select></td>
         	        <td style="width:100px">分区：</td>
                     <td><input type='text' id='section' style="border:0px;background-color: transparent;" readonly="readonly"></td>
                     <td class='top-table-label'>运输起讫：</td>
                     <td><input type='text' id='cutSite' style="border:0px;background-color: transparent;" readonly="readonly"></td></tr>
                     <tr>
 					<td colspan="1">有效时间</td>
-					<td colspan="2"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" readonly="readonly" type="text" name="cutdate" id="ccutdate" value="<%=now%>"/></td>
-					<td>车号</td>
+					<td colspan="2"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type="text" name="cutdate" id="ccutdate" value="<%=now%>"/></td>
+					<td><font color=red>*</font>车号</td>
 					<td><input style="font-size:20px;text-align:center" type="text" id="carnumber" name="carnumber" value="" /></td>
 					<td>调令通知单</td>
 					<td colspan="2"><input style="border:0px;background-color: transparent;font-size:20px;text-align:center" type="text" id="" name="" value="" /></td>
 				  </tr>
 				  <tr>
-					<td>采伐证号</td>
-					<td><input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" oninput='mycreate()&funworkid()' onclick='locationInput'/></td>
+					<td><font color=red>*</font>采伐证号</td>
+					<td><input style="width:80%;" type="text" name="cutnum" id="cccutnum" oninput='mycreate()&funworkid()' onclick='locationInput'/></td>
 					<td colspan="6">乡镇:<input style="width:100px;border:0px;background-color: transparent;font-size:20px;text-align:center" type="text" id="cutsite" name="cutsite" />
 					村:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" name="cutvillage" id="cutvillage" />
 					林班:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" name="quartel" id="quartel"/>
@@ -303,38 +329,6 @@ String now = df.format(d); %>
 					小班:<input type="text" style="width:60px;border:0px;background-color: transparent;font-size:20px;text-align:center" readonly="readonly" name="smallblock" id="smallblock"  /></td>
 					
 				</tr>
-                     <%--  <tr>
-                           <th colspan="2">采伐证号</th>
-                           <th colspan="2">工单号</th>
-                          <th colspan="2">时间</th>
-                           </tr>
-                           <tr>
-                           <td colspan="2">
-                             <input style="width:80%;border:0px;" type="text" name="cutnum" id="cccutnum" oninput='mycreate()' onclick='locationInput'>
-                           </td>
-                           <td colspan="2">
-                              <input style="width:80%;border:0px;" type="text" name="workid" id="wworkid" onclick="funworkid()" >
-                           </td>
-                           <td colspan="2">
-                              <input  type="text" name="cutdate" id="ccutdate" value="<%=now%>">
-                           </td>
-                           </tr>
-                           <tr>
-                            <th colspan="2">采伐地点</th>
-                            <th colspan="2">货场地点</th>
-                            <th colspan="2">车牌号</th>                          
-                           </tr>
-                           <tr>
-                           <td colspan="2">
-                              <input style="width:80%;border:0px;" type="text" name="cutsite" id="ccutsite ">
-                           </td>
-                           <td colspan="2">
-                              <input style="width:80%;border:0px;" type="text" name="checksite" id="ccchecksite" >
-                           </td>
-                           <td colspan="2">
-                              <input style="width:80%;border:0px;" type="text" name="carnumber" id="ccarnumber" >
-                           </td>
-                           </tr>--%>
                               <tr>
                                  <th scope="col">序号</th>
                                  <th scope="col" colspan="2">树材种</th>
@@ -437,13 +431,13 @@ String now = df.format(d); %>
                              <tr>
                                 <td colspan="2">货场管理员：</td>
                                 <td colspan="2">检尺员：</td>
-                                <td colspan="4">伐区监管员：</td>
+                                <td colspan="4"><font color=red>*</font>伐区监管员：</td>
                              </tr>
                              
                              <tr>
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
-                                <td colspan="4"><input style="width:80%;border:0px;" type="text" name="forester" id="fforester" ></td>
+                                <td colspan="4"><input style="width:80%;" type="text" name="forester" id="fforester" ></td>
                              </tr>
                             </table>
                         </div>

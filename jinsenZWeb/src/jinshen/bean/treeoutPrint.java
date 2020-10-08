@@ -26,6 +26,9 @@ public class treeoutPrint {
 	
 	private String contractnum;//销售合同
 	private String saleCalloutOrder;//销售调令
+	private String demander;//购货人
+	private String cutnum;//采伐证编号
+	
 	public double getWorkid() {
 		return workid;
 	}
@@ -141,6 +144,19 @@ public class treeoutPrint {
 	public void setSaleCalloutOrder(String saleCalloutOrder) {
 		this.saleCalloutOrder = saleCalloutOrder;
 	}
+	public String getDemander() {
+		return demander;
+	}
+	public void setDemander(String demander) {
+		this.demander = demander;
+	}
+	public String getCutnum() {
+		return cutnum;
+	}
+	public void setCutnum(String cutnum) {
+		this.cutnum = cutnum;
+	}
     
+	
 
 }

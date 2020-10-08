@@ -38,6 +38,7 @@
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/fselect.css" />
 <style>
 .table1{width:70%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 .table2{margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
@@ -371,6 +372,29 @@ function load()
         }
     })
 }
+$(function (){
+	$("#deliveryplace").change(function load(){
+		var parent = $(this).val(); //获取当前选项的value值
+		//alert(parent)
+		$.ajax({
+			url:"salaryServlet",
+			data:{
+	            "action":"loadyardsection",
+	            "yardname":parent
+	        },
+	        type: "POST",
+			dataType : "json",
+			success : function(data){
+				var str = "";
+				for(var i = 0; i < data.length; i++){
+					str = "<option>"+data[i].section+"</option>";
+					$("#section").show().append(str);
+				}
+				
+			}
+		})
+	})
+})
 </script>
 <script type="text/javascript">
 function toggle(table5) {
@@ -445,35 +469,35 @@ if (document.getElementById){
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
-    <ul>
+   <ul>
   <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="salaryContract.jsp">创建合同</a></li>
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -500,10 +524,14 @@ if (document.getElementById){
     <caption class="book_h01">木材购销合同</caption>
     <tbody>
        <tr>
-       <td>合同编号</td><td><input type="text" name="contractnum" id="contractnum"></td>
-       <td>供方（甲方）</td><td><input type="text" name="provider" id="provider"></td>
-       <td>需方（乙方）</td><td><input type="text" name="demander" id="demander"></td>
-       <td>标品号</td><td><input type="text" name="marknumber" id="marknumber"></td>  
+       <td><font color=red>*</font>合同编号</td><td><input type="text" name="contractnum" id="contractnum"></td>
+       <td><font color=red>*</font>供方（甲方）</td><td><input type="text" name="provider" id="provider"></td>
+       <td><font color=red>*</font>需方（乙方）</td><td><input type="text" name="demander" id="demander"></td>
+       </tr>
+       <tr>
+       <td>标品号</td><td><input type="text" name="marknumber" id="marknumber"></td>
+       <td><font color=red>*</font>合同签订人</td><td><input type="text" name="contractsigner" id="contractsigner"></td>
+       <td>采伐证编号</td><td><input type="text" name="cutnum" id="cutnum"></td>    
        </tr>
        </tbody>
     </table>
@@ -520,7 +548,7 @@ if (document.getElementById){
 <!--            </table> -->
        <p class="table_p"><span>树材信息录入</span></p>
                         <div style="text-align:center">
-                        <button  class="btn" type="button"  value="添加普通树材" onclick="toggle('table5');"><span style="font-size:26px">添加普通树材</span></button>
+                        <button  class="btn" type="button"  value="添加米材" onclick="toggle('table5');"><span style="font-size:26px">添加米材</span></button>
                         <button  class="btnR" type="button"  value="添加薪材" onclick="toggle('table6');"><span style="font-size:26px">添加薪材</span></button>
                         <button class="btnS" type="button"  onclick="deleteAll()" value="清空"><span style="font-size:26px">清空</span></button>
                         </div>
@@ -532,7 +560,7 @@ if (document.getElementById){
                             <tr>
                             <td>
                             <div>
-                            <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加普通树材">添加普通树材</button>
+                            <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加米材">添加米材</button>
                             <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
                              <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
                             </div>
@@ -553,39 +581,55 @@ if (document.getElementById){
                             </td>
                             </tr>
                             </table>
-<!--       <table class="table"> -->
-<!--       <tbody> -->
-<!--            <tr> -->
-<!--            <div style="text-align:left"> -->
-<!--            <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加普通树材">添加普通树材</button> -->
-<!--            <button class="btnR btn-warning" type="button"  onclick="aaadS()" value="添加薪材">添加薪材</button> -->
-<!--            <button class="btnS btn-default" type="button"  onclick="dddelete()" value="删除">删除</button> -->
-<!--           <button class="btnS btn-default" type="button"  onclick="deleteAll()" value="清空">清空</button> -->
-<!--           </div> -->
-<!--             </tr> -->
-<!--         </tbody> -->
-<!--       </table> -->
-      <div style="border:1px solid #3383da;font-size:18px">
-      <p style="font-style: italic;color: red;">费用负担说明：     &nbsp;&nbsp;1：装车费&nbsp;&nbsp;&nbsp;&nbsp; 2：检尺费&nbsp;&nbsp;&nbsp;&nbsp;3：其他费用&nbsp;&nbsp;&nbsp;&nbsp;4：木材装运过程中所发生的安全事故，其民事（经济赔偿或经济补偿等）、行政等法律责任</p>
-      </div>
       <br>
+      <p class="table_p"><span>合同详情录入</span></p>
       <table style="margin-left:auto; margin-right:auto">
       <tr>
-      <td>交货地点</td><td><select name="deliveryplace" id="deliveryplace"><option selected="selected">选择</option></select></td>
-      <td>数量(立方米/吨)</td><td><input style="width:400px" type="text" name="treenumber" id="treenumber"></td>
+      <td><font color=red>*</font>交货地点</td><td><select name="deliveryplace" id="deliveryplace" style="width:400px"><option selected="selected">请选择货场</option></select></td>
+<!--       <td><select name="section" id="section" multiple="multiple"><option selected="selected">清选择分区</option></select></td> -->
+       <td>供货分区:</td><td><select name="section" id="section" multiple="multiple">
+       <option selected='selected'>无固定分区</option>
+       <option>A</option>
+       <option>B</option>
+       <option>C</option>
+       <option>D</option>
+       <option>E</option>
+       <option>F</option>
+       </select></td>
       </tr>
       <tr>
-      <td>费用负担</td><td><input style="text-decoration: underline;" type="text" name="cost" id="cost" value="甲方：      乙方：   "></td>
-      <!--  <td>检尺标准</td><td><select id="measurestard" name="measurestard" multiple><option>衫小径单材积足码检</option><option>衫原木逢五进</option><option>杂木双码逢五进</option><option>小径单材积足码检</option></select></td>-->
-      <td>检尺标准</td><td><input type="text" style="width:400px" id="measurestard" name="measurestard" value="衫小径单材积足码检"></td>
+      <td><font color=red>*</font>合同签订数量(立方米/吨)</td><td><input style="width:400px" type="text" name="treenumber" id="treenumber"></td>
+      <td><font color=red>*</font>检尺标准</td><td><select id="measurestard" name="measurestard" multiple="multiple" style="width:400px">
+      <option selected='selected'>小径单材积足码检</option>
+      <option>原木双材积逢五进</option>
+      <option>薪材按装车实际，长度×高度×宽度，扣除间隙方式检量计算</option>
+      <option>双码逢五进</option>
+      <option>薪材杂木薪材按实际过磅</option>
+      <option>薪材按实际过磅</option>
+      </select></td>
       </tr>
       <tr>
-      <td>结算方式</td><td><input type="text" name="settlemethod" id="settlemethod"></td>
+<!--       <td>费用负担（甲方）</td><td><input style="text-decoration: underline;" type="text" name="cost" id="cost" value="甲方：      乙方：   "></td> -->
+      <td>费用负担（甲方）</td><td><select style="width:400px"  name="cost" id="cost"  multiple="multiple">
+       <option selected='selected'>装车费</option>
+       <option>检尺费</option>
+       <option>其他费用</option>
+       <option>木材装运过程中所发生的安全事故，其民事（经济赔偿或经济补偿等）、行政等法律责任</option>
+      </select></td>
+      <td>费用负担（乙方）</td><td><select style="width:400px"  name="costB" id="costB"  multiple="multiple"><option selected='selected'>装车费</option>
+       <option>检尺费</option>
+       <option>其他费用</option>
+       <option>木材装运过程中所发生的安全事故，其民事（经济赔偿或经济补偿等）、行政等法律责任</option></select></td>
+      
+<!--       <td>检尺标准</td><td><input type="text" style="width:400px" id="measurestard" name="measurestard" value="衫小径单材积足码检"></td> -->
+      </tr>
+      <tr>
+      <td>结算方式</td><td><input style="width:400px" type="text" name="settlemethod" id="settlemethod"></td>
       <td>保证金(元)</td><td><input type="text" style="width:400px" name="margin" id="margin"></td>
       </tr>
       <tr>
-      <td>合同开始时间</td><td><input type="date"  name="starttime" id="starttime"></td>
-      <td>合同结束时间</td><td><input type="date" style="width:400px" name="endtime" id="endtime"></td>   
+      <td><font color=red>*</font>合同开始时间</td><td><input style="width:400px" type="date"  name="starttime" id="starttime"></td>
+      <td><font color=red>*</font>合同结束时间</td><td><input type="date" style="width:400px" name="endtime" id="endtime"></td>   
       </tr>
       <tr>
       <td class="top-table-label">上传文件</td><td><input class="filepath"  type="file" id="contractfile" name="contractfile"></td>
@@ -596,7 +640,7 @@ if (document.getElementById){
 
 		    <!--  <span  style="text-align: center;"><button class="btn" type="button" onclick="treeAdd()" value="保存">保存</button></span>-->
 		    <span  style="text-align: center;"><button class="btn" type="button" onclick="addsalaryContract()" value="保存">保存</button></span>
-		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
+		     <span><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
 		 </div>
     </form>
 
@@ -632,6 +676,32 @@ if (document.getElementById){
 <script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/jQuery.print.js"></script>
 <script src="js/jquery.PrintArea.js" type="text/JavaScript"></script>
+<script src="js/fselect.js" type="text/javascript" charset="utf-8"></script>
+ <script type="text/javascript">
+        //js 初始化
+        $('#section').fSelect({
+            showSearch:false //关闭搜索
+        });
+        $('#cost').fSelect({
+            showSearch:false //关闭搜索
+        });
+        $('#costB').fSelect({
+            showSearch:false //关闭搜索
+        });
+        $('#measurestard').fSelect({
+            showSearch:false //关闭搜索
+        });
+        //取值文字
+        $('.fs-label').text()
+ 
+        $("button").click(function(){
+            //取值 value
+        var value = [].map.call($('.fs-option.selected'), function(el) {
+            return el.dataset.value
+        })
+            console.log(value);
+        })
+    </script>
 <script type="text/javascript">
 $(function(){
     $("#btnPrint").click(function(){ $("#divprint").printArea(); });

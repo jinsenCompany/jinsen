@@ -62,9 +62,9 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li><a href="workpageShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核进场工单</span></a> </li>
-    <li><a href="compareTreeinfo.jsp"><i class="icon icon-home"></i><span>审核装车照片</span></a></li>
-    <li><a href="InyardShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核木材数据</span></a> </li>
+    <li><a href="workpageShenheinfo.jsp"><i class="icon icon-home"></i> <span>审核伐区工单</span></a> </li>
+    <li><a href="compareTreeinfo.jsp"><i class="icon icon-signal"></i><span>审核装车照片</span></a></li>
+    <li><a href="InyardShenheinfo.jsp"><i class="icon icon-th"></i> <span>审核野账数据</span></a> </li>
   </ul>
 </div>
 <!--sidebar-menu-->

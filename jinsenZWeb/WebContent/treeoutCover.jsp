@@ -116,6 +116,7 @@
      </li>
      <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>-->
      <li><a href="passworkpage.jsp"><i class="icon icon-th-list"></i> <span>录入进仓木材数据</span></a></li>
+     <li><a href="InyardShenhesu.jsp"><i class="icon icon-th-list"></i> <span>进仓木材数据审核</span></a></li>
     <li class="active"><a href="treeoutCover.jsp"><i class="icon icon-th-list"></i> <span>录入出仓木材数据</span></a></li>
   </ul>
 </div>

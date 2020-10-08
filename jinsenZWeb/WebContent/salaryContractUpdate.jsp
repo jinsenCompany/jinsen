@@ -145,35 +145,35 @@ b=(List<salecontract>)request.getAttribute("salecontractTree");
 <!--close-top-serch-->
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
-   <ul>
+  <ul>
   <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>合同管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="salaryContract.jsp">创建合同</a></li>
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -203,10 +203,15 @@ b=(List<salecontract>)request.getAttribute("salecontractTree");
        <td>合同编号</td><td><input type="text" name="contractnum" id="contractnum" value="<%=s.getContractnum() %>"></td>
        <td>供方（甲方）</td><td><input type="text" name="provider" id="provider" value="<%=s.getProvider() %>"></td>
        <td>需方（乙方）</td><td><input type="text" name="demander" id="demander" value="<%=s.getDemander() %>"></td>
-       <td>标品号</td><td><input type="text" name="marknumber" id="marknumber" value="<%=s.getMarknumber() %>"></td>  
+       </tr>
+       <tr>
+       <td>标品号</td><td><input type="text" name="marknumber" id="marknumber" value="<%=s.getMarknumber() %>"></td>
+       <td>合同签订人</td><td><input type="text" name="contractsigner" id="contractsigner" value="<%=s.getContractsigner() %>"></td>
+       <td>采伐证编号</td><td><input type="text" name="cutnum" id="cutnum" value="<%=s.getCutnum()%>"></td>   
        </tr>
        </tbody>
     </table>
+    <p class="table_p"><span>树村信息</span></p>
        <table id="table5" style="width:100%;height:auto;margin-left:auto; margin-right:auto">
      <tbody id="ttt5">
       <% int i=1;%>
@@ -220,22 +225,31 @@ b=(List<salecontract>)request.getAttribute("salecontractTree");
            </c:forEach>
             </tbody>
             </table>
-            <div style="border:1px solid #3383da;font-size:18px">
+            <!--  <div style="border:1px solid #3383da;font-size:18px">
       <p style="font-style: italic;color: red;">费用负担说明：     &nbsp;&nbsp;1：装车费&nbsp;&nbsp;&nbsp;&nbsp; 2：检尺费&nbsp;&nbsp;&nbsp;&nbsp;3：其他费用&nbsp;&nbsp;&nbsp;&nbsp;4：木材装运过程中所发生的安全事故，其民事（经济赔偿或经济补偿等）、行政等法律责任</p>
-      </div>
+      </div>-->
       <br>
+      <p class="table_p"><span>合同详情</span></p>
       <table style="margin-left:auto; margin-right:auto">
       <tr>
-      <td>交货地点</td><td><input type="text" name="deliveryplace" id="deliveryplace" value="<%=s.getDeliveryplace() %>"></td>
-      <td>数量</td><td><input type="text" name="treenumber" id="treenumber" value="<%=s.getTreenumber() %>"></td>
-      <td>费用负担</td><td><input type="text" name="cost" id="cost" value="<%=s.getCost() %>"></td>
-      <td>检尺标准</td><td><input type="text" name="measurestard" id="measurestard" value="<%=s.getMeasurestard() %>"></td>
+      <td>交货地点</td><td><input style="width:400px" type="text" name="deliveryplace" id="deliveryplace" value="<%=s.getDeliveryplace() %>"></td>
+      <td>供货分区:</td><td><input style="width:400px" type="text" name="section" id="section" value="<%=s.getSection() %>"></td>
       </tr>
       <tr>
-      <td>结算方式</td><td><input type="text" name="settlemethod" id="settlemethod" value="<%=s.getSettlemethod() %>"></td>
-      <td>合同开始时间</td><td><input type="text" name="starttime" id="starttime" value="<%=s.getStarttime() %>"></td>
-      <td>合同结束时间</td><td><input type="text" name="endtime" id="endtime" value="<%=s.getEndtime() %>"></td>
-      <td>保证金</td><td><input type="text" name="margin" id="margin" value="<%=s.getMargin() %>"></td>     
+      <td>合同签订数量</td><td><input style="width:400px" type="text" name="treenumber" id="treenumber" value="<%=s.getTreenumber() %>"></td>
+      <td>检尺标准</td><td><input style="width:400px" type="text" name="measurestard" id="measurestard" value="<%=s.getMeasurestard() %>"></td>
+      </tr>
+      <tr>
+      <td>费用负担（甲方）</td><td><input style="width:400px" type="text" name="cost" id="cost" value="<%=s.getCost() %>"></td>
+      <td>费用负担（乙方）</td><td><input style="width:400px" type="text" name="costB" id="costB" value="<%=s.getCostB() %>"></td>
+      </tr>
+      <tr>
+      <td>结算方式</td><td><input style="width:400px" type="text" name="settlemethod" id="settlemethod" value="<%=s.getSettlemethod() %>"></td>
+      <td>合同开始时间</td><td><input style="width:400px" type="text" name="starttime" id="starttime" value="<%=s.getStarttime() %>"></td>
+      </tr>
+      <tr>
+      <td>合同结束时间</td><td><input style="width:400px" type="text" name="endtime" id="endtime" value="<%=s.getEndtime() %>"></td>
+      <td>保证金</td><td><input style="width:400px" type="text" name="margin" id="margin" value="<%=s.getMargin() %>"></td>  
       </tr>
       <tr>
       <td class="top-table-label">上传文件</td>
@@ -254,9 +268,14 @@ b=(List<salecontract>)request.getAttribute("salecontractTree");
           </div>
           <div class="widget-content">
             <ul class="unstyled">
-              <li> <span class="icon24 icomoon-icon-arrow-up-2 green"></span><%=c.getTotalStere()/c.getTreenumber()*100 %>%<span class="pull-right strong"><%=c.getTreenumber() %></span>
+              <%-- <li> <span class="icon24 icomoon-icon-arrow-up-2 green"></span><%=c.getTotalStere()/c.getTreenumber()*100 %>%<span class="pull-right strong"><%=c.getTreenumber() %></span>
                 <div class="progress progress-striped active">
                   <div style="width: <%=c.getTotalStere()/c.getTreenumber()*100 %>%;" class="bar"></div>
+                </div>
+              </li>--%>
+               <li> <span class="icon24 icomoon-icon-arrow-up-2 green"></span>${treebaifenb}<span class="pull-right strong"><%=c.getTreenumber() %></span>
+                <div class="progress progress-striped active">
+                  <div style="width:${treebaifenb};" class="bar"></div>
                 </div>
               </li>
             </ul>

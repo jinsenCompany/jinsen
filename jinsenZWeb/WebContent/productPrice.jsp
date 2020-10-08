@@ -51,6 +51,8 @@ function mycreate()
 	var timeStart=document.getElementById("timeStart").value;
 	//alert(timeStart)
 	var timeEnd=document.getElementById("timeEnd").value;
+	var yard=document.getElementById("yard").value;
+	var section=document.getElementById("section").value;
 	length=(length-1)*2;
 	var group=[];
 	$.ajax({
@@ -59,7 +61,9 @@ function mycreate()
             "action":"savew1",
             "cutnum":cutnum,
             "timeStart":timeStart,
-            "timeEnd":timeEnd
+            "timeEnd":timeEnd,
+            "yard":yard,
+            "section":section
         },
         type: "POST",
         dataType:"json",
@@ -72,6 +76,18 @@ function mycreate()
         	var cutCompack=data["cutCompack"];
         	var contractionSide=data["contractionSide"];
         	var tree=data["worktree"];
+        	var workidlist=data["workid"];
+        	var aworkid, bworkid;
+        	var group=[];
+        	for(var i=0;i<workidlist.length;i++)
+    		{
+        		var j=workidlist[i];
+        		var workid=j.workid;
+        		//$("#mysomething").append(str2); 
+        		group[i]=j.workid;
+    		}
+        	aworkid = new Array(group);
+    		bworkid = aworkid.join("-");
         	var yunfeinum=0;
         	for(var i=0;i<cutCompack.length;i++)
     		{
@@ -105,8 +121,10 @@ function mycreate()
         	document.getElementById("manageUnit").value=manageUnit;
         	document.getElementById("projectPackageName").value=projectPackageName;
         	document.getElementById("forperson").value=forperson;
+        	yunfeinum=yunfeinum.toFixed(2);
         	document.getElementById("freightNum").value=yunfeinum;
         	document.getElementById("premiumNum").value=yunfeinum;
+        	document.getElementById("bworkid").value=bworkid;
         }}
     })
 }
@@ -218,8 +236,11 @@ function mysave()
 	var taxationNum=document.getElementById("taxationNum").value;
 	var taxation=document.getElementById("taxation").value;
 	var totalAll=document.getElementById("totalAll").value;
-	//var ttvolume=document.getElementById("ttvolume").value;
-	//var tprice=document.getElementById("tprice").value;
+	var timeStart=document.getElementById("timeStart").value;
+	var timeEnd=document.getElementById("timeEnd").value;
+	var bworkid=document.getElementById("bworkid").value;
+	var yard=document.getElementById("yard").value;
+	var section=document.getElementById("section").value;
 		var length=$("#ttt tr").length;
 		length=length;
     	for(var id=1;id<=length;id++){
@@ -260,6 +281,11 @@ function mysave()
             "taxationNum":taxationNum,
             "taxation":taxation,
             "totalAll":totalAll,
+            "timeEnd":timeEnd,
+            "timeStart":timeStart,
+            "bworkid":bworkid,
+            "yard":yard,
+            "section":section,
         },
         type: "POST",
         dataType:"html",
@@ -276,9 +302,28 @@ function mysave()
         }
     })
   }
+function load()
+{
+	$.ajax({
+        url:"salaryServlet",//要发送的地址
+        data:{
+            "action":"loadyardinfo"
+        },
+        type: "POST",
+        dataType:"json",
+        success: function (data) {
+            for(i = 0;i<data.length;i++)
+            {
+            	str = "<option>"+data[i].yardname+"</option>";
+            	
+            	$("#yard").show().append(str);
+            }
+        }
+    })
+}
 </script>
 </head>
-<body>
+<body onload="load()">
 <% Date d = new Date();
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -326,18 +371,17 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
@@ -348,17 +392,24 @@ String now = df.format(d); %>
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-    <!--  <li><a href="productPrice.jsp"><i class="icon icon-th"></i> <span>生产结算</span></a></li> -->
-    <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>      
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+    <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>       
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -382,6 +433,21 @@ String now = df.format(d); %>
                <td colspan="2">选择结束日期：</td><td><input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
                 <td class="top-table-label" colspan="2">采伐证编号：</td>
                 <td colspan="2"><input type="text" id="cutnum" name="cutnum" value="" oninput='mycreate()' onclick='locationInput'></td>
+                </tr>
+                <tr>
+                <td class="top-table-label" colspan="2">货场：</td>
+                <td><select  style="width:230px" name="yard" id="yard" oninput='mycreate()' onclick='locationInput'><option value='' selected="selected"></option></select></td>
+                <td class="top-table-label" colspan="2">货场分区：</td>
+                <td colspan="2"><select id="section" name="section"  oninput='mycreate()' onclick='locationInput'>
+                <option value='' selected></option>
+                <option value='A区'>A区</option>
+                <option value='B区'>B区</option>
+                <option value='C区'>C区</option>
+                <option value='D区'>D区</option>
+                <option value='E区'>E区</option>
+                <option value='F区'>F区</option>
+                <option value='无固定分区'>无固定分区</option>
+                </select></td>
             </tr>
             </table>
             <br>
@@ -479,6 +545,13 @@ String now = df.format(d); %>
             </tr>
             </tbody>
         </table>
+        <table class="table1"  style="display: none">
+              <tr>
+              <td colspan="7">
+              <textarea style="width:100%" id="bworkid" name="bworkid"></textarea>
+              </td>
+              </tr>
+              </table>
         </div>
         <div style="text-align: center">
     <button class="add-but" style="color:red;margin-right:65px;" type="button" onclick="mysave()"><i class="glyphicon glyphicon-edit"></i>保存</button>

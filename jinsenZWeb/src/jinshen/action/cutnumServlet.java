@@ -39,6 +39,7 @@ import jinshen.bean.cutnumTable;
 import jinshen.bean.cutnumWatch;
 import jinshen.bean.cutnumfeedback;
 import jinshen.bean.goodsYardCost;
+import jinshen.bean.producetree;
 import jinshen.bean.projectPackTable;
 import jinshen.bean.projectpackage;
 import jinshen.bean.tree;
@@ -943,7 +944,13 @@ public class cutnumServlet extends HttpServlet {
         	sql="SELECT * from cutnum_tree WHERE cutnumid='"+cutnumid+"'";
         	List<cutnum> cutnumtree=cnd.findCutnumtree(sql);
         	String cutnumfile=cutn.getCutnumfile();//得到采伐证文件命
-        	cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	if(String.valueOf(cutnumfile)=="null")
+        	{
+        		cutnumfile="";
+        	}
+        	else {
+        		cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	}
         	request.setAttribute("cutnumfile", cutnumfile);
         	request.setAttribute("cutnum", cutn);
         	request.setAttribute("cutnumtree", cutnumtree);
@@ -960,7 +967,14 @@ public class cutnumServlet extends HttpServlet {
         	sql="SELECT * from cutnum_tree WHERE cutnumid='"+cutnumid+"'";
         	List<cutnum> cutnumtree=cnd.findCutnumtree(sql);
         	String cutnumfile=cutn.getCutnumfile();//得到采伐证文件命
-        	cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	//cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	if(String.valueOf(cutnumfile)=="null")
+        	{
+        		cutnumfile="";
+        	}
+        	else {
+        		cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	}
         	request.setAttribute("cutnumfile", cutnumfile);
         	request.setAttribute("cutnum", cutn);
         	request.setAttribute("cutnumtree", cutnumtree);
@@ -975,7 +989,14 @@ public class cutnumServlet extends HttpServlet {
         	sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum,cutnumfile from cutnum where cutnum='"+str+"'";
         	cutnum cutn = cnd.findCodeSingle(sql);
         	String cutnumfile=cutn.getCutnumfile();
-        	cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);
+        	//cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);
+        	if(String.valueOf(cutnumfile)=="null")
+        	{
+        		cutnumfile="";
+        	}
+        	else {
+        		cutnumfile = cutnumfile.substring(cutnumfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	}
         	request.setAttribute("cutnumfile", cutnumfile);
         	request.setAttribute("cutnum", cutn);
         	request.getRequestDispatcher("manageCutnumUpdateAssis.jsp").forward(request, response);
@@ -1374,8 +1395,26 @@ public class cutnumServlet extends HttpServlet {
             String projectfile=projectpackage.getAccessory();//工程包上传的文件
         	projectfile = projectfile.substring(projectfile.lastIndexOf("/") + 1);//去掉储存路径斜杠
         	//System.out.println("...."+projectfile + "...");
+        	sql="SELECT round(sum(c.cutarea),2) as cutareas,ROUND(sum(c.volume),2) as tvolume,t.treetype,ROUND(sum(t.total),2)as ttotal,COUNT(cutnum) as tlength from cutnum c join cutnum_tree t on c.cutnumid=t.cutnumid WHERE c.proj_package_Name='"+str+"' GROUP BY t.treetype ";
+        	List<cutnum> cutnum=cnd.findCutnumTotal(sql);
+        	String tree1="";
+        	String tree2="";
+        	String tree3="";
+        	String vov1="";
+        	String vov2="";
+        	String vov3="";
+        	if(cutnum.size()>0)
+        	{
+        		tree1=cutnum.get(0).getTreetype();
+        		tree2=cutnum.get(1).getTreetype();
+        		tree3=cutnum.get(2).getTreetype();
+        	}
         	request.setAttribute("projectfile", projectfile);
         	request.setAttribute("projectpackage", projectpackage);
+        	request.setAttribute("cutnum", cutnum);
+        	request.setAttribute("tree1", tree1);
+        	request.setAttribute("tree2", tree2);
+        	request.setAttribute("tree3", tree3);
         	request.getRequestDispatcher("CutnumProjectpackageUpdate.jsp").forward(request, response);
         }
         //查看工程包信息
@@ -2305,7 +2344,8 @@ public class cutnumServlet extends HttpServlet {
         	String rebate = request.getParameter("project");
         	JSONArray jb = JSONArray.fromObject(rebate);
         	String each="";
-        	System.out.println("...."+jb + "...");
+        	//System.out.println("...."+jb + "...");
+        	int flagS=0;
         	for(int i=0;i<jb.length();i++)
         	{
         		each = jb.getString(i);
@@ -2322,14 +2362,15 @@ public class cutnumServlet extends HttpServlet {
     				double cutnumid=cd.getCutnumid();
     				cutnumStatus cs=new cutnumStatus();
     				cs.setStatus(1);//激活成功
-    				int flagS=cnd.updateCutnumStatus(cs,cutnumid);
-        	    	out.print(flagS);
+    				flagS=cnd.updateCutnumStatus(cs,cutnumid);
+        	    	//out.print(flagS);
         	    }
         	    else {
         	    	out.print("录入失败！");
         	    }
         	    
         	}
+        	out.print(flagS);
         }
         
         else if("findCutnumCheck".equals(action)) {
@@ -2479,21 +2520,37 @@ public class cutnumServlet extends HttpServlet {
         	//request.getRequestDispatcher("cutnumProgress.jsp").forward(request, response);
         }
     	}
-        //删除采伐证，使其状态为12
+        //删除采伐证，使其状态为12，先判断是否含有工程包
    	 else if("alldelete1".equals(action))
         {
         	String cutNum = request.getParameter("cutnum");
-        	//workpage ac=new workpage();
+        	
+        	sql="SELECT COUNT(proj_package_Name) FROM cutnum WHERE cutnum='"+cutNum+"'";
+        	double f=cnd.findcount(sql);
+        	if(f==1) {
+        		out.print(0);
+        	}
+        	else {
         	sql="select cutnumid from cutnum WHERE cutnum='"+cutNum+"'";
 			cutnumStatus cd=cnd.findCutnumStatus(sql);
 			double cutnumid=cd.getCutnumid();
 			cutnumStatus cs=new cutnumStatus();
 			cs.setStatus(12);//删除采伐证	
 			int flagS=cnd.updateCutnumStatus(cs,cutnumid);
+			cutnum cp =new cutnum();
+			cp.setProjectPackageName("0");
+			int flagp=cnd.deletCutProjec(cp, cutnumid);
+			if(flagp>0 && flagS>0) {
+				out.print(flagS);
+				//out.write("退证成功");
+			}
+			else {
+				out.write(flagS);
+			}
         	//System.out.println("...." +i + "...");
         //	ObjectMapper mapper1=new ObjectMapper();
     		//mapper1.writeValue(response.getWriter(),flagS);
-        	out.print(flagS);
+        	}
         }
         //恢复采伐证，使其状态为0
 	 else if("alldelete2".equals(action))
@@ -2650,6 +2707,11 @@ public class cutnumServlet extends HttpServlet {
 		    String shanTreeActual="";
 		    String songTreeActual="";
 		    String zaTreeActual="";
+		    
+		    String totalProduced="";
+ 		    String shamu="";
+ 		    String songmu="";
+ 		    String zamu="";
         	//JSONObject j = new JSONObject();
             //List<JSONObject> list = new ArrayList<JSONObject>();
         	JSONArray list = new JSONArray();
@@ -2658,7 +2720,7 @@ public class cutnumServlet extends HttpServlet {
         	sql="SELECT p.projpackageStarttime,p.proj_package_Name,c.certificatenum,c.cutarea,p.contractNum,p.contractionSide,p.cuttime,p.forester,p.accessory,c.cutnum,SUM(DISTINCT c.volume) as tvolume,\r\n" + 
         			"sum(DISTINCT case when t.treetype='杉木' then t.total end) as 'DesignedShamu',\r\n" + 
         			"sum(DISTINCT case when t.treetype='松木' then t.total end) as 'DesignedSongmu',\r\n" + 
-        			"sum(DISTINCT case when t.treetype='阔叶林' then t.total end) as 'DesignedKuoyelin',\r\n" + 
+        			"sum(DISTINCT case when t.treetype='阔叶林' or t.treetype='阔叶树' then t.total end) as 'DesignedKuoyelin',\r\n" + 
         			"sum(DISTINCT i.tolstere) as total,\r\n" + 
         			"sum(DISTINCT case when e.treetype='杉木' then e.tvolume end) as 'shanTreeActual', \r\n" + 
         			"sum(DISTINCT case when e.treetype='松木' then e.tvolume end) as 'songTreeActual', \r\n" + 
@@ -2670,9 +2732,13 @@ public class cutnumServlet extends HttpServlet {
         			"join tree as e\r\n" + 
         			"on c.cutnumid=s.cutnumid and c.cutnumid=t.cutnumid and c.cutnum=i.cutNum and i.workid=e.workid WHERE p.proj_package_Name=c.proj_package_Name and s.`status`<12 GROUP BY p.projpackageStarttime,p.proj_package_Name,c.certificatenum,c.cutarea,p.contractNum,p.contractionSide,p.cuttime,p.forester,p.accessory,c.cutnum";
         	List<projectPackTable> ppt=cnd.findProjectDetails(sql);
+        	
+        	/*sql="SELECT p.cutnum,p.shamu,p.songmu,p.zamu,p.totalProduced from cutnum c join cutnum_produced p join cutnum_status s on c.cutnum=p.cutnum and c.cutnumid=s.cutnumid WHERE s.`status`<12";
+        	List<projectPackTable> daot=cnd.findDaotree(sql);*/
         	System.out.println(ppt.size()); 
         	//SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         	DecimalFormat df = new DecimalFormat("#.00");
+        	String cutnum="";
         	if(ppt.size()>0)
         	{
         	for(int i=0;i<ppt.size();i++) {
@@ -2687,14 +2753,31 @@ public class cutnumServlet extends HttpServlet {
         	pr.setForester(ppt.get(i).getForester());
         	pr.setAccessory(ppt.get(i).getAccessory());
         	pr.setCutnum(ppt.get(i).getCutnum());
+        	cutnum=String.valueOf(ppt.get(i).getCutnum());
+        	
         	totalDesign=ppt.get(i).getTotalDesign();
 		    shanTreeDesign=ppt.get(i).getShanTreeDesign();
 		    songTreeDesign=ppt.get(i).getSongTreeDesign();
 		    zaTreeDesign=ppt.get(i).getZaTreeDesign();
+		    
+		    if(String.valueOf(shanTreeDesign).equals("null") || String.valueOf(shanTreeDesign).isEmpty())
+		    {
+		    	shanTreeDesign="0";
+		    }
+		    if(String.valueOf(songTreeDesign).equals("null") || String.valueOf(songTreeDesign).isEmpty())
+		    {
+		    	songTreeDesign="0";
+		    	System.out.println("...."+songTreeDesign+ "...");
+		    }
+		    if(String.valueOf(zaTreeDesign).equals("null") || String.valueOf(zaTreeDesign).isEmpty())
+		    {
+		    	zaTreeDesign="0";
+		    }
+		    
 		    pr.setTotalDesign(ppt.get(i).getTotalDesign());
-		    pr.setShanTreeDesign(ppt.get(i).getShanTreeDesign());
-		    pr.setSongTreeDesign(ppt.get(i).getSongTreeDesign());
-		    pr.setZaTreeDesign(ppt.get(i).getZaTreeDesign());
+		    pr.setShanTreeDesign(shanTreeDesign);
+		    pr.setSongTreeDesign(songTreeDesign);
+		    pr.setZaTreeDesign(zaTreeDesign);
 		    
 		    totalActual=ppt.get(i).getTotalActual();
 		    double totalActuald=Double.parseDouble(ppt.get(i).getTotalActual());
@@ -2704,17 +2787,38 @@ public class cutnumServlet extends HttpServlet {
 		    double shanTreeActuald=Double.parseDouble(shanTreeActual);
 		    String shanTreeActuald1=df.format(shanTreeActuald);
 		    
-		    songTreeActual=ppt.get(i).getSongTreeActual();
+		    songTreeActual=String.valueOf(ppt.get(i).getSongTreeActual());
+		    String songTreeActuald1="";
+		    if(songTreeActual.equals("null") || songTreeActual.isEmpty())
+		    {
+		    	songTreeActuald1="0";
+		    	songTreeActual="0";
+		    }
+		    else
+		    {
 		    double songTreeActuald=Double.parseDouble(songTreeActual);
-		    String songTreeActuald1=df.format(songTreeActuald);
-		    
-		    zaTreeActual=ppt.get(i).getZaTreeActual();
-		    double zaTreeActuald=Double.parseDouble(zaTreeActual);
-		    String zaTreeActuald1=df.format(zaTreeActuald);
+		    songTreeActuald1=df.format(songTreeActuald);
+		    }
+		    String zaTreeActuald1="";
+		    double zaTreeActuald=0;
+		    zaTreeActual=String.valueOf(ppt.get(i).getZaTreeActual());
+		    //System.out.println("...."+zaTreeActual+ "...");
+		    if(zaTreeActual.equals("null") || zaTreeActual.isEmpty())
+		    {
+		    	zaTreeActuald1="0";
+		    	zaTreeActual="0";
+		    	//System.out.println("...."+zaTreeActuald1+ "...");
+		    }
+		    else{
+		    	  zaTreeActuald=Double.parseDouble(zaTreeActual);
+				  zaTreeActuald1=df.format(zaTreeActuald);
+		    }
 		    pr.setTotalActual(totalActuald1);
 		    pr.setShanTreeActual(shanTreeActuald1);
 		    pr.setSongTreeActual(songTreeActuald1);
 		    pr.setZaTreeActual(zaTreeActuald1);
+		    //System.out.print(songTreeDesign);
+		    
 		    
 		      double totalSurplus=Double.parseDouble(totalDesign)-Double.parseDouble(totalActual);
 		       String totalSurplus1=df.format(totalSurplus);
@@ -2737,16 +2841,44 @@ public class cutnumServlet extends HttpServlet {
 			   double shanTreeImplement1=Double.parseDouble(shanTreeActual)/Double.parseDouble(shanTreeDesign);
 			   String shanTreeImplement=decimalFormat.format(shanTreeImplement1);
 			   
-			   double songTreeImplement1=Double.parseDouble(songTreeActual)/Double.parseDouble(songTreeDesign);
-			   String songTreeImplement=decimalFormat.format(songTreeImplement1);
+			     String songTreeImplement="";
+	 			  if(songTreeActual.equals("0") && songTreeDesign.equals("0"))
+	 			  {
+	 				 songTreeImplement="0";
+	 			  }else
+	 			  {
+	 				 double songTreeImplement1=Double.parseDouble(songTreeActual)/Double.parseDouble(songTreeDesign);
+	 				songTreeImplement=decimalFormat.format(songTreeImplement1);
+	 			  }
 			   
-			   double zaiTreeImplement1=Double.parseDouble(zaTreeActual)/Double.parseDouble(zaTreeDesign);
-			   String zaiTreeImplement=decimalFormat.format(zaiTreeImplement1);
+	 			 String zaiTreeImplement="";
+	 			 if(zaTreeActual.equals("0") && zaTreeDesign.equals("0"))
+				  {
+	 				zaiTreeImplement="0";
+				  }else
+				  {
+					  double zaiTreeImplement1=Double.parseDouble(zaTreeActual)/Double.parseDouble(zaTreeDesign);
+					  zaiTreeImplement=decimalFormat.format(zaiTreeImplement1);
+				  }
 
 			   pr.setTotalImplement(totalImplement);
 			   pr.setShanTreeImplement(shanTreeImplement);
 			   pr.setSongTreeImplement(songTreeImplement);
 			   pr.setZaiTreeImplement(zaiTreeImplement);
+			   
+			   sql="SELECT p.shamu,p.songmu,p.zamu,p.totalProduced from cutnum c join cutnum_produced p "
+			   		+ "join cutnum_status s on c.cutnum=p.cutnum and c.cutnumid=s.cutnumid WHERE s.`status`<12 and p.cutnum='"+cutnum+"'";
+	        	List<projectPackTable> daot=cnd.findDaotree(sql);
+	        	for(int m=0;m<daot.size();m++) {
+	        		totalProduced=String.valueOf(daot.get(i).getTotalActual());
+	     		    shamu=String.valueOf(daot.get(i).getShamu());
+	     		    songmu=String.valueOf(daot.get(i).getSongmu());
+	     		    zamu=String.valueOf(daot.get(i).getZamu());
+	     		    pr.setTotalProduced(totalProduced);
+	    		    pr.setShamu(shamu);
+	    		    pr.setSongmu(songmu);
+	    		    pr.setZamu(zamu);
+	        	}
 			   prpt.add(pr);
 			   list.put(pr);
 			   //System.out.print(list);
@@ -2928,9 +3060,7 @@ public class cutnumServlet extends HttpServlet {
  					"AND p.cutnumid = s.cutnumid\r\n" + 
  					"WHERE\r\n" + 
  					"	s.`status` < 12\r\n" + 
- 					"GROUP BY\r\n" + 
- 					"	c.cutnumid,\r\n" + 
- 					"	b.cutNum";
+ 					"GROUP BY c.cutnumid,b.cutNum,p.company,p.certificatenum,p.cutnum,p.cutaddress,p.cutvillage,p.quartel,p.largeblock,p.smallblock,p.creatcutDate,m.totalProduced,m.shamu,m.songmu,m.zamu";
          	List<cutnumTable> ppt=cnd.findCutnumT(sql);
          	System.out.println(ppt.size()); 
          	//SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -3074,7 +3204,7 @@ public class cutnumServlet extends HttpServlet {
    
         //已锁定采伐证
         else if(action.equals("printCutnumLock")){
-          	 sql="select c.company,c.certificatenum,c.cutnum,c.cutaddress,c.cutvillage,c.quartel,c.largeblock,c.smallblock,c.volume,c.creatcutDate,sum(DISTINCT i.tolstere) as tvolume\r\n" + 
+          	 sql="select c.company,c.certificatenum,c.cutnum,c.cutaddress,c.cutvillage,c.quartel,c.largeblock,c.smallblock,c.volume,c.creatcutDate,round(sum(DISTINCT i.tolstere),4) as tvolume\r\n" + 
           	 		"from cutnum  c join cutnum_status s JOIN inyard as i \r\n" + 
           	 		"on c.cutnumid=s.cutnumid  and i.cutNum=c.cutnum  WHERE s.`status`=10 OR s.`status`=13\r\n" + 
           	 		"GROUP BY c.company,c.certificatenum,c.cutnum,c.cutaddress,c.cutvillage,c.quartel,c.largeblock,c.smallblock,c.volume,c.creatcutDate";
@@ -3108,6 +3238,459 @@ public class cutnumServlet extends HttpServlet {
         /*
          * 0：未拨交，1：已拨交，2：已完成前中检查，3：已完成伐终检查，10：采伐证锁定
 12：以删除，13：第二次锁定，14：恢复（解锁）采伐证*/
+        
+        //采伐证台账不包含已生产量
+        else if("printCutnum4".equals(action)) {
+         	List<cutnumTable> cntt=new ArrayList<cutnumTable>();
+         	cutnumTable cnt = new cutnumTable();
+         	List<cutnumTable> designTree=null;
+			//List<cutnumTable> luruTree=null; 
+         	List<cutnumTable> actualTree=null;       	
+         	String totalDesign="";
+ 		    String shanTreeDesign="";
+ 		    String songTreeDesign="";
+ 		    String zaTreeDesign="";
+ 		  /*  
+ 		    String totalProduced="";
+ 		    String shamu="";
+ 		    String songmu="";
+ 		    String zamu="";
+         */
+ 		    String totalActual="";
+ 		    String shanTreeActual="";
+ 		    String songTreeActual="";
+ 		    String zaTreeActual="";
+         	//JSONObject j = new JSONObject();
+             //List<JSONObject> list = new ArrayList<JSONObject>();
+         	JSONArray list = new JSONArray();
+         	//JSONArray j1 = new JSONArray();
+         	JSONObject j = new JSONObject();
+         	/*sql = "SELECT\r\n" + 
+         			"			p.company, \r\n" + 
+         			"			p.certificatenum,\r\n" + 
+         			"			p.cutnum, \r\n" + 
+         			"			p.cutaddress,\r\n" + 
+         			"			p.cutvillage,\r\n" + 
+         			"			p.quartel,\r\n" + 
+         			"			p.largeblock, \r\n" + 
+         			"			p.smallblock,\r\n" + 
+         			"			p.creatcutDate, \r\n" + 
+         			"			sum(DISTINCT p.volume) as totalDesign,\r\n" + 
+         			"			sum(DISTINCT CASE WHEN c.treetype = '杉木' THEN c.total END) AS 'shanTreeDesign',\r\n" + 
+         			"			sum(DISTINCT CASE WHEN c.treetype = '松木' THEN c.total END) AS 'songTreeDesign', \r\n" + 
+         			"			sum(DISTINCT CASE WHEN c.treetype = '阔叶林' THEN c.total END) AS 'zaTreeDesign', \r\n" + 
+         			"			sum(DISTINCT b.tolstere) AS totalActual, \r\n" + 
+         			"			sum(DISTINCT CASE WHEN t.treetype = '杉木' THEN t.tvolume END) AS 'shanTreeActual',\r\n" + 
+         			"			sum(DISTINCT CASE WHEN t.treetype = '松木' THEN t.tvolume END) AS 'songTreeActual', \r\n" + 
+         			"			sum(DISTINCT CASE WHEN t.treetype = '杂木' THEN t.tvolume END) AS 'zaTreeActual'\r\n" + 
+         			"		FROM\r\n" + 
+         			"			cutnum AS p \r\n" + 
+         			"		JOIN cutnum_tree AS c \r\n" + 
+         			"		JOIN tree AS t \r\n" + 
+         			"		JOIN inyard AS b\r\n" + 
+         			"		JOIN cutnum_status s ON t.workid = b.workid\r\n" + 
+         			"		AND b.cutNum = p.cutnum AND p.cutnumid = c.cutnumid AND p.cutnumid = s.cutnumid WHERE s.`status` < 12\r\n" + 
+         			"		GROUP BY c.cutnumid,b.cutNum,p.company,p.certificatenum,p.cutnum,p.cutaddress,p.cutvillage,p.quartel,p.largeblock,p.smallblock,p.creatcutDate";*/
+         	sql="SELECT p.company,p.certificatenum,p.cutnum,p.cutaddress,p.cutvillage,p.quartel,p.largeblock,p.smallblock,p.creatcutDate,\r\n" + 
+         			"sum(DISTINCT p.volume) as totalDesign,\r\n" + 
+         			" sum(DISTINCT CASE WHEN c.treetype = '杉木' THEN c.total END) AS 'shanTreeDesign',\r\n" + 
+         			"sum(DISTINCT CASE WHEN c.treetype = '松木' THEN c.total END) AS 'songTreeDesign', \r\n" + 
+         			"sum(DISTINCT CASE WHEN c.treetype = '阔叶林' or c.treetype='阔叶树' THEN c.total END) AS 'zaTreeDesign',\r\n" + 
+         			"sum(DISTINCT b.tolstere) AS totalActual,\r\n" + 
+         			"sum(DISTINCT CASE WHEN t.treetype = '杉木' THEN t.tvolume END) AS 'shanTreeActual',\r\n" + 
+         			"sum(DISTINCT CASE WHEN t.treetype = '松木' THEN t.tvolume END) AS 'songTreeActual', \r\n" + 
+         			"sum(DISTINCT CASE WHEN t.treetype = '杂木' THEN t.tvolume END) AS 'zaTreeActual'\r\n" + 
+         			"FROM cutnum  p JOIN cutnum_tree  c JOIN tree  t JOIN inyard b JOIN cutnum_status s ON t.workid = b.workid AND\r\n" + 
+         			"b.cutNum = p.cutnum AND p.cutnumid = c.cutnumid AND p.cutnumid = s.cutnumid WHERE s.`status` < 12\r\n" + 
+         			"GROUP BY c.cutnumid,b.cutNum,p.company,p.certificatenum,p.cutnum,p.cutaddress,p.cutvillage,p.quartel,p.largeblock,p.smallblock,p.creatcutDate";
+         	List<cutnumTable> ppt=cnd.findCutnumT(sql);
+         	//System.out.println(ppt.size()); 
+         	//SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         	DecimalFormat df = new DecimalFormat("#.00");
+         	if(ppt.size()>0)
+         	{
+         	for(int i=0;i<ppt.size();i++) {
+         		//String str=format1.format(ppt.get(i).getProjpackageStarttime());
+         	cnt.setCompany(ppt.get(i).getCompany());
+         	cnt.setCertificatenum(ppt.get(i).getCertificatenum());
+         	cnt.setCutnum(ppt.get(i).getCutnum());
+         	cnt.setCutaddress(ppt.get(i).getCutaddress());
+         	cnt.setCutvillage(ppt.get(i).getCutvillage());
+         	cnt.setQuartel(ppt.get(i).getQuartel());
+         	cnt.setLargeblock(ppt.get(i).getLargeblock());
+         	cnt.setSmallblock(ppt.get(i).getSmallblock());
+         	cnt.setCreatcutDate(ppt.get(i).getCreatcutDate());//疑问
+         	//System.out.println("...."+ppt.get(i).getCreatcutDate()+ "...");
+         	totalDesign=ppt.get(i).getTotalDesign();
+ 		    shanTreeDesign=ppt.get(i).getShanTreeDesign();
+ 		    songTreeDesign=ppt.get(i).getSongTreeDesign();
+ 		    zaTreeDesign=ppt.get(i).getZaTreeDesign();
+ 		    
+ 		   if(String.valueOf(shanTreeDesign).equals("null") || String.valueOf(shanTreeDesign).isEmpty())
+		    {
+		    	shanTreeDesign="0";
+		    	System.out.println("...."+shanTreeDesign+ "...");
+		    }
+		    if(String.valueOf(songTreeDesign).equals("null") || String.valueOf(songTreeDesign).isEmpty())
+		    {
+		    	songTreeDesign="0";
+		    	System.out.println("...."+songTreeDesign+ "...");
+		    }
+		    if(String.valueOf(zaTreeDesign).equals("null") || String.valueOf(zaTreeDesign).isEmpty())
+		    {
+		    	zaTreeDesign="0";
+		    	System.out.println("...."+zaTreeDesign+ "...");
+		    }
+ 		    
+ 		    cnt.setTotalDesign(ppt.get(i).getTotalDesign());
+ 		    cnt.setShanTreeDesign(shanTreeDesign);
+ 		    cnt.setSongTreeDesign(songTreeDesign);
+ 		    cnt.setZaTreeDesign(zaTreeDesign);	
+ 		/*    
+ 		    totalProduced=ppt.get(i).getTotalProduced();
+ 		    shamu=ppt.get(i).getShamu();
+ 		    songmu=ppt.get(i).getSongmu();
+ 		    zamu=ppt.get(i).getZamu();
+ 		    cnt.setTotalProduced(ppt.get(i).getTotalProduced());
+ 		    cnt.setShamu(ppt.get(i).getShamu());
+ 		    cnt.setSongmu(ppt.get(i).getSongmu());
+ 		    cnt.setZamu(ppt.get(i).getZamu());
+ 		 */   
+ 		 /*   
+ 		    cnt.setTotalActual(ppt.get(i).getTotalActual());
+ 		    cnt.setShanTreeActual(ppt.get(i).getShanTreeActual());
+ 		    cnt.setSongTreeActual(ppt.get(i).getSongTreeActual());
+ 		    cnt.setZaTreeActual(ppt.get(i).getZaTreeActual());
+ 		    totalActual=ppt.get(i).getTotalActual();
+ 		    shanTreeActual=ppt.get(i).getShanTreeActual();
+ 		    songTreeActual=ppt.get(i).getSongTreeActual();
+ 		    zaTreeActual=ppt.get(i).getZaTreeActual();
+ 		  */  
+ 		   totalActual=ppt.get(i).getTotalActual();
+		    double totalActuald=Double.parseDouble(ppt.get(i).getTotalActual());
+		    String totalActuald1=df.format(totalActuald);//保留两位小数
+		    //System.out.println("...."+totalActuald1+ "...");
+		    shanTreeActual=String.valueOf(ppt.get(i).getShanTreeActual());
+		    String shanTreeActuald1="";
+		    if(shanTreeActual.equals("null") || shanTreeActual.isEmpty())
+		    {
+		    	shanTreeActuald1="0";
+		    	shanTreeActual="0";
+		    }
+		    else {
+		    	double shanTreeActuald=Double.parseDouble(shanTreeActual);
+			    shanTreeActuald1=df.format(shanTreeActuald);
+		    }
+		    
+		    songTreeActual=String.valueOf(ppt.get(i).getSongTreeActual());
+		    String songTreeActuald1="";
+		    if(songTreeActual.equals("null") || songTreeActual.isEmpty())
+		    {
+		    	songTreeActuald1="0";
+		    	songTreeActual="0";
+		    }
+		    else {
+		    	double songTreeActuald=Double.parseDouble(songTreeActual);
+			    songTreeActuald1=df.format(songTreeActuald);
+		    }
+		    
+		    zaTreeActual=String.valueOf(ppt.get(i).getZaTreeActual());
+		    //System.out.print(zaTreeActual);
+		    String zaTreeActuald1="";
+		    double zaTreeActuald=0;
+		    if(zaTreeActual.equals("null") || zaTreeActual.isEmpty())
+		    {
+		    	zaTreeActuald1="0";
+		    	zaTreeActual="0";
+		    	System.out.println("...."+zaTreeActuald1+ "...");
+		    }
+		    else{
+		    	  zaTreeActuald=Double.parseDouble(zaTreeActual);
+				  zaTreeActuald1=df.format(zaTreeActuald);
+		    }
+		    cnt.setTotalActual(totalActuald1);
+		    cnt.setShanTreeActual(shanTreeActuald1);
+		    cnt.setSongTreeActual(songTreeActuald1);
+		    cnt.setZaTreeActual(zaTreeActuald1);
+		    
+ 		       double totalSurplus=Double.parseDouble(totalDesign)-Double.parseDouble(totalActual);
+ 		       String totalSurplus1=df.format(totalSurplus);
+ 			   double shanSurplus=Double.parseDouble(shanTreeDesign)-Double.parseDouble(shanTreeActual);
+ 			   String shanSurplus1=df.format(shanSurplus);
+ 			   double songSurplus=Double.parseDouble(songTreeDesign)-Double.parseDouble(songTreeActual);
+ 			   String songSurplus1=df.format(songSurplus);
+ 			   double zaSurplus=Double.parseDouble(zaTreeDesign)-Double.parseDouble(zaTreeActual);
+ 			   String zaSurplus1=df.format(zaSurplus);
+ 			   
+ 			   cnt.setTotalSurplus(String.valueOf(totalSurplus1));
+ 			   cnt.setShanSurplus(String.valueOf(shanSurplus1));
+ 			   cnt.setSongSurplus(String.valueOf(songSurplus1));
+ 			   cnt.setZaSurplus(String.valueOf(zaSurplus1));
+ 			   DecimalFormat decimalFormat = new DecimalFormat("##.00%");
+ 			   double totalImplement1=(Double.parseDouble(totalActual)/Double.parseDouble(totalDesign));
+ 			   //System.out.println("...."+totalImplement1+ "...");
+ 			   String totalImplement=decimalFormat.format(totalImplement1);
+ 			   
+ 			   double shanTreeImplement1=Double.parseDouble(shanTreeActual)/Double.parseDouble(shanTreeDesign);
+ 			   String shanTreeImplement=decimalFormat.format(shanTreeImplement1);
+ 			   
+ 			  String songTreeImplement="";
+ 			  if(songTreeActual.equals("0") && songTreeDesign.equals("0"))
+ 			  {
+ 				 songTreeImplement="0";
+ 			  }else
+ 			  {
+ 			   double songTreeImplement1=Double.parseDouble(songTreeActual)/Double.parseDouble(songTreeDesign);
+ 			   songTreeImplement=decimalFormat.format(songTreeImplement1);
+ 			  }
+ 			   
+ 			  //System.out.println("...."+songTreeActual+ "...");
+ 			 String zaTreeImplement="";
+ 			 if(zaTreeActual.equals("0") && zaTreeDesign.equals("0"))
+			  {
+ 				zaTreeImplement="0";
+			  }else
+			  {
+				  double zaTreeImplement1=Double.parseDouble(zaTreeActual)/Double.parseDouble(zaTreeDesign);
+	 			   zaTreeImplement=decimalFormat.format(zaTreeImplement1);
+			  }
+ 			   cnt.setTotalImplement(totalImplement);
+ 			   cnt.setShanTreeImplement(shanTreeImplement);
+ 			   cnt.setSongTreeImplement(songTreeImplement);
+ 			   cnt.setZaTreeImplement(zaTreeImplement);
+ 			   cntt.add(cnt);
+ 			   list.put(cnt);
+ 			   //System.out.print(list);
+ 			   //j = new JSONObject(pr);
+ 			   //out.print(list);
+ 			   
+         	} 
+         	//mapper.writeValue(response.getWriter(), list);
+         	out.print(list);
+         	}
+             //mapper.writeValue(response.getWriter(), prpt);
+         }
+        
+      //生产部门超级总台账工程包和采伐证
+    	else if("findCutnumproject56".equals(action)) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String projectPackageName = request.getParameter("projectPackageName");
+        	String contractionSide = request.getParameter("contractionSide");
+        	String cutnum = request.getParameter("cutnum");
+        	//System.out.println("...." +treetype + "...");
+        	List<projectPackTable> prpt=new ArrayList<projectPackTable>();
+        	projectPackTable pr = new projectPackTable();
+        	List<projectPackTable> designTree=null;
+        	List<projectPackTable> actualTree=null;
+        	String totalDesign="";
+		    String shanTreeDesign="";
+		    String songTreeDesign="";
+		    String zaTreeDesign="";
+		    String totalActual="";
+		    String shanTreeActual="";
+		    String songTreeActual="";
+		    String zaTreeActual="";
+		    
+		    String totalProduced="";
+ 		    String shamu="";
+ 		    String songmu="";
+ 		    String zamu="";
+        	//JSONObject j = new JSONObject();
+            //List<JSONObject> list = new ArrayList<JSONObject>();
+        	JSONArray list = new JSONArray();
+        	//JSONArray j1 = new JSONArray();
+        	JSONObject j = new JSONObject();
+        	sql="SELECT p.projpackageStarttime,p.proj_package_Name,c.certificatenum,c.cutarea,p.contractNum,p.contractionSide,p.cuttime,p.forester,p.accessory,c.cutnum,SUM(DISTINCT c.volume) as tvolume,\r\n" + 
+        			"sum(DISTINCT case when t.treetype='杉木' then t.total end) as 'DesignedShamu',\r\n" + 
+        			"sum(DISTINCT case when t.treetype='松木' then t.total end) as 'DesignedSongmu',\r\n" + 
+        			"sum(DISTINCT case when t.treetype='阔叶林' or t.treetype='阔叶树' then t.total end) as 'DesignedKuoyelin',\r\n" + 
+        			"sum(DISTINCT i.tolstere) as total,\r\n" + 
+        			"sum(DISTINCT case when e.treetype='杉木' then e.tvolume end) as 'shanTreeActual', \r\n" + 
+        			"sum(DISTINCT case when e.treetype='松木' then e.tvolume end) as 'songTreeActual', \r\n" + 
+        			"sum(DISTINCT case when e.treetype='杂木' then e.tvolume end) as 'zaTreeActual'\r\n" + 
+        			"from proj_package p join cutnum c \r\n" + 
+        			"join cutnum_status as s \r\n" + 
+        			"JOIN cutnum_tree as t\r\n" + 
+        			"join inyard as i\r\n" + 
+        			"join tree as e\r\n" + 
+        			"on c.cutnumid=s.cutnumid and c.cutnumid=t.cutnumid and c.cutnum=i.cutNum and i.workid=e.workid WHERE 1=1 and p.proj_package_Name=c.proj_package_Name and s.`status`<12";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+        		sql=sql+" and p.projpackageStarttime>='"+timeStart+"' AND p.projpackageStarttime<='"+timeEnd+"'";
+        	}
+        	if(!cutnum.isEmpty())
+        	{
+        		sql=sql+" and c.cutnum='"+cutnum+"'";
+        	}
+        	if(!contractionSide.isEmpty())
+        	{
+        		sql=sql+" and p.contractionSide='"+contractionSide+"'";
+        	}
+        	if(!projectPackageName.isEmpty())
+        	{
+        		sql=sql+" and p.proj_package_Name='"+projectPackageName+"'";
+        	}
+        	
+        	sql=sql+" GROUP BY p.projpackageStarttime,p.proj_package_Name,c.certificatenum,c.cutarea,p.contractNum,p.contractionSide,p.cuttime,p.forester,p.accessory,c.cutnum";
+            List<projectPackTable> ppt=cnd.findProjectDetails(sql);
+            //System.out.print(sql);
+        	/*sql="SELECT p.cutnum,p.shamu,p.songmu,p.zamu,p.totalProduced from cutnum c join cutnum_produced p join cutnum_status s on c.cutnum=p.cutnum and c.cutnumid=s.cutnumid WHERE s.`status`<12";
+        	List<projectPackTable> daot=cnd.findDaotree(sql);*/
+        	//System.out.println(ppt.size()); 
+        	//SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        	DecimalFormat df = new DecimalFormat("#.00");
+        	if(ppt.size()>0)
+        	{
+        	for(int i=0;i<ppt.size();i++) {
+        		//String str=format1.format(ppt.get(i).getProjpackageStarttime());
+        	pr.setProjpackageStarttime(ppt.get(i).getProjpackageStarttime());
+        	pr.setProjectPackageName(ppt.get(i).getProjectPackageName());
+        	pr.setCertificatenum(ppt.get(i).getCertificatenum());
+        	pr.setCutarea(ppt.get(i).getCutarea());
+        	pr.setContractNum(ppt.get(i).getContractNum());
+        	pr.setContractionSide(ppt.get(i).getContractionSide());
+        	pr.setCuttime(ppt.get(i).getCuttime());
+        	pr.setForester(ppt.get(i).getForester());
+        	pr.setAccessory(ppt.get(i).getAccessory());
+        	pr.setCutnum(ppt.get(i).getCutnum());
+        	cutnum=String.valueOf(ppt.get(i).getCutnum());
+        	
+        	totalDesign=ppt.get(i).getTotalDesign();
+		    shanTreeDesign=ppt.get(i).getShanTreeDesign();
+		    songTreeDesign=ppt.get(i).getSongTreeDesign();
+		    zaTreeDesign=ppt.get(i).getZaTreeDesign();
+		    
+		    if(String.valueOf(shanTreeDesign).equals("null") || String.valueOf(shanTreeDesign).isEmpty())
+		    {
+		    	shanTreeDesign="0";
+		    }
+		    if(String.valueOf(songTreeDesign).equals("null") || String.valueOf(songTreeDesign).isEmpty())
+		    {
+		    	songTreeDesign="0";
+		    	System.out.println("...."+songTreeDesign+ "...");
+		    }
+		    if(String.valueOf(zaTreeDesign).equals("null") || String.valueOf(zaTreeDesign).isEmpty())
+		    {
+		    	zaTreeDesign="0";
+		    }
+		    
+		    pr.setTotalDesign(ppt.get(i).getTotalDesign());
+		    pr.setShanTreeDesign(shanTreeDesign);
+		    pr.setSongTreeDesign(songTreeDesign);
+		    pr.setZaTreeDesign(zaTreeDesign);
+		    
+		    totalActual=ppt.get(i).getTotalActual();
+		    double totalActuald=Double.parseDouble(ppt.get(i).getTotalActual());
+		    String totalActuald1=df.format(totalActuald);//保留两位小数
+		    //System.out.println("...."+totalActuald1+ "...");
+		    shanTreeActual=ppt.get(i).getShanTreeActual();
+		    double shanTreeActuald=Double.parseDouble(shanTreeActual);
+		    String shanTreeActuald1=df.format(shanTreeActuald);
+		    
+		    songTreeActual=String.valueOf(ppt.get(i).getSongTreeActual());
+		    String songTreeActuald1="";
+		    if(songTreeActual.equals("null") || songTreeActual.isEmpty())
+		    {
+		    	songTreeActuald1="0";
+		    	songTreeActual="0";
+		    }
+		    else
+		    {
+		    double songTreeActuald=Double.parseDouble(songTreeActual);
+		    songTreeActuald1=df.format(songTreeActuald);
+		    }
+		    String zaTreeActuald1="";
+		    double zaTreeActuald=0;
+		    zaTreeActual=String.valueOf(ppt.get(i).getZaTreeActual());
+		    //System.out.println("...."+zaTreeActual+ "...");
+		    if(zaTreeActual.equals("null") || zaTreeActual.isEmpty())
+		    {
+		    	zaTreeActuald1="0";
+		    	zaTreeActual="0";
+		    	//System.out.println("...."+zaTreeActuald1+ "...");
+		    }
+		    else{
+		    	  zaTreeActuald=Double.parseDouble(zaTreeActual);
+				  zaTreeActuald1=df.format(zaTreeActuald);
+		    }
+		    pr.setTotalActual(totalActuald1);
+		    pr.setShanTreeActual(shanTreeActuald1);
+		    pr.setSongTreeActual(songTreeActuald1);
+		    pr.setZaTreeActual(zaTreeActuald1);
+		    //System.out.print(songTreeDesign);
+		    
+		    
+		      double totalSurplus=Double.parseDouble(totalDesign)-Double.parseDouble(totalActual);
+		       String totalSurplus1=df.format(totalSurplus);
+			   double shanSurplus=Double.parseDouble(shanTreeDesign)-Double.parseDouble(shanTreeActual);
+			   String shanSurplus1=df.format(shanSurplus);
+			   double songSurplus=Double.parseDouble(songTreeDesign)-Double.parseDouble(songTreeActual);
+			   String songSurplus1=df.format(songSurplus);
+			   double zaSurplus=Double.parseDouble(zaTreeDesign)-Double.parseDouble(zaTreeActual);
+			   String zaSurplus1=df.format(zaSurplus);
+			   
+			   pr.setTotalSurplus(String.valueOf(totalSurplus1));
+			   pr.setShanSurplus(String.valueOf(shanSurplus1));
+			   pr.setSongSurplus(String.valueOf(songSurplus1));
+			   pr.setZaSurplus(String.valueOf(zaSurplus1));
+			   DecimalFormat decimalFormat = new DecimalFormat("##.00%");
+			   double totalImplement1=(Double.parseDouble(totalActual)/Double.parseDouble(totalDesign));
+			   //System.out.println("...."+totalImplement1+ "...");
+			   String totalImplement=decimalFormat.format(totalImplement1);
+			   
+			   
+			   double shanTreeImplement1=Double.parseDouble(shanTreeActual)/Double.parseDouble(shanTreeDesign);
+			   String shanTreeImplement=decimalFormat.format(shanTreeImplement1);
+			   
+			   String songTreeImplement="";
+	 			  if(songTreeActual.equals("0") && songTreeDesign.equals("0"))
+	 			  {
+	 				 songTreeImplement="0";
+	 			  }else
+	 			  {
+	 				 double songTreeImplement1=Double.parseDouble(songTreeActual)/Double.parseDouble(songTreeDesign);
+	 				songTreeImplement=decimalFormat.format(songTreeImplement1);
+	 			  }
+			   
+	 			 String zaiTreeImplement="";
+	 			 if(zaTreeActual.equals("0") && zaTreeDesign.equals("0"))
+				  {
+	 				zaiTreeImplement="0";
+				  }else
+				  {
+					  double zaiTreeImplement1=Double.parseDouble(zaTreeActual)/Double.parseDouble(zaTreeDesign);
+					  zaiTreeImplement=decimalFormat.format(zaiTreeImplement1);
+				  }
+
+			   pr.setTotalImplement(totalImplement);
+			   pr.setShanTreeImplement(shanTreeImplement);
+			   pr.setSongTreeImplement(songTreeImplement);
+			   pr.setZaiTreeImplement(zaiTreeImplement);
+			   
+			   sql="SELECT p.shamu,p.songmu,p.zamu,p.totalProduced from cutnum c join cutnum_produced p "
+			   		+ "join cutnum_status s on c.cutnum=p.cutnum and c.cutnumid=s.cutnumid WHERE s.`status`<12 and p.cutnum='"+cutnum+"'";
+	        	List<projectPackTable> daot=cnd.findDaotree(sql);
+	        	for(int m=0;m<daot.size();m++) {
+	        		totalProduced=String.valueOf(daot.get(i).getTotalActual());
+	     		    shamu=String.valueOf(daot.get(i).getShamu());
+	     		    songmu=String.valueOf(daot.get(i).getSongmu());
+	     		    zamu=String.valueOf(daot.get(i).getZamu());
+	     		    pr.setTotalProduced(totalProduced);
+	    		    pr.setShamu(shamu);
+	    		    pr.setSongmu(songmu);
+	    		    pr.setZamu(zamu);
+	        	}
+			   prpt.add(pr);
+			   list.put(pr);
+			   //System.out.print(list);
+			   //j = new JSONObject(pr);
+			   //out.print(list);
+			   
+        	} 
+        	//mapper.writeValue(response.getWriter(), list);
+        	out.print(list);
+        	}
+        }
 
 	}
 

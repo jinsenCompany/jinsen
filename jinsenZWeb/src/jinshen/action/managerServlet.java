@@ -199,6 +199,7 @@ public class managerServlet extends HttpServlet {
 			request.getParameter(staff_id);
 			session.setAttribute("staff_id", staff_id);
 			session.setAttribute("staff_name", s.getStaff_name());
+			session.setAttribute("power_type", s.getPower_type());
 			Object v_code1 = session.getAttribute("v_code");
 			System.out.println("v_code1:"+s.getStaff_name());
 			// System.out.println("v_code0:"+v_code0);
@@ -331,7 +332,16 @@ public class managerServlet extends HttpServlet {
 						} else {
 							System.out.println("ERROR!");
 						}
-					}else if (s.getPower_type().equals("生产部副经理")) {
+					}
+					else if (s.getPower_type().equals("生产部操作员")) {
+						if (db.logintime(u)) {
+							PrintWriter out = response.getWriter();
+							out.write("foresp");
+						} else {
+							System.out.println("ERROR!");
+						}
+					}
+					else if (s.getPower_type().equals("生产部副经理")) {
 						if (db.logintime(u)) {
 							PrintWriter out = response.getWriter();
 							out.write("forestManager");
@@ -447,5 +457,21 @@ public class managerServlet extends HttpServlet {
 			}
 
 	}
+		else if("changePassword".equals(action)) {
+			String staff_id = request.getParameter("staff_id");
+			//String init = request.getParameter("initpw");
+			String password = request.getParameter("pw");
+			System.out.print(password);
+			usermanage u = new usermanage();
+			u.setStaff_id(staff_id);
+			u.setPassword(password);
+			if (db.changePassword(u)){
+				PrintWriter out = response.getWriter();
+				out.write("修改成功");
+			} else {
+				PrintWriter out = response.getWriter();
+				out.write("修改失败");
+			}
+		}
 	}
 }

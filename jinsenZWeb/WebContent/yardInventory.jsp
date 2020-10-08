@@ -13,23 +13,12 @@
 <head>
 <meta charset="UTF-8">
 <title>货场库存盘点</title>
-<!--  <link rel="stylesheet" href="css/all.css">-->
-    <link rel="stylesheet" href="js/jQueryCalendar/calendar.css">
-    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
-
-    <!-- font-awesome icons CSS -->
-    <link href="css/font-awesome.css" rel="stylesheet">
-    <!-- //font-awesome icons CSS-->
-
-    <!-- side nav css file -->
-    <link href='css/SidebarNav.min.css' media='all' rel='stylesheet' type='text/css'/>
-    <!-- js-->
-    <script src="js/jquery-1.11.1.min.js"></script>
-    <script src="js/modernizr.custom.js"></script>
-    <!-- jQuery.print -->
-	<script src="js/jQuery.print.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="css/bootstrap.min.css" />
+<!-- Custom CSS -->
+<link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
+    <link rel="stylesheet" href="css/tableall.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/matrix-style.css" />
@@ -38,9 +27,6 @@
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 <link type="text/css" rel="stylesheet" href="css/PrintArea.css" />
-    <style>
-    body,td,th {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 18px;color: #1d1007; line-height:24px}
-    </style>
     <link href="css/registe.css" rel="stylesheet" type="text/css">
     <style type="text/css">
         .table_p{line-height: 28px;border-bottom: 1px #d0e6ec solid;position: relative;margin-bottom: 10px; 
@@ -56,13 +42,9 @@
     </style>
 </head>
 <body>
-<script type="text/javascript">
-</script>
-</head>
-<body>
 <%List<yardInventory> i=null;i=(List<yardInventory>)request.getAttribute("inyardT"); %>
 <%List<yardInventory> o=null;o=(List<yardInventory>)request.getAttribute("outyardT");%>
-<%yardInventory y=(yardInventory)request.getAttribute("yardyear"); %>>
+<%yardInventory y=(yardInventory)request.getAttribute("yardyear"); %>
 <!--Header-part-->
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
@@ -72,11 +54,11 @@
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -90,8 +72,16 @@
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -99,7 +89,21 @@
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-    <li><a href="yardInventoryBootstrap.jsp"><i class="icon icon-home"></i> <span>货场盘点</span></a></li>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">6</span></a>
+       <ul>
+        <li ><a href="goodsYardCost.jsp">货场费用录入</a></li>
+        <li ><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li ><a href="yardMonerySettle.jsp">货场管理费用</a></li>
+        <li><a href="yardMoneryDirector.jsp">货场管理费用台账</a></li>
+        <li><a href="workpageTreeBuyDirector.jsp">木材收购单</a></li>
+        <li ><a href="cancellingStocksTable.jsp">货场报损</a> </li>       
+      </ul>
+     </li>
+    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-home"></i> <span>木材装车对比</span></a></li>
+    <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-home"></i> <span>查看进场木材反馈</span></a></li>
+    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>货场信息管理</span></a></li>
+    <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>检尺员管理</span></a></li>
+    <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-home"></i> <span>审批调令</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->

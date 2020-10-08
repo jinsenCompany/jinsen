@@ -42,7 +42,10 @@ public class Laowu {
 	private String contractnum;
 	private String saleCalloutOrder;
 	private String yard;
-	
+	private String section;
+	//开始时间结束时间；
+	private Date timeEnd;
+	private Date timeStart;
 	public String getCutnum() {
 		return cutnum;
 	}
@@ -248,6 +251,27 @@ public class Laowu {
 	public void setProjectPackageName(String projectPackageName) {
 		this.projectPackageName = projectPackageName;
 	}
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	public Date getTimeEnd() {
+		return timeEnd;
+	}
+	public void setTimeEnd(Date timeEnd) {
+		this.timeEnd = timeEnd;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	public Date getTimeStart() {
+		return timeStart;
+	}
+	public void setTimeStart(Date timeStart) {
+		this.timeStart = timeStart;
+	}
+	public String getSection() {
+		return section;
+	}
+	public void setSection(String section) {
+		this.section = section;
+	}
+	
 	
 
 }

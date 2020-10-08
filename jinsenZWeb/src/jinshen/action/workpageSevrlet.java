@@ -41,6 +41,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.poi.common.*;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import jinshen.bean.CancellingStockTable;
 import jinshen.bean.Laowu;
@@ -53,15 +55,18 @@ import jinshen.bean.cutnumfeedback;
 import jinshen.bean.goodsYardCost;
 import jinshen.bean.inyard;
 import jinshen.bean.managesdatecard;
+import jinshen.bean.producetree;
 import jinshen.bean.projectpackage;
 import jinshen.bean.singleworkid;
 import jinshen.bean.surveyor;
 import jinshen.bean.tree;
+import jinshen.bean.treefile;
 import jinshen.bean.volume;
 import jinshen.bean.workpage;
 import jinshen.bean.workpageStatus;
 import jinshen.bean.worktree;
 import jinshen.bean.yardManage;
+import jinshen.bean.yezhangPrint;
 import jinshen.dao.cutnumDao;
 import jinshen.dao.treeDao;
 import jinshen.dao.volumeDao;
@@ -109,7 +114,6 @@ public class workpageSevrlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         session.setAttribute("staff_id", "123");  //登录得员工id
         if("addWorkpage".equals(action)) {
-        	//System.out.print(request.getParameter("workid"));
         	double workid=Double.parseDouble(request.getParameter("workid"));
         	String cutNum = request.getParameter("cutnum");
         	String cutdate=request.getParameter("cutdate");
@@ -128,15 +132,26 @@ public class workpageSevrlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+        	//实际采伐材积
 			sql="SELECT SUM(inyard.tolstere) AS tolstere1 FROM inyard WHERE cutNum='"+cutNum+"'";//从inyard数据库中选取材积
 			compareVolume compareVolume=trd.findVolume(sql);//inyard输入的材积库存材积
 			double volumet=(float)compareVolume.getTolstere();//相同采伐证累加的材积
 			double tolstereal=volumet;//进入inyard中的材积
-			System.out.print(tolstereal);
+			//System.out.print(tolstereal);
+			//采伐证材积
 			sql="SELECT statusVolume from cutnum_status JOIN cutnum ON cutnum.cutnumid=cutnum_status.cutnumid WHERE cutnum='"+cutNum+"'";
 			compareVolume compareVolumecut=trd.findVolume(sql);//
 			double volumetcut=(float)compareVolumecut.getTolstere();//从采伐证才选择的材积
-			if(tolstereal<(0.95*volumetcut))
+			//采伐证状态
+			sql="SELECT s.`status` from cutnum_status as s join cutnum as c on s.cutnumid=c.cutnumid WHERE c.cutnum='"+cutNum+"'";
+			cutnumStatus stu=cnd.findCutnumStatus(sql);//查询采伐证状态
+			int cutstatus=stu.getCutnumid();
+			//System.out.print(cutstatus);
+			sql="select count(*) from cutnum where cutnum='"+cutNum+"'";
+			double f1=cnd.findcount(sql);
+			if(f1>0 && cutstatus<10) 
+			{
+			if(tolstereal<(0.90*volumetcut))
 			{
 			workpage cp=new workpage();
 			cp.setWorkid(workid);
@@ -183,7 +198,7 @@ public class workpageSevrlet extends HttpServlet {
         		request.getRequestDispatcher("workpageAdd.jsp").forward(request, response);
         	}
 			}
-			else if((tolstereal>(0.95*volumetcut)) && (tolstereal<volumetcut)) {
+			else if((tolstereal>(0.90*volumetcut)) && (tolstereal<(0.95*volumetcut))) {
 				workpage cp=new workpage();
 				cp.setWorkid(workid);
 				cp.setCutNum(cutNum);
@@ -207,7 +222,7 @@ public class workpageSevrlet extends HttpServlet {
 			    		String rejectreason="";
 			    		workpageStatus ws=new workpageStatus();
 			    		ws.setWorkid(workid);
-			    		ws.setWorkidstatus(0);//工单状态，0：工单已申请未审核，1：信息中心第一次审核工单，2：进场之后信息中心签收照片第二次审核，3：审核成功，4：工单被退回，5：工单修改，6：工单成功
+			    		ws.setWorkidstatus(1);//工单状态，0：工单已申请未审核，1：信息中心第一次审核工单，2：进场之后信息中心签收照片第二次审核，3：审核成功，4：工单被退回，5：工单修改，6：工单成功
 			    	    ws.setRejectreason(rejectreason);
 			    	    int flagws=wpd.addWorkpageStatus(ws);
 			    	    if(flagws>0) {
@@ -219,32 +234,71 @@ public class workpageSevrlet extends HttpServlet {
 			    	}
 			    }
 			    if(flag==1) {
-		       		sql="select * from workpage where workid="+workid+"";
-		       		workpage workpage=wpd.findCodeSingle(sql);
-	        		request.setAttribute("workpage", workpage);
-	    		    request.getRequestDispatcher("workpageUpdate.jsp").forward(request, response);
-	    		    out.print("输入材积已经超过本砍伐证的蓄留材积95%");
+//		       		sql="select * from workpage where workid="+workid+"";
+//		       		workpage workpage=wpd.findCodeSingle(sql);
+//	        		request.setAttribute("workpage", workpage);
+//	    		    request.getRequestDispatcher("workpageUpdate.jsp").forward(request, response);
+//	    		    out.print("输入材积已经超过本砍伐证的蓄留材积90%");
+			    	out.print("添加成功,输入材积已经超过本采伐证的蓄留材积90%,2秒后返回录入界面<script>setTimeout(\"window.location.href ='workpageAdd.jsp';\", 2000);</script>");
 			    }
 			    else
 	        	{
 	        		request.getRequestDispatcher("workpageAdd.jsp").forward(request, response);
 	        	}
 			}
+			else if((tolstereal>(0.95*volumetcut))) {
+				workpage cp=new workpage();
+				cp.setWorkid(workid);
+				cp.setCutNum(cutNum);
+				cp.setCutdate(cuttime);
+				cp.setCutSite(cutSite);
+				cp.setCheckSite(checkSite);
+				cp.setCarNumber(carNumber);
+				//cp.setGpsinfo(gpsinfo);
+				//cp.setLoadphoto(loadphoto);
+				cp.setForester(forester);
+				cp.setBatchNum(1);
+			    sql = "select count(*) from workpage where workid="+cp.getWorkid()+"";
+			    int flag=0;
+			    double f=wpd.findcount(sql);
+			    if(f==1) {
+			    	flag=wpd.updateWorkPage(cp);
+			    }
+			    else {
+			    	flag=wpd.addWorkPage(cp);
+			    	if(flag>0) {
+			    		String rejectreason="";
+			    		workpageStatus ws=new workpageStatus();
+			    		ws.setWorkid(workid);
+			    		ws.setWorkidstatus(1);//工单状态，0：工单已申请未审核，1：信息中心第一次审核工单，2：进场之后信息中心签收照片第二次审核，3：审核成功，4：工单被退回，5：工单修改，6：工单成功
+			    	    ws.setRejectreason(rejectreason);
+			    	    int flagws=wpd.addWorkpageStatus(ws);
+			    	    /*if(flagws>0) {
+			    	    	out.print("插入工单状况成功");
+			    	    }
+			    	    else {
+			    	    	out.print("插入工单状况失败");
+			    	    }*/
+			    	}
+			    }
+			    if(flag==1) {
+			    	DecimalFormat decimalFormat = new DecimalFormat("##.00%");
+		 			double totalImplement1=(tolstereal)/(volumetcut);
+		 			   //System.out.println("...."+totalImplement1+ "...");
+		 			String totalImplement=decimalFormat.format(totalImplement1);
+			    	out.printf("添加成功,输入材积已经超过本采伐证的蓄留材积为%s,3秒后返回录入界面<script>setTimeout(\"window.location.href ='workpageAdd.jsp';\", 3000);</script>",totalImplement);
+			    }
+			    else
+	        	{
+			    	out.print("添加失败");
+	        	}
+			}
+			}
 			else {
-				sql="select cutnumid from cutnum WHERE cutnum='"+cutNum+"'";
-				cutnumStatus cd=cnd.findCutnumStatus(sql);
-				double cutnumid=cd.getCutnumid();
-				cutnumStatus cs=new cutnumStatus();
-				cs.setStatus(10);//采伐证锁定
-				int flagS=cnd.updateCutnumStatus(cs,cutnumid);
-				if(flagS>0) {
-				out.write("采伐证已锁定，输入材积已经超过本砍伐证的蓄留材积");
-				}
-				else
-					out.write("采伐证未输入或者输入材积已经超过本砍伐证的蓄留材积");
+				out.print("没有该采伐证");
 			}
         }
-        //保存工单
+        //保存工单(带锁定的版本)
         else if("addWorkpage1".equals(action)) {
         	//System.out.print(request.getParameter("workid"));
         	double workid=Double.parseDouble(request.getParameter("workid"));
@@ -382,7 +436,7 @@ public class workpageSevrlet extends HttpServlet {
 	        		request.getRequestDispatcher("workpageAdd.jsp").forward(request, response);
 	        	}
 			}
-			else if((tolstereal>(0.95*volumetcut)) && (tolstereal<(volumetcut))) {
+			else if((tolstereal>(0.95*volumetcut))) {
 				sql="select cutnumid from cutnum WHERE cutnum='"+cutNum+"'";
 				cutnumStatus cd=cnd.findCutnumStatus(sql);
 				double cutnumid=cd.getCutnumid();
@@ -390,12 +444,13 @@ public class workpageSevrlet extends HttpServlet {
 				cs.setStatus(10);//采伐证锁定
 				int flagS=cnd.updateCutnumStatus(cs,cutnumid);
 				if(flagS>0) {
-				out.write("采伐证已锁定，输入材积已经超过本采伐证的蓄留材积");
+				//out.write("采伐证已锁定，输入材积已经超过本采伐证的蓄留材积");
+			   out.print("采伐证已锁定，输入材积已经超过本采伐证的蓄留材积,2秒后返回录入界面<script>setTimeout(\"window.location.href ='workpageAdd.jsp';\", 2000);</script>");
 				}
 			}
 			}
 			else if(f1>0 && cutstatus==14) {
-				if((tolstereal>0) && (tolstereal<(1.05*volumetcut))) {
+				if((tolstereal>0) && (tolstereal<(1.95*volumetcut))) {
 					workpage cp=new workpage();
 					cp.setWorkid(workid);
 					cp.setCutNum(cutNum);
@@ -422,12 +477,12 @@ public class workpageSevrlet extends HttpServlet {
 				    		ws.setWorkidstatus(1);//工单状态，0：工单已申请未审核，1：信息中心第一次审核工单，2：进场之后信息中心签收照片第二次审核，3：审核成功，4：工单被退回，5：工单修改，6：工单成功
 				    	    ws.setRejectreason(rejectreason);
 				    	    int flagws=wpd.addWorkpageStatus(ws);
-				    	    if(flagws>0) {
+				    	    /*if(flagws>0) {
 				    	    	out.print("插入工单状况成功");
 				    	    }
 				    	    else {
 				    	    	out.print("插入工单状况失败");
-				    	    }
+				    	    }*/
 				    	}
 				    }
 				    if(flag==1) {
@@ -436,14 +491,18 @@ public class workpageSevrlet extends HttpServlet {
 //		        		request.setAttribute("workpage", workpage);
 //		    		    request.getRequestDispatcher("workpageUpdate.jsp").forward(request, response);
 //		    		    out.print("输入材积已经超过本砍伐证的蓄留材积100%");
-				    	out.print("添加成功,输入材积已经超过本采伐证的蓄留材积100%,2秒后返回录入界面<script>setTimeout(\"window.location.href ='workpageAdd.jsp';\", 2000);</script>");
+				    	DecimalFormat decimalFormat = new DecimalFormat("##.00%");
+			 			double totalImplement1=(tolstereal)/(volumetcut);
+			 			   //System.out.println("...."+totalImplement1+ "...");
+			 			String totalImplement=decimalFormat.format(totalImplement1);
+				    	out.printf("添加成功,输入材积已经超过本采伐证的蓄留材积为%s,2秒后返回录入界面<script>setTimeout(\"window.location.href ='workpageAdd.jsp';\", 2000);</script>",totalImplement);
 				    }
 				    else
 		        	{
 				    	out.print("添加失败");
 		        	}
 				}
-				else if((tolstereal>(1.05*volumetcut)) && (tolstereal<(1.1*volumetcut))) {
+				else if((tolstereal>(1.95*volumetcut))) {
 					sql="select cutnumid from cutnum WHERE cutnum='"+cutNum+"'";
 					cutnumStatus cd=cnd.findCutnumStatus(sql);
 					double cutnumid=cd.getCutnumid();
@@ -451,7 +510,7 @@ public class workpageSevrlet extends HttpServlet {
 					cs.setStatus(13);//采伐证锁定不可解锁
 					int flagS=cnd.updateCutnumStatus(cs,cutnumid);
 					if(flagS>0) {
-					out.write("采伐证已锁定，输入材积已经超过本采伐证的110%蓄留材积");
+					out.write("采伐证已锁定，输入材积已经超过本采伐证的200%蓄留材积");
 					}
 				}
 			}
@@ -617,8 +676,17 @@ public class workpageSevrlet extends HttpServlet {
         {
         	String mygroup = request.getParameter("workid");
         	//workpage ac=new workpage();
-        	sql="delete from workpage where workid="+mygroup+"";
+        	sql="delete from workpage where workid='"+mygroup+"'";
         	int i=wpd.delWorkPage(sql);
+        	/*sql="delete from inyard where workid='"+mygroup+"'";
+        	int ii=wpd.delWorkPage(sql);
+        	sql="delete from tree where workid='"+mygroup+"'";
+        	int iii=wpd.delWorkPage(sql);
+        	int iiii=0;
+        	if(i>0 && ii>0 && iii>0)
+        	{
+        		iiii=1;
+        	}*/
         	//System.out.println("...." +i + "...");
         	ObjectMapper mapper1=new ObjectMapper();
     		mapper1.writeValue(response.getWriter(),i);
@@ -696,7 +764,7 @@ public class workpageSevrlet extends HttpServlet {
         	//全部通过通过
         	else if(mytype.equals("passall"))
         	{
-        		sql="select w.workid,w.cutNum,w.cutdate,w.cutSite,w.forester from workpage as w JOIN workpage_status on w.workid=workpage_status.workid WHERE workpage_status.workid_status=8 or workpage_status.workid_status>20";
+        		sql="select w.workid,w.cutNum,w.cutdate,w.cutSite,w.forester from workpage as w JOIN workpage_status on w.workid=workpage_status.workid WHERE workpage_status.workid_status=8 or workpage_status.workid_status>=20";
             	List<codejson> work=wpd.findcodeJson(sql);
             	mapper.writeValue(response.getWriter(), work);
         	}
@@ -1362,7 +1430,14 @@ public class workpageSevrlet extends HttpServlet {
 			sql="select * from comparetree where workid="+workid+"";
     		compareTree compareTree=wpd.findcompares(sql);
     		String comparefile = compareTree.getPic();
-    		comparefile = comparefile.substring(comparefile.lastIndexOf("/") + 1);
+    		if(String.valueOf(comparefile)=="null")
+        	{
+    			comparefile="";
+        	}
+        	else {
+        		comparefile = comparefile.substring(comparefile.lastIndexOf("/") + 1);//去掉储存路径斜杠
+        	}
+    		//comparefile = comparefile.substring(comparefile.lastIndexOf("/") + 1);
     		request.setAttribute("comparefile", comparefile);
     		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
@@ -1393,15 +1468,95 @@ public class workpageSevrlet extends HttpServlet {
         	//sql="SELECT cutnum,certificatenum,number,company,cutsite,sizhi,gpsinfo,treeorigin,foresttype,treetype,ownership,forestid,cuttype,cutmethod,cutqiang,cutarea,treenum,cutstore,volume,starttime,endtime,certifier,updatedate,updatevolume,updatenum from cutnum where cutnum='"+str+"'";
         	//treebuy cw = wpd.findtreebuyTable(sql);
         	
-        	sql="select workid,cutNum,cutdate,cutSite from workpage where workid="+workid+"";
+        	sql="select c.company,w.workid,w.cutNum,w.cutdate,w.cutSite,w.checkSite from workpage w join cutnum c on w.cutNum=c.cutnum  where workid='"+workid+"'";
     		workpage workpage=wpd.findCodeSingle1(sql);
     		
-    		sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
+    		sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid='"+workid+"'";
 			List<tree> tree=wpd.findTree(sql);
         	request.setAttribute("workid", workpage);
-			request.setAttribute("tree", tree);
-
-        	request.getRequestDispatcher("workpageTreeBuyTable.jsp").forward(request, response);	
+			request.setAttribute("tree", tree);       	
+			request.getRequestDispatcher("workpageTreeBuyTable.jsp").forward(request, response);	
+			//FileInputStream file = new FileInputStream(new File("f:\\workpageTreeBuyTable.xls"));
+			FileInputStream file = new FileInputStream(new File("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZ\\\\WEB-INF\\PrintTreeBuy\\workpageTreeBuyTable.xls"));
+			HSSFWorkbook workbook =new HSSFWorkbook(file);
+      //   	HSSFSheet sheet = workbook.createSheet("Sample sheet445");
+ 	        HSSFSheet sheet = workbook.getSheet("Sheet1");       	
+ 	        int a=sheet.getFirstRowNum()+80;//从80列开始
+ 	        int b=sheet.getLastRowNum();
+ 	       try {
+				System.out.print("已经创建好文件，进入到sheet1");
+				System.out.print(b);
+               Row row = sheet.getRow(80);//获取第80行
+//				// 这个判断很必要  确保下面cell操作顺利执行
+		          if(row == null){
+		              row = sheet.createRow(80);
+		          }
+				 for (int j=a;j<b;j++)
+				 {
+					 if(sheet.getRow(j)!=null)
+					 {
+					 sheet.removeRow(sheet.getRow(j));
+					 //sheet.setSelected(true);
+					 sheet.setActive(true);  
+					 }
+				 }
+        				       				
+        				  //Row row = sheet.createRow(0);
+        	                Cell cell = row.createCell(7);
+        	                cell.setCellValue(workpage.getCompany());//发货单位
+        	                
+							Cell cell1 = row.createCell(8);
+							cell1.setCellValue(workpage.getWorkid());
+							
+						
+							Cell cell2 = row.createCell(9);
+							cell2.setCellValue(workpage.getCutNum());
+							
+							Cell cell3 = row.createCell(10);
+							cell3.setCellValue(String.valueOf(workpage.getCutdate()));
+							
+							/*
+							 * Cell cell4 = row.createCell(11); cell4.setCellValue(workpage.getCutSite());
+							 */
+							Cell cell4 = row.createCell(11);
+							cell4.setCellValue(workpage.getCheckSite()); //货场
+							
+								/* System.out.print(tree.size()); */														
+								 for (int i=0;i<tree.size();i++) {				        	            
+									    Row rowx = sheet.createRow(i+81);
+				        	            Cell cella = rowx.createCell(7);
+				        	            cella.setCellValue((String) tree.get(i).getTreetype());
+				        	            Cell cellb = rowx.createCell(8);
+				        	            cellb.setCellValue((double) tree.get(i).getTlong());
+				        	            Cell cellc = rowx.createCell(9);
+				        	            cellc.setCellValue((double) tree.get(i).getTradius());
+				        	            Cell celld = rowx.createCell(10);
+				        	            celld.setCellValue((double) tree.get(i).getNum());
+				        	            Cell celle = rowx.createCell(11);
+				        	            celle.setCellValue((double) tree.get(i).getTvolume());								  
+								 }
+							
+        	     file.close();
+        		
+        	    //FileOutputStream out1=new FileOutputStream(new File("f:\\workpageTreeBuyTable.xls"));
+        	    FileOutputStream out1=new FileOutputStream(new File("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZ\\WEB-INF\\PrintTreeBuy\\workpageTreeBuyTable.xls"));
+        	    //String path = "C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 9.0\\webapps\\jinsenZ\\WEB-INF\\PrintTreeBuy" + "\\" + fileName;
+        	    workbook.write(out1);
+				/*
+				 * sheet = workbook.getSheetAt(0); Iterator<Row> rowIte = sheet.iterator();
+				 * while(rowIte.hasNext()){ rowIte.next(); rowIte.remove(); }
+				 * System.out.println("已删除完毕");
+				 */
+        	    file.close();
+        	    out1.close();
+        	    System.out.println("Excel written successfully..");
+        	   
+        	} catch (FileNotFoundException e) {
+        	    e.printStackTrace();
+        	} catch (IOException e) {
+        	    e.printStackTrace();
+        	}
+	
         }
         //先检尺元首页显示工单信息
         else if(action.equals("finishworkP")) {
@@ -1586,6 +1741,7 @@ public class workpageSevrlet extends HttpServlet {
 				out.print("保存失败");
 			}
 	}
+        //退库单
         else if(action.equals("addCancellingStockTable1")) {
         	CancellingStockTable cs=new CancellingStockTable();//退库单信息
         	String cutNum="";
@@ -1594,6 +1750,16 @@ public class workpageSevrlet extends HttpServlet {
         	Date d = null;
 			Date dd = null;
 			Date ddd=null;
+			String treetype1="";
+        	String tlong1="";
+        	String tradius1="";
+        	int num1=0;
+        	String tvolume1="";
+			ArrayList<String> tree=new ArrayList<>();
+        	ArrayList<String> tl=new ArrayList<>();
+        	ArrayList<String> tr=new ArrayList<>();
+        	ArrayList<Integer> num=new ArrayList<>();
+        	ArrayList<String> tv=new ArrayList<>();
         	// 得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
     		String savePath = this.getServletContext().getRealPath("/WEB-INF/cancelfile");
     		//得到文件访问的相对路径
@@ -1645,19 +1811,29 @@ public class workpageSevrlet extends HttpServlet {
     						cs.setCancellingStockReason(item.getString("UTF-8"));
     					}
     					else if("treetype".equals(name)) {
-    						cs.setTreetype(item.getString("UTF-8"));
+    						treetype1=item.getString("UTF-8");
+    						tree.add(treetype1);
+    						//cs.setTreetype(item.getString("UTF-8"));
     					}
     					else if("tlong".equals(name)) {
-    						cs.setTlong(item.getString("UTF-8"));
+    						tlong1=item.getString("UTF-8");
+    						tl.add(tlong1);
+    						//cs.setTlong(item.getString("UTF-8"));
     					}
     					else if("tradius".equals(name)) {
-    						cs.setTradius(item.getString("UTF-8"));
+    						tradius1=item.getString("UTF-8");
+    						tr.add(tradius1);
+    						//cs.setTradius(item.getString("UTF-8"));
     					}
     					else if("num".equals(name)) {
-    						cs.setNum(Integer.parseInt(item.getString("UTF-8")));
+    						num1=Integer.parseInt(item.getString("UTF-8"));
+    						num.add(num1);
+    						//cs.setNum(Integer.parseInt(item.getString("UTF-8")));
     					}
     					else if("tvolume".equals(name)) {
-    						cs.setTvolume(item.getString("UTF-8"));
+    						tvolume1=item.getString("UTF-8");
+    						tv.add(tvolume1);
+    						//cs.setTvolume(item.getString("UTF-8"));
     					}
     					// 解决普通输入项的数据的中文乱码问题
     					String value = item.getString("UTF-8");
@@ -1706,11 +1882,22 @@ public class workpageSevrlet extends HttpServlet {
     			message = "文件上传失败！";
     			e.printStackTrace();
     		}
-    		int flag=wpd.addCancellingStockTable(cs);
+    		int lt=tree.size();
+    		int flag=0;
+    		for(int i=0;i<lt;i++)
+    		{
+    			cs.setTreetype(tree.get(i));
+    			cs.setTlong(tl.get(i));
+    			cs.setTradius(tr.get(i));
+    			cs.setNum(num.get(i));
+    			cs.setTvolume(tv.get(i));
+    		flag=wpd.addCancellingStockTable(cs);
+    		}
     		if(flag>0) {
-    			out.print("保存成功");}
+				out.print("添加成功,2秒后返回录入界面<script>setTimeout(\"window.location.href ='cancellingStocksTable.jsp';\", 2000);</script>");}
+    			//out.print("\"添加成功,2秒后返回录入界面<script>setTimeout(\\\"window.location.href ='cancellingStocksTable.jsp';\\\", 2000);</script>\"");}
     			else {
-    				out.print("保存失败");
+    				out.print("\"添加失败,2秒后返回录入界面<script>setTimeout(\"window.location.href ='cancellingStocksTable.jsp';\", 2000);</script>\"");
     			}
         }
       //添加检尺员人员名单
@@ -1761,6 +1948,21 @@ public class workpageSevrlet extends HttpServlet {
 			int proj_package_id=cutn.getProjectid();
 			sql="select * from proj_package where proj_Package_id="+proj_package_id+"";
         	projectpackage projectpackage=cnd.findprojectpackage(sql);
+        	sql="SELECT treein_file from treein_file WHERE workid='"+str+"'";
+        	treefile treef=wpd.findtreefile(sql);
+        	String tfile=String.valueOf(treef.getTreefile());
+        	System.out.print(tfile);
+        	if(!tfile.equals("null"))
+        	{
+        		tfile = tfile.substring(tfile.lastIndexOf("/") + 1);
+        	}
+        	else
+        	{
+        		tfile="";
+        	}
+        	request.setAttribute("treef", treef);
+    		request.setAttribute("tfile", tfile);
+        	
     		request.setAttribute("cutnum", cutn);
     		request.setAttribute("workpage", workpage);
 			request.setAttribute("inyard", inyard);
@@ -2035,6 +2237,151 @@ public class workpageSevrlet extends HttpServlet {
         	request.setAttribute("goodsYardCost", goodsYardCost);
 			request.getRequestDispatcher("goodYardCostDet.jsp").forward(request, response);
     	}
+      //检尺野账打印
+    	else if(action.equals("passall2"))
+    	{
+    		String timeStart = request.getParameter("timeStart");
+         	String timeEnd = request.getParameter("timeEnd");
+         	String projectPackageName = request.getParameter("projectPackageName");
+         	String cutnum = request.getParameter("cutnum");
+         	String yard = request.getParameter("yard");
+         	String workid = request.getParameter("workid");
+         	String toltree = request.getParameter("toltree");
+         	String tolstere = request.getParameter("tolstere");
+         	String section=request.getParameter("section");
+         	//System.out.println("...." +workid + "...");
+         	sql="SELECT i.workid,c.proj_package_Name,c.cutnum,c.company,i.toltree,i.tolstere,i.yard,i.section FROM\r\n" + 
+         			"workpage AS w JOIN workpage_status join cutnum as c join inyard as i ON w.workid = workpage_status.workid\r\n" + 
+         			"and c.cutnum=i.cutNum and i.workid=w.workid\r\n" + 
+         			"WHERE 1=1 AND workpage_status.workid_status >= 8 AND workpage_status.workid_status <> 9 AND workpage_status.workid_status <>10 ";
+         	
+         	if(!timeStart.isEmpty() && !timeEnd.isEmpty())
+         	{
+         		sql=sql+"AND i.yarddate>='"+timeStart+"' AND i.yarddate<='"+timeEnd+"'";
+         	}
+         	if(!projectPackageName.isEmpty())
+         	{
+         		sql=sql+" and c.proj_package_Name='"+projectPackageName+"'";
+         	}
+         	if(!cutnum.isEmpty())
+         	{
+         		sql=sql+"c.cutnum='"+cutnum+"'";
+         	}
+         	if(!yard.isEmpty())
+         	{
+         		sql=sql+" AND i.yard='"+yard+"'";
+         	}
+         	if(!workid.isEmpty())
+         	{
+         		sql=sql+" and i.workid='"+workid+"'";
+         	}
+         	if(!toltree.isEmpty())
+         	{
+         		sql=sql+" and i.toltree='"+toltree+"'";
+         	}
+         	if(!tolstere.isEmpty())
+         	{
+         		sql=sql+" and i.tolstere='"+tolstere+"'";
+         	}
+         	if(!section.isEmpty()) {
+         		sql=sql+" and i.section='"+section+"'";
+         	}
+         		List<yezhangPrint> work=wpd.findyezhangPrint(sql);
+            	mapper.writeValue(response.getWriter(), work);
+    	}
+        //生产部门超级台账工单
+    	else if("cutwworkid".equals(action))
+    	{
+    		String cutnum = request.getParameter("id");
+    		System.out.println("...." +cutnum + "...");
+    		sql="SELECT i.workid,c.proj_package_Name,c.cutnum,c.company,i.toltree,i.tolstere,i.yard,i.section FROM\r\n" + 
+     				"workpage AS w JOIN workpage_status join cutnum as c join inyard as i ON w.workid = workpage_status.workid \r\n" + 
+     				"and c.cutnum=i.cutNum and i.workid=w.workid \r\n" + 
+     				"WHERE workpage_status.workid_status >= 8 AND workpage_status.workid_status <> 9 AND workpage_status.workid_status <>10\r\n" + 
+     				" AND c.cutnum='"+cutnum+"'";
+     		List<yezhangPrint> work=wpd.findyezhangPrint(sql);
+        	mapper.writeValue(response.getWriter(), work);
+    	}
+       //详细检尺数据
+    	else if("cuttreeWw".equals(action))
+    	{
+    		String workid = request.getParameter("id");
+    		System.out.println("...." +workid + "...");
+    		sql="select workid,treetype,tlong,tradius,num,tvolume from tree where workid="+workid+"";
+			List<tree> tree=trd.findTree(sql);
+        	mapper.writeValue(response.getWriter(), tree);
+    	}
+        
+      //木材收购单
+        else if(action.equals("printworkpage1")){
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String yard = request.getParameter("yard");
+        	String section = request.getParameter("section");
+        	//System.out.println("...." +timeStart + "...");
+        	//只有起止时间
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && section.isEmpty()) 
+        	{   sql="SELECT w.workid,w.cutNum,w.cutSite,i.yarddate,i.yard,i.section,i.toltree,i.tolstere\r\n" + 
+        			"FROM workpage w JOIN inyard  i ON w.workid=i.workid\r\n" + 
+        			"WHERE i.yarddate >='"+timeStart+"' AND i.yarddate <='"+timeEnd+"' ORDER BY i.yarddate DESC";
+        	List<workpage> cw=wpd.findWorkpageC(sql);
+        	mapper.writeValue(response.getWriter(), cw);
+        	}
+        	//起止时间+货场
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && section.isEmpty())
+        	{
+        		sql="SELECT w.workid,w.cutNum,w.cutSite,i.yarddate,i.yard,i.section,i.toltree,i.tolstere\r\n" + 
+        				"FROM workpage w JOIN inyard  i ON w.workid=i.workid\r\n" + 
+        				"WHERE i.yarddate >='"+timeStart+"' AND i.yarddate <='"+timeEnd+"' ORDER BY i.yarddate DESC";
+            	List<workpage> cw=wpd.findWorkpageC(sql);
+            	mapper.writeValue(response.getWriter(), cw);
+        	}
+        	//起止时间+货场+分区
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && !yard.isEmpty() && !section.isEmpty())
+        	{
+        		sql="SELECT w.workid,w.cutNum,w.cutSite,i.yarddate,i.yard,i.section,i.toltree,i.tolstere\r\n" + 
+        				"FROM workpage w JOIN inyard  i ON w.workid=i.workid\r\n" + 
+        				"WHERE i.yarddate >='"+timeStart+"' AND i.yarddate <='"+timeEnd+"' ORDER BY i.yarddate DESC";
+            	List<workpage> cw=wpd.findWorkpageC(sql);
+            	mapper.writeValue(response.getWriter(), cw);
+        	}
+        	//起止时间+分区
+        	else if(!timeStart.isEmpty() && !timeEnd.isEmpty() && yard.isEmpty() && !section.isEmpty())
+        	{
+        		sql="SELECT w.workid,w.cutNum,w.cutSite,i.yarddate,i.yard,i.section,i.toltree,i.tolstere\r\n" + 
+        				"FROM workpage w JOIN inyard  i ON w.workid=i.workid\r\n" + 
+        				"WHERE i.yarddate >='"+timeStart+"' AND i.yarddate <='"+timeEnd+"' ORDER BY i.yarddate DESC";
+            	List<workpage> cw=wpd.findWorkpageC(sql);
+            	mapper.writeValue(response.getWriter(), cw);
+        	}
+        }
+        
+      //货场费用台账（包含筛选条件）
+        else if(action.equals("goodsyardList1")) {
+        	String timeStart = request.getParameter("timeStart");
+        	String timeEnd = request.getParameter("timeEnd");
+        	String yard = request.getParameter("yard");
+        	String feetype = request.getParameter("feetype");
+        	//System.out.println("...." +timeStart + "...");
+        	//System.out.println("...." +yard + "...");       	
+    		sql="SELECT yard,luRuDate,feetype,num,unit,unitprice,price,remarks,luruperson from goodyard_cost where 1=1";
+        	if(!timeStart.isEmpty() && !timeEnd.isEmpty()) {
+        		sql=sql+" and luRuDate>='"+timeStart+"' AND luRuDate<='"+timeEnd+"'";
+        	}
+        	if(!yard.isEmpty()) {
+        		sql=sql+" and yard='"+yard+"'";
+        	}
+        	if(!feetype.isEmpty())
+        	{
+        		sql=sql+" and feetype='"+feetype+"'";
+        	}
+        	
+        	///System.out.print(sql);
+        	List<goodsYardCost> goodsYardCost=wpd.findgoodsYard(sql);
+        	mapper.writeValue(response.getWriter(), goodsYardCost);
+        }        
+
+
 	}
 
 }

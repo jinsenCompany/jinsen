@@ -85,6 +85,169 @@ td,th{text-align:center;vertical-align:middle}
 	cursor: pointer; 
 	}
 </style>
+  <style type="text/css">
+        .table_p{line-height: 28px;border-bottom: 1px #d0e6ec solid;position: relative;margin-bottom: 10px; 
+            margin-top: 35px; margin-left:10px}
+        .table_p span{border-bottom: 3px #42cdec solid;display: inline-block;position: absolute;bottom: -1px;font-weight: bold;font-size: 20px}
+        .but_p button{width: 80px}
+        #h li{float: left; }
+#h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
+#h a:hover{color:white;background: green}
+.table1{margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+.btn{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 20px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #3383da; 	
+	color: #ffffff; 	
+	background-color: #3383da; 	
+	cursor: pointer;
+	width:120px;height:40px; 
+	}
+.btna,.btnb,.btnc,.btnd,.btnred{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 40px!important; 	height: 30px; 	
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: blod; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #FFA500; 	
+	color: #ffffff; 		
+	cursor: pointer; 
+	width:200px;height:80px;
+	margin-right:30px
+	}
+.btna {background-color: #3383da;}
+.btnb {background-color: #F08080;}
+.btnc {background-color: #F4A460}
+.btnd {background-color: #CC99FF}
+.btnred {background-color: red;}
+    </style>
+    
+<script type="text/javascript">
+var k=Number(1);
+$(function(){
+	aaad();
+})
+function aaad()
+{
+ 	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">"
+ 	+"项目<span></span>"
+    +"<select style='width: 180px' name='feetype' id='fy"+k+"'>"
+    +"<option>请选择</option>"
+    +"<option value='钩机整堆'>钩机整堆</option>"
+    +"<option value='人工整堆'>人工整堆</option>"
+    +"<option value='装车工资'>装车工资</option>"
+    +"<option value='场地维护'>场地维护</option>"
+    +"<option value='场地资金'>场地资金</option>"
+    +"<option value='看护工资'>看护工资</option>"
+    +"<option value='电费'>电费</option>"
+    +"<option value='设备维护'>设备维护</option>"
+    +"<option value='运费'>运费</option>"
+    +"<option value='检尺费'>检尺费</option></select>"
+ 	+"数量<span></span><input type='text' style='width: 180px' name='num' id='num"+k+"' >"
+    +"单位<span></span>"
+    +"<select style='width: 180px' name='unit' id='unit"+k+"'>"
+    +"<option>请选择</option>"
+    +"<option value='m³'>m³</option>"
+    +"<option value='T'>T</option>"
+    +"<option value='H'>H</option>"
+    +"<option value='天'>天</option>"
+    +"<option value='月'>车</option>"
+    +"<option value='人'>人</option>"
+    +"<option value='个'>个</option></select>"
+    +"单价<span></span><input type='text' style='width: 180px' name='unitprice' id='up"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+    +"金额<span></span><input type='text' style='width: 180px' name='price' id='pr"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+    +"备注<span></span><input type='text' style='width: 180px' name='remarks' id='rmk"+k+"' value='无' ></td></tr>";
+    k=Number(k)+Number(1);
+    $("#ttt5").append(str);             
+}
+
+function dddelete()
+{
+	var ck= $("input[type='checkbox']:checked");
+	for (var i=0;i<ck.length;i++)
+		{
+		     var j=$(ck[i]).val();		     
+		     $("#"+j+"").empty();
+		}
+	alert("删除成功");
+}
+function deleteAll()
+{
+	var mk=$("input[type='checkbox']:checked");
+	var index=$("input[type='checkbox']:not(:checked)");
+	for (var i=0;i<mk.length;i++)
+    {
+	    var h=$(mk[i]).val();
+	    
+	     $("#"+h+"").empty();
+	}
+   for (var a=0;a<index.length;a++)
+	{
+	    var hh=$(index[a]).val();
+	    $("#"+hh+"").empty();
+	}
+}
+/*function vvvolume(id)
+{
+	var td=$("#td"+id+"").val();
+	var tr=$("#tr"+id+"").val();
+	var num=$("#n"+id+"").val();
+	if(num!="" && td!="" && tr!="")
+	{
+	$.ajax({
+        url:"treeServlet",
+        data:{
+            "action":"volume",
+            "td":td,
+            "tr":tr 
+        },
+        type: "POST",
+        dataType:"html",
+        success: function (data) {
+        	document.getElementById("tv"+id+"").value=Number(data*num);
+        }
+    })}
+	}*/
+
+	//鼠标锁定
+window.onload = function () {
+        locationInput = function () {
+        };
+    }
+ 
+
+function inputNull(form){
+	for(i=0;i<form.length;i++){
+            //form属性的elements的首字母e要小写
+		if(form.elements[i].value == ""){ 
+			alert("" + form.elements[i].placeholder + "不能为空");
+			form.elements[i].focus();	
+			return false;
+		}
+	}
+	}
+</script>
+<script type="text/javascript">
+function toggle(table5) {
+if (document.getElementById){
+ target = document.getElementById(table5);
+  if ( target.style.display == "none") {
+   target.style.display = ""; 
+  } else { 
+   target.style.display = "none";
+  }
+ }
+}
+</script>
+
+
 <script type="text/javascript">
 function inputNull(form){
 	for(i=0;i<form.length;i++){
@@ -129,9 +292,9 @@ function feeAdd()
 	var yard=$("#yard").val();
 	var luruperson=$("#luruperson").val();
 	//var cutnum=document.getElementById("cutnum").value;
-	if(yard=="")
+	if(yard=="请选择")
 		{
-		alert("请先输入货场！");
+		alert("请先选择货场！");
 		}
 	else{
     $("input[type='checkbox']:checked").each(function(i){
@@ -202,9 +365,31 @@ function feeAdd()
     })
     }
 }
+//获取货场信息
+function load()
+{
+	$.ajax({
+        url:"salaryServlet",//要发送的地址
+        data:{
+            "action":"loadyardinfo"
+        },
+        type: "POST",
+        dataType:"json",
+        success: function (data) {
+            for(i = 0;i<data.length;i++)
+            {
+            	str = "<option>"+data[i].yardname+"</option>";
+            	
+            	$("#yard").show().append(str);
+            }
+        }
+    })
+}
 </script>
+
 </head>
-<body>
+<body onload="load()">
+
 <% Date d = new Date();
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -220,11 +405,11 @@ String now = df.format(d); %>
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -238,8 +423,16 @@ String now = df.format(d); %>
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -252,26 +445,21 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">6</span></a>
        <ul>
-        <li class="active"><a href="goodsYardCost.jsp">费用结算</a></li>
-        <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li ><a href="goodsYardCost.jsp">货场费用录入</a></li>
+        <li ><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li ><a href="yardMonerySettle.jsp">货场管理费用</a></li>
+        <li><a href="yardMoneryDirector.jsp">货场管理费用台账</a></li>
+        <li><a href="workpageTreeBuyDirector.jsp">木材收购单</a></li>
+        <li ><a href="cancellingStocksTable.jsp">货场报损</a> </li>       
       </ul>
      </li>
-     <li><a href="workpageTreeBuyDirector.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
-    <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="passworkpageDirector.jsp">录入进场木材数据</a></li>
-        <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
-      </ul>
-     </li>-->
-     <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
-    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a></li>
-    <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>新增检尺员信息</span></a></li>
-   <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
-   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i><span>货场费用报表</span></a> </li>
-   <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li>
+    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-home"></i> <span>木材装车对比</span></a></li>
+    <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-home"></i> <span>查看进场木材反馈</span></a></li>
+    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>货场信息管理</span></a></li>
+    <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>检尺员管理</span></a></li>
+    <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-home"></i> <span>审批调令</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -290,269 +478,43 @@ String now = df.format(d); %>
     <form>
     <div class="top" id="divprint">
 		<div id="table">
-		<table>
-		<caption class="book_h01">货场费用录入</caption>
+		<table class="table1">
+		 <table  class="table1">
+		 		<caption class="book_h01">货场费用录入</caption>		
 		   <tr>
 		     <td></td>
-		     <td colspan="1">录入时间:</td><td colspan="2"><input style="width: 240px; font-size:22px" type="text" name="LuRuDate" id="LuRuDate" value="<%=now%>"></td>
-		     <td colspan="1">货场:</td><td colspan="2"><input style="width: 172px;" type="text" name="yard" id="yard"></td>
+		     <td colspan="1">录入时间:</td><td><input style="width: 240px; font-size:22px" type="text" name="LuRuDate" id="LuRuDate" value="<%=now%>"></td>
+             <td colspan="1"><font color=red>*</font>货场</td><td><select name="yard" id="yard"><option selected="selected">请选择</option></select></td>		 
 		    </tr>
-		    <tr>
-		    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-		    <th>项目</th>
-		    <th>数量</th>
-		    <th>单位</th>
-		    <th>单价</th>
-		    <th>金额</th>
-		    <th>备注</th>
-		    </tr>
-		    <tr id="1" >
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="1"></td>
-		    <td><input type="text" name="feetype" id='fy1'  value="钩机整堆" readonly></td>
-		    <td><input type="text" name="num" id='num1' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		<!--     
-		    <td><input type="text" name="unit" id='unit1'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit1">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up1' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(1)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr1' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk1' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="2">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="2"></td>
-		    <td><input type="text" name="feetype" id='fy2'  value="钩机整堆(2)" readonly></td>
-		    <td><input type="text" name="num" id='num2' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		<!--     <td><input type="text" name="unit" id='unit2'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit2">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up2' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(2)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr2' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk2' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="3">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="3"></td>
-		    <td><input type="text" name="feetype" id='fy3'  value="人工整堆" readonly></td>
-		    <td><input type="text" name="num" id='num3' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		<!--     <td><input type="text" name="unit" id='unit3'></td>
-		     -->
-            <td><select style="text-align:center;" name="unit" id="unit3">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up3' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(3)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr3' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" ></td>
-		    <td><input type="text" name="remarks" id='rmk3' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="4">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="4"></td>
-		    <td><input type="text" name="feetype" id='fy4'  value="装车工资" readonly></td>
-		    <td><input type="text" name="num" id='num4' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit4'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit4" value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up4' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(4)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr4' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk4' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		     <tr id="5">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="5"></td>
-		    <td><input type="text" name="feetype" id='fy5'  value="装车工资(2)" readonly></td>
-		    <td><input type="text" name="num" id='num5' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit5' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit5">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up5' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(5)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr5' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk5' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="6">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="6"></td>
-		    <td><input type="text" name="feetype" id='fy6' value="场地维护" readonly></td>
-		    <td><input type="text" name="num" id='num6' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit6'></td>
-		     -->
-		    		    <td><select style="text-align:center;" name="unit" id="unit6">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up6' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(6)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr6' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk6' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="7">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="7"></td>
-		    <td><input type="text" name="feetype" id='fy7' value="场地资金" readonly></td>
-		    <td><input type="text" name="num" id='num7'value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit7'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit7">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up7' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(7)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr7' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk7' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="8">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="8"></td>
-		    <td><input type="text" name="feetype" id='fy8'  value="看护工资" readonly></td>
-		    <td><input type="text" name="num" id='num8' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit8'></td>
-		     -->
-		    		    <td><select style="text-align:center;" name="unit" id="unit8">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up8' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(8)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr8' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk8' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="9">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="9"></td>
-		    <td><input type="text" name="feetype" id='fy9'  value="电费" readonly></td>
-		    <td><input type="text" name="num" id='num9' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit9'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit9">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up9' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(9)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr9' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk9' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="10">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="10"></td>
-		    <td><input type="text" name="feetype" id='fy10'  value="设备维护" readonly></td>
-		    <td><input type="text" name="num" id='num10' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit10'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit10">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up10' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(10)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr10' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk10' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="11">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="11"></td>
-		    <td><input type="text" name="feetype" id='fy11'  value="运费" readonly></td>
-		    <td><input type="text" name="num" id='num11' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit11'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit11">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up11' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(11)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr11' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk11' value="0" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
-		    <tr id="12">
-		    <td><input type='checkbox' style='width:20px;height:20px;display:none' value="12"></td>
-		    <td><input type="text" name="feetype" id='fy12'  value="检尺费" readonly></td>
-		    <td><input type="text" name="num" id='num12' value="无" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-	<!-- 	    <td><input type="text" name="unit" id='unit12'></td>
-		     -->
-		    <td><select style="text-align:center;" name="unit" id="unit12">
-			<option>m³</option>
-			<option>T</option> 
-			<option>H</option> 
-		    <option>天</option>			
-			<option>月</option> 
-			<option>车</option>
-			<option>人</option>
-			<option>个</option>			
-			</select></td>
-		    <td><input type="text" name="unitprice" id='up12' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'" oninput='priceCount(12)' onclick='locationInput'></td>
-		    <td><input type="text" name="price" id='pr12' value="0" onfocus="if(this.value=='0') this.value=''" onblur="if(this.value=='') this.value='0'"></td>
-		    <td><input type="text" name="remarks" id='rmk12' value="无" onfocus="if(this.value=='无') this.value=''" onblur="if(this.value=='') this.value='无'"></td>
-		    </tr>
+		   </table>
+		                 <p class="table_p"><span>树材信息录入</span></p>
+                        <div style="text-align:center">
+                        <button  class="btna" type="button"   onclick="toggle('table5');"><span style="font-size:40px">添加项目</span></button>
+                        <button class="btnred" type="button"  onclick="deleteAll()" value="清空"><span style="font-size:40px">清空</span></button>
+                        </div>
+                        <br>
+                        <table class="table" id="table5" style="width:100%;height:auto;display: none">
+                           <tbody id="ttt5">                                
+                            </tbody>
+                            <tr>
+                            <td>
+                            <div>
+                            <button class="btn btn-warning" type="button"  onclick="aaad()" value="添加项目">添加项目</button>
+                            <button class="btn btn-warning" type="button"  onclick="dddelete()" value="删除">删除</button>
+                             <!--  <button class="btn btn-warning" type="button"  onclick="deleteAll()" value="清空">清空</button>-->
+                            </div>
+                            </td>
+                            </tr>
+                            </table>
 
+		   	   
+		    <table  class="table1">
 		    <tr>
 		    <td colspan="2">部门经理</td><td></td>
-		    <td>货场管理员</td><td></td>
-		    <td>填单人</td><td><input type="text" name="luruperson" id="luruperson"></td>
+		    <td>货场经理</td><td></td>
+		    <td><font color=red>*</font>填单人</td><td><input type="text" name="luruperson" id="luruperson" value="<%=staff_name%>" readonly></td>
 		    </tr>
+		    </table>
 		</table>
 		</div>
 		</div>

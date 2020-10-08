@@ -3,6 +3,9 @@ package jinshen.bean;
 public class treetypeChart {
 	private String treetype;
 	private double num;
+	private String tvolume;
+	
+	private String yard;
 	public String getTreetype() {
 		return treetype;
 	}
@@ -15,5 +18,18 @@ public class treetypeChart {
 	public void setNum(double num) {
 		this.num = num;
 	}
+	public String getTvolume() {
+		return tvolume;
+	}
+	public void setTvolume(String tvolume) {
+		this.tvolume = tvolume;
+	}
+	public String getYard() {
+		return yard;
+	}
+	public void setYard(String yard) {
+		this.yard = yard;
+	}
+	
 
 }

@@ -152,6 +152,9 @@ function inputNull(form){
 </head>
 <body>
 <% projectpackage c=(projectpackage)request.getAttribute("projectpackage");%>
+<% List<cutnum> o=null;
+o=(List<cutnum>)request.getAttribute("cutnum");
+%>
 <!--Header-part-->
 <div id="header">
   <h1><a href="dashboard.html">管理部门平台导航</a></h1>
@@ -194,18 +197,17 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
@@ -216,16 +218,24 @@ function inputNull(form){
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>   
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>        
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -244,7 +254,7 @@ function inputNull(form){
     <h1 class="book_h01" align="top">编辑工程包（新增和移除采伐证）</h1>
     <div class="top" id="divprint">
     <p class="htv"><span>工程包信息（不可修改）:</span></p>
-    <table style="margin:auto">
+    <table style="margin-left: auto;margin-right: auto;">
        <tr>
        <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包创建时间:</td><td><input type="text" name="projpackageStarttime" id="projpackageStarttime" value="<%=c.getProjpackageStarttime() %>" readonly="readonly"></td>
        <td>&nbsp;&nbsp;&nbsp;&nbsp;工程包名称:</td><td><input type="text" name="projectPackageName" id="projectPackageName" value="<%=c.getProjectPackageName() %>" readonly="readonly"></td>
@@ -259,6 +269,23 @@ function inputNull(form){
        <td>&nbsp;&nbsp;&nbsp;&nbsp;合同文件:</td>
        <td>${projectfile}<a href="DownfileServlet?action=projectfile&filename=<%=c.getAccessory() %>">下载</a></td>
        </tr>
+       <tr>
+       <td>采伐证数量</td><td><input type='text' id="tlength" value="<%=o.get(0).getProjectid() %>" readonly="readonly"></td>
+       <td>总采伐面积</td><td><input type='text' id="cutarea" value="<%=o.get(0).getCutarea() %>" readonly="readonly"></td>
+       <td>总出材量</td><td><input type='text' id="volume" value="<%=o.get(0).getVolume() %>" readonly="readonly"></td>
+       </tr>
+       <tr>
+       <td>${tree1}</td><td><input type='text' id="total1" value="<%=o.get(0).getTotal() %>" readonly="readonly"></td>
+       <td>${tree2}</td><td><input type='text' id="total2" value="<%=o.get(1).getTotal() %>" readonly="readonly"></td>
+       <td>${tree3}</td><td><input type='text' id="total3" value="<%=o.get(2).getTotal() %>" readonly="readonly"></td>
+       </tr>
+       <%-- <tr>
+       <% int i=1;%>
+		<c:forEach items="${cutnum}" var="b"> 
+       <td id="<%=i%>" colspan="12"><input type="text" id="tree<%=i%>" value="${b.getTreetype()}"><input type='text' id="total<%=i%>" value="${b.getTotal()}" readonly="readonly"></td>
+       <%i++; %>
+        </c:forEach>
+       </tr>--%>
     </table>
     <!-- 显示最近新增的采伐证号 -->
     <div class="htv" style="font-size:20px"><span>已添加采伐证号:</span></div>
@@ -271,7 +298,7 @@ function inputNull(form){
     </div>
     </div>
     <div class=" but_p" style="float:center;">
-    <button class="but_save" type="button" onclick="addproject()" value="新增采伐证">新增采伐证</button>
+    <button class="but_save" type="button" onclick="addproject()" value="更新工程包">更新工程包</button>
     <button class="but_save" type="submit" id="mybutton" value="返回添加工程包" onclick="javascrtpt:window.location.href='cutnumProjectpackage.jsp'">返回添加工程包</button></div>
    </div>
 </main>

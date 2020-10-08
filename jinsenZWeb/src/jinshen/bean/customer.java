@@ -2,6 +2,8 @@ package jinshen.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 //生产业主信息
 public class customer {
 	private int cutstomerid;
@@ -66,6 +68,7 @@ public class customer {
 	public void setShipaddress(String shipaddress) {
 		this.shipaddress = shipaddress;
 	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getCreatdate() {
 		return creatdate;
 	}

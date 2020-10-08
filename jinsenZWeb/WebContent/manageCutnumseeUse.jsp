@@ -7,6 +7,7 @@
 <title>查看采伐证使用情况</title>
 <link rel="stylesheet" href="css/tableall.css"/>
 <link rel="stylesheet" href="css/registe.css"/>
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
 <link rel="stylesheet" href="css/fullcalendar.css" />
@@ -91,10 +92,10 @@
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li><a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li><a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>   
-    <li><a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i> <span>查看退证采伐证</span></a></li>
-    <li class="active"> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>   
+    <li> <a href="manageCutnum.jsp"><i class="icon icon-th"></i> <span>录入采伐证</span></a></li>
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>采伐证汇总</span></a></li>
+    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i> <span>采伐证退证</span></a></li>
+    <li   class="active"> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>采伐证使用情况</span></a></li>   
     
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
@@ -133,7 +134,7 @@ $(function(){
             method: "post",
             striped: true,
             singleSelect: false,
-            url: "cutnumServlet?action=printCutnum3",
+            url: "cutnumServlet?action=printCutnum4",
             //data:{},
             dataType: "json",
             pagination: true, //分页
@@ -171,7 +172,7 @@ $(function(){
                     "halign":"center",
                     "align":"center",
                     "valign": "middle",
-                    "colspan": 31
+                    "colspan": 27
                 }],
                 [
 
@@ -239,18 +240,20 @@ $(function(){
                     colspan: 4,
                     align: 'center'
                 },
+                /*
                 {
                 	title: '已生产量',
                     colspan: 4,
                     align: 'center'
                 },
+                */
                 {
-                	title: '实际出材量',
+                	title: '已出材量',
                     colspan: 4,
                     align: 'center'
                 },
                 {
-                	title: '剩余出材量',
+                	title: '未出材量',
                     colspan: 4,
                     align: 'center'
                 },
@@ -290,6 +293,7 @@ $(function(){
                     align: 'center',
                     valign: 'middle'
                 },                	 
+                /* 
                 {
                     title: '合计',              //已生产量
                     field: 'totalProduced',
@@ -314,6 +318,7 @@ $(function(){
                     align: 'center',
                     valign: 'middle'
                 },                	  
+                */
                 {
                     title: '合计',            //实际出材量
                     field: 'totalActual',

@@ -14,9 +14,6 @@ public class DBcon {
 		String URL = "jdbc:mysql://localhost:3306/jinsen2?Unicode=true&characterEncoding=UTF-8";	// 访问数据库路径
 	    String NAME = "root";							// 数据库用户名
 	    String PASSWORD = "123456";
-	    /*String URL = "jdbc:mysql://gz-cynosdbmysql-grp-agnk71p3.sql.tencentcdb.com:20224/jinsen2?Unicode=true&characterEncoding=UTF-8";	// 访问数据库路径
-	    String NAME = "root";							// 数据库用户名
-	    String PASSWORD = "yu123456.";*/
 		// 数据库密码
 		Connection connection = null;
 		//第一步：加载驱动类(如果有异常，则抛出异常或者使用try..catch..语句块处理)

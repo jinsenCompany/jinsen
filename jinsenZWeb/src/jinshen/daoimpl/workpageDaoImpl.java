@@ -17,9 +17,11 @@ import jinshen.bean.managesdatecard;
 import jinshen.bean.projectpackage;
 import jinshen.bean.surveyor;
 import jinshen.bean.tree;
+import jinshen.bean.treefile;
 import jinshen.bean.workpage;
 import jinshen.bean.workpageStatus;
 import jinshen.bean.yardManage;
+import jinshen.bean.yezhangPrint;
 import jinshen.dao.workpageDao;
 import jinshen.db.DBcon;
 
@@ -501,10 +503,14 @@ public class workpageDaoImpl implements workpageDao {
 	    		ResultSet rs=dbc.doQuery(sql, new Object[] {});
 	    		while(rs.next()) {
 	    			workpage cn = new workpage();
-	    			  cn.setWorkid(rs.getDouble(1));
+	    			cn.setWorkid(rs.getDouble(1));
 	                  cn.setCutNum(rs.getString(2));
-	                  cn.setCutdate(rs.getDate(3));
-	                  cn.setCutSite(rs.getString(4)); 
+	                  cn.setCutSite(rs.getString(3));
+	                  cn.setYarddate(rs.getTimestamp(4));
+	                  cn.setYard(rs.getString(5));
+	                  cn.setSection(rs.getString(6));
+	                  cn.setTolTree(rs.getDouble(7));
+                      cn.setTolStere(rs.getDouble(8));
 					cnw.add(cn);
 	    		}
 	    	}catch(Exception e) {
@@ -546,11 +552,12 @@ public class workpageDaoImpl implements workpageDao {
 		try {
 			ResultSet rs=dbc.doQuery(sql, new Object[] {});
 			if(rs.next()) {
-				addr.setWorkid(rs.getDouble(1));
-				addr.setCutNum(rs.getString(2));
-				addr.setCutdate(rs.getDate(3));
-				addr.setCutSite(rs.getString(4));
-				
+				addr.setCompany(rs.getString(1));
+				addr.setWorkid(rs.getDouble(2));
+				addr.setCutNum(rs.getString(3));
+				addr.setCutdate(rs.getDate(4));
+				addr.setCutSite(rs.getString(5));
+				addr.setCheckSite(rs.getString(6));
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -845,6 +852,46 @@ public class workpageDaoImpl implements workpageDao {
 			dbc.close();
 		}
 		return addrList;
+	}
+	@Override
+	public List<yezhangPrint> findyezhangPrint(String sql) {
+		List<yezhangPrint> work=new ArrayList<yezhangPrint>();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			while(rs.next()){
+				yezhangPrint w=new yezhangPrint();
+				w.setWorkid(rs.getDouble(1));
+				w.setProj_package_Name(rs.getString(2));
+				w.setCutnum(rs.getString(3));
+				w.setCompany(rs.getString(4));
+				w.setToltree(rs.getDouble(5));
+				w.setTolstere(rs.getDouble(6));
+				w.setYard(rs.getString(7));
+				w.setSection(rs.getString(8));
+				work.add(w);	
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return work;
+	}
+
+	@Override
+	public treefile findtreefile(String sql) {
+		treefile t = new treefile();
+		try {
+			ResultSet rs=dbc.doQuery(sql, new Object[] {});
+			if(rs.next()) {
+				t.setTreefile(rs.getString(1));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			dbc.close();
+		}
+		return t;
 	}
 	
 }

@@ -61,9 +61,18 @@ function aaad()
           +"<option>--请选择--</option>"
           +"<option value='杉木'>--杉木--</option>"
           +"<option value='松木'>--松木--</option>"
-          +"<option value='杂木'>--杂木--</option></select>"
-        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"'>检尺径(厘米)<span></span>"
-          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+          +"<option value='杂木'>--杂木--</option>"
+          +"<option value='杉薪材'>--杉薪材--</option>"
+          +"<option value='松薪材'>--松薪材--</option>"
+          +"<option value='杂薪材'>--杂薪材--</option>"
+          +"<option value='杉短材'>--杉短材--</option>"
+          +"<option value='杉木兜'>--杉木兜--</option>"
+          +"<option value='杉直柄'>--杉直柄--</option>"
+          +"<option value='特种材'>--特种材--</option>"
+          +"<option value='其他'>--其他--</option></select>"
+        +"检尺长(米)<span></span><input type='text' style='width: 180px' name='tdouble' id='td"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>检尺径(厘米)<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
+        +"根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
              +"材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt5").append(str);             
@@ -129,7 +138,6 @@ function makecount()
 	var totalst=Number(0);
 	var total=Number(0);
 	var tot=Number(0);
-	//System.out.println("...." + mk + "...");
 	for (var i=0;i<mk.length;i++)
     {
 	     var h=$(mk[i]).val();
@@ -142,8 +150,12 @@ function makecount()
 	    total+=Number(document.getElementById("tv"+hk+"").value);
 	    tot+=Number(document.getElementById("n"+hk+"").value);
 	}
-   document.getElementById("toltree").value=Number(totalt+tot);
-   document.getElementById("tolstere").value=Number(totalst+total);
+   var toltree1=Number(totalt+tot);
+   toltree1=toltree1.toFixed(4);
+   var tolstere1=Number(totalst+total);
+   tolstere1=tolstere1.toFixed(4);
+   document.getElementById("toltree").value=Number(toltree1);
+   document.getElementById("tolstere").value=Number(tolstere1);
 }
 function treeAdd()
 {
@@ -222,7 +234,7 @@ function treeAdd()
         type: "POST",
         dataType:"html",
         success: function (data) {
-        	alert(data);
+        	//alert(data);
         	if(data>0)
         		{
         	        alert("更新成功！");
@@ -305,6 +317,7 @@ t=(List<tree>)request.getAttribute("tree");
 %>
 <% workpageStatus w=(workpageStatus)request.getAttribute("workpageStatus");%>>
 <% workpage o=(workpage)request.getAttribute("workpage");%>
+<% treefile f=(treefile)request.getAttribute("treef");%>
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
 </div>
@@ -364,37 +377,37 @@ t=(List<tree>)request.getAttribute("tree");
                          <tr>
                          <td>工单号<span></span></td>
                           <td>
-                          <input type="text" name="workid" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>">
+                          <input type="text" name="workid"  readonly="readonly" id="wworkid" readonly value="<fmt:formatNumber value="<%=c.getWorkid()%>" pattern="#0.##"/>">
                           </td>
                           <td>采伐证号<span></span></td>
                           <td>
-                          <input type="text" name="cutnum" id="ccutnum" value="<%=o.getCutNum() %>">
+                          <input type="text" name="cutnum"  readonly="readonly" id="ccutnum" value="<%=o.getCutNum() %>">
                            </td>
                            <td>采伐地点<span></span></td>
                           <td>
-                          <input type="text" name="cutsite" id="ccutsite" value="<%=o.getCutSite() %>">
+                          <input type="text" name="cutsite"  readonly="readonly" id="ccutsite" value="<%=o.getCutSite() %>">
                            </td>
                            <td>货场地点<span></span></td>
                               <td>
-                              <input type="text" name="yard" id="yyard" value="<%=o.getCheckSite() %>">
+                              <input type="text" name="yard"  readonly="readonly" id="yyard" value="<%=o.getCheckSite() %>">
                               </td>
                            </tr>
                            <tr>
                               <td>车牌号<span></span></td>
                               <td>
-                              <input type="text" name="carnumber" id="ccarnumber" value="<%=o.getCarNumber() %>">
+                              <input type="text" name="carnumber" readonly="readonly"  id="ccarnumber" value="<%=o.getCarNumber() %>">
                               </td>
                               <td>采伐时间<span></span></td>
                               <td>
-                              <input  name="cutdate" id="cutdate" value="<%=o.getCutdate() %>">
+                              <input  name="cutdate" id="cutdate"  readonly="readonly" value="<%=o.getCutdate() %>">
                               </td>
                               <td>进场时间<span></span></td>
                               <td>
-                              <input  name="yarddate" id="yyarddate" value="<%=c.getYarddate() %>">
+                              <input  name="yarddate" id="yyarddate"  readonly="readonly" value="<%=c.getYarddate() %>">
                               </td>
                               <td>伐区监管员<span></span></td>
                               <td>
-                              <input type="text" name="forester" id="forester" value="<%=o.getForester() %>">
+                              <input type="text" name="forester"  readonly="readonly" id="forester" value="<%=o.getForester() %>">
                               </td>
                            </tr>
                         </table>
@@ -405,11 +418,11 @@ t=(List<tree>)request.getAttribute("tree");
                                 <c:forEach items="${tree}" var="b">      
                             <tr id="<%=i%>" display:block;><td style='font-size:20px;'>
                            <input type="checkbox" style='width:20px;height:20px;' value="<%=i%>">树材种<span></span>
-                           <input style="width: 180px" name="treetype" id="sss<%=i%>" value="${b.getTreetype()}">                     
-                                                                                            检尺长(米)<input type='text' style='width: 180px' name='tdouble' id='td<%=i%>' value="${b.getTlong()}">
-                                                                                            检尺径(厘米)<span></span><input type='text' style='width: 180px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}">
-                                                                                            根数<span></span><input type='text' style='width: 180px' name='num' id='n<%=i%>' value="${b.getNum()}">
-                                                                                            材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv<%=i%>' value="${b.getTvolume()}"></td></tr>
+                           <input type="text" style="width: 180px" name="treetype" id="sss<%=i%>" value="${b.getTreetype()}">                     
+                                                                                            检尺长(米)<input type='text' style='width: 180px' name='tdouble' id='td<%=i%>' value="${b.getTlong()}" oninput='vvvolume(<%=i%>)' onclick='locationInput'>
+                                                                                            检尺径(厘米)<span></span><input type='text' style='width: 180px' name='tradius' id='tr<%=i%>' value="${b.getTradius()}" oninput='vvvolume(<%=i%>)' onclick='locationInput'>
+                                                                                            根数<span></span><input type='text' style='width: 180px' name='num' id='n<%=i%>' value="${b.getNum()}" oninput='vvvolume(<%=i%>)' onclick='locationInput'>
+                                                                                            材积(立方米)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv<%=i%>' value="${b.getTvolume()}" oninput='vvvolume(<%=i%>)' onclick='locationInput'></td></tr>
                          <%i++; %>
                          </c:forEach>
                                 </tbody>
@@ -437,6 +450,12 @@ t=(List<tree>)request.getAttribute("tree");
                                 </tr>
                                 </tbody>
                             </table>
+                    <table>
+                      <tr>
+                        <td style="color:red">下载检尺野账附件：</td>
+                        <td>${tfile}<a href="DownfileServlet?action=treeinfile&filename=<%=f.getTreefile() %>"><button class="btn btn-xs btn-primary">下载附件</button></a></td>
+                    </tr>
+                 </table>
                         </div>
                         </div>
                      <div class=" but_p" style="float:center;">

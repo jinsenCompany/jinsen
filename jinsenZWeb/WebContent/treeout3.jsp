@@ -111,7 +111,8 @@ List<tree> t=null;
 <div style="text-align:center">
     <span><button style="width:120px;heigth:60px" class="btn" type="button"  value="返回" onclick="javascrtpt:window.location.href='treeoutCover.jsp'">返回添加</button></span>
                  
-     <span><input style="width:120px;heigth:60px" class="btn" type="button" id="btnPrint" value="打印"/>  </span>
+<!--      <span><input style="width:120px;heigth:60px" class="btn" type="button" id="btnPrint" value="打印"/>  </span> -->
+<a href="DownfileServlet?action=treeoutYeExcel"><button type="button" style="width:150px;height:50px;" class="btn">下载</button></a>
       </div>
 </body>
 <script src="js/jquery-1.11.1.min.js"></script>

@@ -18,9 +18,9 @@
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="css/fselect.css" />
 
 <style type="text/css">
-body,td,th {font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 18px;color: #1d1007; line-height:24px}
 .table1{width:60%; height:400px;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
 td,th{text-align:center;vertical-align:middle}
    tr{text-align:center}
@@ -28,7 +28,7 @@ td,th{text-align:center;vertical-align:middle}
     
     .btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
-	font-size: 13px!important; 	height: 30px; 	
+	font-size: 22px!important; 	height: 40px; 	
 	line-height: 18px!important; 	
 	padding: 3px 18px; 	
 	display: inline-block; 	vertical-align: middle; 	
@@ -65,6 +65,63 @@ function inputNull(form){
 		}
 	}
 	}
+</script>
+<script type="text/javascript">
+function prodcutAdd()
+{
+	var creatdate=$("#creatdate").val();
+	var customernum=$("#customernum").val();
+	var kname=$("#kname").val();
+	var company=$("#company").val();
+	var address=$("#address").val();
+	var IDCard=$("#IDCard").val();
+	var customertype=$("#customertype").val();
+	var b=customertype.join(",");
+	//alert(b)
+	var contractnum=$("#contractnum").val();
+	var treenumber=$("#treenumber").val();
+	var totaltree=$("#totaltree").val();
+	var shipaddress=$("#shipaddress").val();
+	var breakcontract=$("#breakcontract").val();
+	if(contractnum=="")
+		{
+		alert("请先输入合同编号！");
+		}
+	else{
+    $.ajax({
+        url:"salaryServlet",
+        data:{
+            "action":"addcustomer",
+            "creatdate":creatdate,
+            "customernum":customernum,
+            "kname":kname,
+            "company":company,
+            "address":address,
+            "IDCard":IDCard,
+            "customertype":b,
+            "contractnum":contractnum,
+            "treenumber":treenumber,
+            "totaltree":totaltree,
+            "shipaddress":shipaddress,
+            "breakcontract":breakcontract
+        },
+        type: "POST",
+        dataType:"html",
+        success: function (data) {
+        	//alert(data);
+        	if(data>0)
+        		{
+        	        alert("保存成功！");
+        	        window.location.href ='productowner.jsp';
+        	        //setTimeout("window.location.href ='productowner.jsp';", 3000);
+        		}
+        	else{
+        		 alert("保存失败");
+        	}
+        }
+    })
+    }
+}
 </script>
 
 <body>
@@ -107,7 +164,7 @@ String now = df.format(d); %>
     <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
      <li><%
 	String staff_id = request.getSession().getAttribute("staff_id").toString();
-				%> <%
+				%><%
  	String staff_name = request.getSession().getAttribute("staff_name").toString();
  %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
  </li>
@@ -142,28 +199,28 @@ String now = df.format(d); %>
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -177,7 +234,7 @@ String now = df.format(d); %>
 <div id="content">
 <!--breadcrumbs-->
   <div id="content-header">
-    <div id="breadcrumb"> <a href="salesmanOne.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+    <div id="breadcrumb"> <a href="salaryper.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
    <div  id="divprint">
@@ -185,77 +242,78 @@ String now = df.format(d); %>
    <div class="top">
    <p class="p-tail"><i class="i-tail"></i> 创建客户信息页面</p>
    <div id="divprint" >
-   <table class="table1" border="1">
+   <table class="table1">
     <caption class="book_h01">客户资料卡</caption>
     <tr>
-    <th>序号</th>
-    <th>内容</th>
+<!--     <th>序号</th> -->
+    <th style="float:left">内容</th>
     <th>信息</th>
     </tr>
     <tr>
-    <td>1</td>
-    <td>建卡日期</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="creatdate" id="creatdate" value="<%=now%>"></td>
+<!--     <td>1</td> -->
+    <td style="float:left"><font color=red>*</font>建卡日期</td>
+    <td><input style="width: 100%;" type="text" name="creatdate" id="creatdate" readonly="readonly" value="<%=now%>"></td>
     </tr>
     <tr>
-    <td>2</td>
-    <td>客户编号</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="customernum" id="customernum"></td>
+<!--     <td>2</td> -->
+    <td style="float:left"><font color=red>*</font>客户/公司名称</td>
+    <td><input style="width: 100%;" type="text" name="customernum" id="customernum"></td>
     </tr>
     <tr>
-    <td>3</td>
-    <td>客户姓名</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="kname" id="kname" placeholder="客户姓名"></td>
+<!--     <td>3</td> -->
+    <td style="float:left"><font color=red>*</font>客户姓名</td>
+    <td><input style="width: 100%;" type="text" name="kname" id="kname" placeholder="客户姓名"></td>
     </tr>
     <tr>
-    <td>4</td>
-    <td>客户公司名称/组织机构代码</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="company" id="company"></td>
+<!--     <td>4</td> -->
+    <td style="float:left"><font color=red>*</font>组织机构代码</td>
+    <td><input style="width: 100%;" type="text" name="company" id="company"></td>
     </tr>
     <tr>
-    <td>5</td>
-    <td>地址</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="address" id="address"></td>
+<!--     <td>5</td> -->
+    <td style="float:left"><font color=red>*</font>地址</td>
+    <td><input style="width: 100%;" type="text" name="address" id="address"></td>
     </tr>
     <tr>
-    <td>6</td>
-    <td>身份证号码</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="IDCard" id="IDCard"></td>
+<!--     <td>6</td> -->
+    <td style="float:left">身份证号码</td>
+    <td><input style="width: 100%;" type="text" name="IDCard" id="IDCard"></td>
     </tr>
     <tr>
-    <td>7</td>
-    <td>联系电话</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="telephone" id="telephone"></td>
+<!--     <td>7</td> -->
+    <td style="float:left"><font color=red>*</font>联系电话</td>
+    <td><input style="width: 100%;" type="text" name="telephone" id="telephone"></td>
     </tr>
     <tr>
-    <td>8</td>
-    <td>客户类型</td>
-    <td><select style="border:0px;text-align:center;background-color: transparent;width: 100%;" name="customertype" id="customertype"><option>贸易商</option><option>加工厂</option></select></td>
+<!--     <td>8</td> -->
+    <td style="float:left"><font color=red>*</font>客户类型</td>
+    <td><select style="width: 100%;" name="customertype" id="customertype" multiple="multiple">
+    <option>贸易商</option><option>加工厂</option></select></td>
     </tr>
     <tr>
-    <td>9</td>
-    <td>签定合同号</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="contractnum" id="contractnum"></td>
+<!--     <td>9</td> -->
+    <td style="float:left"><font color=red>*</font>签定合同号</td>
+    <td><input style="width: 100%;" type="text" name="contractnum" id="contractnum"></td>
     </tr>
     <tr>
-    <td>10</td>
-    <td>签订合同木材数量</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="treenumber" id="treenumber"></td>
+<!--     <td>10</td> -->
+    <td style="float:left"><font color=red>*</font>签订合同木材数量</td>
+    <td><input style="width: 100%;" type="text" name="treenumber" id="treenumber"></td>
     </tr>
     <tr>
-    <td>11</td>
-    <td>调运数量累计</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="totaltree" id="totaltree"></td>
+<!--     <td>11</td> -->
+    <td style="float:left">调运数量累计</td>
+    <td><input style="width: 100%;" type="text" name="totaltree" id="totaltree"></td>
     </tr>
     <tr>
-    <td>12</td>
-    <td>发货地址</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="shipaddress" id="shipaddress"></td>
+<!--     <td>12</td> -->
+    <td style="float:left"><font color=red>*</font>收货地址</td>
+    <td><input style="width: 100%;" type="text" name="shipaddress" id="shipaddress"></td>
     </tr>
     <tr>
-    <td>13</td>
-    <td>违约历史记录</td>
-    <td><input style="border:0px;text-align:center;background-color: transparent;width: 100%;" type="text" name="breakcontract" id="breakcontract"></td>
+<!--     <td>13</td> -->
+    <td style="float:left">违约历史记录</td>
+    <td><input style="width: 100%;" type="text" name="breakcontract" id="breakcontract"></td>
     </tr>
     <!--  <tr>
        <th>客户姓名</th>
@@ -283,16 +341,21 @@ String now = df.format(d); %>
    </div>
    </div>
   <div class="1" style="text-align:center;margin-top:20px;">
-	<span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存资料卡">保存资料卡</button></span>
+	<!-- <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存资料卡">保存资料卡</button></span> -->
+	<span  style="text-align: center;"><button class="btn" type="button" onclick="prodcutAdd()" value="保存资料卡">保存资料卡</button></span>
+	<button class="btn" type="button" id="btnPrint" value="打印">打印</button>
 		 </div>
-        <span><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
+        
    </form>
 </div>
 
 
 </div>
 <!--end-Footer-part-->
-
+<script src="js/jquery.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
 <script src="js/excanvas.min.js"></script> 
 <script src="js/jquery.min.js"></script> 
 <script src="js/jquery.ui.custom.js"></script> 
@@ -314,8 +377,26 @@ String now = df.format(d); %>
 <script src="js/matrix.popover.js"></script> 
 <script src="js/jquery.dataTables.min.js"></script> 
 <script src="js/matrix.tables.js"></script> 
+<script src="js/jquery-1.11.1.min.js"></script>
 <script src="js/jQuery.print.js"></script>
 <script src="js/jquery.PrintArea.js" type="text/JavaScript"></script>
+<script src="js/fselect.js" type="text/javascript" charset="utf-8"></script>
+ <script type="text/javascript">
+        //js 初始化
+        $('#customertype').fSelect({
+            showSearch:false //关闭搜索
+        });
+        //取值文字
+        $('.fs-label').text()
+ 
+        $("button").click(function(){
+            //取值 value
+        var value = [].map.call($('.fs-option.selected'), function(el) {
+            return el.dataset.value
+        })
+            console.log(value);
+        })
+    </script>
 <script type="text/javascript">
 $(function(){
     $("#btnPrint").click(function(){ $("#divprint").printArea(); });

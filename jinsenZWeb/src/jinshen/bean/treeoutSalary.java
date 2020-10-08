@@ -19,6 +19,10 @@ public class treeoutSalary {
 	private String totaltvolume;//合计材积
 	private String totalworkid;//全部码单号
 	private String preparer;//填表人
+	
+	private String section;//货场分区
+	private String cutnum;//采伐证编号
+	
 	public String getSaleCalloutOrder() {
 		return saleCalloutOrder;
 	}
@@ -120,6 +124,18 @@ public class treeoutSalary {
 	}
 	public void setPreparer(String preparer) {
 		this.preparer = preparer;
+	}
+	public String getSection() {
+		return section;
+	}
+	public void setSection(String section) {
+		this.section = section;
+	}
+	public String getCutnum() {
+		return cutnum;
+	}
+	public void setCutnum(String cutnum) {
+		this.cutnum = cutnum;
 	}
 	
 	

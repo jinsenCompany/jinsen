@@ -7,6 +7,8 @@
 
 	<meta charset="UTF-8">
 	<title>修改密码</title>
+	<link rel="stylesheet" href="css/matrix-style.css" />
+<link rel="stylesheet" href="css/matrix-media.css" />
 
 	<style type="text/css">
 		#modal-overlay {
@@ -27,26 +29,25 @@
 		
 		.modal-data {
 			margin: 3rem auto;
-			background-color: #87CEEB;
+			background-color: #dce6e7;
 			border: 1px solid #87CEEB;
 			padding: 0.3rem;
 			text-align: center;
 			border-radius: 0.5rem;
 			box-shadow: 0 0 15px #f9f9f8;
-			width: 36rem;
-			height: 18rem;
+			width: 60rem;
+			height: 30rem;
 		}
 		
 		.modal-data .sapnctyle0 {
-			text-align: left;
-			font-size: 0.4rem;
-			display: inline-block;
-			width: 90%;
-			color: white;
+			text-align: center;
+			font-size: 1.4rem;
+			display: 100%;
+			color: black;
 		}
 		
 		.modal-data .sapnctyle1 {
-			text-align: left;
+			text-align: center;
 			font-size: 0.4rem;
 			display: inline-block;
 			width: 9%;
@@ -54,8 +55,8 @@
 		
 		.modal-data .classstyle0 {
 			color: red;
-			font-size: 0.3rem;
-			text-align: left;
+			font-size: 1rem;
+			text-align: center;
 			margin-left: 0.24rem;
 		}
 		
@@ -69,11 +70,11 @@
 		}
 		
 		.modal-data .trClass .tdLabel {
-			width: 9%;
+			width: 13%;
 			display: inline-block;
 			text-align: right;
-			font-size: 0.4rem;
-			color: white;
+			font-size: 0.8rem;
+			color: black;
 
 		}
 		
@@ -136,7 +137,27 @@
 </head>
 
 <body>
-    <div><span onclick="overlay()">显示修改密码浮窗</sapn></div>
+<%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+ 	String power_type = request.getSession().getAttribute("power_type").toString();
+ %>
+    <div style="width:100%;font-size:2rem;color:red;display:inline-block;margin:0 auto;text-align:center;">
+    <span>修改密码</span></div>
+   <div id="sidebar" style="background-color: #ebedf1;height:98%"><span style="color:black;text-align:center;display:block;">用户信息</span>
+   <div><span style="font-size:18px">用户姓名：</span><input style="border:0px;text-align:right;background-color: transparent;width: 100px;text-align:center;font-size:18px" name="staff_name" id="staff_name" value="<%=staff_name%>" readonly="readonly"></div>
+   <br>
+   <div><span style="font-size:18px">用&nbsp;&nbsp;户&nbsp;&nbsp;id：</span><input style="border:0px;text-align:right;background-color: transparent;width: 100px;text-align:center;font-size:18px" name="staff_id" id="staff_id" value="<%=staff_id%>" readonly="readonly"></div>
+   <br>
+   <br>
+   <div><span style="font-size:18px">所属部门：</span><input style="border:0px;text-align:right;background-color: transparent;width: 120px;text-align:center;font-size:18px" name="power_type" id="power_type" value="<%=power_type%>" readonly="readonly"></div>
+   
+</div>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>本页面修改密码</a></div>
+  </div>
 	<div style="width: 100%; height: 100%;">
 		<div>
 			<div class="modal-data">
@@ -151,6 +172,8 @@
 							<input class="inputbox" id="initpw" type="password" οnpaste="return false;" οndragenter="return false;" οncοntextmen="return false"></input>
 						</div>
 					</div>
+					<br>
+					
 					<div class="trClass" style="padding-right: 0rem;">
 						<div class="tdLabel" style="width: 13.5%;">新密码</div>
 						<div class="tdInput">
@@ -158,13 +181,13 @@
 							<div class="divStyle"><label class="lableStyle" id="jyxyzm">小写字母</label> <label class="lableStyle" id="jysz">数字</label> <label class="lableStyle" id="jydyzm">大写字母</label></div>
 						</div>
 					</div>
-
+                    <br>
 					<div class="trClass">
 						<div class="tdLabel">确认密码</div>
 						<div class="tdInput"><input id="repw" class="inputbox" type="password" placeholder="" onKeyUp=""></input>
 						</div>
 					</div>
-
+                    <br>
 					<div class="trClass">
 						<div class="tdChoose">
 							<button class="bottomstyle" onclick="submit()">确定</button>
@@ -176,6 +199,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -190,10 +214,63 @@
 		$('#jysz,#jyxyzm,#jydyzm,.lableCountNumStyle').removeAttr("style");
 	}
 	/*修改密码提交*/
+// 	function submit() {
+// 		if(checkStrong($("#pw").val()) && checkpassword() && ($("#initpw").val().length > 0)) {
+// 			//发送请求       
+// 			alert("请求成功");
+// 		} else {
+// 			if($("#initpw").val().length <= 0) {
+// 				$("#initpw").val("");
+// 				$("#initpw").addClass('inputbox change');
+// 				$("#initpw").attr("placeholder", "原密码不能为空");
+// 			}
+// 			if(!checkpassword()) {
+// 				$("#repw").val("");
+// 				$("#repw").addClass('inputbox change');
+// 				$("#repw").attr("placeholder", "两次密码输入不一致");
+// 			}
+// 			if(!checkStrong($("#pw").val())) {
+// 				$("#pw").val("");
+// 				$("#pw").addClass('inputbox change');
+// 				$("#pw").attr("placeholder", "密码强度不够");
+// 				$(".lableCountNumStyle").html('0');
+// 				$('#jysz,#jyxyzm,#jydyzm,.lableCountNumStyle').removeAttr("style");
+// 			}
+// 		}
+// 	}
+	
 	function submit() {
+		var initpw=$("#initpw").val();
+		var pw=$("#pw").val();
+		var staff_id=$("#staff_id").val();
+		alert(staff_id)
 		if(checkStrong($("#pw").val()) && checkpassword() && ($("#initpw").val().length > 0)) {
 			//发送请求       
 			alert("请求成功");
+			$.ajax({
+		        url:"managerServlet",
+		        data:{
+		            "action":"changePassword",
+		            "initpw":initpw,
+		            "staff_id":staff_id,
+		            "pw":pw
+		        },
+		        type: "POST",
+		        dataType:"html",
+		        success: function (data) {
+		        	alert(data);
+		        	 window.location.href = 'ChangePassword.jsp';
+// 		        	if(data>0)
+// 		        		{
+// 		        	        alert("修改密码成功！");
+// 		        	        window.location.href = 'manageCutnum.jsp';
+// 		        		}
+// 		        	else{
+// 		        		 alert("修改密码失败");
+// 		        		 window.location.href = 'manageCutnum.jsp';
+// 		        	}
+		        }
+		    })
 		} else {
 			if($("#initpw").val().length <= 0) {
 				$("#initpw").val("");

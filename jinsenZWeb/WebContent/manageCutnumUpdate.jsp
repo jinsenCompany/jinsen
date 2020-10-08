@@ -159,10 +159,10 @@ o=(List<cutnum>)request.getAttribute("cutnumtree");
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li><a href="manageCutnum.jsp"><i class="icon icon-inbox"></i><span>录入采伐证材料</span></a></li>
-    <li class="active"><a href="manageCutnumsee.jsp"><i class="icon icon-th"></i><span>查看采伐证材料</span></a></li>
-    <li><a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>查看退证采伐证</span></a></li>
-    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>    
+    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证</span></a></li>
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>采伐证汇总</span></a></li>
+    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>采伐证退证</span></a></li>
+    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>采伐证使用情况</span></a></li>    
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   

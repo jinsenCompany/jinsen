@@ -107,7 +107,7 @@ function table1(){
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
@@ -125,15 +125,16 @@ function table1(){
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
-    <%-- <li>
+    <li>
     <%
 	String staff_id = request.getSession().getAttribute("staff_id").toString();
 				%> <%
  	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
  %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
-    </li>--%>
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -146,26 +147,21 @@ function table1(){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">6</span></a>
        <ul>
-        <li><a href="goodsYardCost.jsp">费用结算</a></li>
-        <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li ><a href="goodsYardCost.jsp">货场费用录入</a></li>
+        <li ><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li ><a href="yardMonerySettle.jsp">货场管理费用</a></li>
+        <li><a href="yardMoneryDirector.jsp">货场管理费用台账</a></li>
+        <li><a href="workpageTreeBuyDirector.jsp">木材收购单</a></li>
+        <li ><a href="cancellingStocksTable.jsp">货场报损</a> </li>       
       </ul>
      </li>
-     <li><a href="workpageTreeBuyDirector.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
-    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-th-list"></i> <span>木材装车对比</span></a></li>
-    <!--  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>录入数据</span> <span class="label label-important">2</span></a>
-       <ul>
-        <li><a href="passworkpageDirector.jsp">录入进仓木材数据</a></li>
-        <li><a href="treeoutDirector.jsp">录入出场木材数据</a></li>
-      </ul>
-     </li>-->
-     <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
-    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a></li>
-    <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>新增检尺员信息</span></a></li>
-   <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
-   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i><span>货场费用报表</span></a> </li>
-   <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li>
+    <li><a href="compareTreeListDirector.jsp"><i class="icon icon-home"></i> <span>木材装车对比</span></a></li>
+    <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-home"></i> <span>查看进场木材反馈</span></a></li>
+    <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>货场信息管理</span></a></li>
+    <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>检尺员管理</span></a></li>
+    <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-home"></i> <span>审批调令</span></a></li>
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -192,29 +188,14 @@ function table1(){
 <!--End-Action boxes-->    
 
 <!--Chart-box-->    
-    <div class="row-fluid">
-      <div class="widget-box">
-        <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
-          <h5>工单列表</h5>
-        </div>
-        <div class="widget-content" >
-          <div class="row-fluid">
-            <div class="span12">
-              <div class="table-con">
-               <table id="table1" class="table-hover"></table>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 <!--End-Chart-box--> 
     <hr/>
     <!--Chart-box-->    
     <div class="row-fluid">
       <div class="widget-box">
         <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
-          <h5>木材进场库存分析</h5>
+          <h5>木材库存分析</h5>
         </div>
         <div class="widget-content" >
           <div class="row-fluid">
@@ -226,22 +207,25 @@ function table1(){
             		$.ajax({
             			type:"get",
             			async : false,
-            			url:"chartServlet?action=treetype",
+            			url:"chartServlet?action=yardStock",
             		    data:{},
             		    dataType:"json",
             		    success:function(result){
+            		    	//alert(result)
             		    	if(result){
             		    		option.xAxis[0].data=[];
             		    		 for(var i=0;i<result.length;i++){
-            		    			 option.xAxis[0].data.push(result[i].treetype);
+            		    			 //option.xAxis[0].data.push(result[i].treetype);
+            		    			 option.xAxis[0].data.push(result[i].yard);
             		    			 //yarddate.push(result[i].yarddate);
             		                 //names.push(result[i].name);
-            		    			 //alert(result[i].yarddate);
+            		    			// alert(result[i].yard);
             		               }
             		    		  option.series[0].data=[];
+            		    		  //option.series[1].data=[];
             		               for(var i=0;i<result.length;i++){
-            		            	   option.series[0].data.push(result[i].num);
-            		            	   //price.push(result[i].price);
+            		            	   //option.series[0].data.push(result[i].num);
+            		            	   option.series[0].data.push(result[i].tvolume);
             		            	   //alert(result[i].price);
             		               }
             		        }
@@ -258,7 +242,7 @@ function table1(){
             		var mychart = echarts.init(document.getElementById('myPieDiv'));
             		var option={
             				title:{
-            					text:"木材进场库存"
+            					text:"木材进仓库存"
             				},
             				tooltip:{
             					show: true
@@ -267,26 +251,43 @@ function table1(){
             		            containLabel: true
             		        },
             				legend:{
-            					data:['数量']
-            				
+            					//data:['数量','材积']
+            		        data:['材积']
             				},
+            				
             				xAxis:[{
             					type: 'category',
-            				        //data: [],
+            				    //data: [],
             				}],
-            				yAxis : [ {
+            				yAxis : [
+            				{
             					type : 'value',
+            					//name:'材积',
             					axisLabel: {
-            				        formatter: '{value} 根'
+            				        formatter: '{value} 立方米'
             				        },
-            				} ],
-            				series : [ {
-            					name : '数量',
+            				}
+            				],
+            				series : [ 
+            				{
+            					name : '材积',
             					type : 'bar',
             					color: 'red',
-            		            smooth: true,
-            		           // data:[]
-            				} ]
+            					data:[],
+            				   itemStyle:{
+            					   nomal:{
+            						   label:{
+            							   show:true,
+            							   position:'top',
+            							   textStyle:{
+            								   color:'black',
+            								   fontSize:18,
+            							   }
+            						   }
+            					   }
+            				   },
+            				}
+            				]
             		};
             		//加载数据到option
             		loadDate(option);
@@ -299,6 +300,22 @@ function table1(){
       </div>
     </div>
     <hr/>
+    <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
+          <h5>工单列表</h5>
+        </div>
+        <div class="widget-content" >
+          <div class="row-fluid">
+            <div class="span12">
+              <div class="table-con">
+               <table id="table1" class="table-hover"></table>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 </div>
 

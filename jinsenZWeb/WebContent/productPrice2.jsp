@@ -57,90 +57,92 @@
 <script src="js/bstable/js/bootstrap.min.js"></script>  
 <script type="text/javascript">
 
-function mycreate1()
-{
-	//var length=$("#codetable tr").length;
-	var cutnum=document.getElementById("cutnum").value;
-	if(cutnum=="")
-		{
-		    alert("请输入采伐证号！");
-		}
-	else
-		{
-	length=(length-1)*2;
-	var group=[];
-	for(var i=1;i<=length;i++)
-		{
-		     if(document.getElementById("code"+i+"").value!="")
-		     group[i-1]=document.getElementById("code"+i+"").value;
-		}
-	var mygroup=JSON.stringify(group);	
-	$.ajax({
-        url:"salaryServlet",
-        data:{
-            "action":"savew",
-            "mygroup":mygroup,
-            "cutnum":cutnum
-        },
-        type: "POST",
-        dataType:"json",
-        success: function (data) {
-        	if(data==null)
-        		{
-        		alert("您所需要生成的码单信息有误，请重新核对");
-        		}
-        	else{
-        	var tree=data["tree"];
-        	var code=data["work"];
-        	var project=data["project"];
-        	alert(project);
-        	$("#myproject").empty();
-        	for(var i=0;i<project.length;i++)
-    		{
-        		var j=project[i];
-        		var str3="<table class='top-table'>"
-        			  +"<tr><td class='top-table-label'>工程包：</td>"
-        	           +"<td><input type='text' id='projectPackageName' disabled='disabled' value='"+j.projectPackageName+"''></td>"
-        	            +"<td class='top-table-label' >劳务承包人：</td>"
-        	            +"<td><input type='text' disabled='disabled' id='forperson' value='"+j.forperson+"'></td>"
-        	            +"<td class='top-table-label' >伐区管理单位：</td>"
-        	            +"<td><input type='text' disabled='disabled' id='manageUnit' value='"+j.manageUnit+"'></td></tr></table>";
-        		$("#myproject").append(str3); 
-    		}
-        	$("#mysomething").empty();
-        	for(var i=0;i<code.length;i++)
-    		{
-        		var j=code[i];
-        		var str2="<table class='top-table'>"
-        			+"<tr><p class='table_p'><span>工单"+j.workid+"</span></p>"
-        			+"</tr><tr><td class='top-table-label'>工单：</td>"
-                    +"<td><input type='text' id='workid' disabled='disabled' value='"+j.workid+"'></td></tr></table>";
-        		$("#mysomething").append(str2); 
-    		}
-        	$("#ttt").empty();
-        	var str="<tr><p class='table_p'><span>材种信息</span></p></tr>"
-                  +"<tr><td class='top-table-label'>材种：</td>"
-                  +"<td class='top-table-label'>材积：</td>"
-                  +"<td class='top-table-label'>单价：</td>"
-                  +"<td class='top-table-label'>金额：</td></tr>";
-        	for(var i=0;i<tree.length;i++){
-        		var j=tree[i];
-        	str+="<tr id='"+(i+1)+"'><td><select id='treetype"+(i+1)+"' ><option>"+j.type+"</option></select></td>"
-                  +"<td><input type=text disabled=disabled value='"+j.tvolume+"' id='volume"+(i+1)+"'></td>"
-                   +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"'></td>"
-                  +"<td><input type='text' id='price"+(i+1)+"' onclick='priceCount("+(i+1)+")' value='"+j.price+"'></td></tr>"
-        	}
-        	ttt.innerHTML=str;
-        }}
-    })
-}
-}
+// function mycreate1()
+// {
+// 	//var length=$("#codetable tr").length;
+// 	var cutnum=document.getElementById("cutnum").value;
+// 	if(cutnum=="")
+// 		{
+// 		    alert("请输入采伐证号！");
+// 		}
+// 	else
+// 		{
+// 	length=(length-1)*2;
+// 	var group=[];
+// 	for(var i=1;i<=length;i++)
+// 		{
+// 		     if(document.getElementById("code"+i+"").value!="")
+// 		     group[i-1]=document.getElementById("code"+i+"").value;
+// 		}
+// 	var mygroup=JSON.stringify(group);	
+// 	$.ajax({
+//         url:"salaryServlet",
+//         data:{
+//             "action":"savew",
+//             "mygroup":mygroup,
+//             "cutnum":cutnum
+//         },
+//         type: "POST",
+//         dataType:"json",
+//         success: function (data) {
+//         	if(data==null)
+//         		{
+//         		alert("您所需要生成的码单信息有误，请重新核对");
+//         		}
+//         	else{
+//         	var tree=data["tree"];
+//         	var code=data["work"];
+//         	var project=data["project"];
+//         	alert(project);
+//         	$("#myproject").empty();
+//         	for(var i=0;i<project.length;i++)
+//     		{
+//         		var j=project[i];
+//         		var str3="<table class='top-table'>"
+//         			  +"<tr><td class='top-table-label'>工程包：</td>"
+//         	           +"<td><input type='text' id='projectPackageName' disabled='disabled' value='"+j.projectPackageName+"''></td>"
+//         	            +"<td class='top-table-label' >劳务承包人：</td>"
+//         	            +"<td><input type='text' disabled='disabled' id='forperson' value='"+j.forperson+"'></td>"
+//         	            +"<td class='top-table-label' >伐区管理单位：</td>"
+//         	            +"<td><input type='text' disabled='disabled' id='manageUnit' value='"+j.manageUnit+"'></td></tr></table>";
+//         		$("#myproject").append(str3); 
+//     		}
+//         	$("#mysomething").empty();
+//         	for(var i=0;i<code.length;i++)
+//     		{
+//         		var j=code[i];
+//         		var str2="<table class='top-table'>"
+//         			+"<tr><p class='table_p'><span>工单"+j.workid+"</span></p>"
+//         			+"</tr><tr><td class='top-table-label'>工单：</td>"
+//                     +"<td><input type='text' id='workid' disabled='disabled' value='"+j.workid+"'></td></tr></table>";
+//         		$("#mysomething").append(str2); 
+//     		}
+//         	$("#ttt").empty();
+//         	var str="<tr><p class='table_p'><span>材种信息</span></p></tr>"
+//                   +"<tr><td class='top-table-label'>材种：</td>"
+//                   +"<td class='top-table-label'>材积：</td>"
+//                   +"<td class='top-table-label'>单价：</td>"
+//                   +"<td class='top-table-label'>金额：</td></tr>";
+//         	for(var i=0;i<tree.length;i++){
+//         		var j=tree[i];
+//         	str+="<tr id='"+(i+1)+"'><td><select id='treetype"+(i+1)+"' ><option>"+j.type+"</option></select></td>"
+//                   +"<td><input type=text disabled=disabled value='"+j.tvolume+"' id='volume"+(i+1)+"'></td>"
+//                    +"<td><input type='text' id='unitprice"+(i+1)+"' value='"+j.unitprice+"'></td>"
+//                   +"<td><input type='text' id='price"+(i+1)+"' onclick='priceCount("+(i+1)+")' value='"+j.price+"'></td></tr>"
+//         	}
+//         	ttt.innerHTML=str;
+//         }}
+//     })
+// }
+// }
 function mycreate()
 {
 	//var length=$("#codetable tr").length;
 	var cutnum=document.getElementById("cutnum").value;
 	var timeStart=document.getElementById("timeStart").value;
 	var timeEnd=document.getElementById("timeEnd").value;
+	var yard=document.getElementById("yard").value;
+	var section=document.getElementById("section").value;
 	length=(length-1)*2;
 	var group=[];
 	$.ajax({
@@ -149,7 +151,9 @@ function mycreate()
             "action":"savew2",
             "cutnum":cutnum,
             "timeStart":timeStart,
-            "timeEnd":timeEnd
+            "timeEnd":timeEnd,
+            "yard":yard,
+            "section":section
         },
         type: "POST",
         dataType:"json",
@@ -164,6 +168,8 @@ function mycreate()
         	var workidlist=data["workid"];
         	var worktree=data["worktree"];
         	//alert(worktree)
+        	var aworkid, bworkid;
+        	var group=[];
         	$("#mysomething").empty();
         	for(var i=0;i<workidlist.length;i++)
     		{
@@ -171,7 +177,11 @@ function mycreate()
         		var workid=j.workid;
         		var str2="<tr><td><input type='text' id='workid' disabled='disabled' value='"+j.workid+"'></td></tr>";
         		$("#mysomething").append(str2); 
+        		group[i]=j.workid;
     		}
+        	aworkid = new Array(group);
+    		bworkid = aworkid.join("-");
+    		//alert(bworkid)
         	for(var i=0;i<cutCompack.length;i++)
     		{
         		var j=cutCompack[i];
@@ -214,6 +224,7 @@ function mycreate()
         	document.getElementById("quartel").value=quartel;
         	document.getElementById("largeblock").value=largeblock;
         	document.getElementById("smallblock").value=smallblock;
+        	document.getElementById("bworkid").value=bworkid;
         	
         }}
     })
@@ -223,22 +234,35 @@ function mysave()
 	var map={};
 	var kk=0;
 	var cutnum=$("#cutnum").val();
-	var projectPackageid=document.getElementById("projectPackageid").value;
+	var projectPackageName=document.getElementById("projectPackageName").value;
 	var forperson=document.getElementById("forperson").value;
 	var manageUnit=document.getElementById("manageUnit").value;
 	var person=document.getElementById("person").value;
 	var ttvolume=document.getElementById("ttvolume").value;
 	var tprice=document.getElementById("tprice").value;
+	var timeStart=document.getElementById("timeStart").value;
+	var timeEnd=document.getElementById("timeEnd").value;
+	var bworkid=document.getElementById("bworkid").value;
+	var yard=document.getElementById("yard").value;
+	var section=document.getElementById("section").value;
+	if(ttvolume=="" || tprice=="")
+		{
+		alert("请填写合计材积和金额")
+		}
+	else{
 		var length=$("#ttt tr").length;
-		//alert(length)
+		//alert(bworkid)
 		//length=length-2;
 		//alert(length)
     	for(var id=1;id<=length;id++){
     		var group=[];
     	    group[0]=document.getElementById("treetype"+id+"").value;
-    	    group[1]=document.getElementById("unitprice"+id+"").value;
-    	    group[2]=document.getElementById("price"+id+"").value;
-    	    if(group[0]==""|| group[1]==""|| group[2]=="")
+    	    group[1]=document.getElementById("tlong"+id+"").value;
+    	    group[2]=document.getElementById("tradius"+id+"").value;
+    	    group[3]=document.getElementById("volume"+id+"").value;
+    	    group[4]=document.getElementById("unitprice"+id+"").value;
+    	    group[5]=document.getElementById("price"+id+"").value;
+    	    if(group[0]==""|| group[1]==""|| group[2]==""|| group[3]==""|| group[4]==""|| group[5]=="")
     	    	{
     	    	alert("请将信息填写完整！");
     	    	}
@@ -255,12 +279,17 @@ function mysave()
             "newtree":mymap,
             "id":kk,
             "cutnum":cutnum,
-            "projectPackageid":projectPackageid,
+            "projectPackageName":projectPackageName,
             "forperson":forperson,
             "manageUnit":manageUnit,
             "person":person,
             "ttvolume":ttvolume,
-            "tprice":tprice
+            "tprice":tprice,
+            "timeEnd":timeEnd,
+            "timeStart":timeStart,
+            "bworkid":bworkid,
+            "yard":yard,
+            "section":section
         },
         type: "POST",
         dataType:"html",
@@ -277,6 +306,7 @@ function mysave()
         		}
         }
     })
+	}
   }
 //计算金额
 function priceCount(id)
@@ -312,9 +342,28 @@ window.onload = function () {
     locationInput = function () {
     };
 }
+function load()
+{
+	$.ajax({
+        url:"salaryServlet",//要发送的地址
+        data:{
+            "action":"loadyardinfo"
+        },
+        type: "POST",
+        dataType:"json",
+        success: function (data) {
+            for(i = 0;i<data.length;i++)
+            {
+            	str = "<option>"+data[i].yardname+"</option>";
+            	
+            	$("#yard").show().append(str);
+            }
+        }
+    })
+}
 </script>
 </head>
-<body>
+<body onload="load()">
 <% Date d = new Date();
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -362,21 +411,20 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
        <ul>
       
         <li><a href="workpageAdd.jsp">野账录入</a></li>
@@ -384,16 +432,24 @@ String now = df.format(d); %>
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+   <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>       
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>       
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -425,6 +481,21 @@ String now = df.format(d); %>
                 <td class="top-table-label" colspan="2">采伐证编号：</td>
                 <td colspan="2"><input type="text" id="cutnum" name="cutnum" value="" oninput='mycreate()' onclick='locationInput'></td>
             </tr>
+            <tr>
+                <td class="top-table-label" colspan="2">货场：</td>
+                <td><select  style="width:230px" name="yard" id="yard" oninput='mycreate()' onclick='locationInput'><option  value="" selected="selected"></option></select></td>
+                <td class="top-table-label" colspan="2">货场分区：</td>
+                <td colspan="2"><select id="section" name="section"  oninput='mycreate()' onclick='locationInput'>
+                <option value='' selected></option>
+                <option value='A区'>A区</option>
+                <option value='B区'>B区</option>
+                <option value='C区'>C区</option>
+                <option value='D区'>D区</option>
+                <option value='E区'>E区</option>
+                <option value='F区'>F区</option>
+                <option value='无固定分区'>无固定分区</option>
+                </select></td>
+            </tr>
             </table>
             <br>
             <table class="top-table">
@@ -435,6 +506,9 @@ String now = df.format(d); %>
                 <td colspan="2"><input type="text" name="forperson" id="forperson" value=""></td>
                 <td colspan="2">伐区管理单位：</td>
                 <td colspan="2"><input type="text" name="manageUnit" id="manageUnit" value=""></td>
+            </tr>
+            <tr>
+              <td colspan="8"><input style="width:200px" type="text" name="cutaddress" id="cutaddress" >乡(镇)<input style="width:200px" type="text" name="cutvillage" id="cutvillage">村<input style="width:250px" type="text" name="quartel" id="quartel">林班<input style="width:200px" type="text" name="largeblock" id="largeblock">大班<input style="width:200px" type="text" name="smallblock" id="smallblock">小班</td>
             </tr>
             <tr>
             <td  style="width:200px">树材种</td>
@@ -476,6 +550,13 @@ String now = df.format(d); %>
             </tr>
             </tbody>
         </table>
+        <table class="table1"  >
+              <tr>
+              <td colspan="7" style="display: none">
+              <input style="width:100%" id="bworkid" name="bworkid">
+              </td>
+              </tr>
+              </table>
     </div>
     <br>
     <div style="text-align: center">

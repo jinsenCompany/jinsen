@@ -118,7 +118,7 @@
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
@@ -137,7 +137,7 @@
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="./logout">
     <i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
     <li>
@@ -145,7 +145,7 @@
 	String staff_id = request.getSession().getAttribute("staff_id").toString();
 				%> <%
  	String staff_name = request.getSession().getAttribute("staff_name").toString();
- %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    String power_type = request.getSession().getAttribute("power_type").toString();%> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
     </li>
   </ul>
 </div>
@@ -163,28 +163,44 @@
   <ul>
     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+       <ul>
+      
+        <li><a href="workpageAdd.jsp">野账录入</a></li>
+        <li><a href="workpageShenheFaqu.jsp">野账审核</a></li>
+          <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
+      </ul>
+     </li>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>       
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+<!--      <li><a href="workpageUnlock.jsp"><i class="icon icon-inbox"></i> <span>采伐证解锁</span></a></li>        -->
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li> 
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -200,8 +216,8 @@
   <div class="container-fluid">
     <div class="quick-actions_homepage">
       <ul class="quick-actions">
-        <li class="bg_lb"> <a href="workpageShenheFaqu.jsp"> <i class="icon-dashboard"></i>审核工单 </a> </li>
-        <li class="bg_lg span3"> <a href="workpageAdd.jsp"><i class="icon-signal"></i> <span>输入工单</span></a></li>
+        <li class="bg_lb"> <a href="workpageShenheFaqu.jsp"> <i class="icon-dashboard"></i>野账审核 </a> </li>
+        <li class="bg_lg span3"> <a href="workpageAdd.jsp"><i class="icon-signal"></i><span>野账录入</span></a></li>
         <li class="bg_ly span3"> <a href="CutnumProjectpackage.jsp"> <i class="icon-inbox"></i><span class="label label-success"></span>创建工程包</a> </li>
         <li class="bg_lo"> <a href="treeinYezhang.jsp"> <i class="icon-info-sign"></i>打印检尺野帐</a> </li>
       </ul>
@@ -209,7 +225,118 @@
   </div>
   <!--Chart-box-->  
    
+   
+<!--End-Chart-box--> 
+  <hr/>
+    <!--Chart-box-->    
     <div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
+          <h5>木材进仓库存分析</h5>
+        </div>
+        <div class="widget-content" >
+          <div class="row-fluid">
+            <div id="myPieDiv" style="height:500px; display:inline-block" class="span9">
+            <script src="js/echarts.js"></script>
+            <script src="js/echarts.min.js"></script>
+              <script type="text/javascript">
+              function loadDate(option){
+            		$.ajax({
+            			type:"get",
+            			async : false,
+            			url:"chartServlet?action=treetype",
+            		    data:{},
+            		    dataType:"json",
+            		    success:function(result){
+            		    	if(result){
+            		    		option.xAxis[0].data=[];
+            		    		 for(var i=0;i<result.length;i++){
+            		    			 option.xAxis[0].data.push(result[i].treetype);
+            		    			 //yarddate.push(result[i].yarddate);
+            		                 //names.push(result[i].name);
+            		    			 //alert(result[i].yarddate);
+            		               }
+            		    		  option.series[0].data=[];
+            		    		  option.series[1].data=[];
+            		               for(var i=0;i<result.length;i++){
+            		            	   option.series[0].data.push(result[i].num);
+            		            	   option.series[1].data.push(result[i].tvolume);
+            		            	   //price.push(result[i].price);
+            		            	   //alert(result[i].price);
+            		               }
+            		        }
+            		     },
+            		     error : function(errorMsg) {
+            		          //请求失败时执行该函数
+            		      alert("图表请求数据失败!");
+            		      //mychart.hideLoading();
+            		    }
+            		})
+            		}
+
+
+            		var mychart = echarts.init(document.getElementById('myPieDiv'));
+            		var option={
+            				title:{
+            					text:"木材进仓库存"
+            				},
+            				tooltip:{
+            					show: true
+            				},
+            				grid: {
+            		            containLabel: true
+            		        },
+            				legend:{
+            					data:['数量','材积']
+            				},
+            				
+            				xAxis:[{
+            					type: 'category',
+            				        //data: [],
+            				}],
+            				yAxis : [
+            					{
+            					type : 'value',
+            					axisLabel: {
+            				        formatter: '{value} 根'
+            				        },
+            				},
+            				{
+            					type : 'value',
+            					name:'材积',
+            					axisLabel: {
+            				        formatter: '{value} 立方米'
+            				        },
+            				}
+            				],
+            				series : [ {
+            					name : '数量',
+            					type : 'line',
+            					color: 'blue',
+            		            //smooth: true,
+            		           // data:[]
+            				},
+            				{
+            					name : '材积',
+            					type : 'bar',
+            					color: 'red',
+            					yAxisIndex: 1,
+            		           // data:[]
+            				}
+            				]
+            		};
+            		//加载数据到option
+            		loadDate(option);
+            		//设置option
+            		mychart.setOption(option);
+          </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>
+     <div class="row-fluid">
       <div class="widget-box">
         <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
           <h5>采伐工单信息</h5>
@@ -221,8 +348,6 @@
         </div>
       </div>
     </div>
-<!--End-Chart-box--> 
-  <hr/>
     
  </div>
 <!--End-Action boxes-->  

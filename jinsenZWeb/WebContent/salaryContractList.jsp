@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -19,30 +20,6 @@
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-<script src="js/excanvas.min.js"></script> 
-<script src="js/jquery.min.js"></script> 
-<script src="js/jquery.ui.custom.js"></script> 
-<script src="js/bootstrap.min.js"></script> 
-<script src="js/jquery.flot.min.js"></script> 
-<script src="js/jquery.flot.resize.min.js"></script> 
-<script src="js/jquery.peity.min.js"></script> 
-<script src="js/fullcalendar.min.js"></script> 
-<script src="js/matrix.js"></script> 
-<script src="js/matrix.dashboard.js"></script> 
-<script src="js/jquery.gritter.min.js"></script> 
-<script src="js/matrix.interface.js"></script> 
-<script src="js/matrix.chat.js"></script> 
-<script src="js/jquery.validate.js"></script> 
-<script src="js/matrix.form_validation.js"></script> 
-<script src="js/jquery.wizard.js"></script> 
-<script src="js/jquery.uniform.js"></script> 
-<script src="js/select2.min.js"></script> 
-<script src="js/matrix.popover.js"></script> 
-<script src="js/jquery.dataTables.min.js"></script> 
-<script src="js/matrix.tables.js"></script>
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/jQuery.print.js"></script>
-<script src="js/jquery.PrintArea.js" type="text/JavaScript"></script>
     <style>
 #h li{float: left; }
 #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
@@ -161,28 +138,28 @@ function progress(contractid){
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -194,15 +171,15 @@ function progress(contractid){
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="managerP.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+    <div id="breadcrumb"> <a href="salaryper.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
 <div class="find-top">
      <p class="p-tail"><i class="i-tail"></i> 该页面是查看合同详细信息查看</p>
 </div>
- <div class="table-con">
-        <table id="table1" class="table-style"></table>
+ <div class="table-responsive">
+        <table id="table1" class="table text-nowrap"></table>
 </div>
 <!--  <div id="dataList">
         <table class="top-table">
@@ -233,13 +210,25 @@ function progress(contractid){
                 data:{},
                 dataType: "json",
                 pagination: true, //分页
-                pageSize: 8,
+                pageSize: 15,
                 pageNumber: 1,
                 search: true, //显示搜索框
+                showColumns: true,                  //是否显示所有的列
                 contentType: "application/x-www-form-urlencoded",
                 showRefresh: true,                      //是否显示刷新按钮
                 showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
                 detailView: true,
+                exportDataType:'all',//'basic':当前页的数据, 'all':全部的数据, 'selected':选中的数据    
+                showExport: true,  //是否显示导出按钮    
+                buttonsAlign:"right",  //按钮位置    
+                exportTypes:['excel','xlsx','csv','pdf'],  //导出文件类型，[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf']
+                exportOptions:{
+                    // ignoreColumn: [0,1],  //忽略某一列的索引
+                    fileName: "销售合同信息",  //文件名称设置
+                    worksheetName: 'sheet1',  //表格工作区名称
+                    tableName: "销售合同信息",
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], //设置格式
+                },
             columns: [[
             	{
             		"title": "合同信息",
@@ -247,30 +236,55 @@ function progress(contractid){
                     "halign":"center",
                     "align":"center",
                     "valign": "middle",
-                    "colspan": 10
+                    "colspan": 17
                 }],
                 [
-                	{
-                        checkbox: "true",
-                        field: 'check',
+                	{						
+ 						title: '序号',
+ 						width: 100,
                         align: 'center',
-                        valign: 'middle'
-                    },
+ 						formatter: function (value, row, index) {
+ 							return index+1;
+ 						}
+ 	                },//该列显示序号，分页不是从1开始
                     {
-                        title: "序号",
+                        title: "合同序号",
                         field: 'contractid',
+                        width: 200,
                         align: 'center',
-                        valign: 'middle'
+                        valign: 'middle',
+                        visible: false
                     },
                 	{
                     title: "合同编号",
+                    width: 200,
                     field: 'contractnum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
+                    title: '合同状态',
+                    field: 'contractstatus',
+                    //width:'40px',
+                    align: 'center',
+                     valign: 'middle',
+                     sortable: true,
+                    formatter: function(value,row,index) {
+                    var a = ""; 
+                    var b="未完成";
+                    var c="已完成";
+                        if(value == "0") {  
+                            var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                        }else if(value == "1"){  
+                            var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                        }
+                        return a;
+                }
+                },
+                {
                     title: '供方（甲方）',
                     field: 'provider',
+                    width: 200,
                     align: 'center',
                     valign: 'middle'
                 },
@@ -278,31 +292,72 @@ function progress(contractid){
                     title: '需方（乙方）',
                     field: 'demander',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
-                    title: '数量',
+                    title: '合同签订人',
+                    field: 'contractsigner',
+                    align: 'center',
+                    width: 200,
+                    valign: 'middle'
+                },
+                {
+                    title: '合同签订数量(立方米/吨)',
                     field: 'treenumber',
                     align: 'center',
+                    width: 200,
+                    valign: 'middle'
+                },
+                {
+                    title: '已完成数量(立方米/吨)',
+                    field: 'useTreenum',
+                    align: 'center',
+                    width: 200,
+                    valign: 'middle'
+                },
+                {
+                    title: '未完成数量(立方米/吨)',
+                    field: 'surplusTreenum',
+                    align: 'center',
+                    width: 200,
+                    valign: 'middle'
+                },
+                {
+                    title: '执行进度',
+                    field: 'percentageTreenum',
+                    align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '合同开始时间',
-                    field: 'starttime',
+                    field: 'begin',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '合同结束时间',
-                    field: 'endtime',
+                    field: 'end',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
                 },
                 {
                     title: '保证金',
                     field: 'margin',
                     align: 'center',
+                    width: 200,
                     valign: 'middle'
+                },
+                {
+                    title: '创建时间',
+                    field: 'creatTime',
+                    align: 'center',
+                    width: 200,
+                    valign: 'middle',
+                    visible: false
                 },
                 /*{
                     title: '合同进度',
@@ -320,9 +375,23 @@ function progress(contractid){
                     field: 'opr',
                     width: 180,
                     align: 'center',
+                    valign: 'middle',
                     formatter: function (cellval, row) {
                         //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
                         var  d = '<a href="salaryServlet?action=contractList&contractid=\''+ row.contractid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        return  d;
+                    }
+                },
+                {
+                    title: "合同操作",
+                    field: 'opr',
+                    width: 200,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (cellval, row) {
+                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="salaryServlet?action=finishContract&contractid=\''+ row.contractid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">合同完成</button></a>';
+                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
                         return  d;
                     }
                 },
@@ -331,6 +400,19 @@ function progress(contractid){
         });
     }
 
-</script> 
+</script>
+<script src="js/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/bootstrap-table-export.js"></script>
+<script src="js/tableExport.js"></script>
+<script src="js/jquery.base64.js"></script>
+<script type="text/javascript" src="/static/js/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script src="js/matrix.js"></script> 
+<script src="js/matrix.dashboard.js"></script> 
 </body>
 </html>

@@ -58,9 +58,9 @@ td,th{text-align:center;vertical-align:middle}
 .htv {
     float:left;font-weight:bold;color:#966f2b;text-decoration: underline;
 }
-		.btn{ 	
+.btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
-	font-size: 13px!important; 	height: 30px; 	
+	font-size: 20px!important; 	height: 40px; 	
 	line-height: 18px!important; 	
 	padding: 3px 18px; 	
 	display: inline-block; 	vertical-align: middle; 	
@@ -134,14 +134,14 @@ function overtimedelete(cutnum)
         success: function (data) {
         	if(data)
         		{
-        		alert("hh删除成功！");
+        		alert("删除成功！");
         		$("#table1").bootstrapTable('refresh');
         		$("#table2").bootstrapTable('refresh');
         		
         		}
         		
         	else
-        		alert("hh删除失败！");
+        		alert("删除失败！");
         }
     })
 }
@@ -232,7 +232,8 @@ function inputNull(form){
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>    
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li> 
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>    
   </ul>
 </div>
 <!--sidebar-menu-->

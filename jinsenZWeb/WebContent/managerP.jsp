@@ -67,7 +67,7 @@
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
@@ -85,13 +85,14 @@
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
     <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
    <li>
    <%
 	String staff_id = request.getSession().getAttribute("staff_id").toString();
 				%> <%
  	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
  %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
    </li>
   </ul>
@@ -109,10 +110,10 @@
   <!-- 
     <li> <a href="cutnumApplysee.jsp"><i class="icon icon-home"></i> <span>审核采伐证申请</span></a> </li> 
   --> 
-    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证材料</span></a></li>
-    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>查看采伐证材料</span></a></li>
-    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>查看退证采伐证</span></a></li>
-    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>查看已使用采伐证</span></a></li>            
+    <li> <a href="manageCutnum.jsp"><i class="icon icon-inbox"></i> <span>录入采伐证</span></a></li>
+    <li> <a href="manageCutnumsee.jsp"><i class="icon icon-th"></i> <span>采伐证汇总</span></a></li>
+    <li> <a href="manageCutnumseeDelate.jsp"><i class="icon icon-th"></i><span>采伐证退证</span></a></li>
+    <li> <a href="manageCutnumseeUse.jsp"><i class="icon icon-th"></i> <span>采伐证使用情况</span></a></li>            
 <!-- 
     <li> <a href="cutnumTable.jsp"><i class="icon icon-th-list"></i> <span>采伐证报表</span></a></li>
   
@@ -129,7 +130,118 @@
   </div>
 <!--End-breadcrumbs-->    
 
-<!--Chart-box-->    
+<!--Chart-box-->
+<div class="row-fluid">
+      <div class="widget-box">
+        <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>
+          <h5>采伐证申请情况</h5>
+        </div>
+        <div class="widget-content" >
+          <div class="row-fluid">
+            <div id="myPieDiv" style="height:400px; display:inline-block" class="span9">
+            <script src="js/echarts.js"></script>
+            <script src="js/echarts.min.js"></script>
+            <script src="js/jquery.min.js"></script>
+              <script type="text/javascript">
+              function loadDate(option){
+            		$.ajax({
+            			type:"get",
+            			async : false,
+            			url:"chartServlet?action=barManage",
+            		    data:{},
+            		    dataType:"json",
+            		    success:function(result){
+            		    	//alert(result)
+            		    	if(result){
+            		    		option.xAxis[0].data=[];
+            		    		 for(var i=0;i<result.length;i++){
+            		    			 option.xAxis[0].data.push(result[i].starttime);
+            		               }
+            		    		  option.series[0].data=[];
+            		    		  option.series[1].data=[];
+            		               for(var i=0;i<result.length;i++){
+            		            	   option.series[0].data.push(result[i].number);
+            		            	   option.series[1].data.push(result[i].volume);
+            		            	   //alert(option.series[1].data);
+            		               }
+            		        }
+            		     },
+            		     error : function(errorMsg) {
+            		          //请求失败时执行该函数
+            		      alert("图表请求数据失败!");
+            		      //mychart.hideLoading();
+            		    }
+            		})
+            		}
+
+
+            		var mychart = echarts.init(document.getElementById('myPieDiv'));
+            		var option={
+            				title:{
+            					text:"采伐证收入情况"
+            				},
+            				tooltip:{
+            					show: true
+            				},
+            				dataZoom: {
+            		            show: true,
+            		            realtime: true,
+            		            //type: 'inside'
+            		            //startValue: '2009-09-20 12:00',
+            		            //end: 100
+            		        },
+            				grid: {
+            		            containLabel: true
+            		        },
+            				legend:{
+            					data:['数量','材积']
+            				},
+            				
+            				xAxis:[{
+            					type: 'category',
+            				}],
+            				yAxis : [
+            					{
+                					type : 'value',
+                					axisLabel: {
+                				        formatter: '{value} 个'
+                				        },
+                				},
+            				{
+            					type : 'value',
+            					//name:'材积',
+            					axisLabel: {
+            				        formatter: '{value} 立方米'
+            				        },
+            				}
+            				],
+            				series : [ {
+            					name : '数量',
+            					type : 'line',
+            					color: 'blue',
+            		            //smooth: true,
+            		           // data:[]
+            				},
+            				{
+            					name : '材积',
+            					type : 'bar',
+            					color: 'red',
+            					yAxisIndex: 1,
+            		           // data:[]
+            				}
+            				]
+            		};
+            		//加载数据到option
+            		loadDate(option);
+            		//设置option
+            		mychart.setOption(option);
+          </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>    
     <div class="row-fluid">
       <div class="widget-box">
         <div class="widget-title bg_lg"><span class="icon"><i class="icon-signal"></i></span>

@@ -68,15 +68,16 @@ td,th{text-align:center;vertical-align:middle}
 	#b{
 	text-align:left;
 	}
+	.tk{width:80%;margin-left:auto; margin-right:auto;padding:0px;border-collapse:collapse}
 	.tk input{
-			width: 100px;
+			width: 200px;
 		}
 		#cancellingStockDate{
 			width: 300px;
 			
 		}
 		#cancellingStockSite{
-			width: 450px;
+			width: 400px;
 		}
 		#tkrq{
 		text-align:left;
@@ -84,7 +85,7 @@ td,th{text-align:center;vertical-align:middle}
 		#tkdd{
 		text-align:left;
 		}
-		.btn{ 	
+.btn{ 	
 	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
 	font-size: 13px!important; 	height: 30px; 	
 	line-height: 18px!important; 	
@@ -95,6 +96,20 @@ td,th{text-align:center;vertical-align:middle}
 	border: 1px solid #3383da; 	
 	color: #ffffff; 	
 	background-color: #3383da; 	
+	cursor: pointer; 
+	}
+.btnb{ 	
+	font-family: "'微软雅黑','Helvetica Neue',Helvetica,Arial,sans-serif"; 	
+	font-size: 24px!important; 	height: 50px; 	
+	width:160px;
+	line-height: 18px!important; 	
+	padding: 3px 18px; 	
+	display: inline-block; 	vertical-align: middle; 	
+	font-weight: normal; 	border-radius: 3px; 	
+	margin: 0 8px 0 3px; 	
+	border: 1px solid #fc4366; 	
+	color: #ffffff; 	
+	background-color: #fc4366; 	
 	cursor: pointer; 
 	}
 </style>
@@ -120,14 +135,18 @@ function aaad()
  	var str="<tr id="+k+" display:block;><td style='font-size:20px;'><input type='checkbox' style='width:20px;height:20px;' value="+k+">树材种<span></span>"
           +"<select style='width: 180px' name='treetype' id='sss"+k+"'>"
            +"<option>--请选择--</option>"
-          +"<option value='杉原木'>--杉原木--</option>"
-          +"<option value='杉小径'>--杉小径--</option>"
-          +"<option value='松原木'>--松原木--</option>"
-          +"<option value='松小径'>--松小径--</option>"
-          +"<option value='杂原木'>--杂原木--</option>"
-          +"<option value='杂小径'>--杂小径--</option></select>"
-        +"检尺长(m)<span></span><input type='text' style='width: 180px' name='tlong' id='td"+k+"'>检尺径<span></span>"
-          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"'>"
+           +"<option value='杉木' selected>--杉木--</option>"
+           +"<option value='松木'>--松木--</option>"
+           +"<option value='杂木'>--杂木--</option>"
+           +"<option value='杉薪材'>--杉薪材--</option>"
+           +"<option value='松薪材'>--松薪材--</option>"
+           +"<option value='杂薪材'>--杂薪材--</option>"
+           +"<option value='杉短材'>--杉短材--</option>"
+           +"<option value='杉木兜'>--杉木兜--</option>"
+           +"<option value='杉直柄'>--杉直柄--</option>"
+           +"<option value='特种材'>--特种材--</option></select>"
+        +"检尺长(m)<span></span><input type='text' style='width: 180px' name='tlong' id='td"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>检尺径<span></span>"
+          +"<input type='text' style='width: 180px' name='tradius' id='tr"+k+"'>根数<span></span><input type='text' style='width: 180px' name='num' id='n"+k+"' oninput='vvvolume("+k+")' onclick='locationInput'>"
              +"材积(m^3、T、根)<span></span><input type='text' style='width: 180px' name='tvolume' id='tv"+k+"' onclick='vvvolume("+k+")'></td></tr>";
              k=Number(k)+Number(1);
             $("#ttt5").append(str); 
@@ -176,7 +195,9 @@ function vvvolume(id)
         type: "POST",
         dataType:"html",
         success: function (data) {
-        	document.getElementById("tv"+id+"").value=Number(data*num);
+        	var vvv=Number(data*num);
+        	vvv=vvv.toFixed(4);
+        	document.getElementById("tv"+id+"").value=Number(vvv);
         }
     })}
 	}
@@ -331,6 +352,10 @@ function inputNull(form){
 		}
 	}
 	}
+window.onload = function () {
+    locationInput = function () {
+    };
+}
 </script>
 </head>
 <body>
@@ -344,11 +369,11 @@ function inputNull(form){
   <ul class="nav">
     <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">欢迎使用者</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-user"></i> 我的个人资料 </a></li>
+        <li><a href="ChangePassword.jsp"><i class="icon-user"></i> 我的个人资料 </a></li>
         <li class="divider"></li>
         <li><a href="#"><i class="icon-check"></i> 我的任务</a></li>
         <li class="divider"></li>
-        <li><a href="login.jsp"><i class="icon-key"></i> 注销</a></li>
+        <li><a href="./logout"><i class="icon-key"></i> 注销</a></li>
       </ul>
     </li>
     <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">消息</span> <span class="label label-important">5</span> <b class="caret"></b></a>
@@ -362,8 +387,16 @@ function inputNull(form){
         <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> 垃圾箱</a></li>
       </ul>
     </li>
-    <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
-    <li class=""><a title="" href="login.jsp"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li class=""><a title="" href="ChangePassword.jsp"><i class="icon icon-cog"></i> <span class="text">设置</span></a></li>
+    <li class=""><a title="" href="./logout"><i class="icon icon-share-alt"></i> <span class="text">注销</span></a></li>
+    <li>
+    <%
+	String staff_id = request.getSession().getAttribute("staff_id").toString();
+				%> <%
+ 	String staff_name = request.getSession().getAttribute("staff_name").toString();
+	String power_type = request.getSession().getAttribute("power_type").toString();
+ %> 您好，<%=staff_id%> <%=staff_name%>欢迎登录
+    </li>
   </ul>
 </div>
 <!--close-top-Header-menu-->
@@ -376,10 +409,12 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
   <ul>
-      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">2</span></a>
+      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>货场费用</span> <span class="label label-important">4</span></a>
        <ul>
-        <li><a href="goodsYardCost.jsp">费用结算</a></li>
+        <li><a href="goodsYardCost.jsp">货场费用录入</a></li>
         <li><a href="yardInventoryBootstrapDirector.jsp">货场盘点</a></li>
+        <li><a href="yardMonerySettle.jsp">货场费用结算</a></li>
+        <li><a href="yardMoneryDirector.jsp">货场费用报表</a></li>
       </ul>
      </li>
      <li><a href="workpageTreeBuyDirector.jsp"><i class="icon icon-th-list"></i> <span>木材收购单</span></a></li>
@@ -393,8 +428,7 @@ function inputNull(form){
      <li><a href="InyardShenhesuDirector.jsp"><i class="icon icon-th-list"></i> <span>查看进场木材反馈</span></a></li>
     <li><a href="yardinfo.jsp"><i class="icon icon-home"></i> <span>新增货场信息</span></a></li>
     <li><a href="SurveyorAddinfo.jsp"><i class="icon icon-home"></i> <span>新增检尺员信息</span></a></li>
-   <li><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
-   <li><a href="yardMoneryDirector.jsp"><i class="icon icon-home"></i><span>货场费用报表</span></a> </li>
+   <li class="active"><a href="cancellingStocksTable.jsp"><i class="icon icon-home"></i> <span>货场报损</span></a> </li>
    <li><a href="saleCalloutOrderShenhe.jsp"><i class="icon icon-share-alt"></i><span>审批调令</span></a></li>
   </ul>
 </div>
@@ -417,10 +451,10 @@ function inputNull(form){
 		<table  class="tk" >
 		<caption class="book_h01">退库单</caption>
 		    <tr>
-		    <td>退库日期</td><td id="tkrq" ><input type="date" id="cancellingStockDate" name="cancellingStockDate"  value="" /></td>
-		    <td>退库地点</td><td id="tkdd" ><input type="text" id="cancellingStockSite" name="cancellingStockSite" value="" /></td></tr>
+		    <td width="300">退库日期</td><td id="tkrq" ><input type="date" id="cancellingStockDate" name="cancellingStockDate"  value="" /></td>
+		    <td width="300">退库地点</td><td id="tkdd" ><input type="text" id="cancellingStockSite" name="cancellingStockSite" value="" /></td></tr>
 			<tr>
-			<td>退库原因</td><td><input type="text" style="width:300px" id="cancellingStockReason" name="cancellingStockReason" value="" /></td>
+			<td>退库原因</td><td id="tkrq"><input type="text" style="width:400px" id="cancellingStockReason" name="cancellingStockReason" value="" /></td>
 			<td>上传附件</td><td><input type="file" id="path" name="path"/></td>
 			</tr>
 			</table>
@@ -441,10 +475,11 @@ function inputNull(form){
          </table>     
 		</div>
 		</div>
+		<hr>
 		<div class="1" style="text-align:center">
 
-		    <span  style="text-align: center;"><button class="btn" type="submit" id="mybutton" value="保存申请书">保存</button></span>
-		     <span  ><button class="btn" type="button" id="btnPrint" value="打印">打印</button></span> 
+		    <span  style="text-align: center;"><button class="btnb" type="submit" id="mybutton" value="保存申请书">保存</button></span>
+		     <span><button class="btnb" type="button" id="btnPrint" value="打印">打印</button></span> 
 		 </div>
 			<div style="clear: both;padding-bottom: 40px"></div>
 	</form> 

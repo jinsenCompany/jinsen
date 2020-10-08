@@ -266,22 +266,20 @@ window.onload = function () {
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
-    
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
        <ul>
       
         <li><a href="workpageAdd.jsp">野账录入</a></li>
@@ -289,16 +287,25 @@ window.onload = function () {
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li> <a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-   <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>         
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+<!--      <li><a href="workpageUnlock.jsp"><i class="icon icon-inbox"></i> <span>采伐证解锁</span></a></li>        -->
+   <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>   
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -320,7 +327,7 @@ window.onload = function () {
 			<caption class="book_h01">录入施工方资料</caption>
 				<tr>
 					<td>施工方</td>
-					<td><input style="border:0px;background-color: transparent;" type="text" id="ownername" name="ownername" oninput='mycreate()' onclick='locationInput' /></td>
+					<td><input style="border:0px;background-color: transparent;" type="text" id="ownername" name="ownername"  /></td>
 					<td>性别</td>
 					<td><select style="border:0px;background-color: transparent;" name="sex" id="sex">
 						<option value="男">男</option>
@@ -353,20 +360,20 @@ window.onload = function () {
 					<td>联系方式</td>
 					<td colspan="2"><input style="width: 300px;border:0px;background-color: transparent;" type="text" id="contact" name="contact" value="" /></td>
 				</tr>
+				 <tr >
+					<td style="display:none">总面积(亩)</td>
+					<td colspan="3" style="display:none"><input style="width: 220px;border:0px;background-color: transparent; " type="text" id="allarea" name="allarea" value="0" readonly="readonly" /></td>
+					<td style="display:none">总出材量</td>
+					<td style="display:none" colspan="2"><input style="width: 300px;border:0px;background-color: transparent;" type="text" id="totaloutwood" name="totaloutwood" value="0" readonly="readonly" /></td>
+				</tr> 
 				<tr>
-					<td>总面积(亩)</td>
-					<td colspan="3"><input style="width: 220px;border:0px;background-color: transparent;" type="text" id="allarea" name="allarea" value="" readonly="readonly" /></td>
-					<td>总出材量</td>
-					<td colspan="2"><input style="width: 300px;border:0px;background-color: transparent;" type="text" id="totaloutwood" name="totaloutwood" value="" readonly="readonly" /></td>
-				</tr>
-				<tr>
-					<td>施工业绩</td>
-					<!--  <td colspan="1"><input style="height:200px;width:600px;word-break:break-all;border:0px;background-color: transparent;" onclick="mycreate()"></td>-->
-					<td colspan="6"><div id="myproject">
+					<td style="display:none">施工业绩</td>
+					 <td style="display:none" colspan="1"><input style="height:200px;width:600px;word-break:break-all;border:0px;background-color: transparent;" onclick="mycreate()"></td>
+					<td style="display:none" colspan="6"><div id="myproject">
 					
 					</div></td>
 				</tr>
-				
+				 
 			</table>
 			
 		</div>

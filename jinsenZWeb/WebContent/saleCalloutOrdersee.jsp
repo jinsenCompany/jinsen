@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
 <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -93,28 +94,28 @@
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -126,7 +127,7 @@
 
 <div id="content">
 <div id="content-header">
-    <div id="breadcrumb"> <a href="salesmanTwo.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+    <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
   </div>
 <!--End-breadcrumbs-->
 
@@ -163,7 +164,7 @@ $(function(){
             //data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -197,25 +198,36 @@ $(function(){
                     "halign":"center",
                     "align":"center",
                     "valign": "middle",
-                    "colspan": 12
+                    "colspan": 13
                 }],
                 [
+                	{						
+ 						title: '序号',
+ 						width: 100,
+                        align: 'center',
+ 						formatter: function (value, row, index) {
+ 							return index+1;
+ 						}
+ 	                },//该列显示序号，分页不是从1开始
                 	{
-                        title: "序号",
+                        title: "调令序号",
                         field: 'saleCallid',
                         align: 'center',
-                        valign: 'middle'
+                        valign: 'middle',
+                        visible: false
                     },
                 	{
-                        title: "时间",
+                        title: "调运时间",
                         width:'200px',
-                        field: 'callidtime',
+                        field: 'useTime',
+                        sortable: true,
                         align: 'center',
                         valign: 'middle'
                     },
                     {
                         title: '合同编号',
                         width:'200px',
+                        sortable: true,
                         field: 'contractnum',
                         align: 'center',
                         valign: 'middle'
@@ -228,6 +240,34 @@ $(function(){
                      },*/
                     align: 'center',
                     valign: 'middle'
+                },
+                {
+                    title: '调令状态',
+                    field: 'salestatus',
+                    width:'200px',
+                    align: 'center',
+                     valign: 'middle',
+                     sortable: true,
+                    formatter: function(value,row,index) {
+                    var a = ""; 
+                    var b="待审核";
+                    var c="完成调运";
+                    var d="调运进行中";
+                    var e="调令取消";
+                        if(value == "0") {  
+                            var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                        }else if(value == "4"){  
+                            var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                        }
+                        else if(value == "1" || value == "3"){  
+                            var a = '<span style="color:#21a63e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+d+'</span>';  
+                        }
+                        else if(value == "2")
+                        {  
+                            var a = '<span style="color:#d733c7;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+e+'</span>';  
+                        }
+                        return a;
+                }
                 },
                 {
                     title: '购货人',
@@ -250,14 +290,14 @@ $(function(){
                     valign: 'middle'
                 },
                 {
-                    title: "货款金额",
-                    field: 'paymentamount',
+                    title: '合计数量',
+                    field: 'totalnum',
                     align: 'center',
                     valign: 'middle'
                 },
                 {
-                    title: '合计数量',
-                    field: 'totalnum',
+                    title: "检尺员",
+                    field: 'surveyor',
                     align: 'center',
                     valign: 'middle'
                 },
@@ -266,6 +306,18 @@ $(function(){
                     field: 'signer',
                     align: 'center',
                     valign: 'middle'
+                },
+                {
+                    title: '操作',
+                    field: 'opr',
+                    width: 180,
+                    align: 'center',
+                    formatter: function (cellval, row) {
+                        //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        var  d = '<a href="salaryServlet?action=salecallupdateM&saleCalloutOrder=\''+ row.saleCalloutOrder + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                        //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                        return  d;
+                    }
                 },
                 ],
             ]

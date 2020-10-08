@@ -9,6 +9,7 @@ import jinshen.bean.outyard;
 import jinshen.bean.surveyorFee;
 import jinshen.bean.tree;
 import jinshen.bean.treebuy;
+import jinshen.bean.treefile;
 import jinshen.bean.workpage;
 import jinshen.bean.yardInventory;
 
@@ -58,4 +59,6 @@ public interface treeDao {
 	public List<surveyorFee> findSurveyorFee(String sql);
 	public int saveSurveyorFee(surveyorFee cp);//保存检尺费信息
 	public List<surveyorFee> findSurveyorFeeList(String sql);
+	
+	public int addTreefile(treefile c);//
 }

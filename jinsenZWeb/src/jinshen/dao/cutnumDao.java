@@ -75,9 +75,14 @@ public interface cutnumDao {
 	public List<projectPackTable> findProjectDetails(String sql);//查询工程包创建时间到伐区管理人员
 	public List<projectPackTable> findDesigntree(String sql);//查询设计出材量
 	public List<projectPackTable> findActualtree(String sql);//查询实际出材量
+	public List<projectPackTable> findDaotree(String sql);//查询倒材量
 	
 	//采伐证台账
 	public List<cutnumTable> findCutnumT(String sql);//采伐证汇总
 	//f伐区管理员录入以生产量
 	public int addCutnumProduced(cutnumProduced cp);
+	//查询工程包中采伐证的数量和合计面积，材积
+	public List<cutnum> findCutnumTotal(String sql);
+	//采伐证退证并退出工程包
+	public int deletCutProjec(cutnum cp,double cutnumid);
 }

@@ -18,6 +18,11 @@ public class workpage {
 	private double batchNum;
 	private double tolTree;
 	private double tolStere;
+	
+	private String company;
+	private String yard;
+	private Date   yarddate;
+	private String section;
 	public double getWorkid() {
 		return workid;
 	}
@@ -99,5 +104,32 @@ public class workpage {
 	public void setTolStere(double tolStere) {
 		this.tolStere = tolStere;
 	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getYard() {
+		return yard;
+	}
+	public void setYard(String yard) {
+		this.yard = yard;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	public Date getYarddate() {
+		return yarddate;
+	}
+	public void setYarddate(Date yarddate) {
+		this.yarddate = yarddate;
+	}
+	public String getSection() {
+		return section;
+	}
+	public void setSection(String section) {
+		this.section = section;
+	}
+	
+	
 }
     

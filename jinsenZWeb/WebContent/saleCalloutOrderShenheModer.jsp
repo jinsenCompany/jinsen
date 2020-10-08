@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="css/registe.css"/>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/matrix-style.css" />
 <link rel="stylesheet" href="css/matrix-media.css" />
@@ -17,7 +18,7 @@
 <link rel="stylesheet" href="css/jquery.gritter.css" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
 <link type="text/css" rel="stylesheet" href="css/PrintArea.css" />
-
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
     <style>
 #h li{float: left; }
 #h a{font-size:15px;width: 230px; height: 30px;padding: 10px 0;text-align: center;  background: #3c763d; display: block; text-decoration:none; color:white}
@@ -104,28 +105,28 @@
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -183,7 +184,7 @@
             data:{},
             dataType: "json",
             pagination: true, //分页
-            pageSize: 8,
+            pageSize: 15,
             pageNumber: 1,
             search: true, //显示搜索框
             contentType: "application/x-www-form-urlencoded",
@@ -204,7 +205,8 @@
                     width:'200px',
                     field: 'callidtime',
                     align: 'center',
-                    valign: 'middle'
+                    valign: 'middle',
+                    sortable: true
                 },
                 {
                     title: '合同编号',
@@ -221,6 +223,34 @@
                  },*/
                 align: 'center',
                 valign: 'middle'
+            },
+            {
+                title: '调令状态',
+                field: 'salestatus',
+                width:'200px',
+                align: 'center',
+                 valign: 'middle',
+                 sortable: true,
+                formatter: function(value,row,index) {
+                var a = ""; 
+                var b="待审核";
+                var c="完成调运";
+                var d="调运进行中";
+                var e="调令取消";
+                    if(value == "0") {  
+                        var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                    }else if(value == "4"){  
+                        var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                    }
+                    else if(value == "1" || value == "3"){  
+                        var a = '<span style="color:#21a63e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+d+'</span>';  
+                    }
+                    else if(value == "2")
+                    {  
+                        var a = '<span style="color:#d733c7;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+e+'</span>';  
+                    }
+                    return a;
+            }
             },
             {
                 title: '购货人',
@@ -365,7 +395,36 @@
               	   return document.getElementById("cutnum").value;
                  },*/
                 align: 'center',
+                width:'200px',
                 valign: 'middle'
+            },
+            {
+                title: '调令状态',
+                field: 'salestatus',
+                width:'200px',
+                align: 'center',
+                 valign: 'middle',
+                 sortable: true,
+                formatter: function(value,row,index) {
+                var a = ""; 
+                var b="待审核";
+                var c="完成调运";
+                var d="调运进行中";
+                var e="调令取消";
+                    if(value == "0") {  
+                        var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                    }else if(value == "4"){  
+                        var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                    }
+                    else if(value == "1" || value == "3"){  
+                        var a = '<span style="color:#21a63e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+d+'</span>';  
+                    }
+                    else if(value == "2")
+                    {  
+                        var a = '<span style="color:#d733c7;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+e+'</span>';  
+                    }
+                    return a;
+            }
             },
             {
                 title: '购货人',
@@ -437,7 +496,7 @@
             url: "salaryServlet?action=writesale&type=pass",
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
+            pageSize: 15,
             pageNumber: 1,
             search:true, //显示搜索框
             showColumns: true,                  //是否显示所有的列
@@ -486,7 +545,36 @@
               	   return document.getElementById("cutnum").value;
                  },*/
                 align: 'center',
+                width:'200px',
                 valign: 'middle'
+            },
+            {
+                title: '调令状态',
+                field: 'salestatus',
+                width:'200px',
+                align: 'center',
+                 valign: 'middle',
+                 sortable: true,
+                formatter: function(value,row,index) {
+                var a = ""; 
+                var b="待审核";
+                var c="完成调运";
+                var d="调运进行中";
+                var e="调令取消";
+                    if(value == "0") {  
+                        var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                    }else if(value == "4"){  
+                        var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                    }
+                    else if(value == "1" || value == "3"){  
+                        var a = '<span style="color:#21a63e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+d+'</span>';  
+                    }
+                    else if(value == "2")
+                    {  
+                        var a = '<span style="color:#d733c7;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+e+'</span>';  
+                    }
+                    return a;
+            }
             },
             {
                 title: '购货人',
@@ -505,6 +593,7 @@
             {
                 title: '供货分区',
                 field: 'section',
+                width:'200px',
                 align: 'center',
                 valign: 'middle'
             },
@@ -609,6 +698,34 @@
                 valign: 'middle'
             },
             {
+                title: '调令状态',
+                field: 'salestatus',
+                width:'200px',
+                align: 'center',
+                 valign: 'middle',
+                 sortable: true,
+                formatter: function(value,row,index) {
+                var a = ""; 
+                var b="待审核";
+                var c="完成调运";
+                var d="调运进行中";
+                var e="调令取消";
+                    if(value == "0") {  
+                        var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                    }else if(value == "4"){  
+                        var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                    }
+                    else if(value == "1" || value == "3"){  
+                        var a = '<span style="color:#21a63e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+d+'</span>';  
+                    }
+                    else if(value == "2")
+                    {  
+                        var a = '<span style="color:#d733c7;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+e+'</span>';  
+                    }
+                    return a;
+            }
+            },
+            {
                 title: '购货人',
                 width:'200px',
                 field: 'demander',
@@ -625,6 +742,7 @@
             {
                 title: '供货分区',
                 field: 'section',
+                width:'200px',
                 align: 'center',
                 valign: 'middle'
             },
@@ -729,6 +847,34 @@
                 valign: 'middle'
             },
             {
+                title: '调令状态',
+                field: 'salestatus',
+                width:'200px',
+                align: 'center',
+                 valign: 'middle',
+                 sortable: true,
+                formatter: function(value,row,index) {
+                var a = ""; 
+                var b="待审核";
+                var c="完成调运";
+                var d="调运进行中";
+                var e="调令取消";
+                    if(value == "0") {  
+                        var a = '<span style="color:#c12e2a;width:100px;font-size:18px"><i class="fa fa-times-circle-o" aria-hidden="true"></i>'+b+'</span>';  
+                    }else if(value == "4"){  
+                        var a = '<span style="color:#3e8f3e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+c+'</span>';  
+                    }
+                    else if(value == "1" || value == "3"){  
+                        var a = '<span style="color:#21a63e;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+d+'</span>';  
+                    }
+                    else if(value == "2")
+                    {  
+                        var a = '<span style="color:#d733c7;width:100px;font-size:18px"><i class="fa fa-check-circle-o" aria-hidden="true"></i>'+e+'</span>';  
+                    }
+                    return a;
+            }
+            },
+            {
                 title: '购货人',
                 width:'200px',
                 field: 'demander',
@@ -746,6 +892,7 @@
                 title: '供货分区',
                 field: 'section',
                 align: 'center',
+                width:'200px',
                 valign: 'middle'
             },
 //             {

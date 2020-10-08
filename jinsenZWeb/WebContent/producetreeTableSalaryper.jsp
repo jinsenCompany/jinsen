@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="js/bstable/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="js/bstable/css/bootstrap-table.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/tableall.css">
     <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
@@ -34,17 +35,17 @@ color: #fff;
 background-color: #3195f1;
 border-color: #0d7adf;
 }
-.bar1 {background: #A3D0C3;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
-        .bar1 input {
+.bar1 {background: #e8e9ef;margin-left:auto; margin-right:auto;padding:10px;border-collapse:collapse}
+        .bar1 input,select{
             border: 2px solid #7BA7AB;
             border-radius: 5px;
-            background: #F9F0DA;
+            background: #faf7f7;
             color: #9E9C9C;
         }
         .bar1 button {
             top: 0;
             right: 0;
-            background: #7BA7AB;
+            background: #4bb7e3;
             border-radius: 0 5px 5px 0;
         }
         .bar1 button:before {
@@ -67,6 +68,25 @@ border-color: #0d7adf;
     	    $("#sa_year").show().append(str);
     	    
     	}
+    }
+    function load()
+    {
+    	$.ajax({
+            url:"salaryServlet",//要发送的地址
+            data:{
+                "action":"loadyardinfo"
+            },
+            type: "POST",
+            dataType:"json",
+            success: function (data) {
+                for(i = 0;i<data.length;i++)
+                {
+                	str = "<option>"+data[i].yardname+"</option>";
+                	
+                	$("#yard").show().append(str);
+                }
+            }
+        })
     }
     </script>
     
@@ -109,7 +129,11 @@ border-color: #0d7adf;
 						timeEnd:document.getElementById("timeEnd").value,
 						yard:document.getElementById("yard").value,
 						treetype:document.getElementById("treetype").value,
-						tradius:document.getElementById("tradius").value
+						tradius:document.getElementById("tradius").value,
+						tlong:document.getElementById("tlong").value,
+						cutnum:document.getElementById("cutnum").value,
+						projectPackageName:document.getElementById("projectPackageName").value,
+						contractionSide:document.getElementById("contractionSide").value
 				};     
                 return temp;
             },
@@ -121,7 +145,7 @@ border-color: #0d7adf;
                         "halign":"center",
                         "align":"center",
                         "valign": "middle",
-                        "colspan": 15
+                        "colspan": 17
                     }
                 ],
             	[ 
@@ -129,11 +153,26 @@ border-color: #0d7adf;
                     	 title: "日期",
                          field: 'cutdate',
                          align: 'center',
+                         sortable: true,
                          valign: 'middle' 
+                     },
+                     {
+                    	 title:'工程包',
+                    	 field: 'projectPackageName',
+                         align: 'center',
+                         sortable: true,
+                         valign: 'middle'
+                     },
+                     {
+                    	 title:'生产业主',
+                    	 field: 'contractionSide',
+                         align: 'center',
+                         valign: 'middle'
                      },
             		{
                     title: "采伐证号",
                     field: 'cutNum',
+                    sortable: true,
                     align: 'center',
                     valign: 'middle'
                 },
@@ -177,13 +216,15 @@ border-color: #0d7adf;
                    	title: '检尺员',
                      field: 'surveyor',
                      align: 'center',
+                     visible: false,
                      valign: 'middle'   
                 },
                  {
                    	title: '伐区管理员',
                      field: 'forester',
                      align: 'center',
-                     valign: 'middle'   
+                     valign: 'middle',
+                     visible: false
                 },
             ]
             	]
@@ -228,7 +269,11 @@ border-color: #0d7adf;
 						timeEnd:document.getElementById("timeEnd").value,
 						yard:document.getElementById("yard").value,
 						treetype:document.getElementById("treetype").value,
-						tradius:document.getElementById("tradius").value
+						tradius:document.getElementById("tradius").value,
+						tlong:document.getElementById("tlong").value,
+						cutnum:document.getElementById("cutnum").value,
+						projectPackageName:document.getElementById("projectPackageName").value,
+						contractionSide:document.getElementById("contractionSide").value
 				};     
                 return temp;
             },
@@ -313,7 +358,7 @@ border-color: #0d7adf;
 </head>
 
     
-<body onload="submit_year()">
+<body onload="load()">
 <% Date d = new Date();
 
 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -365,28 +410,28 @@ String now = df.format(d); %>
         <li><a href="salaryContractList.jsp">合同进度</a></li>
       </ul>
      </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-signal"></i> <span>客户信息管理</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="productowner.jsp">创建客户信息</a></li>
         <li><a href="productownerSee.jsp">查看客户信息</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-inbox"></i> <span>销售调令管理</span> <span class="label label-important">3</span></a>
      <ul>
         <li><a href="saleCalloutOrder.jsp">录入销售调令</a></li>
         <li><a href="saleCalloutOrdersee.jsp">查看调令材料</a></li>
         <li><a href="saleCalloutOrderShenheModer.jsp">查看调令审核</a></li>
       </ul>
      </li>
-     <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>销售结算</span> <span class="label label-important">3</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th"></i> <span>销售结算</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="outyardCostS.jsp">结算检尺费</a></li>
+<!--         <li><a href="outyardCostS.jsp">结算检尺费</a></li> -->
         <li><a href="treeoutPrice.jsp">木材销售结算单</a></li>
         <li><a href="treeoutPriceTable.jsp">木材销售结算台账</a></li>
       </ul>
      </li>
-    <li><a href="treeoutCodepage.jsp"><i class="icon icon-th-list"></i> <span>打印销售码单</span></a></li>
-    <li class="submenu"> <a href="#"><i class="icon icon-home"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
+    <li><a href="treeoutCodepage.jsp"><i class="icon icon-fullscreen"></i> <span>打印销售码单</span></a></li>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>库存与销售</span> <span class="label label-important">2</span></a>
      <ul>
         <li><a href="producetreeTableSalaryper.jsp">木材进仓库存</a></li>
         <li><a href="treeoutTableSalayper.jsp">木材出仓销售</a></li>
@@ -397,7 +442,7 @@ String now = df.format(d); %>
 <!--sidebar-menu-->
 <div id="content">
   <div id="content-header">
-    <div id="breadcrumb"> <a href="superManage.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>返回超级管理员首页</a></div>
+    <div id="breadcrumb"> <a href="salaryper.jsp" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>首页</a></div>
   </div>
 
         <div class="find-top1">
@@ -408,24 +453,76 @@ String now = df.format(d); %>
             <table class="bar1">
            <!--  <tr><td class="top-table-label">年份：</td><td><select id="sa_year" name="sa_year" onChange="change_year()" readonly unselectable="on"></select></tr>
            <tr><td class="top-table-label">月份：</td><td><select id="sa_month" name="sa_month"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>1-12</option><option>1-3</option><option>4-6</option><option>7-9</option><option>10-12</option></select></td></tr>-->
-           <tr>
+           <%-- <tr>
            <td width="200">选择开始日期：<input width="160" type="date" name="timeStart" id="timeStart"  value="2020-01-01"></td>
            <td width="200">选择结束日期：<input width="160" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
+           <td width="200">采伐证编号：<input  width="160" type="text" name="cutnum" id="cutnum"></td>
+           <td width="400">工程包：<input  width="160" type="text" name="projectPackageName" id="projectPackageName"></td>
+           <td width="400">生产业主：<input  width="160" type="text" name="contractionSide" id="contractionSide"></td>
            </tr>
            <tr></tr>
            <tr>
            <td width="400">
-            <span>货场：</span><input  type="text" name="yard" id="yard"></td>
-           
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;货&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;场：&nbsp;&nbsp;&nbsp;</span><select style="width:160" name="yard" id="yard"><option selected="selected"></option></select></td>
            <td width="400">
-            <span>树种：</span><input  type="text" name="treetype" id="treetype"></td>
-           
+            <span>树种：</span><select style="width:160" name="treetype" id="treetype">
+            <option selected="selected"></option>
+            <option value='杉木'>杉木</option>
+            <option value='松木'>松木</option>
+            <option value='杂木'>杂木</option>
+            <option value='杉薪'>杉薪</option>
+            <option value='松薪'>松薪</option>
+            <option value='杂薪'>杂薪</option>
+            <option value='衫短材'>衫短材</option>
+            <option value='杉木兜'>杉木兜</option>
+            <option value='杉直柄'>杉直柄</option>
+            <option value='特种材'>特种材</option>
+            </select></td>
            <td width="400">
-            <span>口径：</span><input  type="text" name="tradius" id="tradius"></td>
+            <span>检尺长：</span><input  type="text" name="tradius" id="tradius"></td>
+           <td width="400">
+            <span>检尺径：</span><input  type="text" name="tradius" id="tradius"></td>
+           </tr>
+           --%>
+           <tr>
+           <td style="font-size:22px;color:red">查询时间：</td>
+           <td colspan="4" ><span>时&nbsp;&nbsp;&nbsp;&nbsp;间：&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:230px" type="date" name="timeStart" id="timeStart"  value="2020-01-01">
+           <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:230px" type="date" name="timeEnd" id="timeEnd" value="2020-12-01"></td>
+           </tr>
+           
+           <tr>
+           <td style="font-size:22px;color:red">采伐证信息：</td>
+           <td>工程包：&nbsp;&nbsp;&nbsp;&nbsp;<input  width="140px" type="text" name="projectPackageName" id="projectPackageName"></td>
+           <td>生产业主：<input  width="160" type="text" name="contractionSide" id="contractionSide"></td>
+           <td colspan="2">采伐证编号：<input  width="160" type="text" name="cutnum" id="cutnum"></td>
+           </tr>
+           
+           <tr>
+           <td style="font-size:22px;color:red">查询树材信息：</td>
+           <td>
+            <span>货&nbsp;&nbsp;&nbsp;&nbsp;场：&nbsp;&nbsp;&nbsp;&nbsp;</span><select  style="width:230px" name="yard" id="yard"><option selected="selected"></option></select></td>
+           <td>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;树&nbsp;&nbsp;种：&nbsp;&nbsp;</span><select style="width:230px" name="treetype" id="treetype">
+            <option selected="selected"></option>
+            <option value='杉木'>杉木</option>
+            <option value='松木'>松木</option>
+            <option value='杂木'>杂木</option>
+            <option value='杉薪'>杉薪</option>
+            <option value='松薪'>松薪</option>
+            <option value='杂薪'>杂薪</option>
+            <option value='衫短材'>衫短材</option>
+            <option value='杉木兜'>杉木兜</option>
+            <option value='杉直柄'>杉直柄</option>
+            <option value='特种材'>特种材</option>
+            </select></td>
+           <td>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;检尺长：&nbsp;&nbsp;&nbsp;</span><input  type="text" name="tlong" id="tlong"></td>
+           <td>
+            <span>检尺径：</span><input  type="text" name="tradius" id="tradius"></td>
            </tr>
            <tr>
-           <td colspan="8" style="text-align: center"><button  onclick="totaltree()">查询进仓木材总库存情况</button>
-           <button  onclick="producetree()">查询采伐木材情况表</button></td>
+           <td colspan="8" style="text-align: center"><button  onclick="totaltree()">查询进仓总库存</button>
+           <button  onclick="producetree()">查询进仓详细木材</button></td>
            </tr>
             </table>
            </div>

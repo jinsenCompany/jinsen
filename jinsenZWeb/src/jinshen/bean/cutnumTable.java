@@ -60,7 +60,7 @@ public class cutnumTable {
 	private String firewood;//薪材
 	private int projectid;//工程包id
 	private String cutnumfile;//上传文件
-	private Date creatcutDate;//创建表的时间
+	private String creatcutDate;//创建表的时间
 	
 	private double number;//编号
 	private String cutsite;//
@@ -369,10 +369,10 @@ public class cutnumTable {
 	public void setCutnumfile(String cutnumfile) {
 		this.cutnumfile = cutnumfile;
 	}
-	public Date getCreatcutDate() {
+	public String getCreatcutDate() {
 		return creatcutDate;
 	}
-	public void setCreatcutDate(Date creatcutDate) {
+	public void setCreatcutDate(String creatcutDate) {
 		this.creatcutDate = creatcutDate;
 	}
 	public double getNumber() {

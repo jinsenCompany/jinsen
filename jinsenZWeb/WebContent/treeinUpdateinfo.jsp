@@ -273,6 +273,7 @@ List<tree> t=null;
 t=(List<tree>)request.getAttribute("tree");
 %>
 <% workpage w=(workpage)request.getAttribute("workpage");%>
+<% treefile f=(treefile)request.getAttribute("treef");%>
   <div id="header">
   <h1><a href="dashboard.html">伐区监管平台</a></h1>
 </div>
@@ -405,6 +406,12 @@ t=(List<tree>)request.getAttribute("tree");
                                 </tr>
                                 </tbody>
                             </table>
+                            <table>
+                         <tr>
+                        <td style="color:red">下载检尺野账附件：</td>
+                        <td>${tfile}<a href="DownfileServlet?action=treeinfile&filename=<%=f.getTreefile() %>"><button class="btn btn-xs btn-primary">下载附件</button></a></td>
+                    </tr>
+                   </table>
                         </div>
                     </div>
                   <div><p class="table_p" style="margin-top: 65px;font-size:20px"><span>请审核工单</span></p></div>

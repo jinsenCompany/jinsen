@@ -44,4 +44,6 @@ public interface usermanageDao
 	public boolean delete_role(int role_num);
 	
 	public boolean update_role(role s);
+	
+	public boolean changePassword(usermanage s);//更改密码
 }

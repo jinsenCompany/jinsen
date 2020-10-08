@@ -32,6 +32,7 @@
 	<script src="js/jQuery.print.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" href="css/fullcalendar.css" />
 <link rel="stylesheet" href="css/matrix-style.css" />
 <link rel="stylesheet" href="css/matrix-media.css" />
@@ -172,18 +173,17 @@ function inputNull(form){
 <!--sidebar-menu-->
 <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 仪表盘</a>
    <ul>
-  <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
+    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>施工方管理</span> <span class="label label-important">2</span></a>
      <ul>
-        <li><a href="managesdatecard.jsp">录入施工方资料</a></li>
+        <li><a href="managesdatecard.jsp">施工方资料卡</a></li>
         <li><a href="managersdatecardSee.jsp">施工方台账</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>工程包管理</span> <span class="label label-important">4</span></a>
      <ul>
         <li><a href="CutnumProjectpackage.jsp">创建工程包</a></li>
-        <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
         <li><a href="cutnumProjectpackageShenhe.jsp">审核工程包</a></li>
-        <li><a href="CutnumProjectpackageTable.jsp">工程包台账</a></li>
+        <li><a href="CutnumProjectpackageTable.jsp">工程包执行情况</a></li>
       </ul>
      </li>
      <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>野账管理</span> <span class="label label-important">3</span></a>
@@ -194,16 +194,24 @@ function inputNull(form){
           <li><a href="treeinYezhang.jsp"> <span>野帐打印</span></a> </li>
       </ul>
      </li>
-    <li><a href="manageCutnumCheck.jsp"><i class="icon icon-inbox"></i> <span>生产管理</span></a> </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>生产结算</span> <span class="label label-important">4</span></a>
+     <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>伐区管理</span> <span class="label label-important">2</span></a>
+       <ul>
+       <li><a href="cutareaAllot.jsp">伐区拨交</a></li>
+        <li><a href="manageCutnumCheck.jsp">伐区管理</a></li>
+      </ul>
+     </li>
+    <li class="submenu"> <a href="#"><i class="icon"></i> <span>生产结算和报表</span><span class="label label-important">6</span></a>
        <ul>
         <li><a href="productPrice.jsp">生产工资和其他费用</a></li>
+        <li><a href="productPriceTable.jsp">生产其他费用台账</a></li>
         <li><a href="productPrice2.jsp">生产工资结算</a></li>
+        <li><a href="productPrice23Table.jsp">生产工资结算台账</a></li>
         <li><a href="productTreePrice.jsp">木材销售货款结算</a></li>
         <li><a href="productTreePriceTable.jsp">木材销售货款台账</a></li>
       </ul>
      </li>
-     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>   
+     <li><a href="manageCutnumProduced.jsp"><i class="icon icon-inbox"></i> <span>录入已生产量</span></a></li>
+     <li><a href="produceCutWorkidTable.jsp"><i class="icon icon-inbox"></i><span>生产总台账</span></a></li>        
   </ul>
 </div>
 <!--sidebar-menu-->
@@ -228,8 +236,8 @@ function inputNull(form){
     </table>
     <!-- 显示最近新增的采伐证号 -->
     
-    <div class="table-con">
-        <table id="table1" class="table-style"></table>
+    <div class="table-responsive">
+        <table id="table1" class="table-style" style="width:100%;margin-left:auto; margin-right:auto;max-width:none"></table>
     </div>
     
     </div>
@@ -263,6 +271,7 @@ function inputNull(form){
                 pageSize: 10,
                 pageNumber: 1,
                 search:true, //显示搜索框
+                width:1500,
                 showColumns: true,                  //是否显示所有的列
                 showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
                 cardView: false,                    //是否显示详细视图
@@ -286,7 +295,7 @@ function inputNull(form){
                         "halign":"center",
                         "align":"center",
                         "valign": "middle",
-                        "colspan": 32
+                        "colspan": 34
                     }],
                     [
                     	{						
@@ -318,7 +327,7 @@ function inputNull(form){
                     {
                         title: '采伐证号',
                         field: 'certificatenum',
-                        width:'auto',
+                        width:'200',
                         rowspan: 2,
                         align: 'center',
                         valign: 'middle'
@@ -326,7 +335,7 @@ function inputNull(form){
                     {
                         title: '采伐证编号',
                         field: 'cutnum',
-                        width:'auto',
+                        width:'200',
                         rowspan: 2,
                         align: 'center',
                         valign: 'middle'
@@ -334,7 +343,7 @@ function inputNull(form){
                     {
                         title: '采伐面积',
                         field: 'cutarea',
-                        //width:'auto',
+                        width:'200',
                         rowspan: 2,
                         align: 'center',
                         valign: 'middle'
@@ -377,12 +386,17 @@ function inputNull(form){
                         align: 'center'
                     },
                     {
-                    	title: '实际出材量',
+                    	title: '已出材量',
                         colspan: 4,
                         align: 'center'
                     },
                     {
-                    	title: '剩余出材量',
+                    	title: '倒材量',
+                        colspan: 4,
+                        align: 'center'
+                    },
+                    {
+                    	title: '未出材量',
                         colspan: 4,
                         align: 'center'
                     },
@@ -392,8 +406,8 @@ function inputNull(form){
                         align: 'center'
                     },
                     {
-                    	title: '下载工程包合同',
-                        colspan: 1,
+                    	title: '下载和查看',
+                        colspan: 2,
                         align: 'center'
                     }
                     ],
@@ -403,6 +417,7 @@ function inputNull(form){
                             field: 'totalDesign',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -410,6 +425,7 @@ function inputNull(form){
                             field: 'shanTreeDesign',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -417,6 +433,7 @@ function inputNull(form){
                             field: 'songTreeDesign',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -424,6 +441,7 @@ function inputNull(form){
                             field: 'zaTreeDesign',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -431,6 +449,7 @@ function inputNull(form){
                             field: 'totalActual',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -438,6 +457,7 @@ function inputNull(form){
                             field: 'shanTreeActual',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -445,6 +465,7 @@ function inputNull(form){
                             field: 'songTreeActual',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -452,6 +473,39 @@ function inputNull(form){
                             field: 'zaTreeActual',
                             //width:'auto',
                             align: 'center',
+                            width:200,
+                            valign: 'middle'
+                        },
+                        {
+                            title: '合计',
+                            field: 'totalProduced',
+                            //width:'auto',
+                            align: 'center',
+                            width:100,
+                            valign: 'middle'
+                        },
+                        {
+                            title: '杉木',
+                            field: 'shamu',
+                            //width:'auto',
+                            align: 'center',
+                            width:100,
+                            valign: 'middle'
+                        },
+                        {
+                            title: '松木',
+                            field: 'songmu',
+                            //width:'auto',
+                            align: 'center',
+                            width:100,
+                            valign: 'middle'
+                        },
+                        {
+                            title: '杂木',
+                            field: 'zamu',
+                            //width:'auto',
+                            align: 'center',
+                            width:100,
                             valign: 'middle'
                         },
                         {
@@ -459,6 +513,7 @@ function inputNull(form){
                             field: 'totalSurplus',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -466,6 +521,7 @@ function inputNull(form){
                             field: 'shanSurplus',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -473,6 +529,7 @@ function inputNull(form){
                             field: 'songSurplus',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -480,6 +537,7 @@ function inputNull(form){
                             field: 'zaSurplus',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -487,6 +545,7 @@ function inputNull(form){
                             field: 'totalImplement',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -494,6 +553,7 @@ function inputNull(form){
                             field: 'shanTreeImplement',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -501,6 +561,7 @@ function inputNull(form){
                             field: 'songTreeImplement',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -508,6 +569,7 @@ function inputNull(form){
                             field: 'zaiTreeImplement',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle'
                         },
                         {
@@ -515,6 +577,7 @@ function inputNull(form){
                             field: 'accessory',
                             //width:'auto',
                             align: 'center',
+                            width:200,
                             valign: 'middle',
                             formatter: function (cellval, row) {
                             	var d='<a href="DownfileServlet?action=projectfile12&filename=\''+ row.accessory + '\'">下载</a>';
@@ -522,6 +585,19 @@ function inputNull(form){
                                 return  d;
                             }
                         },
+                        {
+                            title: '查看采伐证',
+                            field: 'opr',
+                            width: 200,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: function (cellval, row) {
+                                //var  d = '<a href="workpageSevrlet?action=single&workid=\''+ row.workid + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                                var  d = '<a href="cutnumServlet?action=watch&cutnum=\''+ row.cutnum + '\'"><button  id="add" data-id="98" class="btn btn-xs btn-primary">查看</button></a>';
+                                //var  d = '<a href="workpageSevrlet?action=alldelete&workid=\''+ row.workid + '\'"><button  id="id="delete" data-id="98" class="btn btn-xs btn-primary">删除</button></a>';
+                                return  d;
+                            }
+                        }, 
                     ]
                 ]
         });
